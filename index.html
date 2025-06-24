@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MicroGrid - Join the Future of Energy</title>   Connect your home battery to our Virtual Power Plant network through our dGrid app. Earn money while supporting your community's energy needs.
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0066CC;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #0066CC;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #0066CC, #0052A3);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 102, 204, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0066CC 0%, #004080 100%);
+            color: white;
+            padding: 120px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('assets/images/hero_home_solar.jpg') center/cover;
+            opacity: 0.1;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: #FF6600;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            background: #E55A00;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 102, 0, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            padding: 1rem 2rem;
+            border: 2px solid white;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #0066CC;
+        }
+
+        /* What is VPP Section */
+        .what-is-vpp {
+            padding: 80px 0;
+            background: #F8FAFC;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .vpp-explanation {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .vpp-text h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .vpp-text p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .vpp-visual {
+            text-align: center;
+        }
+
+        .vpp-visual img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .step {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 15px;
+            background: #F8FAFC;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #0066CC, #0052A3);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1.5rem;
+        }
+
+        .step h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .step p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Benefits Section */
+        .benefits {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #00AA44 0%, #008833 100%);
+            color: white;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-top: 4rem;
+        }
+
+        .benefit-category h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .benefit-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .benefit-list {
+            list-style: none;
+        }
+
+        .benefit-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .benefit-list li:last-child {
+            border-bottom: none;
+        }
+
+        .check-icon {
+            width: 20px;
+            height: 20px;
+            background: #FF6600;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        /* App Features Section */
+        .app-features {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 4rem;
+        }
+
+        .app-mockup {
+            text-align: center;
+        }
+
+        .app-mockup img {
+            max-width: 300px;
+            height: auto;
+            border-radius: 25px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-item {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .feature-item:last-child {
+            border-bottom: none;
+        }
+
+        .feature-item h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-item p {
+            color: #666;
+        }
+
+        /* FAQ Section */
+        .faq {
+            padding: 80px 0;
+            background: #F8FAFC;
+        }
+
+        .faq-list {
+            max-width: 800px;
+            margin: 4rem auto 0;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            background: white;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: #F8FAFC;
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem 1.5rem;
+            color: #666;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .faq-answer.active {
+            display: block;
+        }
+
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Footer */
+        footer {
+            background: #1F2937;
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-section ul li a {
+            color: #D1D5DB;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 2rem;
+            text-align: center;
+            color: #9CA3AF;
+        }
+
+        .app-store-badge {
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .app-store-badge img {
+            height: 50px;
+            width: auto;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .vpp-explanation,
+            .benefits-grid,
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .hero {
+                padding: 100px 0 60px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Inverter Onboarding Section */
+        .inverter-onboarding {
+            padding: 80px 0;
+            background: #F8FAFC;
+        }
+
+        .inverter-list ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .inverter-list li {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .inverter-list li:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .inverter-list a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .inverter-list a:hover {
+            color: #0066CC;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+<div class="logo">MicroGrid</div>
+            <ul class="nav-links">
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#benefits">Benefits</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+            <a href="https://apps.apple.com/us/app/dgrid/idYOUR_APP_ID" class="cta-button">Download App</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content fade-in-up">
+                <h1>Join the Future of Energy</h1>
+                <p>Connect your home battery to our Virtual Power Plant network through our dGrid app. Earn money while supporting your community's energy needs.</p>
+                <div class="hero-buttons">
+                    <a href="https://apps.apple.com/us/app/dgrid/idYOUR_APP_ID" class="btn-primary">
+                        📱 Download App
+                    </a>
+                    <a href="#how-it-works" class="btn-secondary">Learn How It Works</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What is VPP Section -->
+    <section class="what-is-vpp">
+        <div class="container">
+            <div class="section-header">
+                <h2>What is a Virtual Power Plant?</h2>
+                <p>A network of distributed energy resources working together to create a more resilient and sustainable energy future.</p>
+            </div>
+            <div class="vpp-explanation">
+                <div class="vpp-text">
+                    <h3>Connecting Communities Through Clean Energy</h3>
+                    <p>A Virtual Power Plant (VPP) is a network of home battery systems that work together like a single, large power plant. Instead of relying on massive, centralized facilities, we harness the collective power of individual homes with solar panels and battery storage.</p>
+                    <p>When your community needs extra energy during peak demand times, your battery can contribute stored solar power to the grid. This helps stabilize the electrical system while reducing reliance on fossil fuel plants.</p>
+                    <p>It's like having thousands of mini power plants working together to create a cleaner, more reliable energy future for everyone.</p>
+                </div>
+                <div class="vpp-visual">
+                    <img src="assets/images/vpp_network_illustration.png" alt="Virtual Power Plant Network Illustration">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2>How It Works</h2>
+                <p>Getting started with VPP Connect is simple. Follow these three easy steps to begin earning money while supporting your community.</p>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Download & Connect</h3>
+                    <p>Download our dGrid app and connect your compatible home battery system. Our app will automatically detect your setup and guide you through the connection process.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Set Your Preferences</h3>
+                    <p>Choose how much energy you want to share and set your backup reserve levels. You maintain full control over your home's energy security.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Start Earning</h3>
+                    <p>When the grid needs support, your battery automatically shares excess energy. You earn money for every kilowatt-hour contributed to the network.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="benefits" class="benefits">
+        <div class="container">
+            <div class="section-header">
+                <h2>Benefits for You and Your Community</h2>
+                <p>VPP Connect creates value for individual homeowners while building a more sustainable energy future for everyone.</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-category">
+                    <h3>
+                        <span class="benefit-icon">💰</span>
+                        For You
+                    </h3>
+                    <ul class="benefit-list">
+                        <li>
+                            <span class="check-icon">✓</span>
+                            Earn money for sharing excess energy
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            Maintain home backup power security
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            Monitor energy usage and savings in real-time
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            Reduce your overall energy costs
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            Increase the value of your solar investment
+                        </li>
+                    </ul>
+                </div>
+                <div class="benefit-category">
+                    <h3>
+                        <span class="benefit-icon">🌍</span>
+                        For Your Community
+                    </h3>
+                    <ul class="benefit-list">
+                        <li>
+                            <span class="check-icon">✓</span>
+                            Support grid stability during peak demand
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            Reduce reliance on fossil fuel power plants
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            Contribute to a cleaner energy future
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            Help prevent power outages and blackouts
+                        </li>
+                        <li>
+                            <span class="check-icon">✓</span>
+                            Build a more resilient local energy network
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- App Features Section -->
+    <section id="features" class="app-features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Powerful Features in Your Pocket</h2>
+                <p>Our iOS app gives you complete control over your energy participation with intuitive monitoring and management tools.</p>
+            </div>
+            <div class="features-grid">
+                <div class="app-mockup">
+                    <img src="assets/images/app_interface_2.png" alt="VPP Connect iOS App Interface">
+                </div>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <h4>📊 Real-time Monitoring</h4>
+                        <p>Track your energy production, consumption, and sharing in real-time. See exactly how much you're contributing to the grid and earning from your participation.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>🤖 Smart Scheduling</h4>
+                        <p>Our AI optimizes when to share energy based on grid needs, weather forecasts, and your usage patterns to maximize your earnings while ensuring home backup.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>💳 Earnings Dashboard</h4>
+                        <p>View your rewards and payment history with detailed breakdowns. Track your monthly earnings and see how your participation benefits the community.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>🔒 Backup Control</h4>
+                        <p>Set and adjust your backup reserve levels to ensure you always have power when you need it. Your home's energy security is never compromised.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="faq">
+        <div class="container">
+            <div class="section-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Get answers to common questions about VPP Connect and virtual power plant participation.</p>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Is my home battery compatible with VPP Connect?
+                        <span class="faq-icon">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        VPP Connect supports most major home battery brands including Tesla Powerwall, LG Chem, Enphase, and Sonnen. Our app will automatically detect compatible systems during setup. If you're unsure about compatibility, contact our support team for assistance.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        How much money can I earn?
+                        <span class="faq-icon">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        Earnings vary based on your battery capacity, local energy rates, and grid demand in your area. Most participants earn between $200-$800 per year. You can view estimated earnings for your specific setup in the app before enrolling.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Will participating affect my home's backup power?
+                        <span class="faq-icon">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        No, your home's backup power is always protected. You set your minimum backup reserve level, and the system will never discharge below that threshold. Your home's energy security remains the top priority.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Is VPP Connect available in my area?
+                        <span class="faq-icon">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        VPP Connect is currently available in California, Texas, New York, and Massachusetts, with expansion to additional states planned for 2025. Check the app for real-time availability in your specific utility territory.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        How secure is my data and energy system?
+                        <span class="faq-icon">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        We use bank-level encryption and security protocols to protect your data. Your battery system remains under your control at all times, and we only access energy sharing capabilities with your explicit permission. All data is encrypted and stored securely.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>MicroGrid</h4>
+                    <p>Building the future of distributed energy through community-powered virtual power plants.</p>
+                    <div class="app-store-badge">
+                        <img src="assets/images/app_store_badge.png" alt="Download on the App Store">
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#benefits">Benefits</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">System Requirements</a></li>
+                        <li><a href="#">Installation Guide</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Careers</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 VPP Connect. All rights reserved. Building a sustainable energy future, one home at a time.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.parentElement;
+                const answer = faqItem.querySelector('.faq-answer');
+                const isActive = faqItem.classList.contains('active');
+
+                // Close all FAQ items
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                    item.querySelector('.faq-answer').classList.remove('active');
+                });
+
+                // Open clicked item if it wasn't active
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                    answer.classList.add('active');
+                }
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Header background on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+                header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.boxShadow = 'none';
+            }
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.step, .benefit-category, .feature-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
+
+
+
+    <!-- Inverter Onboarding Section -->
+    <section class="inverter-onboarding">
+        <div class="container">
+            <div class="section-header">
+                <h2>Inverter Onboarding Guides</h2>
+                <p>Select your inverter manufacturer to get step-by-step instructions on how to connect it to the MicroGrid dGrid app.</p>
+            </div>
+            <div class="inverter-list">
+                <ul>
+                    <li><a href="onboarding/solaredge.html">SolarEdge</a></li>
+                    <li><a href="onboarding/enphase.html">Enphase</a></li>
+                    <li><a href="onboarding/sma.html">SMA</a></li>
+                    <li><a href="onboarding/fronius.html">Fronius</a></li>
+                    <li><a href="onboarding/tesla.html">Tesla Powerwall</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+
