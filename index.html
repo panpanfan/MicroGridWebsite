@@ -51,8 +51,31 @@
         }
 
         .logo img {
-            height: 50px;
+            height: 45px;
             width: auto;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+            transition: all 0.3s ease;
+        }
+
+        .logo img:hover {
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+            transform: scale(1.05);
+        }
+
+        /* Alternative text logo for better integration */
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #059669 0%, #f97316 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .logo-text:hover {
+            transform: scale(1.05);
         }
 
         .nav-links {
@@ -671,7 +694,7 @@
     <header>
         <nav class="container">
             <div class="logo">
-                <img src="assets/images/microgrid_logo.png" alt="MicroGrid" height="50">
+                <a href="#" class="logo-text">MicroGrid</a>
             </div>
             <ul class="nav-links">
                 <li><a href="#how-it-works">How It Works</a></li>
