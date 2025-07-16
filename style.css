@@ -399,11 +399,153 @@ html {
     line-height: 1.6;
     font-size: 1.1rem;
 }
-
-@media (max-width: 768px) {
+@media (max-width: 480px) {
     .movement-steps {
         grid-template-columns: 1fr;
-        gap: 2rem;
+        gap: 1.5rem;
     }
 }
 
+/* Sticky CTA Bar */
+.sticky-cta-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(15px);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+    padding: 1rem;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.cta-bar-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.cta-bar-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1f2937;
+    flex-shrink: 0;
+}
+
+.cta-bar-buttons {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.cta-bar-primary {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cta-bar-primary:hover {
+    background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+}
+
+.cta-bar-secondary {
+    background: transparent;
+    color: #059669;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #059669;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cta-bar-secondary:hover {
+    background: #059669;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Mobile responsiveness for sticky CTA bar */
+@media (max-width: 768px) {
+    .cta-bar-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.75rem;
+    }
+
+    .cta-bar-text {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .cta-bar-buttons {
+        width: 100%;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .cta-bar-primary,
+    .cta-bar-secondary {
+        flex: 1;
+        min-width: 140px;
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+
+    .sticky-cta-bar {
+        padding: 1rem 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .cta-bar-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .cta-bar-primary,
+    .cta-bar-secondary {
+        width: 100%;
+        flex: none;
+    }
+}
+
+/* Add padding to body to account for sticky bar */
+body {
+    padding-bottom: 100px;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-bottom: 140px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding-bottom: 180px;
+    }
+}
