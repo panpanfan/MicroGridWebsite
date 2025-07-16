@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installer Registration - MicroGrid</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Additional styles for installer registration page */
+        .registration-hero {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 120px 0 80px;
+            text-align: center;
+        }
+
+        .registration-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .registration-hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        .registration-form-section {
+            padding: 80px 0;
+            background: #f8fafc;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #059669;
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-top: 0.25rem;
+        }
+
+        .checkbox-group label {
+            margin-bottom: 0;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+        }
+
+        .benefits-section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .benefit-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+            border: 1px solid #d1fae5;
+        }
+
+        .benefit-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .benefit-card h3 {
+            color: #059669;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .registration-hero h1 {
+                font-size: 2rem;
+            }
+
+            .form-container {
+                padding: 2rem 1.5rem;
+                margin: 0 1rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .benefits-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <img src="assets/images/microgrid_logo.png" alt="MicroGrid" height="50">
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#how-it-works">How It Works</a></li>
+                <li><a href="index.html#benefits">Benefits</a></li>
+                <li><a href="index.html#faq">FAQ</a></li>
+            </ul>
+            <a href="https://apps.apple.com/us/app/dgrid/id6747276150" class="cta-button">Download App</a>
+        </nav>
+    </header>
+
+    <!-- Registration Hero Section -->
+    <section class="registration-hero">
+        <div class="container">
+            <h1>Join the MicroGrid Installer Network</h1>
+            <p>Partner with us to offer cutting-edge Virtual Power Plant solutions to your customers. Expand your services and grow your business with MicroGrid's innovative technology.</p>
+        </div>
+    </section>
+
+    <!-- Registration Form Section -->
+    <section class="registration-form-section">
+        <div class="container">
+            <div class="form-container">
+                <div class="section-header">
+                    <h2>Installer Registration</h2>
+                    <p>Complete the form below to join our network of certified installers and start offering MicroGrid solutions to your customers.</p>
+                </div>
+
+                <form id="installerForm" action="#" method="POST">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="company">Company Name *</label>
+                        <input type="text" id="company" name="company" required>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="city">City *</label>
+                            <input type="text" id="city" name="city" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State/Province *</label>
+                            <input type="text" id="state" name="state" required>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="zipCode">ZIP/Postal Code *</label>
+                            <input type="text" id="zipCode" name="zipCode" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="country">Country *</label>
+                            <select id="country" name="country" required>
+                                <option value="">Select Country</option>
+                                <option value="US">United States</option>
+                                <option value="CA">Canada</option>
+                                <option value="AU">Australia</option>
+                                <option value="UK">United Kingdom</option>
+                                <option value="DE">Germany</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="website">Company Website</label>
+                        <input type="url" id="website" name="website" placeholder="https://www.yourcompany.com">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="experience">Years of Experience in Solar/Battery Installation *</label>
+                        <select id="experience" name="experience" required>
+                            <option value="">Select Experience Level</option>
+                            <option value="0-2">0-2 years</option>
+                            <option value="3-5">3-5 years</option>
+                            <option value="6-10">6-10 years</option>
+                            <option value="10+">10+ years</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="certifications">Certifications (e.g., NABCEP, electrical license)</label>
+                        <textarea id="certifications" name="certifications" placeholder="List your relevant certifications and licenses..."></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="serviceArea">Primary Service Area *</label>
+                        <textarea id="serviceArea" name="serviceArea" placeholder="Describe the geographic areas you serve..." required></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="installsPerMonth">Approximate Battery Installations Per Month</label>
+                        <select id="installsPerMonth" name="installsPerMonth">
+                            <option value="">Select Range</option>
+                            <option value="1-5">1-5 installations</option>
+                            <option value="6-15">6-15 installations</option>
+                            <option value="16-30">16-30 installations</option>
+                            <option value="30+">30+ installations</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="brandExperience">Battery Brands You Work With</label>
+                        <textarea id="brandExperience" name="brandExperience" placeholder="e.g., Tesla Powerwall, Enphase, SolarEdge, SMA, Fronius..."></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="additionalInfo">Additional Information</label>
+                        <textarea id="additionalInfo" name="additionalInfo" placeholder="Tell us more about your business and why you'd like to partner with MicroGrid..."></textarea>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms">I agree to the <a href="#" style="color: #059669;">Terms of Service</a> and <a href="#" style="color: #059669;">Privacy Policy</a> *</label>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="marketing" name="marketing">
+                        <label for="marketing">I would like to receive updates about MicroGrid products and partnership opportunities</label>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Submit Registration</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Partner with MicroGrid?</h2>
+                <p>Join a growing network of installers offering the future of energy management</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <span class="benefit-icon">💰</span>
+                    <h3>Additional Revenue Stream</h3>
+                    <p>Earn commissions on every MicroGrid system you install and ongoing revenue from customer participation in VPP programs.</p>
+                </div>
+                <div class="benefit-card">
+                    <span class="benefit-icon">🛠️</span>
+                    <h3>Technical Support</h3>
+                    <p>Access comprehensive training, installation guides, and dedicated technical support to ensure successful deployments.</p>
+                </div>
+                <div class="benefit-card">
+                    <span class="benefit-icon">📈</span>
+                    <h3>Business Growth</h3>
+                    <p>Differentiate your services with cutting-edge VPP technology and attract customers seeking smart energy solutions.</p>
+                </div>
+                <div class="benefit-card">
+                    <span class="benefit-icon">🤝</span>
+                    <h3>Marketing Support</h3>
+                    <p>Receive marketing materials, lead generation support, and co-branded promotional opportunities.</p>
+                </div>
+                <div class="benefit-card">
+                    <span class="benefit-icon">🔧</span>
+                    <h3>Easy Integration</h3>
+                    <p>MicroGrid works with existing battery systems - no need to change your current installation practices.</p>
+                </div>
+                <div class="benefit-card">
+                    <span class="benefit-icon">🌟</span>
+                    <h3>Industry Leadership</h3>
+                    <p>Be at the forefront of the energy transition and offer your customers the latest in smart grid technology.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sticky CTA Bar -->
+    <div class="sticky-cta-bar">
+        <div class="cta-bar-content">
+            <div class="cta-bar-text">Ready to activate your smart battery?</div>
+            <div class="cta-bar-buttons">
+                <a href="https://apps.apple.com/us/app/dgrid/id6747276150" class="cta-bar-primary">Download Free App</a>
+                <a href="installer-registration.html" class="cta-bar-secondary">Connect Your Inverter</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('installerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Basic form validation
+            const requiredFields = this.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.borderColor = '#ef4444';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = '#e5e7eb';
+                }
+            });
+            
+            if (isValid) {
+                // Show success message
+                alert('Thank you for your registration! We will review your application and contact you within 2-3 business days.');
+                
+                // In a real implementation, you would send the form data to your server
+                console.log('Form data:', new FormData(this));
+                
+                // Reset form
+                this.reset();
+            } else {
+                alert('Please fill in all required fields.');
+            }
+        });
+    </script>
+</body>
+</html>
+
