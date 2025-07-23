@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIY System Registration - MicroGrid</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Additional styles for DIY registration page */
+        .registration-hero {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            padding: 120px 0 80px;
+            text-align: center;
+        }
+
+        .registration-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .registration-hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        .registration-form-section {
+            padding: 80px 0;
+            background: #f8fafc;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #059669;
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-top: 0.25rem;
+        }
+
+        .checkbox-group label {
+            margin-bottom: 0;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+        }
+
+        .requirements-section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .requirements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .requirement-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+            border: 1px solid #d1fae5;
+        }
+
+        .requirement-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .requirement-card h3 {
+            color: #059669;
+            margin-bottom: 1rem;
+        }
+
+        .help-section {
+            padding: 80px 0;
+            background: #f8fafc;
+        }
+
+        .help-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .help-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .help-btn {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+        }
+
+        .help-btn:hover {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+        }
+
+        .help-btn.secondary {
+            background: transparent;
+            color: #1e40af;
+            border: 2px solid #1e40af;
+        }
+
+        .help-btn.secondary:hover {
+            background: #1e40af;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .registration-hero h1 {
+                font-size: 2rem;
+            }
+
+            .form-container {
+                padding: 2rem 1.5rem;
+                margin: 0 1rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .requirements-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .help-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <img src="assets/images/microgrid_logo.png" alt="MicroGrid" height="50">
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#how-it-works">How It Works</a></li>
+                <li><a href="index.html#benefits">Benefits</a></li>
+                <li><a href="index.html#faq">FAQ</a></li>
+            </ul>
+            <a href="https://apps.apple.com/us/app/dgrid/id6747276150" class="cta-button">Download App</a>
+        </nav>
+    </header>
+
+    <!-- Registration Hero Section -->
+    <section class="registration-hero">
+        <div class="container">
+            <h1>Connect Your System DIY</h1>
+            <p>Already have a compatible inverter? Connect your system to MicroGrid's Virtual Power Plant network and start earning money from your home battery.</p>
+        </div>
+    </section>
+
+    <!-- Registration Form Section -->
+    <section class="registration-form-section">
+        <div class="container">
+            <div class="form-container">
+                <div class="section-header">
+                    <h2>DIY System Registration</h2>
+                    <p>Complete the form below to connect your existing inverter system to MicroGrid's VPP network. Make sure you have your inverter's web service URL and credentials ready.</p>
+                </div>
+
+                <form id="diyForm" action="#" method="POST">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="city">City *</label>
+                            <input type="text" id="city" name="city" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State/Province *</label>
+                            <input type="text" id="state" name="state" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="inverterManufacturer">Inverter Manufacturer *</label>
+                        <select id="inverterManufacturer" name="inverterManufacturer" required>
+                            <option value="">Select Manufacturer</option>
+                            <option value="solaredge">SolarEdge</option>
+                            <option value="enphase">Enphase</option>
+                            <option value="sma">SMA</option>
+                            <option value="fronius">Fronius</option>
+                            <option value="tesla">Tesla Powerwall</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="inverterModel">Inverter Model *</label>
+                        <input type="text" id="inverterModel" name="inverterModel" placeholder="e.g., SolarEdge SE6000H, Enphase IQ7+" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="batteryCapacity">Battery Capacity (kWh) *</label>
+                        <input type="number" id="batteryCapacity" name="batteryCapacity" placeholder="e.g., 13.5" step="0.1" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="inverterUrl">Inverter Web Service URL *</label>
+                        <input type="url" id="inverterUrl" name="inverterUrl" placeholder="https://your-inverter-ip-address" required>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="username">Inverter Username</label>
+                            <input type="text" id="username" name="username" placeholder="Leave blank if not required">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Inverter Password</label>
+                            <input type="password" id="password" name="password" placeholder="Leave blank if not required">
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="installationDate">System Installation Date</label>
+                        <input type="date" id="installationDate" name="installationDate">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="utilityCompany">Utility Company</label>
+                        <input type="text" id="utilityCompany" name="utilityCompany" placeholder="e.g., PG&E, SDG&E, SCE">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="additionalNotes">Additional Notes</label>
+                        <textarea id="additionalNotes" name="additionalNotes" placeholder="Any additional information about your system or setup..."></textarea>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms">I agree to the <a href="#" style="color: #059669;">Terms of Service</a> and <a href="#" style="color: #059669;">Privacy Policy</a> *</label>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="vppParticipation" name="vppParticipation" required>
+                        <label for="vppParticipation">I want to participate in Virtual Power Plant programs and earn money from my battery *</label>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="marketing" name="marketing">
+                        <label for="marketing">I would like to receive updates about MicroGrid products and VPP opportunities</label>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Connect My System</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Requirements Section -->
+    <section class="requirements-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>What You'll Need</h2>
+                <p>Before connecting your system, make sure you have the following information ready</p>
+            </div>
+            <div class="requirements-grid">
+                <div class="requirement-card">
+                    <span class="requirement-icon">🔌</span>
+                    <h3>Compatible Inverter</h3>
+                    <p>Your inverter must be from a supported manufacturer (SolarEdge, Enphase, SMA, Fronius, Tesla, or others).</p>
+                </div>
+                <div class="requirement-card">
+                    <span class="requirement-icon">🌐</span>
+                    <h3>Network Access</h3>
+                    <p>Your inverter must be connected to your home network and accessible via its web interface or API.</p>
+                </div>
+                <div class="requirement-card">
+                    <span class="requirement-icon">📱</span>
+                    <h3>Mobile App</h3>
+                    <p>Download the MicroVPP dGrid app from the App Store to complete the connection process.</p>
+                </div>
+                <div class="requirement-card">
+                    <span class="requirement-icon">🔋</span>
+                    <h3>Battery System</h3>
+                    <p>A home battery system with sufficient capacity to participate in VPP programs (typically 5+ kWh).</p>
+                </div>
+                <div class="requirement-card">
+                    <span class="requirement-icon">📊</span>
+                    <h3>System Information</h3>
+                    <p>Basic details about your system including model numbers, capacity, and installation date.</p>
+                </div>
+                <div class="requirement-card">
+                    <span class="requirement-icon">⚡</span>
+                    <h3>Utility Connection</h3>
+                    <p>Your system must be grid-connected and in compliance with local utility interconnection requirements.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Help Section -->
+    <section class="help-section">
+        <div class="container">
+            <div class="help-content">
+                <div class="section-header">
+                    <h2>Need Help?</h2>
+                    <p>Our team is here to help you connect your system successfully</p>
+                </div>
+                <div class="help-buttons">
+                    <a href="onboarding/solaredge.html" class="help-btn">View Setup Guides</a>
+                    <a href="mailto:support@microgrid.com" class="help-btn secondary">Contact Support</a>
+                    <a href="installer-registration.html" class="help-btn secondary">Find an Installer</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sticky CTA Bar -->
+    <div class="sticky-cta-bar">
+        <div class="cta-bar-content">
+            <div class="cta-bar-text">Ready to activate your smart battery?</div>
+            <div class="cta-bar-buttons">
+                <a href="https://apps.apple.com/us/app/dgrid/id6747276150" class="cta-bar-primary">Download Free App</a>
+                <a href="diy-registration.html" class="cta-bar-secondary">Connect Your System</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('diyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Basic form validation
+            const requiredFields = this.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.borderColor = '#ef4444';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = '#e5e7eb';
+                }
+            });
+            
+            if (isValid) {
+                // Show success message
+                alert('Thank you for registering your system! We will review your information and contact you within 24-48 hours to complete the connection process.');
+                
+                // In a real implementation, you would send the form data to your server
+                console.log('Form data:', new FormData(this));
+                
+                // Reset form
+                this.reset();
+            } else {
+                alert('Please fill in all required fields.');
+            }
+        });
+
+        // Update inverter model field based on manufacturer selection
+        document.getElementById('inverterManufacturer').addEventListener('change', function() {
+            const modelField = document.getElementById('inverterModel');
+            const manufacturer = this.value;
+            
+            // Clear current value
+            modelField.value = '';
+            
+            // Set placeholder based on manufacturer
+            const placeholders = {
+                'solaredge': 'e.g., SolarEdge SE6000H, SE7600H, SE10000H',
+                'enphase': 'e.g., Enphase IQ7+, IQ8+, IQ10',
+                'sma': 'e.g., SMA Sunny Boy, Sunny Tripower',
+                'fronius': 'e.g., Fronius Primo, Symo, Eco',
+                'tesla': 'e.g., Tesla Powerwall Gateway',
+                'other': 'Enter your inverter model'
+            };
+            
+            modelField.placeholder = placeholders[manufacturer] || 'Enter your inverter model';
+        });
+    </script>
+</body>
+</html> 

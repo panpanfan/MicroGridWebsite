@@ -621,6 +621,15 @@
                 grid-template-columns: 1fr;
                 gap: 2rem;
             }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .option-card {
+                padding: 2rem;
+            }
         }
 
         /* Sticky CTA Bar */
@@ -722,14 +731,15 @@
                 width: 100%;
                 justify-content: center;
                 gap: 0.5rem;
+                flex-wrap: wrap;
             }
 
             .cta-bar-primary,
             .cta-bar-secondary {
                 flex: 1;
                 min-width: 140px;
-                padding: 1rem;
-                font-size: 0.9rem;
+                padding: 0.75rem;
+                font-size: 0.85rem;
             }
 
             .sticky-cta-bar {
@@ -747,6 +757,8 @@
             .cta-bar-secondary {
                 width: 100%;
                 flex: none;
+                padding: 1rem;
+                font-size: 0.9rem;
             }
         }
 
@@ -817,6 +829,95 @@
             scroll-behavior: smooth;
         }
 
+        /* Connection Options Section */
+        .connection-options {
+            padding: 80px 0;
+            background: #F8FAFC;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .option-card {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .option-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: #059669;
+        }
+
+        .option-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .option-card h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .option-card p {
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .option-card ul {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .option-card ul li {
+            padding: 0.5rem 0;
+            color: #555;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .option-card ul li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #059669;
+            font-weight: bold;
+        }
+
+        .option-btn {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+        }
+
+        .option-btn:hover {
+            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+        }
+
         /* Inverter Onboarding Section */
         .inverter-onboarding {
             padding: 80px 0;
@@ -883,6 +984,7 @@
                     <a href="installer-registration.html" class="btn-primary">
                         Start Free — Connect Your Battery Today
                     </a>
+                    <a href="diy-registration.html" class="btn-secondary">DIY Connection</a>
                     <a href="#how-it-works" class="btn-secondary">Learn How It Works</a>
                 </div>
             </div>
@@ -994,6 +1096,42 @@
                     <div class="step-icon">💰</div>
                     <h3>Get Paid</h3>
                     <p>Earn passive income by allowing your battery to support the grid during peak demand periods.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Connection Options Section -->
+    <section class="connection-options">
+        <div class="container">
+            <div class="section-header">
+                <h2>Choose Your Connection Path</h2>
+                <p>Whether you're a professional installer or a tech-savvy homeowner, we have the right solution for you.</p>
+            </div>
+            <div class="options-grid">
+                <div class="option-card">
+                    <div class="option-icon">🛠️</div>
+                    <h3>Professional Installation</h3>
+                    <p>Let certified installers handle the complete setup and integration of your system with MicroGrid's VPP network.</p>
+                    <ul>
+                        <li>Expert installation and configuration</li>
+                        <li>Comprehensive system testing</li>
+                        <li>Ongoing technical support</li>
+                        <li>Warranty and maintenance</li>
+                    </ul>
+                    <a href="installer-registration.html" class="option-btn">Find an Installer</a>
+                </div>
+                <div class="option-card">
+                    <div class="option-icon">🔧</div>
+                    <h3>DIY Connection</h3>
+                    <p>Connect your existing compatible inverter system yourself with our step-by-step guidance and support.</p>
+                    <ul>
+                        <li>Self-service setup process</li>
+                        <li>Detailed setup guides</li>
+                        <li>Remote technical assistance</li>
+                        <li>No installation fees</li>
+                    </ul>
+                    <a href="diy-registration.html" class="option-btn">Connect Your System</a>
                 </div>
             </div>
         </div>
@@ -1312,7 +1450,8 @@
             <div class="cta-bar-text">Ready to activate your smart battery?</div>
             <div class="cta-bar-buttons">
                 <a href="https://apps.apple.com/us/app/dgrid/id6747276150" class="cta-bar-primary">Download Free App</a>
-                <a href="installer-registration.html" class="cta-bar-secondary">Connect Your Inverter</a>
+                <a href="diy-registration.html" class="cta-bar-secondary">DIY Connection</a>
+                <a href="installer-registration.html" class="cta-bar-secondary">Find Installer</a>
             </div>
         </div>
     </div>
