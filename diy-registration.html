@@ -301,18 +301,13 @@
                         <label for="inverterManufacturer">Inverter Manufacturer *</label>
                         <select id="inverterManufacturer" name="inverterManufacturer" required>
                             <option value="">Select Manufacturer</option>
-                            <option value="solaredge">SolarEdge</option>
-                            <option value="enphase">Enphase</option>
-                            <option value="sma">SMA</option>
-                            <option value="fronius">Fronius</option>
-                            <option value="tesla">Tesla Powerwall</option>
-                            <option value="other">Other</option>
+                            <option value="Linoitech">Other</option>
                         </select>
                     </div>
 
                     <div class="form-group full-width">
                         <label for="inverterModel">Inverter Model *</label>
-                        <input type="text" id="inverterModel" name="inverterModel" placeholder="e.g., SolarEdge SE6000H, Enphase IQ7+" required>
+                        <input type="text" id="inverterModel" name="inverterModel" placeholder="e.g., Linoitech SE6000H, Enphase IQ7+" required>
                     </div>
 
                     <div class="form-group full-width">
@@ -383,7 +378,7 @@
                 <div class="requirement-card">
                     <span class="requirement-icon">🔌</span>
                     <h3>Compatible Inverter</h3>
-                    <p>Your inverter must be from a supported manufacturer (SolarEdge, Enphase, SMA, Fronius, Tesla, or others).</p>
+                    <p>Your inverter must be from a supported manufacturer (Linoitech).</p>
                 </div>
                 <div class="requirement-card">
                     <span class="requirement-icon">🌐</span>
@@ -423,7 +418,7 @@
                     <p>Our team is here to help you connect your system successfully</p>
                 </div>
                 <div class="help-buttons">
-                    <a href="onboarding/solaredge.html" class="help-btn">View Setup Guides</a>
+                    <a href="onboarding/linoitech.html" class="help-btn">View Setup Guides</a>
                     <a href="mailto:support@microgrid.com" class="help-btn secondary">Contact Support</a>
                     <a href="installer-registration.html" class="help-btn secondary">Find an Installer</a>
                 </div>
@@ -483,7 +478,7 @@
             
             // Set placeholder based on manufacturer
             const placeholders = {
-                'solaredge': 'e.g., SolarEdge SE6000H, SE7600H, SE10000H',
+                'Linoitech': 'e.g., Linoitech SE6000H, SE7600H, SE10000H',
                 'enphase': 'e.g., Enphase IQ7+, IQ8+, IQ10',
                 'sma': 'e.g., SMA Sunny Boy, Sunny Tripower',
                 'fronius': 'e.g., Fronius Primo, Symo, Eco',
