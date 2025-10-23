@@ -956,6 +956,125 @@
         .inverter-list a:hover {
             color: #0066CC;
         }
+
+        /* Inverter Logo Banner Styles */
+        .inverter-banner {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            padding: 60px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .inverter-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -50%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .banner-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .banner-header h2 {
+            color: #1e293b;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .banner-header p {
+            color: #64748b;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .logo-carousel {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            mask: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            -webkit-mask: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+
+        .logo-track {
+            display: flex;
+            width: calc(200px * 12); /* 6 logos * 2 for seamless loop */
+            animation: scroll 20s linear infinite;
+        }
+
+        .logo-item {
+            flex: 0 0 200px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .logo-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo-item img {
+            max-width: 120px;
+            max-height: 60px;
+            object-fit: contain;
+        }
+
+        .logo-placeholder {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #059669;
+            text-align: center;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-200px * 6 - 120px)); }
+        }
+
+        .logo-track:hover {
+            animation-play-state: paused;
+        }
+
+        @media (max-width: 768px) {
+            .banner-header h2 {
+                font-size: 2rem;
+            }
+            
+            .logo-item {
+                flex: 0 0 150px;
+                height: 80px;
+                margin: 0 10px;
+            }
+            
+            .logo-track {
+                width: calc(150px * 12);
+            }
+            
+            @keyframes scroll {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(calc(-150px * 6 - 60px)); }
+            }
+        }
     </style>
 </head>
 <body>
@@ -985,6 +1104,58 @@
                         Start Free — DYI Connect Your Battery Today
                     </a>
                     <a href="#how-it-works" class="btn-secondary">Learn How It Works</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Supported Inverters Banner -->
+    <section class="inverter-banner">
+        <div class="container">
+            <div class="banner-header">
+                <h2>Compatible with Leading Inverter Brands</h2>
+                <p>Connect your existing system from any of these trusted manufacturers</p>
+            </div>
+        </div>
+        <div class="logo-carousel">
+            <div class="logo-track">
+                <!-- First set of logos -->
+                <div class="logo-item">
+                    <div class="logo-placeholder">Enphase</div>
+                </div>
+                <div class="logo-item">
+                    <div class="logo-placeholder">SolarEdge</div>
+                </div>
+                <div class="logo-item">
+                    <div class="logo-placeholder">Sol-Ark</div>
+                </div>
+                <div class="logo-item">
+                    <div class="logo-placeholder">EG4</div>
+                </div>
+                <div class="logo-item">
+                    <div class="logo-placeholder">Franklin</div>
+                </div>
+                <div class="logo-item">
+                    <div class="logo-placeholder">Liniotech</div>
+                </div>
+                <!-- Duplicate set for seamless loop -->
+                <div class="logo-item">
+                    <div class="logo-placeholder">Enphase</div>
+                </div>
+                <div class="logo-item">
+                    <div class="logo-placeholder">SolarEdge</div>
+                </div>
+                <div class="logo-item">
+                    <div class="logo-placeholder">Sol-Ark</div>
+                </div>
+                <div class="logo-item">
+                    <div class="logo-placeholder">EG4</div>
+                </div>
+                <div class="logo-item">
+                    <div class="logo-placeholder">Franklin</div>
+                </div>
+                <div class="logo-item">
+                    <div class="logo-placeholder">Liniotech</div>
                 </div>
             </div>
         </div>
