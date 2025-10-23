@@ -266,7 +266,7 @@
             <div class="form-container">
                 <div class="section-header">
                     <h2>DIY System Registration</h2>
-                    <p>Complete the form below to connect your existing inverter system to MicroGrid's VPP network. Make sure you have your inverter's web service URL, username, and password ready. Franklin and EG4 inverters also require the serial number.</p>
+                    <p>Complete the form below to connect your existing inverter system to MicroGrid's VPP network. You'll need your inverter's web service credentials (different from consumer app logins) - contact your installer for the web service username and password. Franklin and EG4 inverters also require the serial number.</p>
                 </div>
 
                 <form id="diyForm" action="#" method="POST">
@@ -304,12 +304,20 @@
                         <label for="inverterManufacturer">Inverter Manufacturer *</label>
                         <select id="inverterManufacturer" name="inverterManufacturer" required>
                             <option value="">Select Manufacturer</option>
+                            <option value="Enphase">Enphase</option>
+                            <option value="SolarEdge">SolarEdge</option>
                             <option value="Sol-Ark">Sol-Ark</option>
                             <option value="EG4">EG4</option>
                             <option value="Franklin">Franklin</option>
                             <option value="Liniotech">Liniotech</option>
                             <option value="Other">Other</option>
                         </select>
+                    </div>
+
+                    <div class="form-group full-width" id="otherManufacturerGroup" style="display: none;">
+                        <label for="otherManufacturer">Please specify manufacturer *</label>
+                        <input type="text" id="otherManufacturer" name="otherManufacturer" placeholder="Enter manufacturer name">
+                        <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Please provide the name of your inverter manufacturer</small>
                     </div>
 
                     <div class="form-group full-width">
@@ -319,12 +327,14 @@
 
                     <div class="form-grid">
                         <div class="form-group">
-                            <label for="username">Inverter Username *</label>
-                            <input type="text" id="username" name="username" placeholder="Enter inverter username" required>
+                            <label for="username">Inverter Web Service Username *</label>
+                            <input type="text" id="username" name="username" placeholder="Web service username (ask installer)" required>
+                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">This is different from your consumer app login. Contact your installer for these credentials.</small>
                         </div>
                         <div class="form-group">
-                            <label for="password">Inverter Password *</label>
-                            <input type="password" id="password" name="password" placeholder="Enter inverter password" required>
+                            <label for="password">Inverter Web Service Password *</label>
+                            <input type="password" id="password" name="password" placeholder="Web service password (ask installer)" required>
+                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">This is different from your consumer app login. Contact your installer for these credentials.</small>
                         </div>
                     </div>
 
@@ -399,7 +409,7 @@
                 <div class="requirement-card">
                     <span class="requirement-icon">📱</span>
                     <h3>Mobile App</h3>
-                    <p>Download the MicroVPP dGrid app from the App Store to complete the connection process.</p>
+                    <p>Download the MicroVPP™ dGrid app from the App Store to complete the connection process.</p>
                 </div>
                 <div class="requirement-card">
                     <span class="requirement-icon">🔋</span>
@@ -409,7 +419,7 @@
                 <div class="requirement-card">
                     <span class="requirement-icon">📊</span>
                     <h3>System Information</h3>
-                    <p>Basic details about your system including model numbers, capacity, installation date, and inverter credentials (username/password required for all manufacturers, serial number for Franklin and EG4).</p>
+                    <p>Basic details about your system including model numbers, capacity, installation date, and inverter web service credentials. Note: These are different from your consumer app logins - contact your installer for web service username/password.</p>
                 </div>
                 <div class="requirement-card">
                     <span class="requirement-icon">⚡</span>
@@ -454,6 +464,8 @@
             const manufacturer = this.value;
             const serialNumberGroup = document.getElementById('serialNumberGroup');
             const serialNumberInput = document.getElementById('serialNumber');
+            const otherManufacturerGroup = document.getElementById('otherManufacturerGroup');
+            const otherManufacturerInput = document.getElementById('otherManufacturer');
             
             // Show serial number field for Franklin and EG4
             if (manufacturer === 'Franklin' || manufacturer === 'EG4') {
@@ -463,6 +475,16 @@
                 serialNumberGroup.style.display = 'none';
                 serialNumberInput.required = false;
                 serialNumberInput.value = ''; // Clear the field when hidden
+            }
+            
+            // Show other manufacturer field when "Other" is selected
+            if (manufacturer === 'Other') {
+                otherManufacturerGroup.style.display = 'block';
+                otherManufacturerInput.required = true;
+            } else {
+                otherManufacturerGroup.style.display = 'none';
+                otherManufacturerInput.required = false;
+                otherManufacturerInput.value = ''; // Clear the field when hidden
             }
         });
 
@@ -492,9 +514,11 @@
                 
                 // Reset form
                 this.reset();
-                // Hide serial number field after reset
+                // Hide conditional fields after reset
                 document.getElementById('serialNumberGroup').style.display = 'none';
                 document.getElementById('serialNumber').required = false;
+                document.getElementById('otherManufacturerGroup').style.display = 'none';
+                document.getElementById('otherManufacturer').required = false;
             } else {
                 alert('Please fill in all required fields.');
             }
