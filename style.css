@@ -528,7 +528,10 @@ html {
         gap: 0.4rem;
     }
 
-    .cta-bar-primary,
+    .cta-bar-primary {
+        display: none;
+    }
+
     .cta-bar-secondary {
         width: 100%;
         flex: none;
