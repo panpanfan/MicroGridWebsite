@@ -493,12 +493,12 @@ html {
     .cta-bar-content {
         flex-direction: column;
         text-align: center;
-        gap: 0.75rem;
+        gap: 0.5rem;
     }
 
     .cta-bar-text {
-        font-size: 1rem;
-        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+        margin-bottom: 0.25rem;
     }
 
     .cta-bar-buttons {
@@ -510,13 +510,14 @@ html {
     .cta-bar-primary,
     .cta-bar-secondary {
         flex: 1;
-        min-width: 140px;
-        padding: 1rem;
-        font-size: 0.9rem;
+        min-width: 120px;
+        min-height: 36px;
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
     }
 
     .sticky-cta-bar {
-        padding: 1rem 0.75rem;
+        padding: 0.75rem;
     }
 }
 
@@ -524,12 +525,20 @@ html {
     .cta-bar-buttons {
         flex-direction: column;
         width: 100%;
+        gap: 0.4rem;
     }
 
     .cta-bar-primary,
     .cta-bar-secondary {
         width: 100%;
         flex: none;
+        min-height: 32px;
+        padding: 0.5rem 0.8rem;
+        font-size: 0.8rem;
+    }
+
+    .cta-bar-text {
+        font-size: 0.9rem;
     }
 }
 
@@ -540,12 +549,12 @@ body {
 
 @media (max-width: 768px) {
     body {
-        padding-bottom: 140px;
+        padding-bottom: 110px;
     }
 }
 
 @media (max-width: 480px) {
     body {
-        padding-bottom: 180px;
+        padding-bottom: 120px;
     }
 }
