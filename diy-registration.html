@@ -459,6 +459,10 @@
     </div>
 
     <script>
+        // API Configuration
+        const API_BASE_URL = 'http://localhost:8000';
+        const REGISTER_ENDPOINT = '/auth/signup';
+
         // Handle manufacturer-specific field visibility
         document.getElementById('inverterManufacturer').addEventListener('change', function() {
             const manufacturer = this.value;
@@ -488,6 +492,155 @@
             }
         });
 
+        // Generate a unique inverter ID
+        function generateInverterId() {
+            return 'INV-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        }
+
+        // Map form data to API payload
+        function mapFormToPayload(formData) {
+            const manufacturer = formData.get('inverterManufacturer');
+            const otherManufacturer = formData.get('otherManufacturer');
+            const inverterId = generateInverterId();
+            
+            // Determine the inverter type (use otherManufacturer if "Other" is selected)
+            const inverterManufacturer = manufacturer === 'Other' && otherManufacturer 
+                ? otherManufacturer 
+                : manufacturer;
+
+            // Build the info object with all additional user and system information
+            const info = {
+                contact: {
+                    email: formData.get('email'),
+                    phone: formData.get('phone') || null
+                },
+                location: {
+                    address: formData.get('address') || null,
+                    city: formData.get('city'),
+                    state: formData.get('state')
+                },
+                system: {
+                    battery_capacity_kwh: formData.get('batteryCapacity') ? parseFloat(formData.get('batteryCapacity')) : null,
+                    installation_date: formData.get('installationDate') || null,
+                    utility_company: formData.get('utilityCompany') || null,
+                    serial_number: formData.get('serialNumber') || null
+                },
+                registration: {
+                    vpp_participation: formData.get('vppParticipation') === 'on',
+                    marketing_consent: formData.get('marketing') === 'on',
+                    terms_accepted: formData.get('terms') === 'on',
+                    registration_date: new Date().toISOString(),
+                    registration_source: 'diy-web-form'
+                },
+                notes: formData.get('additionalNotes') || null
+            };
+
+            // Build the API payload
+            const payload = {
+                entity_type: "inverter",
+                email: formData.get('email'),
+                phone_number: formData.get('phone') || null,
+                full_address: formData.get('address') || null,
+                city: formData.get('city') || null,
+                state: formData.get('state') || null,
+                zip: formData.get('zip') || null,
+                country: "US",
+                latitude: null,
+                longitude: null,
+                timezone: null,
+                locale: "en-US",
+                inverter_id: inverterId,
+                inverter_type: "hybrid_inverter",
+                inverter_manufacturer: inverterManufacturer,
+                inverter_serial_number: formData.get('serialNumber'),
+                inverter_monitoring_id: null, // Web service username
+                inverter_monitoring_token: null, // Web service password
+                inverter_monitoring_url: null,
+                inverter_monitoring_api_key: formData.get('username'), // Using username as API key
+                inverter_monitoring_api_secret: formData.get('password'), // Using password as API secret
+                inverter_monitoring_api_url: null,
+                inverter_monitoring_api_version: null,
+                info: info,
+                site_id: null, // Let the API generate a site_id
+                site_type: "residential", // Default site type for DIY registrations
+                installation_date: formData.get('installationDate') || null,
+            };
+
+            return payload;
+        }
+
+        // Submit form to API
+        async function submitRegistration(payload) {
+            const submitBtn = document.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            
+            try {
+                // Show loading state
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Connecting Your System...';
+                submitBtn.style.opacity = '0.7';
+
+                const response = await fetch(API_BASE_URL + REGISTER_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => null);
+                    throw new Error(
+                        errorData?.detail || 
+                        `Registration failed with status: ${response.status}`
+                    );
+                }
+
+                const result = await response.json();
+                console.log('Registration successful:', result);
+
+                // Show success message
+                alert(
+                    '🎉 Success! Your system has been connected to MicroGrid\'s VPP network!\n\n' +
+                    'What\'s next:\n' +
+                    '1. Download the MicroVPP™ dGrid app from the App Store\n' +
+                    '2. Sign in with your email: ' + payload.info.contact.email + '\n' +
+                    '3. Start monitoring your system and earning from VPP programs\n\n' +
+                    'We\'ve sent a confirmation email with your next steps.'
+                );
+
+                // Reset form
+                document.getElementById('diyForm').reset();
+                
+                // Hide conditional fields after reset
+                document.getElementById('serialNumberGroup').style.display = 'none';
+                document.getElementById('serialNumber').required = false;
+                document.getElementById('otherManufacturerGroup').style.display = 'none';
+                document.getElementById('otherManufacturer').required = false;
+
+                // Optionally redirect to app store or success page
+                // window.location.href = 'https://apps.apple.com/us/app/dgrid/id6747276150';
+
+            } catch (error) {
+                console.error('Registration error:', error);
+                
+                // Show error message
+                alert(
+                    '❌ Registration Error\n\n' +
+                    'We encountered an issue while connecting your system:\n' +
+                    error.message + '\n\n' +
+                    'Please try again or contact support@microvpp.com for assistance.'
+                );
+            } finally {
+                // Restore button state
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+                submitBtn.style.opacity = '1';
+            }
+        }
+
+        // Form submit handler
         document.getElementById('diyForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -506,19 +659,17 @@
             });
             
             if (isValid) {
-                // Show success message
-                alert('Thank you for registering your system! We will review your information and contact you within 24-48 hours to complete the connection process.');
+                // Convert form to FormData
+                const formData = new FormData(this);
                 
-                // In a real implementation, you would send the form data to your server
-                console.log('Form data:', new FormData(this));
+                // Map form data to API payload
+                const payload = mapFormToPayload(formData);
                 
-                // Reset form
-                this.reset();
-                // Hide conditional fields after reset
-                document.getElementById('serialNumberGroup').style.display = 'none';
-                document.getElementById('serialNumber').required = false;
-                document.getElementById('otherManufacturerGroup').style.display = 'none';
-                document.getElementById('otherManufacturer').required = false;
+                // Log payload for debugging
+                console.log('Sending registration payload:', payload);
+                
+                // Submit to API
+                submitRegistration(payload);
             } else {
                 alert('Please fill in all required fields.');
             }
