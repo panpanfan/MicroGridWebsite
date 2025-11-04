@@ -470,7 +470,7 @@
 
     <script>
         // API Configuration
-        const API_BASE_URL = 'https://3dbhitxwoc.execute-api.us-east-2.amazonaws.com/dev/';
+        const API_BASE_URL = 'http://localhost:8000';
         const REGISTER_ENDPOINT = '/auth/signup';
 
         // Handle manufacturer-specific field visibility
@@ -585,17 +585,15 @@
                 longitude: null,
                 timezone: null,
                 locale: "en-US",
-                inverter_id: inverterId,
-                inverter_type: "hybrid_inverter",
+                inverter_inverter_id: inverterId,
+                inverter_inverter_type: "hybrid_inverter",
                 inverter_manufacturer: inverterManufacturer,
                 inverter_serial_number: formData.get('serialNumber'),
                 inverter_monitoring_id: null, // Web service username
                 inverter_monitoring_token: null, // Web service password
                 inverter_monitoring_url: null,
-                inverter_monitoring_api_key: formData.get('username'), // Using username as API key
-                inverter_monitoring_api_secret: formData.get('password'), // Using password as API secret
-                inverter_monitoring_api_url: null,
-                inverter_monitoring_api_version: null,
+                inverter_api_key: formData.get('username'), // Using username as API key
+                inverter_api_secret: formData.get('password'), // Using password as API secret
                 info: info,
                 site_id: null, // Let the API generate a site_id
                 site_type: "residential", // Default site type for DIY registrations

@@ -12,7 +12,8 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MicroGrid - Join the Future of Energy</title>   Connect your home battery to our Virtual Power Plant network through our MicroVPP™ app. Earn money while supporting your community's energy needs.
+    <title>MicroVPP - Your Home Battery, Smarter</title>
+    <meta name="description" content="MicroVPP uses AI to cut your power bills and generate new cash flow from your home battery. California-first. Active in CA & TX, expanding nationwide." />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -193,6 +194,38 @@
             background: rgba(255, 255, 255, 0.2);
             border-color: rgba(255, 255, 255, 0.5);
             transform: translateY(-2px);
+        }
+
+        /* NEM 3.0 Section */
+        .nem-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+
+        .nem-section .section-header h2 {
+            color: #166534;
+        }
+
+        .nem-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .nem-highlight {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 2px solid #86efac;
+        }
+
+        .nem-highlight h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #166534;
+            margin-bottom: 0.5rem;
         }
 
         /* What is VPP Section */
@@ -838,6 +871,61 @@
             scroll-behavior: smooth;
         }
 
+        /* Join Movement Section */
+        .join-movement {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .movement-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .movement-step {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 15px;
+            background: #F8FAFC;
+            transition: all 0.3s ease;
+        }
+
+        .movement-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .movement-step h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .movement-step p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* New Section (MicroVPP Platform) */
+        .new-section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        /* Why Choose MicroGrid Section */
+        .why-choose-microgrid {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+
         /* Connection Options Section */
         .connection-options {
             padding: 80px 0;
@@ -1112,11 +1200,11 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content fade-in-up">
-                <h1>Join the Future of Energy</h1>
-                <p>Connect your home battery to our Virtual Power Plant network. Earn money while supporting your community's energy needs.</p>
+                <h1>Your home battery could be earning more.</h1>
+                <p>You already invested in clean energy — now let AI make it pay off. MicroVPP uses smart optimization to cut your bills and generate up to $1–2K in new annual cash flow.</p>
                 <div class="hero-buttons">
                     <a href="diy-registration.html" class="btn-primary">
-                        Start Free — DYI Connect Your Battery Today
+                        Join Waitlist — California First
                     </a>
                     <a href="#how-it-works" class="btn-secondary">Learn How It Works</a>
                 </div>
@@ -1176,12 +1264,32 @@
         </div>
     </section>
 
+    <!-- NEM 3.0 California Section -->
+    <section class="nem-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>NEM 3.0 changed the rules. We help you win under the new ones.</h2>
+                <p style="color: #166534; max-width: 800px; margin: 0 auto;">Under California's new NEM 3.0 policy, exported solar power earns less than before. To protect your ROI, your battery must charge and discharge at the right times. MicroVPP's AI predicts when rates spike and automatically schedules your battery to sell power back when it's most valuable. Instead of losing income, you gain it — turning policy change into profit.</p>
+            </div>
+            <div class="nem-highlights">
+                <div class="nem-highlight">
+                    <h4>📍 Now enrolling California homeowners</h4>
+                    <p style="color: #666; font-size: 0.95rem;">Join the growing network of smart battery owners maximizing their savings under NEM 3.0.</p>
+                </div>
+                <div class="nem-highlight">
+                    <h4>⚙️ Texas and other states coming soon</h4>
+                    <p style="color: #666; font-size: 0.95rem;">Pilots are under way with nationwide expansion planned for 2026.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- New Section from Presentation1.pdf -->
     <section class="new-section">
         <div class="container">
             <div class="section-header">
                 <h2>Meet MicroVPP™: The Smart Platform for Smarter Energy</h2>
-                <p>MicroVPP™ is a comprehensive platform with a free mobile app that turns your existing battery system into a virtual power plant, putting you in control while contributing to a more sustainable energy future.</p>
+                <p>You bought a smart battery, but it isn't acting smart. MicroVPP™ gives your battery a brain. Our AI learns your home's usage patterns, forecasts prices and weather, and controls your battery automatically to maximize savings and earnings — no new hardware needed.</p>
             </div>
             <div class="features-grid">
                 <div class="app-mockup">
@@ -1224,36 +1332,36 @@
     <section class="why-choose-microgrid">
         <div class="container">
             <div class="section-header">
-                <h2>Why Choose MicroGrid?</h2>
+                <h2>Real results from real homes.</h2>
             </div>
             <div class="benefits-grid">
                 <div class="benefit-category">
                     <h3>
                         <span class="benefit-icon">💰</span>
-                        Zero Upfront Cost
+                        Up to $1–2K New Annual Cash Flow
                     </h3>
-                    <p>No investment required to participate in our virtual power plant network. Start saving immediately without any financial barriers.</p>
+                    <p>Generate new revenue by participating in grid services and virtual power plant programs. No investment required — start earning with the battery you already own.</p>
                 </div>
                 <div class="benefit-category">
                     <h3>
-                        <span class="benefit-icon">🔌</span>
-                        Works with Existing Systems
+                        <span class="benefit-icon">📊</span>
+                        20–30% Average Bill Reduction
                     </h3>
-                    <p>Seamlessly integrates with your current battery setup. No need for expensive upgrades or new equipment installations.</p>
+                    <p>Our AI optimization learns your usage patterns and automatically charges and discharges your battery at the optimal times to maximize savings on your electricity bills.</p>
                 </div>
                 <div class="benefit-category">
                     <h3>
                         <span class="benefit-icon">🌍</span>
-                        Supports Grid Resilience
+                        Active in CA & TX
                     </h3>
-                    <p>Contribute to community energy security while advancing clean energy adoption in your region.</p>
+                    <p>Currently serving California (with NEM 3.0 optimization) and Texas homeowners, with nationwide expansion coming in 2026. Join the growing network of smart battery owners.</p>
                 </div>
                 <div class="benefit-category">
                     <h3>
-                        <span class="benefit-icon">⭐</span>
-                        Trusted by Professionals
+                        <span class="benefit-icon">⚡</span>
+                        Works with Your Existing Battery
                     </h3>
-                    <p>Designed for homeowners but backed by installers and energy experts who recommend our technology.</p>
+                    <p>Compatible with most major brands — no new hardware needed. Most users connect their system in under 10 minutes and start seeing results immediately.</p>
                 </div>
             </div>
         </div>
@@ -1263,60 +1371,24 @@
     <section class="join-movement">
         <div class="container">
             <div class="section-header">
-                <h2>Join the MicroGrid Movement Today</h2>
-                <p>Smarter Energy, Smarter Grid.</p>
+                <h2>Simple to start. Powerful behind the scenes.</h2>
+                <p>Get started in three easy steps and let AI do the rest.</p>
             </div>
             <div class="movement-steps">
                 <div class="movement-step">
-                    <div class="step-icon">📱</div>
-                    <h3>Install the App</h3>
-                    <p>Download MicroVPP™ App from the App Store or Google Play (coming soon) and connect to your home battery system in minutes.</p>
+                    <div class="step-icon">🔋</div>
+                    <h3>Connect your battery</h3>
+                    <p>Works with most major brands — link your system in minutes using the MicroVPP™ app.</p>
                 </div>
                 <div class="movement-step">
-                    <div class="step-icon">⚡</div>
-                    <h3>Optimize Your Energy</h3>
-                    <p>Let our smart algorithms maximize your savings by optimizing charging and discharging based on your usage patterns.</p>
+                    <div class="step-icon">🤖</div>
+                    <h3>AI learns and optimizes</h3>
+                    <p>Our AI predicts prices, weather, and demand to run your battery for maximum savings and earnings automatically.</p>
                 </div>
                 <div class="movement-step">
                     <div class="step-icon">💰</div>
-                    <h3>Get Paid</h3>
-                    <p>Earn passive income by allowing your battery to support the grid during peak demand periods.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Connection Options Section -->
-    <section class="connection-options">
-        <div class="container">
-            <div class="section-header">
-                <h2>Choose Your Connection Path</h2>
-                <p>Whether you're a professional installer or a tech-savvy homeowner, we have the right solution for you.</p>
-            </div>
-            <div class="options-grid">
-                <div class="option-card">
-                    <div class="option-icon">🛠️</div>
-                    <h3>Professional Installation</h3>
-                    <p>Let certified installers handle the complete setup and integration of your system with MicroGrid's VPP network.</p>
-                    <ul>
-                        <li>Expert installation and configuration</li>
-                        <li>Comprehensive system testing</li>
-                        <li>Ongoing technical support</li>
-                        <li>Warranty and maintenance</li>
-                    </ul>
-                    <a href="installer-registration.html" class="option-btn">Find an Installer</a>
-                </div>
-                <div class="option-card">
-                    <div class="option-icon">🔧</div>
-                    <h3>DIY Connection</h3>
-                    <p>Connect your existing compatible inverter system yourself with our step-by-step guidance and support.</p>
-                    <ul>
-                        <li>Self-service setup process</li>
-                        <li>Detailed setup guides</li>
-                        <li>Remote technical assistance</li>
-                        <li>No installation fees</li>
-                    </ul>
-                    <a href="diy-registration.html" class="option-btn">Connect Your System</a>
+                    <h3>Save & earn automatically</h3>
+                    <p>See your results in the app while staying in full control of backup power. Earn passive income while supporting the grid.</p>
                 </div>
             </div>
         </div>
@@ -1327,86 +1399,23 @@
         <div class="container">
             <div class="section-header">
                 <h2>How It Works</h2>
-                <p>Getting started with the MicroVPP™ platform is simple. Follow these three easy steps to begin earning money while supporting your community.</p>
+                <p>Getting started with the MicroVPP™ platform is simple. Connect your battery and let AI optimization do the rest.</p>
             </div>
             <div class="steps">
                 <div class="step">
                     <div class="step-number">1</div>
                     <h3>Download & Connect</h3>
-                    <p>Download our MicroVPP™ app and connect your compatible home battery system. Our app will automatically detect your setup and guide you through the connection process.</p>
+                    <p>Download our MicroVPP™ app and connect your compatible home battery system. Our app will automatically detect your setup and guide you through the connection process in minutes.</p>
                 </div>
                 <div class="step">
                     <div class="step-number">2</div>
-                    <h3>Start Earning</h3>
-                    <p>When the grid needs support, your battery automatically shares excess energy. You earn money for every kilowatt-hour contributed to the network.</p>
+                    <h3>AI Optimizes Automatically</h3>
+                    <p>Our AI learns your usage patterns, forecasts energy prices and weather, and automatically controls your battery to maximize savings and earnings. No manual intervention needed.</p>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Benefits Section -->
-    <section id="benefits" class="benefits">
-        <div class="container">
-            <div class="section-header">
-                <h2>Benefits for You and Your Community</h2>
-                <p>MicroGrid creates value for individual homeowners while building a more sustainable energy future for everyone.</p>
-            </div>
-            <div class="benefits-grid">
-                <div class="benefit-category">
-                    <h3>
-                        <span class="benefit-icon">💰</span>
-                        For You
-                    </h3>
-                    <ul class="benefit-list">
-                        <li>
-                            <span class="check-icon">✓</span>
-                            Earn money for sharing excess energy
-                        </li>
-                        <li>
-                            <span class="check-icon">✓</span>
-                            Maintain home backup power security
-                        </li>
-                        <li>
-                            <span class="check-icon">✓</span>
-                            Monitor energy usage and savings in real-time
-                        </li>
-                        <li>
-                            <span class="check-icon">✓</span>
-                            Reduce your overall energy costs
-                        </li>
-                        <li>
-                            <span class="check-icon">✓</span>
-                            Increase the value of your solar investment
-                        </li>
-                    </ul>
-                </div>
-                <div class="benefit-category">
-                    <h3>
-                        <span class="benefit-icon">🌍</span>
-                        For Your Community
-                    </h3>
-                    <ul class="benefit-list">
-                        <li>
-                            <span class="check-icon">✓</span>
-                            Support grid stability during peak demand
-                        </li>
-                        <li>
-                            <span class="check-icon">✓</span>
-                            Reduce reliance on fossil fuel power plants
-                        </li>
-                        <li>
-                            <span class="check-icon">✓</span>
-                            Contribute to a cleaner energy future
-                        </li>
-                        <li>
-                            <span class="check-icon">✓</span>
-                            Help prevent power outages and blackouts
-                        </li>
-                        <li>
-                            <span class="check-icon">✓</span>
-                            Build a more resilient local energy network
-                        </li>
-                    </ul>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Save Money & Earn Income</h3>
+                    <p>Watch your electricity bills drop by 20-30% on average while earning up to $1-2K per year from grid services. You stay in full control of your backup power at all times.</p>
                 </div>
             </div>
         </div>
@@ -1435,7 +1444,7 @@
                         <span class="faq-icon">▼</span>
                     </button>
                     <div class="faq-answer">
-                        Earnings vary based on your battery capacity, local energy rates, and grid demand in your area. Most participants earn between $600-$3000 per year. You can view estimated earnings for your specific setup in the app before enrolling.
+                        Most participants generate up to $1,000-$2,000 in new annual cash flow through grid services and VPP programs, while also seeing 20-30% reductions in their electricity bills. Actual results vary based on your battery capacity, local energy rates, and grid demand in your area. You can view estimated earnings for your specific setup in the app before enrolling.
                     </div>
                 </div>
                 <div class="faq-item">
@@ -1453,7 +1462,7 @@
                         <span class="faq-icon">▼</span>
                     </button>
                     <div class="faq-answer">
-                        MicroVPP™ is currently available in California and Texas, with expansion to additional states planned for 2025. Check the app for real-time availability in your specific utility territory.
+                        MicroVPP™ is currently active in California (with special NEM 3.0 optimization) and Texas. We're now enrolling California homeowners, with Texas pilots under way. Nationwide expansion is planned for 2026. Check the app for real-time availability in your specific utility territory.
                     </div>
                 </div>
                 <div class="faq-item">
@@ -1486,24 +1495,6 @@
                         <li><a href="#how-it-works">How It Works</a></li>
                         <li><a href="#benefits">Benefits</a></li>
                         <li><a href="#faq">FAQ</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Support</h4>
-                    <ul>
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">System Requirements</a></li>
-                        <li><a href="#">Installation Guide</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Company</h4>
-                    <ul>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Careers</a></li>
                     </ul>
                 </div>
             </div>
@@ -1627,9 +1618,10 @@
     <!-- Sticky CTA Bar -->
     <div class="sticky-cta-bar">
         <div class="cta-bar-content">
-            <div class="cta-bar-text">Ready to activate your smart battery?</div>
+            <div class="cta-bar-text">Already have a battery in California? You're ready to earn more.</div>
             <div class="cta-bar-buttons">
-                <a href="diy-registration.html" class="cta-bar-secondary">DIY Connection</a>
+                <a href="diy-registration.html" class="cta-bar-primary">Join Waitlist — California First</a>
+                <a href="https://apps.apple.com/us/app/dgrid/id6747276150" class="cta-bar-secondary">Download App</a>
             </div>
         </div>
     </div>
