@@ -277,7 +277,8 @@
                         </div>
                         <div class="form-group">
                             <label for="phone">Phone Number</label>
-                            <input type="tel" id="phone" name="phone">
+                            <input type="tel" id="phone" name="phone" placeholder="(800) 555-0100 or 8005550100">
+                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">US phone numbers only. Enter 10 digits.</small>
                         </div>
                     </div>
 
@@ -460,7 +461,7 @@
 
     <script>
         // API Configuration
-        const API_BASE_URL = 'http://localhost:8000';
+        const API_BASE_URL = 'https://3dbhitxwoc.execute-api.us-east-2.amazonaws.com/dev/';
         const REGISTER_ENDPOINT = '/auth/signup';
 
         // Handle manufacturer-specific field visibility
@@ -495,6 +496,32 @@
         // Generate a unique inverter ID
         function generateInverterId() {
             return 'INV-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        }
+
+        // Format phone number to E.164 format (required by AWS Cognito)
+        function formatPhoneToE164(phone) {
+            if (!phone) return null;
+            
+            // Remove all non-digit characters
+            const digits = phone.replace(/\D/g, '');
+            
+            // Handle different formats
+            if (digits.length === 10) {
+                // US number without country code: add +1
+                return '+1' + digits;
+            } else if (digits.length === 11 && digits.startsWith('1')) {
+                // US number with country code 1: add +
+                return '+' + digits;
+            } else if (phone.startsWith('+')) {
+                // Already in E.164 format
+                return phone;
+            } else if (digits.length === 11) {
+                // 11 digits, assume US: add +
+                return '+' + digits;
+            }
+            
+            // Default: assume US number and add +1
+            return '+1' + digits;
         }
 
         // Map form data to API payload
@@ -539,7 +566,7 @@
             const payload = {
                 entity_type: "inverter",
                 email: formData.get('email'),
-                phone_number: formData.get('phone') || null,
+                phone_number: formatPhoneToE164(formData.get('phone')),
                 full_address: formData.get('address') || null,
                 city: formData.get('city') || null,
                 state: formData.get('state') || null,
@@ -605,7 +632,7 @@
                     '🎉 Success! Your system has been connected to MicroGrid\'s VPP network!\n\n' +
                     'What\'s next:\n' +
                     '1. Download the MicroVPP™ dGrid app from the App Store\n' +
-                    '2. Sign in with your email: ' + payload.info.contact.email + '\n' +
+                    '2. Sign in with your email: ' + payload.email + '\n' +
                     '3. Start monitoring your system and earning from VPP programs\n\n' +
                     'We\'ve sent a confirmation email with your next steps.'
                 );
