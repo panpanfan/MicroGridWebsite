@@ -18,6 +18,21 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            /* Brand Colors - Emerald Green Theme with Gold Accent */
+            --brand-green: #10B981;
+            --brand-green-dark: #065f46;
+            --brand-green-medium: #059669;
+            --brand-green-darker: #047857;
+            --brand-gold: #F59E0B;
+            
+            /* Emerald Tints */
+            --emerald-50: #ecfdf5;
+            --emerald-100: #d1fae5;
+            --emerald-200: #a7f3d0;
+            --emerald-300: #6ee7b7;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -42,11 +57,13 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             z-index: 1000;
             padding: 1rem 0;
             transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.15);
         }
 
         nav {
@@ -58,6 +75,7 @@
         .logo {
             display: flex;
             align-items: center;
+            text-decoration: none;
         }
 
         .logo img {
@@ -79,31 +97,62 @@
         }
 
         .nav-links a:hover {
-            color: #0066CC;
+            color: #10B981;
+        }
+
+        .header-buttons {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .cta-button {
-            background: linear-gradient(135deg, #f97316, #ea580c);
+            background: linear-gradient(135deg, #10B981, #059669);
             color: white;
-            padding: 0.75rem 1.5rem;
+            padding: 0.5rem 1rem;
             border: none;
-            border-radius: 50px;
+            border-radius: 12px;
             font-weight: 600;
+            font-size: 0.875rem;
             text-decoration: none;
             transition: all 0.3s ease;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+            display: inline-flex;
+            align-items: center;
         }
 
         .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(249, 115, 22, 0.4);
-            background: linear-gradient(135deg, #ea580c, #dc2626);
+            background: linear-gradient(135deg, #059669, #047857);
+        }
+
+        .cta-button-outline {
+            background: transparent;
+            color: var(--brand-green);
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--brand-green);
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .cta-button-outline:hover {
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        @media (max-width: 640px) {
+            .cta-button.hide-mobile {
+                display: none;
+            }
         }
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #3b82f6 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
             color: white;
             padding: 120px 0 80px;
             position: relative;
@@ -120,6 +169,19 @@
             background: url('assets/images/hero_home_solar.jpg') center/cover;
             opacity: 0.15;
             z-index: 1;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.15), transparent 50%),
+                        radial-gradient(circle at bottom left, rgba(245, 158, 11, 0.1), transparent 50%);
+            z-index: 1;
+            pointer-events: none;
         }
 
         .hero-content {
@@ -156,7 +218,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
             color: white;
             padding: 1rem 2rem;
             border: none;
@@ -165,16 +227,16 @@
             font-weight: 600;
             text-decoration: none;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
         }
 
         .btn-primary:hover {
-            background: linear-gradient(135deg, #ea580c 0%, #dc2626 100%);
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(249, 115, 22, 0.4);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
         }
 
         .btn-secondary {
@@ -199,11 +261,11 @@
         /* NEM 3.0 Section */
         .nem-section {
             padding: 80px 0;
-            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            background: white;
         }
 
         .nem-section .section-header h2 {
-            color: #166534;
+            color: #065f46;
         }
 
         .nem-highlights {
@@ -218,13 +280,13 @@
             border-radius: 15px;
             padding: 2rem;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            border: 2px solid #86efac;
+            border: 2px solid #6ee7b7;
         }
 
         .nem-highlight h4 {
             font-size: 1.1rem;
             font-weight: 600;
-            color: #166534;
+            color: #065f46;
             margin-bottom: 0.5rem;
         }
 
@@ -242,7 +304,7 @@
         .section-header h2 {
             font-size: 2.5rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #1e40af 0%, #059669 100%);
+            background: linear-gradient(135deg, #065f46 0%, #10B981 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -316,7 +378,7 @@
         .step-number {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            background: linear-gradient(135deg, #065f46 0%, #10B981 100%);
             color: white;
             border-radius: 50%;
             display: flex;
@@ -325,7 +387,7 @@
             font-size: 1.5rem;
             font-weight: 700;
             margin: 0 auto 1.5rem;
-            box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+            box-shadow: 0 4px 15px rgba(6, 95, 70, 0.3);
         }
 
         .step h3 {
@@ -420,7 +482,7 @@
         .check-icon {
             width: 20px;
             height: 20px;
-            background: #FF6600;
+            background: #F59E0B;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -496,7 +558,7 @@
 
         .dot.active,
         .dot:hover {
-            background-color: #059669;
+            background-color: #10B981;
         }
 
         .feature-list {
@@ -583,9 +645,12 @@
 
         /* Footer */
         footer {
-            background: #1F2937;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             color: white;
             padding: 60px 0 30px;
+            border-top: 1px solid rgba(16, 185, 129, 0.1);
         }
 
         .footer-content {
@@ -680,10 +745,11 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(15px);
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(16, 185, 129, 0.15);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
             padding: 1rem;
             z-index: 1000;
             transition: all 0.3s ease;
@@ -712,7 +778,7 @@
         }
 
         .cta-bar-primary {
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
             color: white;
             padding: 0.75rem 1.5rem;
             border: none;
@@ -721,7 +787,7 @@
             font-weight: 600;
             text-decoration: none;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
             min-height: 44px;
             display: flex;
             align-items: center;
@@ -729,16 +795,16 @@
         }
 
         .cta-bar-primary:hover {
-            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
         }
 
         .cta-bar-secondary {
             background: transparent;
-            color: #059669;
+            color: #10B981;
             padding: 0.75rem 1.5rem;
-            border: 2px solid #059669;
+            border: 2px solid #10B981;
             border-radius: 50px;
             font-size: 1rem;
             font-weight: 600;
@@ -751,7 +817,7 @@
         }
 
         .cta-bar-secondary:hover {
-            background: #059669;
+            background: #10B981;
             color: white;
             transform: translateY(-2px);
         }
@@ -871,6 +937,12 @@
             scroll-behavior: smooth;
         }
 
+        /* Subtle background gradient helper for soft emerald/gold tint */
+        .bg-soft {
+            background-image: radial-gradient(800px 400px at 0% 0%, rgba(16,185,129,0.12), transparent 60%),
+                              radial-gradient(800px 400px at 100% 0%, rgba(245,158,11,0.10), transparent 60%);
+        }
+
         /* Join Movement Section */
         .join-movement {
             padding: 80px 0;
@@ -917,13 +989,13 @@
         /* New Section (MicroVPP Platform) */
         .new-section {
             padding: 80px 0;
-            background: white;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
         }
 
         /* Why Choose MicroGrid Section */
         .why-choose-microgrid {
             padding: 80px 0;
-            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
         }
 
         /* Connection Options Section */
@@ -952,7 +1024,7 @@
         .option-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-            border-color: #059669;
+            border-color: #10B981;
         }
 
         .option-icon {
@@ -991,12 +1063,12 @@
             content: "✓";
             position: absolute;
             left: 0;
-            color: #059669;
+            color: #10B981;
             font-weight: bold;
         }
 
         .option-btn {
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
             color: white;
             padding: 1rem 2rem;
             border: none;
@@ -1006,13 +1078,13 @@
             text-decoration: none;
             transition: all 0.3s ease;
             display: inline-block;
-            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
         }
 
         .option-btn:hover {
-            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
         }
 
         /* Inverter Onboarding Section */
@@ -1051,7 +1123,7 @@
         }
 
         .inverter-list a:hover {
-            color: #0066CC;
+            color: #10B981;
         }
 
         /* Inverter Logo Banner Styles */
@@ -1145,7 +1217,7 @@
         .logo-placeholder {
             font-weight: 600;
             font-size: 1.1rem;
-            color: #059669;
+            color: #10B981;
             text-align: center;
         }
 
@@ -1184,15 +1256,20 @@
     <!-- Header -->
     <header>
         <nav class="container">
-            <div class="logo">
+            <a href="index.html" class="logo">
                 <img src="assets/images/microgrid_logo.png" alt="MicroGrid" height="50">
-            </div>
+            </a>
             <ul class="nav-links">
-                <li><a href="#how-it-works">How It Works</a></li>
-                <li><a href="#benefits">Benefits</a></li>
+                <li><a href="#how-it-works">How it works</a></li>
+                <li><a href="#nem">California (NEM 3.0)</a></li>
+                <li><a href="#impact">Results</a></li>
+                <li><a href="#compat">Compatibility</a></li>
                 <li><a href="#faq">FAQ</a></li>
             </ul>
-            <a href="https://apps.apple.com/us/app/dgrid/id6747276150" class="cta-button">Download App</a>
+            <div class="header-buttons">
+                <a href="diy-registration.html" class="cta-button hide-mobile">Join Waitlist</a>
+                <a href="https://apps.apple.com/us/app/dgrid/id6747276150" class="cta-button-outline">Download App</a>
+            </div>
         </nav>
     </header>
 
@@ -1206,14 +1283,14 @@
                     <a href="diy-registration.html" class="btn-primary">
                         Join Waitlist — California First
                     </a>
-                    <a href="#how-it-works" class="btn-secondary">Learn How It Works</a>
+                    <a href="https://apps.apple.com/us/app/dgrid/id6747276150" class="btn-secondary">Download App</a>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Supported Inverters Banner -->
-    <section class="inverter-banner">
+    <section id="compat" class="inverter-banner">
         <div class="container">
             <div class="banner-header">
                 <h2>Compatible with Leading Inverter Brands</h2>
@@ -1264,27 +1341,7 @@
         </div>
     </section>
 
-    <!-- NEM 3.0 California Section -->
-    <section class="nem-section">
-        <div class="container">
-            <div class="section-header">
-                <h2>NEM 3.0 changed the rules. We help you win under the new ones.</h2>
-                <p style="color: #166534; max-width: 800px; margin: 0 auto;">Under California's new NEM 3.0 policy, exported solar power earns less than before. To protect your ROI, your battery must charge and discharge at the right times. MicroVPP's AI predicts when rates spike and automatically schedules your battery to sell power back when it's most valuable. Instead of losing income, you gain it — turning policy change into profit.</p>
-            </div>
-            <div class="nem-highlights">
-                <div class="nem-highlight">
-                    <h4>📍 Now enrolling California homeowners</h4>
-                    <p style="color: #666; font-size: 0.95rem;">Join the growing network of smart battery owners maximizing their savings under NEM 3.0.</p>
-                </div>
-                <div class="nem-highlight">
-                    <h4>⚙️ Texas and other states coming soon</h4>
-                    <p style="color: #666; font-size: 0.95rem;">Pilots are under way with nationwide expansion planned for 2026.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- New Section from Presentation1.pdf -->
+    <!-- Meet MicroVPP Section -->
     <section class="new-section">
         <div class="container">
             <div class="section-header">
@@ -1308,10 +1365,6 @@
                 </div>
                 <div class="feature-list">
                     <div class="feature-item">
-                        <h4>📊 Free Monitoring</h4>
-                        <p>Know exactly how your home battery is performing—anytime, anywhere. Track energy production, consumption, and savings in real-time.</p>
-                    </div>
-                    <div class="feature-item">
                         <h4>🔋 Battery Optimization</h4>
                         <p>Save on electricity bills with smart charge/discharge strategies tailored to your local utility programs and time-of-use rates.</p>
                     </div>
@@ -1323,13 +1376,37 @@
                         <h4>🔌 Compatible with Leading Inverters</h4>
                         <p>Start with CloudInverter—with more brands coming soon. Our expanding compatibility ensures your system works seamlessly.</p>
                     </div>
+                    <div class="feature-item">
+                        <h4>📊 Free Monitoring</h4>
+                        <p>Know exactly how your home battery is performing—anytime, anywhere. Track energy production, consumption, and savings in real-time.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEM 3.0 California Section -->
+    <section id="nem" class="nem-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>NEM 3.0 changed the rules. We help you win under the new ones.</h2>
+                <p style="color: #065f46; max-width: 800px; margin: 0 auto;">Under California's new NEM 3.0 policy, exported solar power earns less than before. To protect your ROI, your battery must charge and discharge at the right times. MicroVPP's AI predicts when rates spike and automatically schedules your battery to sell power back when it's most valuable. Instead of losing income, you gain it — turning policy change into profit.</p>
+            </div>
+            <div class="nem-highlights">
+                <div class="nem-highlight">
+                    <h4>📍 Now enrolling California homeowners</h4>
+                    <p style="color: #666; font-size: 0.95rem;">Join the growing network of smart battery owners maximizing their savings under NEM 3.0.</p>
+                </div>
+                <div class="nem-highlight">
+                    <h4>⚙️ Texas and other states coming soon</h4>
+                    <p style="color: #666; font-size: 0.95rem;">Pilots are under way with nationwide expansion planned for 2026.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Why Choose MicroGrid Section -->
-    <section class="why-choose-microgrid">
+    <section id="impact" class="why-choose-microgrid">
         <div class="container">
             <div class="section-header">
                 <h2>Real results from real homes.</h2>
@@ -1544,10 +1621,10 @@
         window.addEventListener('scroll', () => {
             const header = document.querySelector('header');
             if (window.scrollY > 100) {
-                header.style.background = 'rgba(255, 255, 255, 0.98)';
-                header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+                header.style.background = 'rgba(255, 255, 255, 0.9)';
+                header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.08)';
             } else {
-                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.background = 'rgba(255, 255, 255, 0.8)';
                 header.style.boxShadow = 'none';
             }
         });
