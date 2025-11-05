@@ -264,8 +264,7 @@
     <!-- Registration Hero Section -->
     <section class="registration-hero">
         <div class="container">
-            <h1>Connect Your System DIY</h1>
-            <p>Already have a compatible inverter? Connect your system to MicroGrid's Virtual Power Plant network and start earning money from your home battery.</p>
+            <h1>Connect Your System</h1>
         </div>
     </section>
 
@@ -275,7 +274,7 @@
             <div class="form-container">
                 <div class="section-header">
                     <h2>DIY System Registration</h2>
-                    <p>Complete the form below to connect your existing inverter system to MicroGrid's VPP network. You'll need your inverter's web service credentials (different from consumer app logins) - contact your installer for the web service username and password. Franklin and EG4 inverters also require the serial number.</p>
+                    <p>Complete the form below to connect your existing system to MicroGrid's VPP network. You'll need your inverter's web service credentials (different from consumer app logins) - contact your installer for the web service username and password. Franklin and EG4 inverters also require the serial number.</p>
                 </div>
 
                 <form id="diyForm" action="#" method="POST">
@@ -383,7 +382,7 @@
                     </div>
 
                     <div class="checkbox-group">
-                        <input type="checkbox" id="vppParticipation" name="vppParticipation" required>
+                        <input type="checkbox" id="vppParticipation" name="vppParticipation">
                         <label for="vppParticipation">I want to participate in Virtual Power Plant programs and earn money from my battery *</label>
                     </div>
 
@@ -398,48 +397,6 @@
         </div>
     </section>
 
-    <!-- Requirements Section -->
-    <section class="requirements-section">
-        <div class="container">
-            <div class="section-header">
-                <h2>What You'll Need</h2>
-                <p>Before connecting your system, make sure you have the following information ready</p>
-            </div>
-            <div class="requirements-grid">
-                <div class="requirement-card">
-                    <span class="requirement-icon">🔌</span>
-                    <h3>Compatible Inverter</h3>
-                    <p>Your inverter must be from a supported manufacturer (Liniotech, EG4, Sol-Ark).</p>
-                </div>
-                <div class="requirement-card">
-                    <span class="requirement-icon">🌐</span>
-                    <h3>Network Access</h3>
-                    <p>Your inverter must be connected to your home network and accessible via its web interface or API.</p>
-                </div>
-                <div class="requirement-card">
-                    <span class="requirement-icon">📱</span>
-                    <h3>Mobile App</h3>
-                    <p>Download the MicroVPP™ dGrid app from the App Store to complete the connection process.</p>
-                </div>
-                <div class="requirement-card">
-                    <span class="requirement-icon">🔋</span>
-                    <h3>Battery System</h3>
-                    <p>A home battery system with sufficient capacity to participate in VPP programs (typically 5+ kWh).</p>
-                </div>
-                <div class="requirement-card">
-                    <span class="requirement-icon">📊</span>
-                    <h3>System Information</h3>
-                    <p>Basic details about your system including model numbers, capacity, installation date, and inverter web service credentials. Note: These are different from your consumer app logins - contact your installer for web service username/password.</p>
-                </div>
-                <div class="requirement-card">
-                    <span class="requirement-icon">⚡</span>
-                    <h3>Utility Connection</h3>
-                    <p>Your system must be grid-connected and in compliance with local utility interconnection requirements.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Help Section -->
     <section class="help-section">
         <div class="container">
@@ -449,9 +406,7 @@
                     <p>Our team is here to help you connect your system successfully</p>
                 </div>
                 <div class="help-buttons">
-                    <a href="onboarding/liniotech.html" class="help-btn">View Setup Guides</a>
                     <a href="mailto:support@microgrid.com" class="help-btn secondary">Contact Support</a>
-                    <a href="installer-registration.html" class="help-btn secondary">Find an Installer</a>
                 </div>
             </div>
         </div>
@@ -470,7 +425,7 @@
 
     <script>
         // API Configuration
-        const API_BASE_URL = 'http://localhost:8000';
+        const API_BASE_URL = 'https://3dbhitxwoc.execute-api.us-east-2.amazonaws.com/dev';
         const REGISTER_ENDPOINT = '/auth/signup';
 
         // Handle manufacturer-specific field visibility
