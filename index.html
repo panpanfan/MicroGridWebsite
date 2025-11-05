@@ -652,56 +652,90 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             color: white;
-            padding: 60px 0 30px;
+            padding: 2.5rem 0;
             border-top: 1px solid rgba(16, 185, 129, 0.1);
         }
 
         .footer-content {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 3rem;
-            margin-bottom: 3rem;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
         }
 
-        .footer-section h4 {
-            font-size: 1.2rem;
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--brand-green);
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+
+        .footer-logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .footer-logo-title {
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        .footer-logo-subtitle {
+            font-size: 0.875rem;
+            color: #9CA3AF;
+        }
+
+        .footer-tagline {
+            font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 1.5rem;
+            color: #e2e8f0;
+            letter-spacing: -0.015em;
         }
 
-        .footer-section ul {
-            list-style: none;
+        .footer-nav {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.875rem;
         }
 
-        .footer-section ul li {
-            margin-bottom: 0.75rem;
-        }
-
-        .footer-section ul li a {
-            color: #D1D5DB;
+        .footer-nav a {
+            color: #9CA3AF;
             text-decoration: none;
             transition: color 0.3s ease;
         }
 
-        .footer-section ul li a:hover {
+        .footer-nav a:hover {
             color: white;
         }
 
-        .footer-bottom {
-            border-top: 1px solid #374151;
-            padding-top: 2rem;
+        .footer-copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 0.75rem;
+            margin-top: 0.75rem;
             text-align: center;
+        }
+
+        .footer-copyright p {
+            font-size: 0.875rem;
             color: #9CA3AF;
+            margin: 0;
         }
 
-        .app-store-badge {
-            display: inline-block;
-            margin-top: 1rem;
-        }
-
-        .app-store-badge img {
-            height: 50px;
-            width: auto;
+        @media (max-width: 768px) {
+            .footer-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
         }
 
         /* Responsive Design */
@@ -890,12 +924,6 @@
             }
         }
 
-        @media (max-width: 480px) {
-            .footer-content {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 2rem;
-            }
-        }
 
         @media (max-width: 480px) {
             .container {
@@ -912,10 +940,6 @@
 
             .section-header h2 {
                 font-size: 2rem;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr;
             }
         }
 
@@ -1535,24 +1559,22 @@
     <footer>
         <div class="container">
             <div class="footer-content">
-                <div class="footer-section">
-                    <h4>MicroGrid</h4>
-                    <p>Building the future of distributed energy through community-powered virtual power plants.</p>
-                    <div class="app-store-badge">
-                        <img src="assets/images/app_store_badge.png" alt="Download on the App Store">
+                <div class="footer-brand">
+                    <span class="footer-logo-icon"></span>
+                    <div class="footer-logo-text">
+                        <div class="footer-logo-title">MicroVPP™</div>
+                        <div class="footer-logo-subtitle">by MicroGrid</div>
                     </div>
                 </div>
-                <div class="footer-section">
-                    <h4>Product</h4>
-                    <ul>
-                        <li><a href="#how-it-works">How It Works</a></li>
-                        <li><a href="#benefits">Benefits</a></li>
-                        <li><a href="#faq">FAQ</a></li>
-                    </ul>
-                </div>
+                <div class="footer-tagline">Smarter homes. Stronger grids.</div>
+                <nav class="footer-nav">
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                    <a href="#">Contact</a>
+                </nav>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 MicroGrid LLC. All rights reserved. Building a sustainable energy future, one home at a time.</p>
+            <div class="footer-copyright">
+                <p>&copy; 2025 MicroGrid LLC. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -1679,4 +1701,5 @@
     </div>
 </body>
 </html>
+
 
