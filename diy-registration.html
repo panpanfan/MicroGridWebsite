@@ -273,6 +273,11 @@
                 </div>
 
                 <form id="diyForm" action="#" method="POST">
+                    <div class="form-group full-width">
+                        <label for="fullName">Full Name or Preferred Name *</label>
+                        <input type="text" id="fullName" name="fullName" placeholder="Enter your name" required>
+                    </div>
+
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="email">Email Address *</label>
@@ -413,7 +418,6 @@
             <div class="cta-bar-text">Ready to activate your smart battery?</div>
             <div class="cta-bar-buttons">
                 <a href="https://apps.apple.com/us/app/dgrid/id6747276150" class="cta-bar-primary">Download Free App</a>
-                <a href="diy-registration.html" class="cta-bar-secondary">Connect Your System</a>
             </div>
         </div>
     </div>
@@ -497,6 +501,7 @@
             // Build the info object with all additional user and system information
             const info = {
                 contact: {
+                    name: formData.get('fullName') || null,
                     email: formData.get('email'),
                     phone: formData.get('phone') || null
                 },
@@ -524,6 +529,7 @@
             // Build the API payload
             const payload = {
                 entity_type: "inverter",
+                username: formData.get('fullName') || null,
                 email: formData.get('email'),
                 phone_number: formatPhoneToE164(formData.get('phone')),
                 full_address: formData.get('address') || null,
