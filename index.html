@@ -261,11 +261,14 @@
         /* NEM 3.0 Section */
         .nem-section {
             padding: 80px 0;
-            background: white;
+            background: linear-gradient(135deg, #f0fdf4 0%, #d1fae5 100%);
         }
 
         .nem-section .section-header h2 {
-            color: #065f46;
+            background: linear-gradient(135deg, #065f46 0%, #10B981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .nem-highlights {
@@ -591,7 +594,7 @@
         /* FAQ Section */
         .faq {
             padding: 80px 0;
-            background: #F8FAFC;
+            background: linear-gradient(135deg, #f8fafc 0%, #f0fdfa 100%);
         }
 
         .faq-list {
@@ -973,7 +976,7 @@
         /* Join Movement Section */
         .join-movement {
             padding: 80px 0;
-            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
         }
 
         .movement-steps {
@@ -1016,13 +1019,13 @@
         /* New Section (MicroVPP Platform) */
         .new-section {
             padding: 80px 0;
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
         }
 
         /* Why Choose MicroGrid Section */
         .why-choose-microgrid {
             padding: 80px 0;
-            background: white;
+            background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
         }
 
         /* Connection Options Section */
@@ -1155,10 +1158,12 @@
 
         /* Inverter Logo Banner Styles */
         .inverter-banner {
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            background: white;
             padding: 60px 0;
             overflow: hidden;
             position: relative;
+            border-top: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
         }
 
         .inverter-banner::before {
@@ -1168,7 +1173,7 @@
             left: -50%;
             width: 200%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            background: linear-gradient(90deg, transparent, rgba(16,185,129,0.08), transparent);
             animation: shimmer 3s infinite;
         }
 
