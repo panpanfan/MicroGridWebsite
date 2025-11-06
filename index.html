@@ -769,28 +769,12 @@
             }
 
             .movement-steps {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 1rem;
+                gap: 2rem;
                 margin-top: 2rem;
             }
 
             .movement-step {
-                padding: 1.25rem;
-            }
-
-            .movement-step h3 {
-                font-size: 1.1rem;
-            }
-
-            .movement-step p {
-                font-size: 0.9rem;
-            }
-
-            .step-number {
-                width: 50px;
-                height: 50px;
-                font-size: 1.3rem;
-                margin-bottom: 1rem;
+                padding: 1.5rem;
             }
 
             .options-grid {
@@ -978,35 +962,27 @@
                 padding: 40px 0 60px;
             }
 
-            .join-movement .container {
-                padding: 0 10px;
-            }
-
             .movement-steps {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 0.5rem;
+                gap: 1.5rem;
                 margin-top: 1.5rem;
             }
 
             .movement-step {
-                padding: 0.75rem 0.5rem;
+                padding: 1.5rem 1rem;
             }
 
             .movement-step h3 {
-                font-size: 0.9rem;
-                margin-bottom: 0.5rem;
+                font-size: 1.1rem;
             }
 
             .movement-step p {
-                font-size: 0.8rem;
-                line-height: 1.4;
+                font-size: 0.95rem;
             }
 
             .step-number {
-                width: 42px;
-                height: 42px;
-                font-size: 1.1rem;
-                margin-bottom: 0.5rem;
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
             }
         }
 
@@ -1045,7 +1021,7 @@
 
         .movement-steps {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 3rem;
             margin-top: 4rem;
         }
