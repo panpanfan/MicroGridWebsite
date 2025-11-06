@@ -732,20 +732,25 @@
         <div class="container">
             <div class="form-container">
                 <div class="section-header">
-                    <h2>DIY System Registration</h2>
-                    <p>Complete the form below to connect your system.</p>
+                    <h2>Activate Your Smart Battery in 2 Minutes</h2>
+                    <p>No installer visit. No cost. Link your account to unlock AI optimization and start earning.</p>
                 </div>
 
                 <form id="diyForm" action="#" method="POST">
+                    
+                    <h2 style="font-size: 1.5rem; color: #059669; margin-bottom: 0.5rem;">Step 1 — Tell Us About Your System</h2>
+                    <p style="color: #6b7280; margin-bottom: 2rem;">This helps us check compatibility and prepare your optimization plan.</p>
+                    
                     <div class="form-group full-width">
                         <label for="fullName">Full Name or Preferred Name *</label>
-                        <input type="text" id="fullName" name="fullName" placeholder="Enter your name" required>
+                        <input type="text" id="fullName" name="fullName" placeholder="Enter your full name or preferred name" required>
                     </div>
 
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="email">Email Address *</label>
-                            <input type="email" id="email" name="email" required>
+                            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">We'll send your setup summary and next steps.</small>
                         </div>
                         <div class="form-group">
                             <label for="phone">Phone Number</label>
@@ -762,7 +767,8 @@
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="city">City *</label>
-                            <input type="text" id="city" name="city" required>
+                            <input type="text" id="city" name="city" placeholder="City" required>
+                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Certain utility rules differ by location.</small>
                         </div>
                         <div class="form-group">
                             <label for="state">State *</label>
@@ -774,9 +780,9 @@
                     </div>
 
                     <div class="form-group full-width">
-                        <label for="inverterManufacturer">Inverter Manufacturer *</label>
+                        <label for="inverterManufacturer">Battery / Inverter Brand *</label>
                         <select id="inverterManufacturer" name="inverterManufacturer" required>
-                            <option value="">Select Manufacturer</option>
+                            <option value="">Select your brand</option>
                             <option value="Enphase">Enphase</option>
                             <option value="SolarEdge">SolarEdge</option>
                             <option value="Sol-Ark">Sol-Ark</option>
@@ -785,6 +791,7 @@
                             <option value="Liniotech">Liniotech</option>
                             <option value="Other">Other</option>
                         </select>
+                        <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">So we can connect to the right data source.</small>
                     </div>
 
                     <div class="form-group full-width" id="otherManufacturerGroup" style="display: none;">
@@ -796,19 +803,6 @@
                     <div class="form-group full-width">
                         <label for="batteryCapacity">Battery Capacity (kWh)</label>
                         <input type="number" id="batteryCapacity" name="batteryCapacity" placeholder="e.g., 13.5" step="0.1">
-                    </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="username">Inverter Web Service Username *</label>
-                            <input type="text" id="username" name="username" placeholder="Web service username (ask installer)" required>
-                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">This is different from your consumer app login. Contact your installer for these credentials.</small>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Inverter Web Service Password *</label>
-                            <input type="password" id="password" name="password" placeholder="Web service password (ask installer)" required>
-                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">This is different from your consumer app login. Contact your installer for these credentials.</small>
-                        </div>
                     </div>
 
                     <div class="form-group full-width" id="serialNumberGroup" style="display: none;">
@@ -836,7 +830,7 @@
                     </div>
 
                     <div class="form-group full-width">
-                        <label for="electricityBills">Electricity Bills (Up to Last 12 Months)</label>
+                        <label for="electricityBills">Upload Recent Electricity Bills (Optional)</label>
                         <div class="file-upload-container">
                             <div class="file-upload-area" id="fileUploadArea">
                                 <div class="upload-icon">📄</div>
@@ -846,12 +840,38 @@
                             </div>
                             <div id="fileList" class="file-list"></div>
                         </div>
-                        <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Optional: Upload your recent electricity bills to help us optimize your savings. More recent bills provide better analysis.</small>
+                        <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Helps our AI estimate your savings faster. You can skip this step.</small>
+                    </div>
+
+                    <hr style="border: none; border-top: 2px solid #e5e7eb; margin: 2.5rem 0;">
+
+                    <h2 style="font-size: 1.5rem; color: #059669; margin-bottom: 0.5rem;">Step 2 — Securely Link Your Account</h2>
+                    <p style="color: #6b7280; margin-bottom: 2rem;">Read-only access. We won't control your system without your consent. You can disconnect anytime.</p>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="username">Web Service Username *</label>
+                            <input type="text" id="username" name="username" placeholder="Inverter portal username" required>
+                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Used only to read performance data. We never share or sell data.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Web Service Password *</label>
+                            <input type="password" id="password" name="password" placeholder="Inverter portal password" required>
+                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Encrypted in transit and at rest. You can change it later.</small>
+                        </div>
                     </div>
 
                     <div class="form-group full-width">
                         <label for="additionalNotes">Additional Notes</label>
                         <textarea id="additionalNotes" name="additionalNotes" placeholder="Any additional information about your system or setup..."></textarea>
+                    </div>
+
+                    <div style="background: #f0fdf4; border: 2px solid #d1fae5; border-radius: 12px; padding: 1.5rem; margin: 2rem 0;">
+                        <p style="margin: 0; line-height: 1.8; color: #047857;">
+                            ✅ Read-only data access<br>
+                            ✅ No hardware changes<br>
+                            ✅ Disconnect anytime in one click
+                        </p>
                     </div>
 
                     <div class="checkbox-group">
@@ -869,7 +889,18 @@
                         <label for="marketing">I would like to receive updates about MicroGrid products and VPP opportunities</label>
                     </div>
 
-                    <button type="submit" class="submit-btn">Connect My System</button>
+                    <button type="submit" class="submit-btn">Activate My System</button>
+                    
+                    <p style="text-align: center; margin-top: 1rem; color: #6b7280; font-size: 0.95rem;">💡 You'll see your first savings estimate within 24 hours.</p>
+
+                    <p style="text-align: center; margin-top: 1rem;">
+                        <a href="mailto:support@microvpp.com" style="color: #059669; text-decoration: none; font-weight: 500;">Need help connecting?</a>
+                    </p>
+
+                    <small style="display: block; text-align: center; margin-top: 1.5rem; color: #6b7280; font-size: 0.875rem; line-height: 1.6;">
+                        By continuing you agree to our <a href="/privacy.html" style="color: #059669;">Privacy Policy</a>.  
+                        We only read system data to generate savings; we never sell personal data.
+                    </small>
                 </form>
             </div>
         </div>
