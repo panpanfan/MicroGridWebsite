@@ -13,8 +13,146 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DIY System Registration - MicroGrid</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Base Styles */
+        :root {
+            --brand-green: #10B981;
+            --brand-green-dark: #065f46;
+            --brand-green-medium: #059669;
+            --brand-green-darker: #047857;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.15);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #10B981;
+        }
+
+        .header-buttons {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .cta-button:hover {
+            background: linear-gradient(135deg, #059669, #047857);
+        }
+
+        .cta-button-outline {
+            background: transparent;
+            color: var(--brand-green);
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--brand-green);
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .cta-button-outline:hover {
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: #6b7280;
+        }
+
         /* Additional styles for DIY registration page */
         .registration-hero {
             background: linear-gradient(135deg, #059669 0%, #047857 100%);
@@ -188,7 +326,7 @@
         }
 
         .help-btn {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
             color: white;
             padding: 1rem 2rem;
             border: none;
@@ -197,23 +335,23 @@
             font-weight: 600;
             text-decoration: none;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
         }
 
         .help-btn:hover {
-            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
         }
 
         .help-btn.secondary {
             background: transparent;
-            color: #1e40af;
-            border: 2px solid #1e40af;
+            color: #059669;
+            border: 2px solid #059669;
         }
 
         .help-btn.secondary:hover {
-            background: #1e40af;
+            background: #059669;
             color: white;
         }
 
@@ -328,6 +466,10 @@
         }
 
         @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
             .registration-hero h1 {
                 font-size: 2rem;
             }
@@ -352,15 +494,223 @@
                 align-items: center;
             }
         }
+
+        @media (max-width: 640px) {
+            .cta-button.hide-mobile {
+                display: none;
+            }
+        }
+
+        /* Sticky CTA Bar */
+        .sticky-cta-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(16, 185, 129, 0.15);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+            padding: 1rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .cta-bar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .cta-bar-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1f2937;
+            flex-shrink: 0;
+        }
+
+        .cta-bar-buttons {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .cta-bar-primary {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cta-bar-primary:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Add padding to body to account for sticky bar */
+        body {
+            padding-bottom: 100px;
+        }
+
+        @media (max-width: 768px) {
+            .cta-bar-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.75rem;
+            }
+
+            .cta-bar-text {
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .cta-bar-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .cta-bar-primary {
+                flex: 1;
+                min-width: 140px;
+                padding: 0.75rem;
+                font-size: 0.9rem;
+            }
+
+            .sticky-cta-bar {
+                padding: 1rem 0.75rem;
+            }
+
+            body {
+                padding-bottom: 140px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cta-bar-primary {
+                width: 100%;
+                padding: 1rem;
+            }
+
+            body {
+                padding-bottom: 160px;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: white;
+            padding: 2.5rem 0;
+            border-top: 1px solid rgba(16, 185, 129, 0.1);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--brand-green);
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+
+        .footer-logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .footer-logo-title {
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        .footer-logo-subtitle {
+            font-size: 0.875rem;
+            color: #9CA3AF;
+        }
+
+        .footer-tagline {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            letter-spacing: -0.015em;
+        }
+
+        .footer-nav {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .footer-nav a {
+            color: #9CA3AF;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-nav a:hover {
+            color: white;
+        }
+
+        .footer-copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 0.75rem;
+            margin-top: 0.75rem;
+            text-align: center;
+        }
+
+        .footer-copyright p {
+            font-size: 0.875rem;
+            color: #9CA3AF;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+        }
     </style>
 </head>
 <body>
     <!-- Header -->
     <header>
         <nav class="container">
-            <div class="logo">
+            <a href="index.html" class="logo">
                 <img src="assets/images/microgrid_logo.png" alt="MicroGrid" height="50">
-            </div>
+            </a>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="index.html#join-movement">How It Works</a></li>
@@ -368,8 +718,12 @@
                 <li><a href="index.html#impact">Results</a></li>
                 <li><a href="index.html#compat">Compatibility</a></li>
                 <li><a href="index.html#faq">FAQ</a></li>
+                <li><a href="about.html">About</a></li>
             </ul>
-            <a href="https://apps.apple.com/us/app/dgrid/id6747276150" class="cta-button">Download App</a>
+            <div class="header-buttons">
+                <a href="diy-registration.html" class="cta-button hide-mobile">Start Free</a>
+                <a href="https://apps.apple.com/us/app/dgrid/id6747276150" class="cta-button-outline">Download App</a>
+            </div>
         </nav>
     </header>
 
@@ -535,6 +889,30 @@
             </div>
         </div>
     </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="footer-logo-icon"></span>
+                    <div class="footer-logo-text">
+                        <div class="footer-logo-title">MicroVPP™</div>
+                        <div class="footer-logo-subtitle">by MicroGrid</div>
+                    </div>
+                </div>
+                <div class="footer-tagline">Smarter homes. Stronger grids.</div>
+                <nav class="footer-nav">
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                    <a href="#">Contact</a>
+                </nav>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; 2025 MicroGrid LLC. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 
     <!-- Sticky CTA Bar -->
     <div class="sticky-cta-bar">
