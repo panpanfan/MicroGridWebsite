@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Use • MicroVPP™</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Brand Colors - Emerald Green Theme with Gold Accent */
+            --brand-green: #10B981;
+            --brand-green-dark: #065f46;
+            --brand-green-medium: #059669;
+            --brand-green-darker: #047857;
+            --brand-gold: #F59E0B;
+            
+            /* Emerald Tints */
+            --emerald-50: #ecfdf5;
+            --emerald-100: #d1fae5;
+            --emerald-200: #a7f3d0;
+            --emerald-300: #6ee7b7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.15);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #10B981;
+        }
+
+        .header-buttons {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .cta-button:hover {
+            background: linear-gradient(135deg, #059669, #047857);
+        }
+
+        .cta-button-outline {
+            background: transparent;
+            color: var(--brand-green);
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--brand-green);
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .cta-button-outline:hover {
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        /* Hero Section */
+        .terms-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: white;
+            padding: 120px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terms-hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.15), transparent 50%),
+                        radial-gradient(circle at bottom left, rgba(245, 158, 11, 0.1), transparent 50%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .terms-hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .terms-hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .terms-hero p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            color: #e2e8f0;
+        }
+
+        /* Main Content */
+        main {
+            background: white;
+            padding: 80px 0;
+        }
+
+        .content-section {
+            max-width: 850px;
+            margin: 0 auto 3rem;
+            padding: 0 24px;
+        }
+
+        .last-updated {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 3rem;
+            font-size: 0.95rem;
+        }
+
+        .content-section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #065f46 0%, #10B981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            margin-top: 2.5rem;
+            line-height: 1.25;
+        }
+
+        .content-section h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #059669;
+            margin-bottom: 0.75rem;
+            margin-top: 2rem;
+        }
+
+        .content-section p {
+            font-size: 1.05rem;
+            color: #555;
+            margin: 1rem 0;
+            line-height: 1.7;
+        }
+
+        .content-section ul,
+        .content-section ol {
+            margin: 1rem 0 1rem 2rem;
+            line-height: 1.8;
+        }
+
+        .content-section li {
+            font-size: 1.05rem;
+            color: #555;
+            margin: 0.5rem 0;
+        }
+
+        .content-section strong {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .content-section a {
+            color: #059669;
+            text-decoration: underline;
+        }
+
+        .content-section a:hover {
+            color: #047857;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, var(--emerald-50) 0%, var(--emerald-100) 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--brand-green);
+            margin: 2rem 0;
+        }
+
+        .highlight-box p {
+            margin: 0;
+            color: #065f46;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: white;
+            padding: 2.5rem 0;
+            border-top: 1px solid rgba(16, 185, 129, 0.1);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--brand-green);
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+
+        .footer-logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .footer-logo-title {
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        .footer-logo-subtitle {
+            font-size: 0.875rem;
+            color: #9CA3AF;
+        }
+
+        .footer-tagline {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            letter-spacing: -0.015em;
+        }
+
+        .footer-nav {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .footer-nav a {
+            color: #9CA3AF;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-nav a:hover {
+            color: white;
+        }
+
+        .footer-copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 0.75rem;
+            margin-top: 0.75rem;
+            text-align: center;
+        }
+
+        .footer-copyright p {
+            font-size: 0.875rem;
+            color: #9CA3AF;
+            margin: 0;
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            color: #333;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                gap: 0;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                padding: 0.75rem 0;
+                border-bottom: 1px solid #f0f0f0;
+            }
+
+            .nav-links li:last-child {
+                border-bottom: none;
+            }
+
+            .terms-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .content-section h2 {
+                font-size: 1.8rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .cta-button.hide-mobile {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <a href="index.html" class="logo">
+                <img src="assets/images/microgrid_logo.png" alt="MicroGrid" height="50">
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#join-movement">How it works</a></li>
+                <li><a href="index.html#nem">California (NEM 3.0)</a></li>
+                <li><a href="index.html#impact">Results</a></li>
+                <li><a href="index.html#compat">Compatibility</a></li>
+                <li><a href="index.html#faq">FAQ</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+            <div class="header-buttons">
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
+                <a href="diy-registration.html" class="cta-button hide-mobile">Start Free</a>
+                <a href="https://apps.apple.com/us/app/dgrid/id6747276150" class="cta-button-outline">Download App</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="terms-hero">
+        <div class="container">
+            <div class="terms-hero-content">
+                <h1>Terms of Use</h1>
+                <p>Please read these terms carefully before using MicroVPP™ services</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <div class="content-section">
+                <p class="last-updated"><strong>Last Updated:</strong> November 7, 2025</p>
+
+                <div class="highlight-box">
+                    <p><strong>Important Notice:</strong> These Terms of Use govern your access to and use of MicroVPP™ services provided by MicroGrid LLC. By accessing or using our services, you agree to be bound by these terms.</p>
+                </div>
+
+                <h2>1. Acceptance of Terms</h2>
+                <p>By registering for, accessing, or using the MicroVPP™ platform, mobile application, website, or any related services (collectively, the "Services"), you agree to be bound by these Terms of Use ("Terms"). If you do not agree to these Terms, you may not access or use the Services.</p>
+                <p>These Terms constitute a legally binding agreement between you ("you," "your," or "User") and MicroGrid LLC ("MicroGrid," "we," "us," or "our").</p>
+
+                <h2>2. Description of Services</h2>
+                <p>MicroVPP™ is a smart energy platform that provides:</p>
+                <ul>
+                    <li><strong>AI-Powered Battery Optimization:</strong> Automated control and optimization of your home battery system to maximize savings and earnings</li>
+                    <li><strong>Virtual Power Plant (VPP) Participation:</strong> Enrollment and participation in utility and grid service programs</li>
+                    <li><strong>Energy Monitoring:</strong> Real-time monitoring of your battery system, solar production, and home energy usage</li>
+                    <li><strong>Financial Tracking:</strong> Analysis and reporting of savings, earnings, and energy costs</li>
+                    <li><strong>Remote Control:</strong> Automated battery charge and discharge scheduling based on AI predictions</li>
+                </ul>
+
+                <h2>3. Eligibility and Account Registration</h2>
+                
+                <h3>3.1 Eligibility Requirements</h3>
+                <p>To use the Services, you must:</p>
+                <ul>
+                    <li>Be at least 18 years of age</li>
+                    <li>Be the owner or authorized user of a compatible home battery system</li>
+                    <li>Have the legal authority to enter into these Terms</li>
+                    <li>Reside in a service area where MicroVPP™ is available</li>
+                    <li>Provide accurate, current, and complete information during registration</li>
+                </ul>
+
+                <h3>3.2 Account Security</h3>
+                <p>You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You agree to:</p>
+                <ul>
+                    <li>Notify us immediately of any unauthorized use of your account</li>
+                    <li>Use a strong, unique password</li>
+                    <li>Not share your account credentials with third parties</li>
+                    <li>Log out of your account after each session</li>
+                </ul>
+
+                <h2>4. User Responsibilities and Conduct</h2>
+                
+                <h3>4.1 System Requirements</h3>
+                <p>You are responsible for:</p>
+                <ul>
+                    <li>Ensuring your battery system is compatible with MicroVPP™ services</li>
+                    <li>Maintaining a reliable internet connection for your battery system</li>
+                    <li>Keeping your battery system firmware and software up to date</li>
+                    <li>Ensuring your battery system is properly installed and maintained according to manufacturer specifications</li>
+                    <li>Complying with all applicable electrical codes and regulations</li>
+                </ul>
+
+                <h3>4.2 Accurate Information</h3>
+                <p>You agree to provide accurate, current, and complete information about your energy system, including:</p>
+                <ul>
+                    <li>Battery capacity and specifications</li>
+                    <li>Inverter manufacturer and model</li>
+                    <li>Solar system details (if applicable)</li>
+                    <li>Utility company and rate plan</li>
+                    <li>Location and address information</li>
+                </ul>
+
+                <h3>4.3 Prohibited Activities</h3>
+                <p>You agree not to:</p>
+                <ul>
+                    <li>Use the Services for any illegal purpose or in violation of any laws</li>
+                    <li>Attempt to gain unauthorized access to our systems or other users' accounts</li>
+                    <li>Interfere with or disrupt the integrity or performance of the Services</li>
+                    <li>Reverse engineer, decompile, or disassemble any aspect of the Services</li>
+                    <li>Use automated scripts or bots to access the Services</li>
+                    <li>Misrepresent your identity or affiliation with any person or entity</li>
+                    <li>Transmit any viruses, malware, or harmful code</li>
+                </ul>
+
+                <h2>5. Battery System Control and Automation</h2>
+                
+                <h3>5.1 Authorization and Consent</h3>
+                <p>By enrolling in MicroVPP™ services, you authorize us to:</p>
+                <ul>
+                    <li>Access your battery system's monitoring data</li>
+                    <li>Send control commands to your battery system to optimize charging and discharging</li>
+                    <li>Participate on your behalf in Virtual Power Plant programs</li>
+                    <li>Share aggregated and anonymized data with utility partners and grid operators</li>
+                </ul>
+
+                <h3>5.2 Backup Power Protection</h3>
+                <p>We implement safeguards to protect your backup power reserves, including:</p>
+                <ul>
+                    <li>Respecting your minimum backup reserve settings</li>
+                    <li>Never discharging below your configured threshold</li>
+                    <li>Automatically disabling optimization during grid outages</li>
+                    <li>Providing manual override controls in the application</li>
+                </ul>
+
+                <h3>5.3 Manual Override</h3>
+                <p>You retain the right to:</p>
+                <ul>
+                    <li>Disable automated control at any time</li>
+                    <li>Adjust your backup reserve levels</li>
+                    <li>Manually control your battery system</li>
+                    <li>Temporarily or permanently opt out of VPP events</li>
+                </ul>
+
+                <h2>6. Virtual Power Plant (VPP) Programs</h2>
+                
+                <h3>6.1 VPP Participation</h3>
+                <p>When you enroll in VPP programs, you agree to:</p>
+                <ul>
+                    <li>Allow your battery to be dispatched during grid events</li>
+                    <li>Receive notifications of upcoming VPP events</li>
+                    <li>Comply with program requirements and performance standards</li>
+                    <li>Allow us to respond to grid events on your behalf</li>
+                </ul>
+
+                <h3>6.2 VPP Compensation</h3>
+                <p>Compensation for VPP participation is subject to:</p>
+                <ul>
+                    <li>Successful completion of dispatched events</li>
+                    <li>Meeting minimum performance requirements</li>
+                    <li>Verification of energy delivery</li>
+                    <li>Program availability and utility partner agreements</li>
+                </ul>
+
+                <h3>6.3 Revenue Sharing</h3>
+                <p>MicroVPP™ operates on an earn-first profit-sharing model:</p>
+                <ul>
+                    <li>You receive earnings before we take any share</li>
+                    <li>We only share in profits after you've earned your baseline</li>
+                    <li>Revenue sharing percentages are disclosed before enrollment</li>
+                    <li>You can view detailed earnings breakdowns in your account</li>
+                </ul>
+
+                <h2>7. Fees and Payment</h2>
+                
+                <h3>7.1 Service Fees</h3>
+                <p>MicroVPP™ services are provided on a freemium model:</p>
+                <ul>
+                    <li><strong>Free Tier:</strong> Basic monitoring and optimization are provided at no cost</li>
+                    <li><strong>Profit Sharing:</strong> We earn only when you earn through VPP participation</li>
+                    <li><strong>Premium Features:</strong> Additional features may be offered for a fee</li>
+                </ul>
+
+                <h3>7.2 Payment Processing</h3>
+                <p>For VPP earnings and any paid features:</p>
+                <ul>
+                    <li>Payments are processed through secure third-party payment processors</li>
+                    <li>You are responsible for providing accurate payment information</li>
+                    <li>Minimum payment thresholds may apply</li>
+                    <li>Tax reporting obligations are your responsibility</li>
+                </ul>
+
+                <h2>8. Data and Privacy</h2>
+                
+                <h3>8.1 Data Collection</h3>
+                <p>We collect data necessary to provide the Services, including:</p>
+                <ul>
+                    <li>Energy production and consumption data</li>
+                    <li>Battery state of charge and performance metrics</li>
+                    <li>System configuration and settings</li>
+                    <li>Location and utility information</li>
+                    <li>Usage patterns and optimization results</li>
+                </ul>
+
+                <h3>8.2 Privacy Policy</h3>
+                <p>Our collection, use, and protection of your personal information is governed by our <a href="privacy.html">Privacy Policy</a>, which is incorporated into these Terms by reference. Please review the Privacy Policy carefully.</p>
+
+                <h3>8.3 Data Security</h3>
+                <p>We implement industry-standard security measures to protect your data, including:</p>
+                <ul>
+                    <li>Encryption of data in transit and at rest</li>
+                    <li>Secure authentication protocols</li>
+                    <li>Regular security audits and updates</li>
+                    <li>Access controls and monitoring</li>
+                </ul>
+
+                <h2>9. Intellectual Property</h2>
+                
+                <h3>9.1 Ownership</h3>
+                <p>All intellectual property rights in the Services, including but not limited to software, algorithms, user interfaces, trademarks, and content, are owned by MicroGrid LLC or our licensors.</p>
+
+                <h3>9.2 License Grant</h3>
+                <p>We grant you a limited, non-exclusive, non-transferable, revocable license to access and use the Services for your personal, non-commercial use, subject to these Terms.</p>
+
+                <h3>9.3 Restrictions</h3>
+                <p>You may not:</p>
+                <ul>
+                    <li>Copy, modify, or create derivative works of the Services</li>
+                    <li>Rent, lease, loan, sell, or distribute the Services</li>
+                    <li>Remove or alter any proprietary notices</li>
+                    <li>Use our trademarks without written permission</li>
+                </ul>
+
+                <h2>10. Disclaimers and Limitations of Liability</h2>
+                
+                <h3>10.1 Service Availability</h3>
+                <p>THE SERVICES ARE PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND. We do not guarantee that the Services will be uninterrupted, error-free, or free from harmful components.</p>
+
+                <h3>10.2 No Guarantee of Savings</h3>
+                <p>While we strive to maximize your savings and earnings, we cannot guarantee specific financial results. Actual savings and earnings depend on many factors beyond our control, including:</p>
+                <ul>
+                    <li>Your energy consumption patterns</li>
+                    <li>Local utility rates and rate structures</li>
+                    <li>Weather conditions and solar production</li>
+                    <li>Grid events and VPP program availability</li>
+                    <li>Battery system performance and degradation</li>
+                </ul>
+
+                <h3>10.3 Battery System Risks</h3>
+                <p>We are not responsible for:</p>
+                <ul>
+                    <li>Battery system failures or malfunctions</li>
+                    <li>Damage to your battery system from normal use</li>
+                    <li>Battery degradation over time</li>
+                    <li>Compatibility issues with your equipment</li>
+                    <li>Installation or maintenance issues</li>
+                </ul>
+
+                <h3>10.4 Limitation of Liability</h3>
+                <p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, MICROGRID SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED TO LOSS OF PROFITS, DATA, USE, OR OTHER INTANGIBLE LOSSES, ARISING OUT OF OR RELATING TO YOUR USE OF THE SERVICES.</p>
+                <p>OUR TOTAL LIABILITY TO YOU FOR ANY CLAIMS ARISING FROM OR RELATING TO THESE TERMS OR THE SERVICES SHALL NOT EXCEED THE AMOUNT YOU PAID TO US IN THE TWELVE MONTHS PRECEDING THE EVENT GIVING RISE TO LIABILITY, OR $100, WHICHEVER IS GREATER.</p>
+
+                <h2>11. Indemnification</h2>
+                <p>You agree to indemnify, defend, and hold harmless MicroGrid LLC, its officers, directors, employees, agents, and affiliates from and against any claims, liabilities, damages, losses, and expenses, including reasonable attorneys' fees, arising out of or in any way connected with:</p>
+                <ul>
+                    <li>Your use of the Services</li>
+                    <li>Your violation of these Terms</li>
+                    <li>Your violation of any rights of another party</li>
+                    <li>Your battery system or installation</li>
+                </ul>
+
+                <h2>12. Termination</h2>
+                
+                <h3>12.1 Termination by You</h3>
+                <p>You may terminate your account at any time by:</p>
+                <ul>
+                    <li>Contacting our support team at <a href="mailto:support@microvpp.com">support@microvpp.com</a></li>
+                    <li>Using the account deletion option in the app settings</li>
+                    <li>Disconnecting your battery system from the platform</li>
+                </ul>
+
+                <h3>12.2 Termination by Us</h3>
+                <p>We may suspend or terminate your access to the Services immediately, without prior notice or liability, for any reason, including but not limited to:</p>
+                <ul>
+                    <li>Breach of these Terms</li>
+                    <li>Fraudulent or illegal activity</li>
+                    <li>Failure to maintain a compatible battery system</li>
+                    <li>Non-payment of fees (if applicable)</li>
+                    <li>Prolonged inactivity</li>
+                </ul>
+
+                <h3>12.3 Effect of Termination</h3>
+                <p>Upon termination:</p>
+                <ul>
+                    <li>Your right to use the Services will immediately cease</li>
+                    <li>We will disconnect from your battery system</li>
+                    <li>Any pending earnings will be paid according to our payment schedule</li>
+                    <li>We will retain data as required by law or our Privacy Policy</li>
+                </ul>
+
+                <h2>13. Changes to Terms</h2>
+                <p>We reserve the right to modify these Terms at any time. We will notify you of material changes by:</p>
+                <ul>
+                    <li>Posting the updated Terms on our website</li>
+                    <li>Sending an email to your registered email address</li>
+                    <li>Displaying a notification in the mobile app</li>
+                </ul>
+                <p>Your continued use of the Services after such modifications constitutes your acceptance of the updated Terms. If you do not agree to the modified Terms, you must stop using the Services.</p>
+
+                <h2>14. Governing Law and Dispute Resolution</h2>
+                
+                <h3>14.1 Governing Law</h3>
+                <p>These Terms shall be governed by and construed in accordance with the laws of the State of California, United States, without regard to its conflict of law provisions.</p>
+
+                <h3>14.2 Arbitration Agreement</h3>
+                <p>Any dispute, claim, or controversy arising out of or relating to these Terms or the Services shall be resolved by binding arbitration administered by the American Arbitration Association (AAA) in accordance with its Commercial Arbitration Rules.</p>
+                <p>The arbitration shall be conducted in California, and judgment on the arbitration award may be entered in any court having jurisdiction.</p>
+
+                <h3>14.3 Class Action Waiver</h3>
+                <p>YOU AND MICROGRID AGREE THAT EACH MAY BRING CLAIMS AGAINST THE OTHER ONLY IN YOUR OR ITS INDIVIDUAL CAPACITY AND NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY PURPORTED CLASS OR REPRESENTATIVE ACTION.</p>
+
+                <h3>14.4 Exceptions</h3>
+                <p>Either party may seek injunctive or other equitable relief in any court of competent jurisdiction to prevent the actual or threatened infringement, misappropriation, or violation of intellectual property rights.</p>
+
+                <h2>15. Miscellaneous</h2>
+                
+                <h3>15.1 Entire Agreement</h3>
+                <p>These Terms, together with our Privacy Policy, constitute the entire agreement between you and MicroGrid regarding the Services and supersede all prior agreements and understandings.</p>
+
+                <h3>15.2 Severability</h3>
+                <p>If any provision of these Terms is found to be invalid or unenforceable, the remaining provisions shall continue in full force and effect.</p>
+
+                <h3>15.3 Waiver</h3>
+                <p>No waiver of any term of these Terms shall be deemed a further or continuing waiver of such term or any other term, and our failure to assert any right or provision under these Terms shall not constitute a waiver of such right or provision.</p>
+
+                <h3>15.4 Assignment</h3>
+                <p>You may not assign or transfer these Terms or your account without our prior written consent. We may assign these Terms without restriction.</p>
+
+                <h3>15.5 Force Majeure</h3>
+                <p>We shall not be liable for any failure or delay in performance due to circumstances beyond our reasonable control, including but not limited to acts of God, natural disasters, war, terrorism, labor disputes, or government actions.</p>
+
+                <h2>16. Contact Information</h2>
+                <p>If you have any questions about these Terms, please contact us:</p>
+                <ul>
+                    <li><strong>Email:</strong> <a href="mailto:legal@microvpp.com">legal@microvpp.com</a></li>
+                    <li><strong>Support:</strong> <a href="mailto:support@microvpp.com">support@microvpp.com</a></li>
+                    <li><strong>Website:</strong> <a href="index.html">www.microvpp.com</a></li>
+                </ul>
+
+                <div class="highlight-box" style="margin-top: 3rem;">
+                    <p><strong>By using MicroVPP™ services, you acknowledge that you have read, understood, and agree to be bound by these Terms of Use.</strong></p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="footer-logo-icon"></span>
+                    <div class="footer-logo-text">
+                        <div class="footer-logo-title">MicroVPP™</div>
+                        <div class="footer-logo-subtitle">by MicroGrid</div>
+                    </div>
+                </div>
+                <div class="footer-tagline">Smarter homes. Stronger grids.</div>
+                <nav class="footer-nav">
+                    <a href="about.html">About</a>
+                    <a href="privacy.html">Privacy</a>
+                    <a href="terms.html">Terms</a>
+                    <a href="mailto:info@microvpp.com">Contact</a>
+                </nav>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; 2025 MicroGrid LLC. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+                this.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('nav')) {
+                    navLinks.classList.remove('active');
+                    mobileMenuBtn.textContent = '☰';
+                }
+            });
+
+            // Close menu when clicking a link
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.classList.remove('active');
+                    mobileMenuBtn.textContent = '☰';
+                });
+            });
+        }
+    </script>
+</body>
+</html>
+
