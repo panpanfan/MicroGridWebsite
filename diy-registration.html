@@ -818,7 +818,7 @@
                     </div>
 
                     <div class="form-group full-width">
-                        <label for="inverterManufacturer">Battery / Inverter Brand *</label>
+                        <label for="inverterManufacturer">Inverter Brand *</label>
                         <select id="inverterManufacturer" name="inverterManufacturer" required>
                             <option value="">Select your brand</option>
                             <option value="Enphase">Enphase</option>
@@ -838,9 +838,17 @@
                         <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Please provide the name of your inverter manufacturer</small>
                     </div>
 
-                    <div class="form-group full-width">
-                        <label for="batteryCapacity">Battery Capacity (kWh)</label>
-                        <input type="number" id="batteryCapacity" name="batteryCapacity" placeholder="e.g., 13.5" step="0.1">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="batteryCapacity">Battery Capacity (kWh) <span id="batteryCapacityRequired" style="display: none; color: #ef4444;">*</span></label>
+                            <input type="number" id="batteryCapacity" name="batteryCapacity" placeholder="e.g., 13.5" step="0.1" min="0">
+                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;" id="batteryCapacityHelpText">Total usable battery storage capacity</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="pvWattage">Solar Panel Capacity (kW) <span id="pvWattageRequired" style="display: none; color: #ef4444;">*</span></label>
+                            <input type="number" id="pvWattage" name="pvWattage" placeholder="e.g., 8.5" step="0.1" min="0">
+                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;" id="pvWattageHelpText">Total solar panel capacity in kilowatts</small>
+                        </div>
                     </div>
 
                     <div class="form-group full-width" id="serialNumberGroup" style="display: none;">
@@ -868,35 +876,63 @@
                     </div>
 
                     <div class="form-group full-width">
-                        <label for="electricityBills">Upload Recent Electricity Bills (Optional)</label>
+                        <label for="electricityBills">Upload Recent Electricity Bills <span id="billsRequiredIndicator" style="display: none; color: #ef4444;">*</span></label>
                         <div class="file-upload-container">
                             <div class="file-upload-area" id="fileUploadArea">
                                 <div class="upload-icon">📄</div>
                                 <p class="upload-text">Click to upload or drag and drop</p>
-                                <p class="upload-subtext">Upload up to 12 files (PDF or images) — more recent bills are better</p>
+                                <p class="upload-subtext" id="billsSubtext">Upload up to 12 files (PDF or images) — more recent bills are better</p>
                                 <input type="file" id="electricityBills" name="electricityBills" accept=".pdf,.jpg,.jpeg,.png" multiple style="display: none;">
                             </div>
                             <div id="fileList" class="file-list"></div>
                         </div>
-                        <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Helps our AI estimate your savings faster. You can skip this step.</small>
+                        <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;" id="billsHelpText">Helps our AI estimate your savings faster. You can skip this step.</small>
                     </div>
 
                     <hr style="border: none; border-top: 2px solid #e5e7eb; margin: 2.5rem 0;">
 
-                    <h2 style="font-size: 1.5rem; color: #059669; margin-bottom: 0.5rem;">Step 2 — Securely Link Your Account</h2>
-                    <p style="color: #6b7280; margin-bottom: 2rem;">Read-only access. We won't control your system without your consent. You can disconnect anytime.</p>
+                    <h2 style="font-size: 1.5rem; color: #059669; margin-bottom: 0.5rem;">Step 2 — Connect or Simulate</h2>
+                    <p style="color: #6b7280; margin-bottom: 1.5rem;">Choose how you'd like to proceed with your system setup.</p>
 
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="username">Web Service Username</label>
-                            <input type="text" id="username" name="username" placeholder="Inverter portal username">
-                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Used only to read performance data. We never share or sell data.</small>
+                    <!-- Connection Mode Toggle -->
+                    <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
+                        <div class="checkbox-group" style="margin-bottom: 0;">
+                            <input type="checkbox" id="simulationMode" name="simulationMode">
+                            <label for="simulationMode" style="font-weight: 600; color: #374151;">
+                                <strong>I don't have my inverter credentials — Run a simulation instead</strong>
+                                <div style="font-weight: 400; font-size: 0.875rem; color: #6b7280; margin-top: 0.25rem; line-height: 1.5;">
+                                    We'll estimate your savings based on your system specifications and utility bills. You can connect your actual system later.
+                                </div>
+                            </label>
                         </div>
-                        <div class="form-group">
-                            <label for="password">Web Service Password</label>
-                            <input type="password" id="password" name="password" placeholder="Inverter portal password">
-                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Encrypted in transit and at rest. You can change it later.</small>
+                    </div>
+
+                    <!-- Direct Connection Section -->
+                    <div id="connectionSection">
+                        <h3 style="font-size: 1.2rem; color: #374151; margin-bottom: 1rem;">Direct System Connection</h3>
+                        <p style="color: #6b7280; margin-bottom: 1.5rem; font-size: 0.95rem;">Read-only access. We won't control your system without your consent. You can disconnect anytime.</p>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="username">Web Service Username</label>
+                                <input type="text" id="username" name="username" placeholder="Inverter portal username">
+                                <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Used only to read performance data. We never share or sell data.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Web Service Password</label>
+                                <input type="password" id="password" name="password" placeholder="Inverter portal password">
+                                <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Encrypted in transit and at rest. You can change it later.</small>
+                            </div>
                         </div>
+                    </div>
+
+                    <!-- Simulation Mode Message -->
+                    <div id="simulationMessage" style="display: none; background: #fffbeb; border: 2px solid #fbbf24; border-radius: 12px; padding: 1.5rem;">
+                        <p style="margin: 0; color: #92400e; font-weight: 600; margin-bottom: 0.5rem;">⚡ Simulation Mode Active</p>
+                        <p style="margin: 0; color: #78350f; font-size: 0.95rem; line-height: 1.6;">
+                            We'll create a savings estimate based on your battery capacity, solar panel size, and utility bills. 
+                            <strong>Make sure to fill in all these fields above.</strong> You can connect your actual system anytime through the app.
+                        </p>
                     </div>
 
                     <div class="form-group full-width">
@@ -904,7 +940,7 @@
                         <textarea id="additionalNotes" name="additionalNotes" placeholder="Any additional information about your system or setup..."></textarea>
                     </div>
 
-                    <div style="background: #f0fdf4; border: 2px solid #d1fae5; border-radius: 12px; padding: 1.5rem; margin: 2rem 0;">
+                    <div id="securityBadge" style="background: #f0fdf4; border: 2px solid #d1fae5; border-radius: 12px; padding: 1.5rem; margin: 2rem 0;">
                         <p style="margin: 0; line-height: 1.8; color: #047857;">
                             ✅ Read-only data access<br>
                             ✅ No hardware changes<br>
@@ -927,9 +963,9 @@
                         <label for="marketing">I would like to receive updates about MicroGrid products and VPP opportunities</label>
                     </div>
 
-                    <button type="submit" class="submit-btn">Activate My System</button>
+                    <button type="submit" class="submit-btn" id="submitBtn">Activate My System</button>
                     
-                    <p style="text-align: center; margin-top: 1rem; color: #6b7280; font-size: 0.95rem;">💡 You'll see your first savings estimate within 24 hours.</p>
+                    <p style="text-align: center; margin-top: 1rem; color: #6b7280; font-size: 0.95rem;" id="submitHelpText">💡 You'll see your first savings estimate within 24 hours.</p>
 
                     <p style="text-align: center; margin-top: 1rem;">
                         <a href="mailto:support@microvpp.com" style="color: #059669; text-decoration: none; font-weight: 500;">Need help connecting?</a>
@@ -1137,6 +1173,76 @@
             return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
         }
 
+         // Simulation mode toggle handler
+        const simulationModeCheckbox = document.getElementById('simulationMode');
+        const connectionSection = document.getElementById('connectionSection');
+        const simulationMessage = document.getElementById('simulationMessage');
+        const securityBadge = document.getElementById('securityBadge');
+        const submitBtn = document.getElementById('submitBtn');
+        const submitHelpText = document.getElementById('submitHelpText');
+        const billsRequiredIndicator = document.getElementById('billsRequiredIndicator');
+        const billsHelpText = document.getElementById('billsHelpText');
+        const billsSubtext = document.getElementById('billsSubtext');
+        const batteryCapacityRequired = document.getElementById('batteryCapacityRequired');
+        const pvWattageRequired = document.getElementById('pvWattageRequired');
+        const batteryCapacityInput = document.getElementById('batteryCapacity');
+        const pvWattageInput = document.getElementById('pvWattage');
+        const batteryCapacityHelpText = document.getElementById('batteryCapacityHelpText');
+        const pvWattageHelpText = document.getElementById('pvWattageHelpText');
+
+        simulationModeCheckbox.addEventListener('change', function() {
+            const isSimulationMode = this.checked;
+            
+            // Toggle sections visibility
+            if (isSimulationMode) {
+                connectionSection.style.display = 'none';
+                simulationMessage.style.display = 'block';
+                securityBadge.style.display = 'none';
+                
+                // Update button text
+                submitBtn.textContent = 'Get My Savings Estimate';
+                submitHelpText.innerHTML = '📊 You\'ll receive a detailed savings simulation within 24 hours.';
+                
+                // Update utility bills help text
+                billsRequiredIndicator.style.display = 'inline';
+                billsHelpText.innerHTML = '<strong style="color: #ef4444;">Required for simulation.</strong> Upload at least one recent electricity bill for accurate estimates.';
+                billsSubtext.innerHTML = 'Required: Upload at least 1 file (PDF or images) — more recent bills provide better estimates';
+                
+                // Make battery capacity and PV wattage mandatory
+                batteryCapacityRequired.style.display = 'inline';
+                pvWattageRequired.style.display = 'inline';
+                batteryCapacityInput.setAttribute('required', 'required');
+                pvWattageInput.setAttribute('required', 'required');
+                batteryCapacityHelpText.innerHTML = '<strong style="color: #ef4444;">Required for simulation.</strong> Total usable battery storage capacity';
+                pvWattageHelpText.innerHTML = '<strong style="color: #ef4444;">Required for simulation.</strong> Total solar panel capacity in kilowatts';
+                
+                // Make credentials optional in simulation mode
+                document.getElementById('username').removeAttribute('required');
+                document.getElementById('password').removeAttribute('required');
+            } else {
+                connectionSection.style.display = 'block';
+                simulationMessage.style.display = 'none';
+                securityBadge.style.display = 'block';
+                
+                // Restore button text
+                submitBtn.textContent = 'Activate My System';
+                submitHelpText.innerHTML = '💡 You\'ll see your first savings estimate within 24 hours.';
+                
+                // Restore utility bills help text
+                billsRequiredIndicator.style.display = 'none';
+                billsHelpText.innerHTML = 'Helps our AI estimate your savings faster. You can skip this step.';
+                billsSubtext.innerHTML = 'Upload up to 12 files (PDF or images) — more recent bills are better';
+                
+                // Make battery capacity and PV wattage optional again
+                batteryCapacityRequired.style.display = 'none';
+                pvWattageRequired.style.display = 'none';
+                batteryCapacityInput.removeAttribute('required');
+                pvWattageInput.removeAttribute('required');
+                batteryCapacityHelpText.innerHTML = 'Total usable battery storage capacity';
+                pvWattageHelpText.innerHTML = 'Total solar panel capacity in kilowatts';
+            }
+        });
+
         // Handle manufacturer-specific field visibility
         document.getElementById('inverterManufacturer').addEventListener('change', function() {
             const manufacturer = this.value;
@@ -1197,11 +1303,12 @@
             return '+1' + digits;
         }
 
-        // Map form data to API payload
+         // Map form data to API payload
         function mapFormToPayload(formData) {
             const manufacturer = formData.get('inverterManufacturer');
             const otherManufacturer = formData.get('otherManufacturer');
             const inverterId = generateInverterId();
+            const isSimulationMode = formData.get('simulationMode') === 'on';
             
             // Determine the inverter type (use otherManufacturer if "Other" is selected)
             const inverterManufacturer = manufacturer === 'Other' && otherManufacturer 
@@ -1222,11 +1329,13 @@
                 },
                 system: {
                     battery_capacity_kwh: formData.get('batteryCapacity') ? parseFloat(formData.get('batteryCapacity')) : null,
+                    pv_wattage_kw: formData.get('pvWattage') ? parseFloat(formData.get('pvWattage')) : null,
                     installation_date: formData.get('installationDate') || null,
                     utility_company: formData.get('utilityCompany') || null,
                     serial_number: formData.get('serialNumber') || null
                 },
                 registration: {
+                    mode: isSimulationMode ? 'simulation' : 'direct_connection',
                     vpp_participation: formData.get('vppParticipation') === 'on',
                     marketing_consent: formData.get('marketing') === 'on',
                     terms_accepted: formData.get('terms') === 'on',
@@ -1313,19 +1422,38 @@
                 const result = await response.json();
                 console.log('Registration successful:', result);
 
-                // Build success message
-                let successMessage = '🎉 Success! Your system has been connected to MicroGrid\'s VPP network!\n\n';
+                 // Build success message based on mode
+                const isSimulationMode = payload.info.registration.mode === 'simulation';
+                let successMessage = '';
                 
-                if (uploadedFiles.length > 0) {
-                    successMessage += `We've received ${uploadedFiles.length} electricity bill file(s) for analysis.\n\n`;
+                if (isSimulationMode) {
+                    successMessage = '🎉 Success! We\'re preparing your savings simulation!\n\n';
+                    
+                    if (uploadedFiles.length > 0) {
+                        successMessage += `We've received ${uploadedFiles.length} electricity bill file(s) for analysis.\n\n`;
+                    }
+                    
+                    successMessage += 
+                        'What happens next:\n' +
+                        '1. Our AI analyzes your utility bills and system specs\n' +
+                        '2. You\'ll receive a detailed savings estimate within 24 hours\n' +
+                        '3. We\'ll email instructions to connect your actual system\n' +
+                        '4. Download the MicroVPP™ app to view your results\n\n' +
+                        'Check your email (' + payload.email + ') for your simulation report!';
+                } else {
+                    successMessage = '🎉 Success! Your system has been connected to MicroGrid\'s VPP network!\n\n';
+                    
+                    if (uploadedFiles.length > 0) {
+                        successMessage += `We've received ${uploadedFiles.length} electricity bill file(s) for analysis.\n\n`;
+                    }
+                    
+                    successMessage += 
+                        'What\'s next:\n' +
+                        '1. Download the MicroVPP™ app from the App Store\n' +
+                        '2. Sign in with your email: ' + payload.email + '\n' +
+                        '3. Start monitoring your system and earning from VPP programs\n\n' +
+                        'We\'ve sent a confirmation email with your next steps.';
                 }
-                
-                successMessage += 
-                    'What\'s next:\n' +
-                    '1. Download the MicroVPP™ app from the App Store\n' +
-                    '2. Sign in with your email: ' + payload.email + '\n' +
-                    '3. Start monitoring your system and earning from VPP programs\n\n' +
-                    'We\'ve sent a confirmation email with your next steps.';
 
                 // Show success message
                 alert(successMessage);
@@ -1364,11 +1492,49 @@
             }
         }
 
-        // Form submit handler
+         // Form submit handler
         document.getElementById('diyForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Basic form validation
+            const formData = new FormData(this);
+            const isSimulationMode = formData.get('simulationMode') === 'on';
+            
+            // Custom validation for simulation mode
+            if (isSimulationMode) {
+                let errors = [];
+                
+                // Check required fields for simulation
+                const batteryCapacity = formData.get('batteryCapacity');
+                const pvWattage = formData.get('pvWattage');
+                
+                if (!batteryCapacity || parseFloat(batteryCapacity) <= 0) {
+                    errors.push('Battery capacity is required for simulation mode');
+                    document.getElementById('batteryCapacity').style.borderColor = '#ef4444';
+                } else {
+                    document.getElementById('batteryCapacity').style.borderColor = '#e5e7eb';
+                }
+                
+                if (!pvWattage || parseFloat(pvWattage) <= 0) {
+                    errors.push('Solar panel capacity (PV wattage) is required for simulation mode');
+                    document.getElementById('pvWattage').style.borderColor = '#ef4444';
+                } else {
+                    document.getElementById('pvWattage').style.borderColor = '#e5e7eb';
+                }
+                
+                if (uploadedFiles.length === 0) {
+                    errors.push('At least one electricity bill is required for simulation mode');
+                    document.getElementById('fileUploadArea').style.borderColor = '#ef4444';
+                } else {
+                    document.getElementById('fileUploadArea').style.borderColor = '#d1d5db';
+                }
+                
+                if (errors.length > 0) {
+                    alert('⚠️ Simulation Mode Requirements:\n\n' + errors.join('\n\n') + '\n\nPlease provide all required information to generate your savings estimate.');
+                    return;
+                }
+            }
+            
+            // Basic form validation for all required fields
             const requiredFields = this.querySelectorAll('[required]');
             let isValid = true;
             
@@ -1383,9 +1549,6 @@
             });
             
             if (isValid) {
-                // Convert form to FormData
-                const formData = new FormData(this);
-                
                 // Map form data to API payload
                 const payload = mapFormToPayload(formData);
                 
