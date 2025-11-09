@@ -849,7 +849,7 @@
                     <hr style="border: none; border-top: 2px solid #e5e7eb; margin: 2.5rem 0;">
 
                     <h2 style="font-size: 1.5rem; color: #059669; margin-bottom: 0.5rem;">Step 2 — Understand Your Earnings Potential</h2>
-                    <p style="color: #6b7280; margin-bottom: 1.5rem;">Connect directly with your inverter credentials for instant activation, or provide system specifications for a simulation.</p>
+                    <p style="color: #6b7280; margin-bottom: 1.5rem;">Two ways to provide system information:</p>
 
                     <!-- Preferred Path: Direct Connection -->
                     <div style="background: #f0fdf4; border: 2px solid #10B981; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
@@ -858,7 +858,7 @@
                             <div>
                                 <h3 style="font-size: 1.1rem; color: #059669; font-weight: 700; margin-bottom: 0.25rem;">Recommended: Direct Connection</h3>
                                 <p style="color: #047857; font-size: 0.95rem; line-height: 1.6; margin: 0 0 0.75rem 0;">
-                                    Enter your inverter credentials below for instant activation. Read-only access only — we won't control your system without consent.
+                                    Enter your inverter credentials below for instant connection. Read-only access only — we won't control your system without consent.
                                 </p>
                                 <p style="color: #065f46; font-size: 0.875rem; line-height: 1.6; margin: 0; padding: 0.75rem; background: rgba(16, 185, 129, 0.1); border-radius: 8px; border-left: 3px solid #10B981;">
                                     <strong>ℹ️ About these credentials:</strong> Your installer should have created the inverter web service username and password during the installation process. These are different from your consumer app login. If you don't have these credentials, please contact your installer to obtain them.
@@ -917,13 +917,13 @@
                         <div style="display: flex; align-items: start; gap: 0.75rem;">
                             <span style="font-size: 1.5rem;">📊</span>
                             <div style="flex: 1;">
-                                <h3 style="font-size: 1.1rem; color: #374151; font-weight: 700; margin-bottom: 0.5rem;">Alternative: Run a Simulation</h3>
+                                <h3 style="font-size: 1.1rem; color: #374151; font-weight: 700; margin-bottom: 0.5rem;">Alternative: Tell Us Your System Specs</h3>
                                 <p style="color: #6b7280; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
                                     Don't have your inverter credentials? No problem. We can estimate your savings based on your system specifications and utility bills.
                                 </p>
                                 
                                 <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 1rem; padding: 0.75rem; background: #fffbeb; border-radius: 8px; border: 1px solid #fbbf24;">
-                                    <strong>💡 Note:</strong> The fields below are optional if you provide inverter web service username and password above, but required if you don't have those credentials.
+                                    <strong>💡 Note:</strong> This approach only provides high level estimates. Actual results may vary. Provide your inverter credentials to improve accuracy.
                                 </p>
 
                                 <div class="form-grid">
@@ -931,14 +931,14 @@
                                         <label for="batteryCapacity">Battery Capacity (kWh) <span id="batteryCapacityRequired" style="display: none; color: #ef4444;">*</span></label>
                                         <input type="number" id="batteryCapacity" name="batteryCapacity" placeholder="e.g., 13.5" step="0.1" min="0">
                                         <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">
-                                            Total usable battery storage capacity. <span id="batteryCapacityHelpText" style="display: inline;">Optional if you entered credentials above</span>
+                                            Total usable battery storage capacity.
                                         </small>
                                     </div>
                                     <div class="form-group">
                                         <label for="pvWattage">Solar Panel Capacity (kW) <span id="pvWattageRequired" style="display: none; color: #ef4444;">*</span></label>
                                         <input type="number" id="pvWattage" name="pvWattage" placeholder="e.g., 8.5" step="0.1" min="0">
                                         <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">
-                                            Total solar panel capacity in kilowatts. <span id="pvWattageHelpText" style="display: inline;">Optional if you entered credentials above</span>
+                                            Total solar panel capacity in kilowatts.
                                         </small>
                                     </div>
                                 </div>
@@ -953,9 +953,9 @@
 
                     <div id="securityBadge" style="background: #f0fdf4; border: 2px solid #d1fae5; border-radius: 12px; padding: 1.5rem; margin: 2rem 0;">
                         <p style="margin: 0; line-height: 1.8; color: #047857;">
-                            ✅ Read-only data access<br>
-                            ✅ No hardware changes<br>
-                            ✅ Disconnect anytime in one click
+                            👍 Read-only data access<br>
+                            👍 No hardware changes<br>
+                            👍 Disconnect anytime in one click
                         </p>
                     </div>
 
@@ -1207,8 +1207,6 @@
                 pvWattageRequired.style.display = 'none';
                 batteryCapacityInput.removeAttribute('required');
                 pvWattageInput.removeAttribute('required');
-                batteryCapacityHelpText.innerHTML = '<span style="color: #059669;">✓ Optional — you provided inverter credentials above.</span>';
-                pvWattageHelpText.innerHTML = '<span style="color: #059669;">✓ Optional — you provided inverter credentials above.</span>';
                 billsRequiredIndicator.style.display = 'none';
                 billsHelpText.innerHTML = '<span style="color: #059669;">✓ You can skip this step.</span>';
                 billsSubtext.innerHTML = 'Upload up to 12 files (PDF or images) — more recent bills are better';
@@ -1218,8 +1216,6 @@
                 pvWattageRequired.style.display = 'inline';
                 batteryCapacityInput.setAttribute('required', 'required');
                 pvWattageInput.setAttribute('required', 'required');
-                batteryCapacityHelpText.innerHTML = '<strong style="color: #ef4444;">Optional if you provide inverter web service username and password above, but required if you don\'t have them.</strong>';
-                pvWattageHelpText.innerHTML = '<strong style="color: #ef4444;">Optional if you provide inverter web service username and password above, but required if you don\'t have them.</strong>';
                 billsRequiredIndicator.style.display = 'inline';
                 billsHelpText.innerHTML = '<strong style="color: #ef4444;">At least one electricity bill is required for savings estimates.</strong>';
                 billsSubtext.innerHTML = 'Required: Upload at least 1 file (PDF or images) — more recent bills provide better estimates';
