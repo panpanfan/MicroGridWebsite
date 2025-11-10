@@ -788,7 +788,7 @@
                         <div class="form-group">
                             <label for="email">Email Address *</label>
                             <input type="email" id="email" name="email" placeholder="you@example.com" required>
-                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">We'll send your setup summary and next steps.</small>
+                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">We'll send your earning estimates and setup instructions.</small>
                         </div>
                         <div class="form-group">
                             <label for="phone">Phone Number</label>
@@ -812,7 +812,7 @@
                             <label for="state">State *</label>
                             <select id="state" name="state" required>
                                 <option value="">Select State</option>
-                                <option value="California">California</option>
+                                <option value="California" selected>California</option>
                             </select>
                         </div>
                     </div>
@@ -826,7 +826,7 @@
                             <option value="SDG&E">San Diego Gas & Electric (SDG&E)</option>
                             <option value="SMUD">Sacramento Municipal Utility District (SMUD)</option>
                             <option value="LADWP">Los Angeles Department of Water and Power (LADWP)</option>
-                            <option value="Other">Other California Utility</option>
+                            <option value="Other">Other Utility</option>
                         </select>
                     </div>
 
@@ -849,7 +849,10 @@
                     <hr style="border: none; border-top: 2px solid #e5e7eb; margin: 2.5rem 0;">
 
                     <h2 style="font-size: 1.5rem; color: #059669; margin-bottom: 0.5rem;">Step 2 — Understand Your Earnings Potential</h2>
-                    <p style="color: #6b7280; margin-bottom: 1.5rem;">Two ways to provide system information:</p>
+                    <p style="color: #6b7280; margin-bottom: 0.5rem;">Two ways to provide system information:</p>
+                    <p style="color: #6b7280; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem; padding: 1rem; background: #f9fafb; border-radius: 8px; border-left: 4px solid #10B981;">
+                        <strong style="color: #059669;">🔒 Your System Security:</strong> We only request <strong>read-only access</strong> to view your system data. We will never control, modify, or operate your system without your explicit written consent. Your inverter credentials are encrypted and stored securely.
+                    </p>
 
                     <!-- Preferred Path: Direct Connection -->
                     <div style="background: #f0fdf4; border: 2px solid #10B981; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
@@ -858,10 +861,13 @@
                             <div>
                                 <h3 style="font-size: 1.1rem; color: #059669; font-weight: 700; margin-bottom: 0.25rem;">Recommended: Direct Connection</h3>
                                 <p style="color: #047857; font-size: 0.95rem; line-height: 1.6; margin: 0 0 0.75rem 0;">
-                                    Enter your inverter credentials below for instant connection. Read-only access only — we won't control your system without consent.
+                                    Enter your inverter credentials below for instant connection and automatic system data analysis.
                                 </p>
                                 <p style="color: #065f46; font-size: 0.875rem; line-height: 1.6; margin: 0; padding: 0.75rem; background: rgba(16, 185, 129, 0.1); border-radius: 8px; border-left: 3px solid #10B981;">
-                                    <strong>ℹ️ About these credentials:</strong> Your installer should have created the inverter web service username and password during the installation process. These are different from your consumer app login. If you don't have these credentials, please contact your installer to obtain them.
+                                    <strong>ℹ️ About these credentials:</strong> Your installer should have created the inverter web service username and password during the installation process. <strong>These are different from your consumer app login.</strong> If you don't have these credentials, please contact your installer to obtain them.
+                                </p>
+                                <p style="color: #065f46; font-size: 0.875rem; line-height: 1.6; margin: 0.75rem 0 0 0; padding: 0.75rem; background: rgba(6, 182, 212, 0.1); border-radius: 8px; border-left: 3px solid #06B6D4;">
+                                    <strong>💡 Don't have credentials now?</strong> You can still continue with specs — we'll confirm later.
                                 </p>
                             </div>
                         </div>
@@ -974,13 +980,21 @@
                         <label for="marketing">I would like to receive updates about MicroGrid products and VPP opportunities</label>
                     </div>
 
+                    <p style="text-align: center; margin: 1.5rem 0 0.75rem 0; padding: 1rem; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border-radius: 12px; border: 2px solid #10B981;">
+                        <span style="display: block; color: #059669; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">🎁 UNLOCK YOUR EARNING POTENTIAL</span>
+                        <span style="display: block; color: #047857; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem;">Typical range for similar systems: $50–$200/month</span>
+                        <span style="display: block; color: #6b7280; font-size: 0.85rem;">Get your personalized estimate ↓</span>
+                    </p>
+
                     <button type="submit" class="submit-btn" id="submitBtn">Get Estimates</button>
                     
                     <p style="text-align: center; margin-top: 1rem; color: #6b7280; font-size: 0.95rem;" id="submitHelpText">💡 You'll receive your results within 24 hours.</p>
 
-                    <p style="text-align: center; margin-top: 1rem;">
-                        <a href="mailto:support@microvpp.com" style="color: #059669; text-decoration: none; font-weight: 500;">Need help connecting?</a>
-                    </p>
+                    <div style="text-align: center; margin-top: 1.25rem;">
+                        <a href="mailto:support@microvpp.com" style="display: inline-block; padding: 0.75rem 1.5rem; background: #f0fdf4; color: #059669; text-decoration: none; font-weight: 600; border-radius: 8px; border: 2px solid #10B981; transition: all 0.3s ease;">
+                            💬 Need help connecting? Contact Support
+                        </a>
+                    </div>
 
                     <small style="display: block; text-align: center; margin-top: 1.5rem; color: #6b7280; font-size: 0.875rem; line-height: 1.6;">
                         By continuing you agree to our <a href="privacy.html" style="color: #059669;">Privacy Policy</a>.  
