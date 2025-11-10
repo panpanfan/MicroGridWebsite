@@ -1057,7 +1057,156 @@
     </div>
 
     <script>
-        // Mobile menu toggle
+        // ============================================
+        // FORM ANALYTICS TRACKING
+        // ============================================
+        
+        // Track form abandonment and user progress with Google Analytics 4
+        const FormTracker = {
+            formStarted: false,
+            step1Started: false,
+            step2Started: false,
+            fieldsInteracted: new Set(),
+            abandonmentTimer: null,
+            
+            // Track when user starts filling the form
+            trackFormStart() {
+                if (!this.formStarted) {
+                    this.formStarted = true;
+                    gtag('event', 'form_start', {
+                        form_name: 'diy_registration',
+                        form_type: 'registration'
+                    });
+                    console.log('📊 Analytics: Form started');
+                }
+            },
+            
+            // Track field interactions
+            trackFieldInteraction(fieldName, fieldType) {
+                if (!this.fieldsInteracted.has(fieldName)) {
+                    this.fieldsInteracted.add(fieldName);
+                    gtag('event', 'form_field_interaction', {
+                        form_name: 'diy_registration',
+                        field_name: fieldName,
+                        field_type: fieldType
+                    });
+                    console.log('📊 Analytics: Field interaction -', fieldName);
+                }
+            },
+            
+            // Track step progression
+            trackStepProgress(stepNumber, stepName) {
+                gtag('event', 'form_step_view', {
+                    form_name: 'diy_registration',
+                    step_number: stepNumber,
+                    step_name: stepName
+                });
+                console.log('📊 Analytics: Step viewed -', stepName);
+            },
+            
+            // Track step completion
+            trackStepComplete(stepNumber, stepName) {
+                gtag('event', 'form_step_complete', {
+                    form_name: 'diy_registration',
+                    step_number: stepNumber,
+                    step_name: stepName
+                });
+                console.log('📊 Analytics: Step completed -', stepName);
+            },
+            
+            // Track authentication mode selection
+            trackAuthMode(mode) {
+                gtag('event', 'auth_mode_select', {
+                    form_name: 'diy_registration',
+                    auth_mode: mode // 'direct_connection' or 'simulation'
+                });
+                console.log('📊 Analytics: Auth mode -', mode);
+            },
+            
+            // Track file upload attempts
+            trackFileUpload(fileCount, totalSize) {
+                gtag('event', 'file_upload', {
+                    form_name: 'diy_registration',
+                    file_count: fileCount,
+                    total_size_mb: (totalSize / (1024 * 1024)).toFixed(2)
+                });
+                console.log('📊 Analytics: Files uploaded -', fileCount);
+            },
+            
+            // Track form errors
+            trackFormError(errorType, errorMessage) {
+                gtag('event', 'form_error', {
+                    form_name: 'diy_registration',
+                    error_type: errorType,
+                    error_message: errorMessage
+                });
+                console.log('📊 Analytics: Form error -', errorType);
+            },
+            
+            // Track form submission attempts
+            trackSubmitAttempt() {
+                gtag('event', 'form_submit_attempt', {
+                    form_name: 'diy_registration',
+                    fields_completed: this.fieldsInteracted.size
+                });
+                console.log('📊 Analytics: Submit attempted');
+            },
+            
+            // Track successful submission
+            trackSubmitSuccess(mode) {
+                gtag('event', 'form_submit_success', {
+                    form_name: 'diy_registration',
+                    registration_mode: mode,
+                    fields_completed: this.fieldsInteracted.size
+                });
+                console.log('📊 Analytics: Submit successful -', mode);
+            },
+            
+            // Track form abandonment (user leaves or inactive)
+            trackAbandonment() {
+                if (this.formStarted) {
+                    const lastField = Array.from(this.fieldsInteracted).pop() || 'none';
+                    gtag('event', 'form_abandon', {
+                        form_name: 'diy_registration',
+                        last_field_interacted: lastField,
+                        fields_completed: this.fieldsInteracted.size,
+                        step1_started: this.step1Started,
+                        step2_started: this.step2Started
+                    });
+                    console.log('📊 Analytics: Form abandoned at -', lastField);
+                }
+            },
+            
+            // Reset abandonment timer
+            resetAbandonmentTimer() {
+                if (this.abandonmentTimer) {
+                    clearTimeout(this.abandonmentTimer);
+                }
+                // Track abandonment if user is inactive for 2 minutes
+                this.abandonmentTimer = setTimeout(() => {
+                    this.trackAbandonment();
+                }, 120000); // 2 minutes
+            }
+        };
+        
+        // Track when user leaves the page
+        window.addEventListener('beforeunload', function() {
+            if (FormTracker.formStarted) {
+                FormTracker.trackAbandonment();
+            }
+        });
+        
+        // Track page visibility changes (user switches tabs)
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden && FormTracker.formStarted) {
+                FormTracker.trackAbandonment();
+            }
+        });
+        
+        // ============================================
+        // MOBILE MENU
+        // ============================================
+        
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const navLinks = document.getElementById('navLinks');
         
@@ -1084,11 +1233,75 @@
             });
         }
 
-        // API Configuration
+        // ============================================
+        // ATTACH ANALYTICS TO FORM FIELDS
+        // ============================================
+        
+        // Wait for DOM to be ready
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('diyForm');
+            
+            // Track all input, select, and textarea interactions
+            const formFields = form.querySelectorAll('input, select, textarea');
+            formFields.forEach(field => {
+                // Track first interaction with each field
+                field.addEventListener('focus', function() {
+                    FormTracker.trackFormStart();
+                    FormTracker.trackFieldInteraction(this.name || this.id, this.type || this.tagName.toLowerCase());
+                    FormTracker.resetAbandonmentTimer();
+                    
+                    // Track step progression
+                    const fieldName = this.name || this.id;
+                    if (['fullName', 'email', 'phone', 'address', 'city', 'state', 'utilityCompany'].includes(fieldName)) {
+                        if (!FormTracker.step1Started) {
+                            FormTracker.step1Started = true;
+                            FormTracker.trackStepProgress(1, 'personal_info');
+                        }
+                    } else if (['inverterManufacturer', 'username', 'password', 'batteryCapacity', 'pvWattage'].includes(fieldName)) {
+                        if (!FormTracker.step2Started) {
+                            FormTracker.step2Started = true;
+                            FormTracker.trackStepProgress(2, 'system_info');
+                        }
+                    }
+                });
+                
+                // Track changes/inputs
+                field.addEventListener('input', function() {
+                    FormTracker.resetAbandonmentTimer();
+                });
+                
+                field.addEventListener('change', function() {
+                    FormTracker.resetAbandonmentTimer();
+                });
+            });
+            
+            // Track checkbox interactions separately
+            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    FormTracker.trackFieldInteraction(this.name || this.id, 'checkbox');
+                    FormTracker.resetAbandonmentTimer();
+                    
+                    // Track specific checkbox events
+                    if (this.id === 'vppParticipation' && this.checked) {
+                        gtag('event', 'vpp_opt_in', {
+                            form_name: 'diy_registration'
+                        });
+                    }
+                });
+            });
+        });
+        
+        // ============================================
+        // API CONFIGURATION
+        // ============================================
+        
         const API_BASE_URL = 'https://3dbhitxwoc.execute-api.us-east-2.amazonaws.com/dev';
         const REGISTER_ENDPOINT = '/auth/signup';
 
-        // File upload handling
+        // ============================================
+        // FILE UPLOAD HANDLING
+        // ============================================
         let uploadedFiles = [];
         const MAX_FILES = 12;
         const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB per file
@@ -1126,29 +1339,48 @@
         function handleFiles(files) {
             const newFiles = Array.from(files);
             
+            // Track file upload attempt
+            FormTracker.trackFormStart();
+            FormTracker.resetAbandonmentTimer();
+            
             // Check total file count
             if (uploadedFiles.length + newFiles.length > MAX_FILES) {
+                FormTracker.trackFormError('file_limit_exceeded', `Attempted to upload more than ${MAX_FILES} files`);
                 alert(`You can only upload up to ${MAX_FILES} files. You currently have ${uploadedFiles.length} file(s).`);
                 return;
             }
 
+            let hasErrors = false;
             // Validate and add files
             newFiles.forEach(file => {
                 // Check file size
                 if (file.size > MAX_FILE_SIZE) {
+                    FormTracker.trackFormError('file_size_exceeded', `File too large: ${file.name}`);
                     alert(`File "${file.name}" is too large. Maximum size is 10MB.`);
+                    hasErrors = true;
                     return;
                 }
 
                 // Check file type
                 const validTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
                 if (!validTypes.includes(file.type)) {
+                    FormTracker.trackFormError('invalid_file_type', `Invalid file type: ${file.name}`);
                     alert(`File "${file.name}" has an invalid type. Please upload PDF or image files.`);
+                    hasErrors = true;
                     return;
                 }
 
                 uploadedFiles.push(file);
             });
+
+            // Track successful file upload
+            if (!hasErrors && newFiles.length > 0) {
+                const totalSize = uploadedFiles.reduce((sum, file) => sum + file.size, 0);
+                FormTracker.trackFileUpload(uploadedFiles.length, totalSize);
+                
+                // Track field interaction
+                FormTracker.trackFieldInteraction('electricityBills', 'file');
+            }
 
             displayFiles();
             fileInput.value = ''; // Reset input
@@ -1216,6 +1448,9 @@
             const hasCredentials = usernameInput.value.trim() !== '' && passwordInput.value.trim() !== '';
             
             if (hasCredentials) {
+                // Track direct connection mode
+                FormTracker.trackAuthMode('direct_connection');
+                
                 // If credentials provided, make battery/solar/bills optional
                 batteryCapacityRequired.style.display = 'none';
                 pvWattageRequired.style.display = 'none';
@@ -1225,6 +1460,11 @@
                 billsHelpText.innerHTML = '<span style="color: #059669;">✓ You can skip this step.</span>';
                 billsSubtext.innerHTML = 'Upload up to 12 files (PDF or images) — more recent bills are better';
             } else {
+                // Track simulation mode
+                if (FormTracker.formStarted) {
+                    FormTracker.trackAuthMode('simulation');
+                }
+                
                 // If no credentials, make battery/solar/bills required for simulation
                 batteryCapacityRequired.style.display = 'inline';
                 pvWattageRequired.style.display = 'inline';
@@ -1424,6 +1664,9 @@
 
                 const result = await response.json();
                 console.log('Registration successful:', result);
+                
+                // Track successful submission
+                FormTracker.trackSubmitSuccess(payload.info.registration.mode);
 
                  // Build success message based on mode
                 const isSimulationMode = payload.info.registration.mode === 'simulation';
@@ -1481,6 +1724,9 @@
             } catch (error) {
                 console.error('Registration error:', error);
                 
+                // Track submission failure
+                FormTracker.trackFormError('api_error', error.message);
+                
                 // Show error message
                 alert(
                     '❌ Registration Error\n\n' +
@@ -1499,6 +1745,9 @@
          // Form submit handler
         document.getElementById('diyForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            // Track form submission attempt
+            FormTracker.trackSubmitAttempt();
             
             const formData = new FormData(this);
             const username = formData.get('username');
@@ -1538,6 +1787,9 @@
                 }
                 
                 if (errors.length > 0) {
+                    // Track validation errors
+                    FormTracker.trackFormError('validation_failed', 'Simulation mode missing required fields');
+                    
                     alert('⚠️ Missing Required Information:\n\n' + 
                           'Since you haven\'t provided inverter credentials, we need:\n\n' +
                           errors.join('\n') + 
@@ -1549,12 +1801,14 @@
             // Basic form validation for all required fields
             const requiredFields = this.querySelectorAll('[required]');
             let isValid = true;
+            let missingFields = [];
             
             requiredFields.forEach(field => {
                 // Only validate visible required fields
                 if (field.offsetParent !== null && !field.value.trim()) {
                     field.style.borderColor = '#ef4444';
                     isValid = false;
+                    missingFields.push(field.name || field.id);
                 } else {
                     field.style.borderColor = '#e5e7eb';
                 }
@@ -1570,6 +1824,9 @@
                 // Submit to API
                 submitRegistration(payload);
             } else {
+                // Track validation errors
+                FormTracker.trackFormError('validation_failed', `Missing fields: ${missingFields.join(', ')}`);
+                
                 alert('Please fill in all required fields.');
             }
         });
