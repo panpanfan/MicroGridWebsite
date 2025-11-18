@@ -873,8 +873,8 @@
                         </div>
 
                         <div class="form-group full-width">
-                            <label for="inverterManufacturer">Inverter Brand *</label>
-                            <select id="inverterManufacturer" name="inverterManufacturer" required>
+                            <label for="inverterManufacturer">Inverter Brand <span id="inverterManufacturerRequired" style="color: #ef4444;">*</span></label>
+                            <select id="inverterManufacturer" name="inverterManufacturer">
                                 <option value="">Select your brand</option>
                                 <option value="Enphase">Enphase</option>
                                 <option value="SolarEdge">SolarEdge</option>
@@ -1430,22 +1430,25 @@
             return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
         }
 
-         // Dynamic validation based on credentials input
+         // Dynamic validation based on credentials input and alternative specs
         const usernameInput = document.getElementById('username');
         const passwordInput = document.getElementById('password');
         const batteryCapacityInput = document.getElementById('batteryCapacity');
         const pvWattageInput = document.getElementById('pvWattage');
+        const inverterManufacturerInput = document.getElementById('inverterManufacturer');
         const batteryCapacityRequired = document.getElementById('batteryCapacityRequired');
         const pvWattageRequired = document.getElementById('pvWattageRequired');
+        const inverterManufacturerRequired = document.getElementById('inverterManufacturerRequired');
         const batteryCapacityHelpText = document.getElementById('batteryCapacityHelpText');
         const pvWattageHelpText = document.getElementById('pvWattageHelpText');
         const billsRequiredIndicator = document.getElementById('billsRequiredIndicator');
         const billsHelpText = document.getElementById('billsHelpText');
         const billsSubtext = document.getElementById('billsSubtext');
 
-        // Function to update field requirements based on whether credentials are provided
+        // Function to update field requirements based on what's provided
         function updateFieldRequirements() {
             const hasCredentials = usernameInput.value.trim() !== '' && passwordInput.value.trim() !== '';
+            const hasAlternativeSpecs = batteryCapacityInput.value.trim() !== '' && pvWattageInput.value.trim() !== '';
             
             if (hasCredentials) {
                 // Track direct connection mode
@@ -1459,26 +1462,54 @@
                 billsRequiredIndicator.style.display = 'none';
                 billsHelpText.innerHTML = '<span style="color: #059669;">✓ You can skip this step.</span>';
                 billsSubtext.innerHTML = 'Upload up to 12 files (PDF or images) — more recent bills are better';
+                
+                // Inverter manufacturer is still required when using credentials
+                inverterManufacturerRequired.style.display = 'inline';
+                inverterManufacturerInput.setAttribute('required', 'required');
+            } else if (hasAlternativeSpecs) {
+                // Track simulation mode
+                if (FormTracker.formStarted) {
+                    FormTracker.trackAuthMode('simulation');
+                }
+                
+                // If alternative specs provided, make inverter manufacturer optional
+                inverterManufacturerRequired.style.display = 'none';
+                inverterManufacturerInput.removeAttribute('required');
+                
+                // Battery and solar are still required (already filled)
+                batteryCapacityRequired.style.display = 'inline';
+                pvWattageRequired.style.display = 'inline';
+                batteryCapacityInput.setAttribute('required', 'required');
+                pvWattageInput.setAttribute('required', 'required');
+                
+                // Bills are required for simulation mode
+                billsRequiredIndicator.style.display = 'inline';
+                billsHelpText.innerHTML = '<strong style="color: #ef4444;">At least one electricity bill is required for savings estimates.</strong>';
+                billsSubtext.innerHTML = 'Required: Upload at least 1 file (PDF or images) — more recent bills provide better estimates';
             } else {
                 // Track simulation mode
                 if (FormTracker.formStarted) {
                     FormTracker.trackAuthMode('simulation');
                 }
                 
-                // If no credentials, make battery/solar/bills required for simulation
+                // If neither credentials nor alternative specs, everything is required
                 batteryCapacityRequired.style.display = 'inline';
                 pvWattageRequired.style.display = 'inline';
                 batteryCapacityInput.setAttribute('required', 'required');
                 pvWattageInput.setAttribute('required', 'required');
+                inverterManufacturerRequired.style.display = 'inline';
+                inverterManufacturerInput.setAttribute('required', 'required');
                 billsRequiredIndicator.style.display = 'inline';
                 billsHelpText.innerHTML = '<strong style="color: #ef4444;">At least one electricity bill is required for savings estimates.</strong>';
                 billsSubtext.innerHTML = 'Required: Upload at least 1 file (PDF or images) — more recent bills provide better estimates';
             }
         }
 
-        // Listen for changes in username and password fields
+        // Listen for changes in username, password, and alternative spec fields
         usernameInput.addEventListener('input', updateFieldRequirements);
         passwordInput.addEventListener('input', updateFieldRequirements);
+        batteryCapacityInput.addEventListener('input', updateFieldRequirements);
+        pvWattageInput.addEventListener('input', updateFieldRequirements);
         
         // Initialize on page load
         updateFieldRequirements();
@@ -1752,53 +1783,101 @@
             const formData = new FormData(this);
             const username = formData.get('username');
             const password = formData.get('password');
-            const hasCredentials = username && username.trim() !== '' && password && password.trim() !== '';
+            const batteryCapacity = formData.get('batteryCapacity');
+            const pvWattage = formData.get('pvWattage');
+            const inverterManufacturer = formData.get('inverterManufacturer');
             
-            // Determine if we're in simulation mode (no credentials provided)
+            const hasCredentials = username && username.trim() !== '' && password && password.trim() !== '';
+            const hasAlternativeSpecs = batteryCapacity && batteryCapacity.trim() !== '' && pvWattage && pvWattage.trim() !== '';
+            
+            // Determine registration mode
             const isSimulationMode = !hasCredentials;
             
-            // Custom validation for simulation mode
-            if (isSimulationMode) {
-                let errors = [];
-                
-                // Check required fields for simulation
-                const batteryCapacity = formData.get('batteryCapacity');
-                const pvWattage = formData.get('pvWattage');
-                
+            // Custom validation based on what's provided
+            let errors = [];
+            
+            if (hasCredentials) {
+                // Direct connection mode: inverter manufacturer is required
+                if (!inverterManufacturer || inverterManufacturer === '') {
+                    errors.push('• Inverter brand is required when providing credentials');
+                    document.getElementById('inverterManufacturer').style.borderColor = '#ef4444';
+                } else {
+                    document.getElementById('inverterManufacturer').style.borderColor = '#e5e7eb';
+                }
+            } else if (hasAlternativeSpecs) {
+                // Alternative specs mode: battery, solar, and bills are required
                 if (!batteryCapacity || parseFloat(batteryCapacity) <= 0) {
-                    errors.push('• Battery capacity is required when credentials are not provided');
+                    errors.push('• Battery capacity must be greater than 0');
                     document.getElementById('batteryCapacity').style.borderColor = '#ef4444';
                 } else {
                     document.getElementById('batteryCapacity').style.borderColor = '#e5e7eb';
                 }
                 
                 if (!pvWattage || parseFloat(pvWattage) <= 0) {
-                    errors.push('• Solar panel capacity is required when credentials are not provided');
+                    errors.push('• Solar panel capacity must be greater than 0');
                     document.getElementById('pvWattage').style.borderColor = '#ef4444';
                 } else {
                     document.getElementById('pvWattage').style.borderColor = '#e5e7eb';
                 }
                 
                 if (uploadedFiles.length === 0) {
-                    errors.push('• At least one electricity bill is required when credentials are not provided');
+                    errors.push('• At least one electricity bill is required for savings estimates');
                     document.getElementById('fileUploadArea').style.borderColor = '#ef4444';
                 } else {
                     document.getElementById('fileUploadArea').style.borderColor = '#d1d5db';
                 }
                 
-                if (errors.length > 0) {
-                    // Track validation errors
-                    FormTracker.trackFormError('validation_failed', 'Simulation mode missing required fields');
-                    
-                    alert('⚠️ Missing Required Information:\n\n' + 
-                          'Since you haven\'t provided inverter credentials, we need:\n\n' +
-                          errors.join('\n') + 
-                          '\n\n💡 Tip: Enter your inverter username and password above to skip these requirements.');
-                    return;
+                // Inverter manufacturer is optional in this mode
+                document.getElementById('inverterManufacturer').style.borderColor = '#e5e7eb';
+            } else {
+                // No credentials and no alternative specs: need to provide one or the other
+                if (!inverterManufacturer || inverterManufacturer === '') {
+                    errors.push('• Inverter brand is required');
+                    document.getElementById('inverterManufacturer').style.borderColor = '#ef4444';
+                } else {
+                    document.getElementById('inverterManufacturer').style.borderColor = '#e5e7eb';
+                }
+                
+                if (!batteryCapacity || parseFloat(batteryCapacity) <= 0) {
+                    errors.push('• Battery capacity is required');
+                    document.getElementById('batteryCapacity').style.borderColor = '#ef4444';
+                } else {
+                    document.getElementById('batteryCapacity').style.borderColor = '#e5e7eb';
+                }
+                
+                if (!pvWattage || parseFloat(pvWattage) <= 0) {
+                    errors.push('• Solar panel capacity is required');
+                    document.getElementById('pvWattage').style.borderColor = '#ef4444';
+                } else {
+                    document.getElementById('pvWattage').style.borderColor = '#e5e7eb';
+                }
+                
+                if (uploadedFiles.length === 0) {
+                    errors.push('• At least one electricity bill is required');
+                    document.getElementById('fileUploadArea').style.borderColor = '#ef4444';
+                } else {
+                    document.getElementById('fileUploadArea').style.borderColor = '#d1d5db';
                 }
             }
             
-            // Basic form validation for all required fields
+            // Show custom validation errors
+            if (errors.length > 0) {
+                // Track validation errors
+                FormTracker.trackFormError('validation_failed', 'Form missing required fields');
+                
+                let errorMessage = '⚠️ Missing Required Information:\n\n' + errors.join('\n');
+                
+                if (!hasCredentials && !hasAlternativeSpecs) {
+                    errorMessage += '\n\n💡 Tip: You can either:\n';
+                    errorMessage += '1. Provide inverter credentials (username & password) for direct connection, OR\n';
+                    errorMessage += '2. Fill in battery capacity, solar capacity, and upload bills for estimates';
+                }
+                
+                alert(errorMessage);
+                return;
+            }
+            
+            // Basic form validation for all other required fields
             const requiredFields = this.querySelectorAll('[required]');
             let isValid = true;
             let missingFields = [];
