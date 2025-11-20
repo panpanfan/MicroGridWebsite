@@ -1298,6 +1298,7 @@
         
         const API_BASE_URL = 'https://3dbhitxwoc.execute-api.us-east-2.amazonaws.com/dev';
         const REGISTER_ENDPOINT = '/auth/signup';
+        const UPLOAD_BILLS_ENDPOINT = '/admin/upload-utility-bills';
 
         // ============================================
         // FILE UPLOAD HANDLING
@@ -1660,6 +1661,55 @@
             return payload;
         }
 
+        // Upload utility bills using the user_id from signup
+        async function uploadUtilityBills(userId, files) {
+            if (!files || files.length === 0) {
+                console.log('No utility bills to upload');
+                return { success: true, message: 'No files to upload' };
+            }
+
+            try {
+                // Create FormData for file upload
+                const formData = new FormData();
+                
+                // Add account_id (using user_id from signup response)
+                formData.append('account_id', userId);
+                
+                // Add each file
+                files.forEach((file, index) => {
+                    formData.append('files', file);
+                });
+                
+                console.log(`Uploading ${files.length} utility bill(s) for account_id: ${userId}`);
+
+                const response = await fetch(API_BASE_URL + UPLOAD_BILLS_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json'
+                        // Note: Don't set Content-Type header - browser will set it with boundary for multipart/form-data
+                    },
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => null);
+                    throw new Error(
+                        errorData?.detail || 
+                        `Utility bill upload failed with status: ${response.status}`
+                    );
+                }
+
+                const result = await response.json();
+                console.log('Utility bills uploaded successfully:', result);
+                
+                return { success: true, result };
+            } catch (error) {
+                console.error('Utility bill upload error:', error);
+                // Don't throw - we want registration to succeed even if bill upload fails
+                return { success: false, error: error.message };
+            }
+        }
+
         // Submit form to API
         async function submitRegistration(payload) {
             const submitBtn = document.querySelector('.submit-btn');
@@ -1670,11 +1720,6 @@
                 submitBtn.disabled = true;
                 submitBtn.textContent = 'Connecting Your System...';
                 submitBtn.style.opacity = '0.7';
-
-                // TODO: Handle actual file uploads
-                // If files are uploaded, they should be sent to a separate endpoint
-                // (e.g., presigned S3 URLs) before or after the main registration
-                // For now, file metadata is included in the payload
 
                 const response = await fetch(API_BASE_URL + REGISTER_ENDPOINT, {
                     method: 'POST',
@@ -1698,6 +1743,18 @@
                 
                 // Track successful submission
                 FormTracker.trackSubmitSuccess(payload.info.registration.mode);
+
+                // Upload utility bills if any files were selected
+                // Use user_id from signup response as account_id
+                if (uploadedFiles.length > 0 && result.user_id) {
+                    submitBtn.textContent = 'Uploading Utility Bills...';
+                    const uploadResult = await uploadUtilityBills(result.user_id, uploadedFiles);
+                    
+                    if (!uploadResult.success) {
+                        console.warn('Utility bill upload failed, but registration succeeded:', uploadResult.error);
+                        // Continue with success flow even if bill upload failed
+                    }
+                }
 
                  // Build success message based on mode
                 const isSimulationMode = payload.info.registration.mode === 'simulation';
