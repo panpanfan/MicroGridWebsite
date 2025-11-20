@@ -1652,7 +1652,7 @@
                 inverter_monitoring_url: null,
                 inverter_api_key: formData.get('username'), // Using username as API key
                 inverter_api_secret: formData.get('password'), // Using password as API secret
-                info: info,
+                info: JSON.stringify(info),
                 site_id: null, // Let the API generate a site_id
                 site_type: "residential", // Default site type for DIY registrations
                 installation_date: formData.get('installationDate') || null,
@@ -1741,8 +1741,11 @@
                 const result = await response.json();
                 console.log('Registration successful:', result);
                 
+                // Parse info to access registration mode
+                const infoObj = JSON.parse(payload.info);
+                
                 // Track successful submission
-                FormTracker.trackSubmitSuccess(payload.info.registration.mode);
+                FormTracker.trackSubmitSuccess(infoObj.registration.mode);
 
                 // Upload utility bills if any files were selected
                 // Use user_id from signup response as account_id
@@ -1757,7 +1760,7 @@
                 }
 
                  // Build success message based on mode
-                const isSimulationMode = payload.info.registration.mode === 'simulation';
+                const isSimulationMode = infoObj.registration.mode === 'simulation';
                 let successMessage = '';
                 
                 if (isSimulationMode) {
