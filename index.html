@@ -741,6 +741,21 @@
             }
         }
 
+        /* Case Studies Responsive Styles */
+        .case-studies-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 1024px) {
+            .case-studies-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
         /* Mobile Menu Button */
         .mobile-menu-btn {
             display: none;
@@ -1498,37 +1513,108 @@
     <section id="impact" class="why-choose-microgrid">
         <div class="container">
             <div class="section-header">
-                <h2>Real results from real homes.</h2>
+                <h2>Real Data. Real Savings.</h2>
+                <p style="color: #065f46; max-width: 900px; margin: 1rem auto 0;">See how MicroVPP turns "dumb" batteries into income generators for California homeowners. These computed results are based on real households — not hypothetical models. The difference between standard battery operation and intelligent optimization isn't incremental. It's transformative.</p>
             </div>
-            <div class="benefits-grid">
-                <div class="benefit-category">
-                    <h3>
-                        <span class="benefit-icon">💰</span>
-                        Up to $1–2K New Annual Cash Flow
-                    </h3>
-                    <p>Generate new revenue by AI optimization and participating in grid services and virtual power plant programs. No investment required — start earning with the battery you already own.</p>
+            
+            <p style="text-align: center; color: #666; font-size: 1rem; margin: 2rem auto 3rem; max-width: 800px;">
+                These results are computed estimates based on each household's actual usage, solar generation, EV charging behavior and utility tariffs. They represent what MicroVPP optimization <em>would have</em> delivered under real rate conditions.
+            </p>
+
+            <!-- Case Studies Grid -->
+            <div class="case-studies-grid">
+                <!-- Case Study 1: The Bill Eliminator -->
+                <div style="background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
+                    <h3 style="font-size: 1.8rem; font-weight: 700; color: #065f46; margin-bottom: 0.5rem;">Case Study 1: The Bill Eliminator</h3>
+                    <p style="color: #666; font-style: italic; margin-bottom: 2rem;">Walnut, CA • SCE Territory • 6.4kW Solar + 28.6kWh Battery</p>
+                    
+                    <!-- Before: Standard Mode -->
+                    <div style="background: #f3e8e8; border-radius: 15px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                        <h4 style="font-size: 1.2rem; font-weight: 700; color: #333; margin-bottom: 1rem;">Standard Mode (Before)</h4>
+                        <p style="font-weight: 700; color: #333; margin-bottom: 0.5rem;">Strategy: Self-Consumption</p>
+                        <p style="color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                            The battery tried to cover home usage but couldn't reach 100% coverage. The homeowner still had to purchase power from the grid during peak hours, resulting in a net cost despite having solar and storage.
+                        </p>
+                        <p style="font-weight: 700; color: #333; margin-bottom: 0.25rem;">Annual Net Result</p>
+                        <p style="font-size: 1.5rem; font-weight: 700; color: #dc2626; margin-bottom: 0.25rem;">-$24 / yr</p>
+                        <p style="color: #666; font-size: 0.9rem;">(Net Cost)</p>
+                    </div>
+                    
+                    <!-- After: MicroVPP Mode -->
+                    <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 15px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                        <h4 style="font-size: 1.2rem; font-weight: 700; color: #333; margin-bottom: 1rem;">MicroVPP Mode (After)</h4>
+                        <p style="font-weight: 700; color: #333; margin-bottom: 0.5rem;">Strategy: Bill Elimination</p>
+                        <p style="color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                            Our AI identified and targeted high-value export windows—when rates exceeded <strong>$1/kWh</strong>—to generate bill credits that completely eliminated the monthly utility bill and created positive cash flow.
+                        </p>
+                        <p style="font-weight: 700; color: #333; margin-bottom: 0.25rem;">Annual Net Result</p>
+                        <p style="font-size: 1.5rem; font-weight: 700; color: #059669; margin-bottom: 0.25rem;">+$1,008 / yr</p>
+                        <p style="color: #666; font-size: 0.9rem;">(Bill Credit Profit)</p>
+                    </div>
+                    
+                    <!-- Future VPP Potential -->
+                    <div style="background: #e0f2fe; border-radius: 10px; padding: 1rem; display: flex; gap: 0.75rem; align-items: start;">
+                        <span style="font-size: 1.5rem;">💡</span>
+                        <div>
+                            <p style="font-weight: 700; color: #065f46; margin-bottom: 0.25rem;">Future VPP Potential:</p>
+                            <p style="color: #555; font-size: 0.9rem;">Projected +$2,268/yr via grid services participation</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="benefit-category">
-                    <h3>
-                        <span class="benefit-icon">📊</span>
-                        Up to 100% Bill Reduction
-                    </h3>
-                    <p>Our AI optimization learns your usage patterns and automatically charges and discharges your battery at the optimal times to maximize savings on your electricity bills.</p>
+
+                <!-- Case Study 2: The EV Powerhouse -->
+                <div style="background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
+                    <h3 style="font-size: 1.8rem; font-weight: 700; color: #065f46; margin-bottom: 0.5rem;">Case Study 2: The EV Powerhouse</h3>
+                    <p style="color: #666; font-style: italic; margin-bottom: 2rem;">Irvine, CA • SCE Territory • 9.6kW Solar + 43kWh Battery • EV Owner</p>
+                    
+                    <!-- Before: Standard Mode -->
+                    <div style="background: #f3e8e8; border-radius: 15px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                        <h4 style="font-size: 1.2rem; font-weight: 700; color: #333; margin-bottom: 1rem;">Standard Mode (Before)</h4>
+                        <p style="font-weight: 700; color: #333; margin-bottom: 0.5rem;">Strategy: Immediate Charging</p>
+                        <p style="color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                            The battery drained itself to charge the EV immediately upon plugin. While this saved on gasoline costs, the battery sat completely idle during the most profitable export hours when rates were highest.
+                        </p>
+                        <p style="font-weight: 700; color: #333; margin-bottom: 0.25rem;">Annual Net Result</p>
+                        <p style="font-size: 1.5rem; font-weight: 700; color: #059669; margin-bottom: 0.25rem;">+$70 / yr</p>
+                        <p style="color: #666; font-size: 0.9rem;">(Passive Savings)</p>
+                    </div>
+                    
+                    <!-- After: MicroVPP Mode -->
+                    <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 15px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                        <h4 style="font-size: 1.2rem; font-weight: 700; color: #333; margin-bottom: 1rem;">MicroVPP Mode (After)</h4>
+                        <p style="font-weight: 700; color: #333; margin-bottom: 0.5rem;">Strategy: Smart Shift & Export</p>
+                        <p style="color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                            <strong>We do not drain your car.</strong> We shift EV charging to cheap off-peak hours (ensuring a full charge every morning) so the home battery remains available to export energy at peak rates.
+                        </p>
+                        <p style="font-weight: 700; color: #333; margin-bottom: 0.25rem;">Annual Net Result</p>
+                        <p style="font-size: 1.5rem; font-weight: 700; color: #059669; margin-bottom: 0.25rem;">+$1,400 / yr</p>
+                        <p style="color: #666; font-size: 0.9rem;">(Bill Credit Profit)</p>
+                    </div>
+                    
+                    <!-- Future VPP Potential -->
+                    <div style="background: #e0f2fe; border-radius: 10px; padding: 1rem; display: flex; gap: 0.75rem; align-items: start;">
+                        <span style="font-size: 1.5rem;">💡</span>
+                        <div>
+                            <p style="font-weight: 700; color: #065f46; margin-bottom: 0.25rem;">Future VPP Potential:</p>
+                            <p style="color: #555; font-size: 0.9rem;">Projected +$3,556/yr via grid services participation</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="benefit-category">
-                    <h3>
-                        <span class="benefit-icon">🌍</span>
-                        Active in CA (NEM 3.0)
-                    </h3>
-                    <p>Currently serving California (with NEM 3.0 optimization), with nationwide expansion coming in 2026. Join the growing network of smart battery owners.</p>
-                </div>
-                <div class="benefit-category">
-                    <h3>
-                        <span class="benefit-icon">⚡</span>
-                        Works with Your Existing Battery
-                    </h3>
-                    <p>Compatible with most major brands — no new hardware needed. Most users connect their system in under 10 minutes and start seeing results immediately.</p>
-                </div>
+            </div>
+
+            <!-- Bottom Summary -->
+            <div style="margin-top: 3rem; padding: 2rem; background: linear-gradient(135deg, #f0fdf4 0%, #d1fae5 100%); border-radius: 15px; border: 2px solid #6ee7b7;">
+                <p style="color: #065f46; font-size: 1.1rem; line-height: 1.8; text-align: center; margin: 0;">
+                    The math is undeniable. Standard battery operation leaves thousands of dollars on the table every year. MicroVPP's intelligent algorithms analyze real-time rate structures, weather patterns, household consumption, and grid demand to maximize your returns—automatically. No manual intervention. No guesswork. Just results.
+                </p>
+            </div>
+
+            <!-- CTA Button -->
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="diy-registration.html" class="btn-primary">
+                    Check Your Battery's Potential
+                </a>
+                <p style="color: #666; font-size: 0.95rem; margin-top: 1rem;">Free ROI analysis. No new hardware required. See what your system could be earning.</p>
             </div>
         </div>
     </section>
