@@ -1105,6 +1105,128 @@
             background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
         }
 
+        .case-studies {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .case-study {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+        }
+
+        .case-study h3 {
+            font-size: 1.6rem;
+            margin-bottom: 0.25rem;
+            color: #065f46;
+        }
+
+        .case-location {
+            color: #475569;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .case-modes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1rem;
+        }
+
+        .mode-card {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 1.25rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .mode-card.standard {
+            background: #fff9ed;
+            border-color: #fde68a;
+        }
+
+        .mode-card.microvpp {
+            background: #ecfdf3;
+            border-color: #bbf7d0;
+        }
+
+        .mode-label {
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: #0f172a;
+        }
+
+        .mode-card p {
+            color: #0f172a;
+            margin-bottom: 1rem;
+        }
+
+        .mode-result {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .result-label {
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .result-value {
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        .result-value.negative {
+            color: #b45309;
+        }
+
+        .result-value.positive {
+            color: #047857;
+        }
+
+        .result-subtext {
+            color: #475569;
+            font-weight: 600;
+        }
+
+        .cashflow-highlight {
+            margin: 1.25rem 0;
+            background: #ecfeff;
+            border: 1px solid #67e8f9;
+            border-radius: 14px;
+            padding: 0.9rem 1rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .case-callouts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .callout {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 14px;
+            padding: 0.9rem 1rem;
+            color: #065f46;
+            font-weight: 600;
+        }
+
+        .callout strong {
+            display: block;
+            color: #065f46;
+        }
+
         /* Connection Options Section */
         .connection-options {
             padding: 80px 0;
@@ -1498,36 +1620,71 @@
     <section id="impact" class="why-choose-microgrid">
         <div class="container">
             <div class="section-header">
-                <h2>Real results from real homes.</h2>
+                <h2>Real Data. Real Savings.</h2>
+                <p style="color: #065f46; max-width: 900px; margin: 0 auto;">See how MicroVPP turns “dumb” batteries into income generators for California homeowners. These computed results are based on real homes with real batteries—not hypothetical models. The different standard cases show how homes can fail to capture the most expensive hours without MicroVPP automation. We’ve included both an hourly rate and actual usage generation, battery usage chart below, so you can see exactly what MicroVPP optimization could have unlocked based on each household’s rate plan and battery settings.</p>
             </div>
-            <div class="benefits-grid">
-                <div class="benefit-category">
-                    <h3>
-                        <span class="benefit-icon">💰</span>
-                        Up to $1–2K New Annual Cash Flow
-                    </h3>
-                    <p>Generate new revenue by AI optimization and participating in grid services and virtual power plant programs. No investment required — start earning with the battery you already own.</p>
+            <div class="case-studies">
+                <div class="case-study">
+                    <h3>Case Study 1: The Bill Eliminator</h3>
+                    <div class="case-location">Walnut, CA - SCE Territory • 6.4 kW Solar + 28.6 kWh Battery</div>
+                    <div class="case-modes">
+                        <div class="mode-card standard">
+                            <div class="mode-label">Standard Mode (Before)</div>
+                            <p>The battery tried to time the rates but it didn’t catch the highest peaks. So the home still had to buy from the grid during the most expensive hours.</p>
+                            <div class="mode-result">
+                                <span class="result-label">Actual Result:</span>
+                                <span class="result-value negative">–$624/yr</span>
+                                <span class="result-subtext">Net Cost</span>
+                            </div>
+                        </div>
+                        <div class="mode-card microvpp">
+                            <div class="mode-label">MicroVPP Mode (After)</div>
+                            <p>AI discharge timing captured high-rate windows, resulting in lower peak grid draws and higher-value export sales. So high-rate buys went to zero and net ROI flipped positive.</p>
+                            <div class="mode-result">
+                                <span class="result-label">Actual Result:</span>
+                                <span class="result-value positive">+$1,858/yr</span>
+                                <span class="result-subtext">Net ROI</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cashflow-highlight">1 year cash flow swing: +$2,482/yr</div>
+                    <div class="case-callouts">
+                        <div class="callout">Future VPP Potential<strong>Projected +$2,482/yr via grid services</strong></div>
+                        <div class="callout">Rate Plan<strong>SGIP-backed TOU plan with high peak/off-peak spread</strong></div>
+                        <div class="callout">Battery Settings<strong>Backup reserve kept at 20% (safe for outages)</strong></div>
+                        <div class="callout">Net Metering<strong>NEM 3.0 with TOU-based export compensation</strong></div>
+                    </div>
                 </div>
-                <div class="benefit-category">
-                    <h3>
-                        <span class="benefit-icon">📊</span>
-                        Up to 100% Bill Reduction
-                    </h3>
-                    <p>Our AI optimization learns your usage patterns and automatically charges and discharges your battery at the optimal times to maximize savings on your electricity bills.</p>
-                </div>
-                <div class="benefit-category">
-                    <h3>
-                        <span class="benefit-icon">🌍</span>
-                        Active in CA (NEM 3.0)
-                    </h3>
-                    <p>Currently serving California (with NEM 3.0 optimization), with nationwide expansion coming in 2026. Join the growing network of smart battery owners.</p>
-                </div>
-                <div class="benefit-category">
-                    <h3>
-                        <span class="benefit-icon">⚡</span>
-                        Works with Your Existing Battery
-                    </h3>
-                    <p>Compatible with most major brands — no new hardware needed. Most users connect their system in under 10 minutes and start seeing results immediately.</p>
+                <div class="case-study">
+                    <h3>Case Study 2: The EV Powerhouse</h3>
+                    <div class="case-location">Irvine, CA - SCE Territory • 7 kW Solar + 9.6 kWh Battery + EV Owner</div>
+                    <div class="case-modes">
+                        <div class="mode-card standard">
+                            <div class="mode-label">Standard Mode (Before)</div>
+                            <p>Default battery automation could not consistently avoid peak grid purchases during weekday evenings (the EV was often charging at these times). Nightly rates were higher than daytime export credits.</p>
+                            <div class="mode-result">
+                                <span class="result-label">Actual Result:</span>
+                                <span class="result-value negative">–$70/yr</span>
+                                <span class="result-subtext">Net Cost</span>
+                            </div>
+                        </div>
+                        <div class="mode-card microvpp">
+                            <div class="mode-label">MicroVPP Mode (After)</div>
+                            <p>AI learned the EV schedule, pre-charged from solar/off-peak, and exported during evening price spikes. House and EV stayed within backup limits while monetizing the spread.</p>
+                            <div class="mode-result">
+                                <span class="result-label">Actual Result:</span>
+                                <span class="result-value positive">+$1,265/yr</span>
+                                <span class="result-subtext">Net ROI</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cashflow-highlight">1 year cash flow swing: +$1,335/yr</div>
+                    <div class="case-callouts">
+                        <div class="callout">Future VPP Potential<strong>Projected +$1,335/yr via grid services</strong></div>
+                        <div class="callout">Rate Plan<strong>TOU plan with steep evening peaks & low daytime export credit</strong></div>
+                        <div class="callout">Battery Settings<strong>Backup reserve kept at 30% (safe for outages)</strong></div>
+                        <div class="callout">Net Metering<strong>NEM 3.0 TOU export rates (EV load sensitive)</strong></div>
+                    </div>
                 </div>
             </div>
         </div>
