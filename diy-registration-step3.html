@@ -12,7 +12,7 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIY System Registration - Step 1 - MicroGrid</title>
+    <title>Upload Electricity Bills - Step 3 - MicroGrid</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -180,10 +180,10 @@
             content: '';
             position: absolute;
             top: 20px;
-            left: 25%;
-            right: 25%;
+            left: 16.66%;
+            right: 16.66%;
             height: 3px;
-            background: #e5e7eb;
+            background: #10B981;
             z-index: 0;
         }
 
@@ -230,13 +230,6 @@
             font-weight: 600;
         }
 
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
         .form-group {
             margin-bottom: 1.5rem;
         }
@@ -250,43 +243,6 @@
             margin-bottom: 0.5rem;
             font-weight: 600;
             color: #374151;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #059669;
-            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .checkbox-group input[type="checkbox"] {
-            width: auto;
-            margin-top: 0.25rem;
-        }
-
-        .checkbox-group label {
-            margin-bottom: 0;
-            font-weight: 400;
-            line-height: 1.5;
         }
 
         .submit-btn {
@@ -307,6 +263,32 @@
             background: linear-gradient(135deg, #047857 0%, #065f46 100%);
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+        }
+
+        .submit-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .back-btn {
+            background: transparent;
+            color: #6b7280;
+            padding: 1rem 2rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .back-btn:hover {
+            border-color: #059669;
+            color: #059669;
         }
 
         .file-upload-container {
@@ -466,129 +448,15 @@
                 margin: 0 1rem;
             }
 
-            .form-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-
             .progress-bar::before {
-                left: 20%;
-                right: 20%;
+                left: 15%;
+                right: 15%;
             }
         }
 
         @media (max-width: 640px) {
             .cta-button.hide-mobile {
                 display: none;
-            }
-        }
-
-        /* Sticky CTA Bar */
-        .sticky-cta-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-top: 1px solid rgba(16, 185, 129, 0.15);
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
-            padding: 1rem;
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        .cta-bar-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-        }
-
-        .cta-bar-text {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #1f2937;
-            flex-shrink: 0;
-        }
-
-        .cta-bar-buttons {
-            display: flex;
-            gap: 0.75rem;
-            align-items: center;
-        }
-
-        .cta-bar-primary {
-            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-            min-height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .cta-bar-primary:hover {
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
-        }
-
-        body {
-            padding-bottom: 100px;
-        }
-
-        @media (max-width: 768px) {
-            .cta-bar-content {
-                flex-direction: column;
-                text-align: center;
-                gap: 0.75rem;
-            }
-
-            .cta-bar-text {
-                font-size: 1rem;
-                margin-bottom: 0.5rem;
-            }
-
-            .cta-bar-buttons {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .cta-bar-primary {
-                flex: 1;
-                min-width: 140px;
-                padding: 0.75rem;
-                font-size: 0.9rem;
-            }
-
-            .sticky-cta-bar {
-                padding: 1rem 0.75rem;
-            }
-
-            body {
-                padding-bottom: 140px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .cta-bar-primary {
-                width: 100%;
-                padding: 1rem;
-            }
-
-            body {
-                padding-bottom: 160px;
             }
         }
 
@@ -703,7 +571,6 @@
             </ul>
             <div class="header-buttons">
                 <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
-                <a href="diy-registration.html" class="cta-button hide-mobile">Start Free</a>
                 <a href="https://apps.apple.com/us/app/dgrid/id6747276150" class="cta-button-outline">Download App</a>
             </div>
         </nav>
@@ -715,107 +582,71 @@
             <div class="form-container">
                 <!-- Progress Bar -->
                 <div class="progress-bar">
-                    <div class="progress-step active">
-                        <div class="progress-step-circle">1</div>
+                    <div class="progress-step completed">
+                        <div class="progress-step-circle">✓</div>
                         <div class="progress-step-label">Contact Info</div>
                     </div>
-                    <div class="progress-step">
-                        <div class="progress-step-circle">2</div>
+                    <div class="progress-step completed">
+                        <div class="progress-step-circle">✓</div>
                         <div class="progress-step-label">System Setup</div>
+                    </div>
+                    <div class="progress-step active">
+                        <div class="progress-step-circle">3</div>
+                        <div class="progress-step-label">Electricity Bills</div>
                     </div>
                 </div>
 
                 <div class="section-header">
-                    <h2>Start Your Smart Battery Journey</h2>
-                    <p>Just 2 quick steps to unlock AI optimization and start earning</p>
+                    <h2>Step 3 — Upload Your Electricity Bills</h2>
+                    <p>Help us calculate your personalized savings estimate</p>
                 </div>
 
-                <form id="step1Form" action="#" method="POST">
+                <form id="diyForm" action="#" method="POST">
                     
-                    <h2 style="font-size: 1.5rem; color: #059669; margin-bottom: 0.5rem;">Step 1 — Tell Us About Yourself</h2>
-                    <p style="color: #6b7280; margin-bottom: 2rem;">We'll save your info so you don't lose progress. This helps us prepare your personalized estimate.</p>
-                    
-                    <div class="form-group full-width">
-                        <label for="fullName">Full Name or Preferred Name *</label>
-                        <input type="text" id="fullName" name="fullName" placeholder="Enter your full name or preferred name" required>
-                    </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="email">Email Address *</label>
-                            <input type="email" id="email" name="email" placeholder="you@example.com" required>
-                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">We'll send your earning estimates and setup instructions.</small>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone Number</label>
-                            <input type="tel" id="phone" name="phone" placeholder="(800) 555-0100 or 8005550100">
-                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">US phone numbers only. Enter 10 digits.</small>
+                    <div style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
+                        <div style="display: flex; align-items: start; gap: 0.75rem;">
+                            <span style="font-size: 1.5rem;">📊</span>
+                            <div>
+                                <h3 style="font-size: 1.1rem; color: #1e40af; font-weight: 700; margin-bottom: 0.5rem;">Why We Need Your Bills</h3>
+                                <p style="color: #1e3a8a; font-size: 0.95rem; line-height: 1.6; margin: 0;">
+                                    Since you're using the system specs approach, we need your recent electricity bills to analyze your usage patterns and calculate accurate savings estimates. Our AI will process your bills to understand your consumption and determine your earning potential.
+                                </p>
+                            </div>
                         </div>
                     </div>
 
                     <div class="form-group full-width">
-                        <label for="address">Address</label>
-                        <input type="text" id="address" name="address" placeholder="Street address (optional)">
-                    </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="city">City *</label>
-                            <input type="text" id="city" name="city" placeholder="City" required>
-                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Certain utility rules differ by location.</small>
-                        </div>
-                        <div class="form-group">
-                            <label for="state">State *</label>
-                            <select id="state" name="state" required>
-                                <option value="">Select State</option>
-                                <option value="California" selected>California</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group full-width">
-                        <label for="utilityCompany">Utility Company</label>
-                        <select id="utilityCompany" name="utilityCompany">
-                            <option value="">Select Utility Company</option>
-                            <option value="PG&E">Pacific Gas & Electric (PG&E)</option>
-                            <option value="SCE">Southern California Edison (SCE)</option>
-                            <option value="SDG&E">San Diego Gas & Electric (SDG&E)</option>
-                            <option value="SMUD">Sacramento Municipal Utility District (SMUD)</option>
-                            <option value="LADWP">Los Angeles Department of Water and Power (LADWP)</option>
-                            <option value="Other">Other Utility</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group full-width">
-                        <label for="electricityBills">Upload Recent Electricity Bills (Optional)</label>
+                        <label for="electricityBills">Upload Recent Electricity Bills *</label>
                         <div class="file-upload-container">
                             <div class="file-upload-area" id="fileUploadArea">
                                 <div class="upload-icon">📄</div>
                                 <p class="upload-text">Click to upload or drag and drop</p>
-                                <p class="upload-subtext">Upload up to 12 files (PDF or images) — more recent bills are better</p>
+                                <p class="upload-subtext">Upload 1-12 files (PDF or images) — more recent bills provide better estimates</p>
                                 <input type="file" id="electricityBills" name="electricityBills" accept=".pdf,.jpg,.jpeg,.png" multiple style="display: none;">
                             </div>
                             <div id="fileList" class="file-list"></div>
                         </div>
                         <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">
-                            <strong style="color: #059669;">Optional but helpful:</strong> Helps our AI estimate your savings faster. You can skip this step and add bills later.
+                            <strong style="color: #ef4444;">Required:</strong> Please upload at least one recent bill. We recommend uploading the last 3-12 months for the most accurate estimates.
                         </small>
                     </div>
 
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="terms" name="terms" required>
-                        <label for="terms">I agree to the <a href="terms.html" style="color: #059669;">Terms of Service</a> and <a href="privacy.html" style="color: #059669;">Privacy Policy</a> *</label>
-                    </div>
-
                     <p style="text-align: center; margin: 1.5rem 0 0.75rem 0; padding: 1rem; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border-radius: 12px; border: 2px solid #10B981;">
-                        <span style="display: block; color: #059669; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">✨ YOUR PROGRESS IS SAVED</span>
-                        <span style="display: block; color: #047857; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">We'll save your info when you click continue</span>
-                        <span style="display: block; color: #6b7280; font-size: 0.85rem;">You won't lose any data if you need to come back later</span>
+                        <span style="display: block; color: #059669; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">🎁 UNLOCK YOUR EARNING POTENTIAL</span>
+                        <span style="display: block; color: #047857; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem;">Typical range for similar systems: $50–$200/month</span>
+                        <span style="display: block; color: #6b7280; font-size: 0.85rem;">Get your personalized estimate ↓</span>
                     </p>
 
-                    <button type="submit" class="submit-btn" id="submitBtn">Save & Continue to Step 2 →</button>
+                    <button type="button" class="back-btn" onclick="window.location.href='diy-registration-step2.html'">← Back to Step 2</button>
+                    <button type="submit" class="submit-btn" id="submitBtn" disabled>Complete Registration</button>
                     
-                    <p style="text-align: center; margin-top: 1rem; color: #6b7280; font-size: 0.95rem;">💡 Takes less than 2 minutes to complete both steps.</p>
+                    <p style="text-align: center; margin-top: 1rem; color: #6b7280; font-size: 0.95rem;" id="submitHelpText">💡 You'll receive your results within 24 hours.</p>
+
+                    <div style="text-align: center; margin-top: 1.25rem;">
+                        <a href="mailto:support@microvpp.com" style="display: inline-block; padding: 0.75rem 1.5rem; background: #f0fdf4; color: #059669; text-decoration: none; font-weight: 600; border-radius: 8px; border: 2px solid #10B981; transition: all 0.3s ease;">
+                            💬 Need help? Contact Support
+                        </a>
+                    </div>
 
                     <small style="display: block; text-align: center; margin-top: 1.5rem; color: #6b7280; font-size: 0.875rem; line-height: 1.6;">
                         By continuing you agree to our <a href="privacy.html" style="color: #059669;">Privacy Policy</a>.  
@@ -852,86 +683,7 @@
         </div>
     </footer>
 
-    <!-- Sticky CTA Bar -->
-    <div class="sticky-cta-bar">
-        <div class="cta-bar-content">
-            <div class="cta-bar-text">Ready to activate your smart battery?</div>
-            <div class="cta-bar-buttons">
-                <a href="https://apps.apple.com/us/app/dgrid/id6747276150" class="cta-bar-primary">Download App</a>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // ============================================
-        // FORM ANALYTICS TRACKING
-        // ============================================
-        
-        const FormTracker = {
-            formStarted: false,
-            fieldsInteracted: new Set(),
-            abandonmentTimer: null,
-            
-            trackFormStart() {
-                if (!this.formStarted) {
-                    this.formStarted = true;
-                    gtag('event', 'form_start', {
-                        form_name: 'diy_registration_step1',
-                        form_type: 'registration'
-                    });
-                    console.log('📊 Analytics: Form Step 1 started');
-                }
-            },
-            
-            trackFieldInteraction(fieldName, fieldType) {
-                if (!this.fieldsInteracted.has(fieldName)) {
-                    this.fieldsInteracted.add(fieldName);
-                    gtag('event', 'form_field_interaction', {
-                        form_name: 'diy_registration_step1',
-                        field_name: fieldName,
-                        field_type: fieldType,
-                        step: 1
-                    });
-                    console.log('📊 Analytics: Field interaction -', fieldName);
-                }
-            },
-            
-            trackFileUpload(fileCount, totalSize) {
-                gtag('event', 'file_upload', {
-                    form_name: 'diy_registration_step1',
-                    file_count: fileCount,
-                    total_size_mb: (totalSize / (1024 * 1024)).toFixed(2),
-                    step: 1
-                });
-                console.log('📊 Analytics: Files uploaded -', fileCount);
-            },
-            
-            trackStep1Complete() {
-                gtag('event', 'form_step_complete', {
-                    form_name: 'diy_registration_step1',
-                    step_number: 1,
-                    step_name: 'contact_info',
-                    fields_completed: this.fieldsInteracted.size
-                });
-                console.log('📊 Analytics: Step 1 completed');
-            },
-            
-            resetAbandonmentTimer() {
-                if (this.abandonmentTimer) {
-                    clearTimeout(this.abandonmentTimer);
-                }
-                this.abandonmentTimer = setTimeout(() => {
-                    if (this.formStarted) {
-                        gtag('event', 'form_abandon', {
-                            form_name: 'diy_registration_step1',
-                            step: 1,
-                            fields_completed: this.fieldsInteracted.size
-                        });
-                    }
-                }, 120000); // 2 minutes
-            }
-        };
-
         // ============================================
         // MOBILE MENU
         // ============================================
@@ -945,6 +697,7 @@
                 this.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
             });
 
+            // Close menu when clicking outside
             document.addEventListener('click', function(event) {
                 if (!event.target.closest('nav')) {
                     navLinks.classList.remove('active');
@@ -952,6 +705,7 @@
                 }
             });
 
+            // Close menu when clicking a link
             navLinks.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', function() {
                     navLinks.classList.remove('active');
@@ -959,6 +713,51 @@
                 });
             });
         }
+
+        // ============================================
+        // LOAD PREVIOUS STEP DATA FROM SESSION STORAGE
+        // ============================================
+        
+        let step1Data = {};
+        let step2Data = {};
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load step 1 data
+            const storedStep1 = sessionStorage.getItem('registrationStep1');
+            if (!storedStep1) {
+                alert('⚠️ No data from Step 1 found. Redirecting back to Step 1...');
+                window.location.href = 'diy-registration.html';
+                return;
+            }
+            
+            // Load step 2 data
+            const storedStep2 = sessionStorage.getItem('registrationStep2');
+            if (!storedStep2) {
+                alert('⚠️ No data from Step 2 found. Redirecting back to Step 2...');
+                window.location.href = 'diy-registration-step2.html';
+                return;
+            }
+            
+            try {
+                step1Data = JSON.parse(storedStep1);
+                step2Data = JSON.parse(storedStep2);
+                console.log('Loaded Step 1 data:', step1Data);
+                console.log('Loaded Step 2 data:', step2Data);
+            } catch (error) {
+                console.error('Error loading previous step data:', error);
+                alert('⚠️ Error loading data from previous steps. Please start over.');
+                window.location.href = 'diy-registration.html';
+                return;
+            }
+        });
+
+        // ============================================
+        // API CONFIGURATION
+        // ============================================
+        
+        const API_BASE_URL = 'https://3dbhitxwoc.execute-api.us-east-2.amazonaws.com/dev';
+        const REGISTER_ENDPOINT = '/auth/signup';
+        const UPLOAD_BILLS_ENDPOINT = '/admin/upload-utility-bills';
 
         // ============================================
         // FILE UPLOAD HANDLING
@@ -970,6 +769,7 @@
         const fileUploadArea = document.getElementById('fileUploadArea');
         const fileInput = document.getElementById('electricityBills');
         const fileList = document.getElementById('fileList');
+        const submitBtn = document.getElementById('submitBtn');
 
         // Click to upload
         fileUploadArea.addEventListener('click', () => {
@@ -1000,9 +800,6 @@
         function handleFiles(files) {
             const newFiles = Array.from(files);
             
-            FormTracker.trackFormStart();
-            FormTracker.resetAbandonmentTimer();
-            
             if (uploadedFiles.length + newFiles.length > MAX_FILES) {
                 alert(`You can only upload up to ${MAX_FILES} files. You currently have ${uploadedFiles.length} file(s).`);
                 return;
@@ -1026,13 +823,8 @@
                 uploadedFiles.push(file);
             });
 
-            if (!hasErrors && newFiles.length > 0) {
-                const totalSize = uploadedFiles.reduce((sum, file) => sum + file.size, 0);
-                FormTracker.trackFileUpload(uploadedFiles.length, totalSize);
-                FormTracker.trackFieldInteraction('electricityBills', 'file');
-            }
-
             displayFiles();
+            updateSubmitButton();
             fileInput.value = '';
         }
 
@@ -1064,6 +856,16 @@
         function removeFile(index) {
             uploadedFiles.splice(index, 1);
             displayFiles();
+            updateSubmitButton();
+        }
+
+        function updateSubmitButton() {
+            // Enable submit button only if at least one file is uploaded
+            if (uploadedFiles.length > 0) {
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.disabled = true;
+            }
         }
 
         function getFileIcon(fileType) {
@@ -1080,113 +882,296 @@
             return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
         }
 
-        // ============================================
-        // ATTACH ANALYTICS TO FORM FIELDS
-        // ============================================
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('step1Form');
-            
-            const formFields = form.querySelectorAll('input, select, textarea');
-            formFields.forEach(field => {
-                field.addEventListener('focus', function() {
-                    FormTracker.trackFormStart();
-                    FormTracker.trackFieldInteraction(this.name || this.id, this.type || this.tagName.toLowerCase());
-                    FormTracker.resetAbandonmentTimer();
-                });
-                
-                field.addEventListener('input', function() {
-                    FormTracker.resetAbandonmentTimer();
-                });
-                
-                field.addEventListener('change', function() {
-                    FormTracker.resetAbandonmentTimer();
-                });
-            });
-            
-            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
-                    FormTracker.trackFieldInteraction(this.name || this.id, 'checkbox');
-                    FormTracker.resetAbandonmentTimer();
-                });
-            });
-        });
+        // Generate a unique inverter ID
+        function generateInverterId() {
+            return 'INV-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        }
 
-        // ============================================
-        // FORM SUBMIT HANDLER - SAVE TO SESSION STORAGE
-        // ============================================
-        
-        document.getElementById('step1Form').addEventListener('submit', async function(e) {
+        // Format phone number to E.164 format
+        function formatPhoneToE164(phone) {
+            if (!phone) return null;
+            
+            const digits = phone.replace(/\D/g, '');
+            
+            if (digits.length === 10) {
+                return '+1' + digits;
+            } else if (digits.length === 11 && digits.startsWith('1')) {
+                return '+' + digits;
+            } else if (phone.startsWith('+')) {
+                return phone;
+            } else if (digits.length === 11) {
+                return '+' + digits;
+            }
+            
+            return '+1' + digits;
+        }
+
+        // Convert files to data URLs for later upload
+        async function fileToDataURL(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve({
+                    name: file.name,
+                    size: file.size,
+                    type: file.type,
+                    dataURL: e.target.result
+                });
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Convert data URL back to File for upload
+        async function dataURLtoFile(dataurl, filename, type) {
+            const arr = dataurl.split(',');
+            const mime = arr[0].match(/:(.*?);/)[1];
+            const bstr = atob(arr[1]);
+            let n = bstr.length;
+            const u8arr = new Uint8Array(n);
+            while(n--){
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new File([u8arr], filename, {type: mime});
+        }
+
+        // Map form data to API payload
+        async function mapFormToPayload() {
+            const manufacturer = step2Data.inverterManufacturer;
+            const otherManufacturer = step2Data.otherManufacturer;
+            const inverterId = generateInverterId();
+            
+            // Determine the inverter type
+            const inverterManufacturer = manufacturer === 'Other' && otherManufacturer 
+                ? otherManufacturer 
+                : manufacturer;
+
+            // Convert uploaded files to data URLs for storage
+            const fileData = [];
+            for (const file of uploadedFiles) {
+                const dataURL = await fileToDataURL(file);
+                fileData.push(dataURL);
+            }
+
+            // Build the info object with all additional user and system information
+            const info = {
+                contact: {
+                    name: step1Data.fullName || null,
+                    email: step1Data.email,
+                    phone: step1Data.phone || null
+                },
+                location: {
+                    address: step1Data.address || null,
+                    city: step1Data.city,
+                    state: step1Data.state
+                },
+                system: {
+                    battery_capacity_kwh: step2Data.batteryCapacity ? parseFloat(step2Data.batteryCapacity) : null,
+                    pv_wattage_kw: step2Data.pvWattage ? parseFloat(step2Data.pvWattage) : null,
+                    installation_date: step2Data.installationDate || null,
+                    utility_company: step1Data.utilityCompany || null,
+                    serial_number: step2Data.serialNumber || null
+                },
+                registration: {
+                    mode: 'simulation',
+                    vpp_participation: step2Data.vppParticipation || false,
+                    marketing_consent: step2Data.marketing || false,
+                    terms_accepted: step1Data.termsAccepted || false,
+                    registration_date: new Date().toISOString(),
+                    registration_source: 'diy-web-form-step3'
+                },
+                electricity_bills: {
+                    uploaded_count: fileData.length,
+                    files: fileData.map(file => ({
+                        name: file.name,
+                        size: file.size,
+                        type: file.type
+                    }))
+                },
+                notes: step2Data.additionalNotes || null
+            };
+
+            // Build the API payload
+            const payload = {
+                entity_type: "inverter",
+                username: step1Data.fullName || null,
+                email: step1Data.email,
+                phone_number: formatPhoneToE164(step1Data.phone),
+                full_address: step1Data.address || null,
+                city: step1Data.city || null,
+                state: step1Data.state || null,
+                zip: step1Data.zip || null,
+                country: "US",
+                latitude: null,
+                longitude: null,
+                timezone: null,
+                locale: "en-US",
+                inverter_inverter_id: inverterId,
+                inverter_inverter_type: "hybrid_inverter",
+                inverter_manufacturer: inverterManufacturer,
+                inverter_serial_number: step2Data.serialNumber,
+                inverter_monitoring_id: null,
+                inverter_monitoring_token: null,
+                inverter_monitoring_url: null,
+                inverter_api_key: null,
+                inverter_api_secret: null,
+                info: JSON.stringify(info),
+                site_id: null,
+                site_type: "residential",
+                installation_date: step2Data.installationDate || null,
+            };
+
+            return { payload, fileData };
+        }
+
+        // Upload utility bills using the user_id from signup
+        async function uploadUtilityBills(userId, fileData) {
+            if (!fileData || fileData.length === 0) {
+                console.log('No utility bills to upload');
+                return { success: true, message: 'No files to upload' };
+            }
+
+            try {
+                const formData = new FormData();
+                formData.append('account_id', userId);
+                
+                // Convert data URLs back to File objects
+                for (const data of fileData) {
+                    const file = await dataURLtoFile(data.dataURL, data.name, data.type);
+                    formData.append('files', file);
+                }
+                
+                console.log(`Uploading ${fileData.length} utility bill(s) for account_id: ${userId}`);
+
+                const response = await fetch(API_BASE_URL + UPLOAD_BILLS_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => null);
+                    throw new Error(
+                        errorData?.detail || 
+                        `Utility bill upload failed with status: ${response.status}`
+                    );
+                }
+
+                const result = await response.json();
+                console.log('Utility bills uploaded successfully:', result);
+                
+                return { success: true, result };
+            } catch (error) {
+                console.error('Utility bill upload error:', error);
+                return { success: false, error: error.message };
+            }
+        }
+
+        // Submit form to API
+        async function submitRegistration(payload, fileData) {
+            const submitBtn = document.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            
+            try {
+                // Show loading state
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Processing Your Registration...';
+                submitBtn.style.opacity = '0.7';
+
+                const response = await fetch(API_BASE_URL + REGISTER_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => null);
+                    throw new Error(
+                        errorData?.detail || 
+                        `Registration failed with status: ${response.status}`
+                    );
+                }
+
+                const result = await response.json();
+                console.log('Registration successful:', result);
+
+                // Upload utility bills
+                if (fileData.length > 0 && result.user_id) {
+                    submitBtn.textContent = 'Uploading Utility Bills...';
+                    const uploadResult = await uploadUtilityBills(result.user_id, fileData);
+                    
+                    if (!uploadResult.success) {
+                        console.warn('Utility bill upload failed, but registration succeeded:', uploadResult.error);
+                        alert(
+                            '⚠️ Warning: Registration successful, but bill upload encountered an issue.\n\n' +
+                            'We\'ll contact you to collect your bills. You can also email them to support@microvpp.com.'
+                        );
+                    }
+                }
+
+                // Build success message
+                let successMessage = '🎉 Success! We\'re preparing your savings estimate!\n\n';
+                successMessage += `We've received ${fileData.length} electricity bill file(s) for analysis.\n\n`;
+                successMessage += 
+                    'What happens next:\n' +
+                    '1. Our AI analyzes your utility bills and system specs\n' +
+                    '2. You\'ll receive a detailed savings estimate within 24 hours\n' +
+                    '3. We\'ll email instructions to connect your actual system\n' +
+                    '4. Download the MicroVPP™ app to view your results\n\n' +
+                    'Check your email (' + payload.email + ') for your savings estimate!';
+
+                // Show success message
+                alert(successMessage);
+
+                // Clear session storage
+                sessionStorage.removeItem('registrationStep1');
+                sessionStorage.removeItem('registrationStep2');
+
+                // Redirect to home
+                window.location.href = 'index.html';
+
+            } catch (error) {
+                console.error('Registration error:', error);
+                
+                // Show error message
+                alert(
+                    '❌ Registration Error\n\n' +
+                    'We encountered an issue while processing your registration:\n' +
+                    error.message + '\n\n' +
+                    'Please try again or contact support@microvpp.com for assistance.'
+                );
+            } finally {
+                // Restore button state
+                submitBtn.disabled = uploadedFiles.length === 0;
+                submitBtn.textContent = originalText;
+                submitBtn.style.opacity = '1';
+            }
+        }
+
+        // Form submit handler
+        document.getElementById('diyForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const formData = new FormData(this);
-            
-            // Validate required fields
-            const requiredFields = this.querySelectorAll('[required]');
-            let isValid = true;
-            
-            requiredFields.forEach(field => {
-                if (field.offsetParent !== null && !field.value.trim()) {
-                    field.style.borderColor = '#ef4444';
-                    isValid = false;
-                } else {
-                    field.style.borderColor = '#e5e7eb';
-                }
-            });
-            
-            if (!isValid) {
-                alert('Please fill in all required fields.');
+            // Validate that at least one file is uploaded
+            if (uploadedFiles.length === 0) {
+                alert('⚠️ Please upload at least one electricity bill to continue.\n\nYour bills help us calculate accurate savings estimates.');
                 return;
             }
             
-            // Prepare data to save
-            const step1Data = {
-                fullName: formData.get('fullName'),
-                email: formData.get('email'),
-                phone: formData.get('phone') || null,
-                address: formData.get('address') || null,
-                city: formData.get('city'),
-                state: formData.get('state'),
-                utilityCompany: formData.get('utilityCompany') || null,
-                termsAccepted: formData.get('terms') === 'on',
-                timestamp: new Date().toISOString()
-            };
-            
-            // Save to session storage
-            sessionStorage.setItem('registrationStep1', JSON.stringify(step1Data));
-            
-            // Convert files to data URLs for storage
-            if (uploadedFiles.length > 0) {
-                const submitBtn = document.getElementById('submitBtn');
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Preparing files...';
-                
-                const filesData = [];
-                for (const file of uploadedFiles) {
-                    const dataURL = await new Promise((resolve) => {
-                        const reader = new FileReader();
-                        reader.onload = (e) => resolve(e.target.result);
-                        reader.readAsDataURL(file);
-                    });
-                    filesData.push({
-                        name: file.name,
-                        size: file.size,
-                        type: file.type,
-                        dataURL: dataURL
-                    });
-                }
-                sessionStorage.setItem('registrationFiles', JSON.stringify(filesData));
+            try {
+                const { payload, fileData } = await mapFormToPayload();
+                console.log('Sending registration payload:', payload);
+                await submitRegistration(payload, fileData);
+            } catch (error) {
+                console.error('Form submission error:', error);
+                alert('An error occurred while preparing your registration. Please try again.');
             }
-            
-            // Track step 1 completion
-            FormTracker.trackStep1Complete();
-            
-            console.log('Step 1 data saved:', step1Data);
-            
-            // Redirect to step 2
-            window.location.href = 'diy-registration-step2.html';
         });
     </script>
 </body>
 </html>
+

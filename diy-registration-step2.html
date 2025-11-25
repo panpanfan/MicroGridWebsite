@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-05XLDKW0MN"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-05XLDKW0MN');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Setup - Step 2 - MicroGrid</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        :root {
+            --brand-green: #10B981;
+            --brand-green-dark: #065f46;
+            --brand-green-medium: #059669;
+            --brand-green-darker: #047857;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.15);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #10B981;
+        }
+
+        .header-buttons {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .cta-button:hover {
+            background: linear-gradient(135deg, #059669, #047857);
+        }
+
+        .cta-button-outline {
+            background: transparent;
+            color: var(--brand-green);
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--brand-green);
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .cta-button-outline:hover {
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: #6b7280;
+        }
+
+        /* Registration form section */
+        .registration-form-section {
+            padding: 140px 0 80px;
+            background: #f8fafc;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 25%;
+            right: 25%;
+            height: 3px;
+            background: #10B981;
+            z-index: 0;
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .progress-step.completed .progress-step-circle {
+            background: #10B981;
+            color: white;
+        }
+
+        .progress-step.active .progress-step-circle {
+            background: #10B981;
+            color: white;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+        }
+
+        .progress-step-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .progress-step.active .progress-step-label {
+            color: #059669;
+            font-weight: 600;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #059669;
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-top: 0.25rem;
+        }
+
+        .checkbox-group label {
+            margin-bottom: 0;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+        }
+
+        .back-btn {
+            background: transparent;
+            color: #6b7280;
+            padding: 1rem 2rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .back-btn:hover {
+            border-color: #059669;
+            color: #059669;
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                gap: 0;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                padding: 0.75rem 0;
+                border-bottom: 1px solid #f0f0f0;
+            }
+
+            .nav-links li:last-child {
+                border-bottom: none;
+            }
+
+            .form-container {
+                padding: 2rem 1.5rem;
+                margin: 0 1rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .progress-bar::before {
+                left: 20%;
+                right: 20%;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .cta-button.hide-mobile {
+                display: none;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: white;
+            padding: 2.5rem 0;
+            border-top: 1px solid rgba(16, 185, 129, 0.1);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--brand-green);
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+
+        .footer-logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .footer-logo-title {
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        .footer-logo-subtitle {
+            font-size: 0.875rem;
+            color: #9CA3AF;
+        }
+
+        .footer-tagline {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            letter-spacing: -0.015em;
+        }
+
+        .footer-nav {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .footer-nav a {
+            color: #9CA3AF;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-nav a:hover {
+            color: white;
+        }
+
+        .footer-copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 0.75rem;
+            margin-top: 0.75rem;
+            text-align: center;
+        }
+
+        .footer-copyright p {
+            font-size: 0.875rem;
+            color: #9CA3AF;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <a href="index.html" class="logo">
+                <img src="assets/images/microgrid_logo.png" alt="MicroGrid" height="50">
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#join-movement">How It Works</a></li>
+                <li><a href="index.html#nem">California (NEM 3.0)</a></li>
+                <li><a href="index.html#impact">Results</a></li>
+                <li><a href="index.html#compat">Compatibility</a></li>
+                <li><a href="index.html#faq">FAQ</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+            <div class="header-buttons">
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
+                <a href="https://apps.apple.com/us/app/dgrid/id6747276150" class="cta-button-outline">Download App</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Registration Form Section -->
+    <section class="registration-form-section">
+        <div class="container">
+            <div class="form-container">
+                <!-- Progress Bar -->
+                <div class="progress-bar">
+                    <div class="progress-step completed">
+                        <div class="progress-step-circle">✓</div>
+                        <div class="progress-step-label">Contact Info</div>
+                    </div>
+                    <div class="progress-step active">
+                        <div class="progress-step-circle">2</div>
+                        <div class="progress-step-label">System Setup</div>
+                    </div>
+                </div>
+
+                <div class="section-header">
+                    <h2>Step 2 — Understand Your Earnings Potential</h2>
+                    <p>Connect your system to get personalized savings estimates</p>
+                </div>
+
+                <form id="diyForm" action="#" method="POST">
+                    
+                    <p style="color: #6b7280; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem; padding: 1rem; background: #f9fafb; border-radius: 8px; border-left: 4px solid #10B981;">
+                        <strong style="color: #059669;">🔒 Your System Security:</strong> We only request <strong>read-only access</strong> to view your system data. We will never control, modify, or operate your system without your explicit written consent. Your inverter credentials are encrypted and stored securely.
+                    </p>
+
+                    <!-- Easy Start: Provide System Specs -->
+                    <div style="background: #f9fafb; border: 2px solid #d1d5db; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
+                        <div style="display: flex; align-items: start; gap: 0.75rem;">
+                            <span style="font-size: 1.5rem;">📊</span>
+                            <div style="flex: 1;">
+                                <h3 style="font-size: 1.1rem; color: #374151; font-weight: 700; margin-bottom: 0.5rem;">Quick Start: Tell Us Your System Specs</h3>
+                                <p style="color: #4b5563; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                                    <strong>Don't have your inverter credentials handy? That's perfectly fine!</strong> Just provide your system specifications below, and we'll calculate your estimated earnings. You can complete registration now and connect your system later.
+                                </p>
+                                
+                                <p style="color: #374151; font-size: 0.875rem; margin-bottom: 1rem; padding: 0.75rem; background: #e0f2fe; border-radius: 8px; border-left: 3px solid #0ea5e9;">
+                                    <strong>✅ This is enough to get started!</strong> Simply enter your battery and solar capacity below. We'll send you personalized estimates within 24 hours.
+                                </p>
+
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="batteryCapacity">Battery Capacity (kWh) <span id="batteryCapacityRequired" style="display: none; color: #ef4444;">*</span></label>
+                                        <input type="number" id="batteryCapacity" name="batteryCapacity" placeholder="e.g., 13.5" step="0.1" min="0">
+                                        <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">
+                                            Total usable battery storage capacity.
+                                        </small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pvWattage">Solar Panel Capacity (kW) <span id="pvWattageRequired" style="display: none; color: #ef4444;">*</span></label>
+                                        <input type="number" id="pvWattage" name="pvWattage" placeholder="e.g., 8.5" step="0.1" min="0">
+                                        <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">
+                                            Total solar panel capacity in kilowatts.
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Strongly Recommended: Direct Connection -->
+                    <div style="background: #f0fdf4; border: 2px solid #10B981; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
+                        <div style="display: flex; align-items: start; gap: 0.75rem; margin-bottom: 1rem;">
+                            <span style="font-size: 1.5rem;">⚡</span>
+                            <div>
+                                <h3 style="font-size: 1.1rem; color: #059669; font-weight: 700; margin-bottom: 0.25rem;">⭐ Strongly Recommended: Direct Connection</h3>
+                                <p style="color: #047857; font-size: 0.95rem; line-height: 1.6; margin: 0 0 0.75rem 0;">
+                                    <strong>Get the most accurate earnings estimates and make it much easier to participate in VPP programs</strong> by connecting your inverter directly. With direct access, you can seamlessly join utility company scheduling events to earn extra money when available, plus get real-time data that maximizes your earning potential.
+                                </p>
+                                <p style="color: #065f46; font-size: 0.875rem; line-height: 1.6; margin: 0; padding: 0.75rem; background: rgba(16, 185, 129, 0.1); border-radius: 8px; border-left: 3px solid #10B981;">
+                                    <strong>ℹ️ About these credentials:</strong> Your installer should have created the inverter web service username and password during installation. <strong>These are different from your consumer app login.</strong>
+                                </p>
+                                <p style="color: #065f46; font-size: 0.875rem; line-height: 1.6; margin: 0.75rem 0 0 0; padding: 0.75rem; background: rgba(6, 182, 212, 0.1); border-radius: 8px; border-left: 3px solid #06B6D4;">
+                                    <strong>🤝 Don't have your credentials?</strong> No worries! Even if you don't know your inverter username and password, we will contact you to help coordinate with your installer to collect this information. You can still register now!
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="inverterManufacturer">Inverter Brand <span id="inverterManufacturerRequired" style="color: #ef4444;">*</span></label>
+                            <select id="inverterManufacturer" name="inverterManufacturer">
+                                <option value="">Select your brand</option>
+                                <option value="Enphase">Enphase</option>
+                                <option value="SolarEdge">SolarEdge</option>
+                                <option value="Sol-Ark">Sol-Ark</option>
+                                <option value="EG4">EG4</option>
+                                <option value="Franklin">Franklin</option>
+                                <option value="Liniotech">Liniotech</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <small style="color: #047857; font-size: 0.875rem; margin-top: 0.5rem; display: block;">So we can connect to the right data source.</small>
+                        </div>
+
+                        <div class="form-group full-width" id="otherManufacturerGroup" style="display: none;">
+                            <label for="otherManufacturer">Please specify manufacturer *</label>
+                            <input type="text" id="otherManufacturer" name="otherManufacturer" placeholder="Enter manufacturer name">
+                            <small style="color: #047857; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Please provide the name of your inverter manufacturer</small>
+                        </div>
+
+                        <div class="form-group full-width" id="serialNumberGroup" style="display: none;">
+                            <label for="serialNumber">Inverter Serial Number *</label>
+                            <input type="text" id="serialNumber" name="serialNumber" placeholder="Enter inverter serial number">
+                            <small style="color: #047857; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Required for Franklin and EG4 inverters</small>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="installationDate">System Installation Date</label>
+                            <input type="date" id="installationDate" name="installationDate">
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="username">Inverter Web Service Username</label>
+                                <input type="text" id="username" name="username" placeholder="Inverter web service username">
+                                <small style="color: #047857; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Used only to read performance data. We never share or sell data.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Inverter Web Service Password</label>
+                                <input type="password" id="password" name="password" placeholder="Inverter web service password">
+                                <small style="color: #047857; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Encrypted in transit and at rest. You can change it later.</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="additionalNotes">Additional Notes</label>
+                        <textarea id="additionalNotes" name="additionalNotes" placeholder="Any additional information about your system or setup..."></textarea>
+                    </div>
+
+                    <div id="securityBadge" style="background: #f0fdf4; border: 2px solid #d1fae5; border-radius: 12px; padding: 1.5rem; margin: 2rem 0;">
+                        <p style="margin: 0; line-height: 1.8; color: #047857;">
+                            👍 Read-only data access<br>
+                            👍 No hardware changes<br>
+                            👍 Disconnect anytime in one click
+                        </p>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="vppParticipation" name="vppParticipation">
+                        <label for="vppParticipation">I want to participate in Virtual Power Plant programs and earn money from my battery</label>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="marketing" name="marketing">
+                        <label for="marketing">I would like to receive updates about MicroGrid products and VPP opportunities</label>
+                    </div>
+
+                    <p style="text-align: center; margin: 1.5rem 0 0.75rem 0; padding: 1rem; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border-radius: 12px; border: 2px solid #10B981;">
+                        <span style="display: block; color: #059669; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">🎁 UNLOCK YOUR EARNING POTENTIAL</span>
+                        <span style="display: block; color: #047857; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem;">Typical range for similar systems: $50–$200/month</span>
+                        <span style="display: block; color: #6b7280; font-size: 0.85rem;">Get your personalized estimate ↓</span>
+                    </p>
+
+                    <button type="button" class="back-btn" onclick="window.location.href='diy-registration.html'">← Back to Step 1</button>
+                    <button type="submit" class="submit-btn" id="submitBtn">Continue</button>
+                    
+                    <p style="text-align: center; margin-top: 1rem; color: #6b7280; font-size: 0.95rem;" id="submitHelpText">💡 You'll receive your results within 24 hours.</p>
+
+                    <div style="text-align: center; margin-top: 1.25rem;">
+                        <a href="mailto:support@microvpp.com" style="display: inline-block; padding: 0.75rem 1.5rem; background: #f0fdf4; color: #059669; text-decoration: none; font-weight: 600; border-radius: 8px; border: 2px solid #10B981; transition: all 0.3s ease;">
+                            💬 Need help connecting? Contact Support
+                        </a>
+                    </div>
+
+                    <small style="display: block; text-align: center; margin-top: 1.5rem; color: #6b7280; font-size: 0.875rem; line-height: 1.6;">
+                        By continuing you agree to our <a href="privacy.html" style="color: #059669;">Privacy Policy</a>.  
+                        We only read system data to generate savings; we never sell personal data.
+                    </small>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="footer-logo-icon"></span>
+                    <div class="footer-logo-text">
+                        <div class="footer-logo-title">MicroVPP™</div>
+                        <div class="footer-logo-subtitle">by MicroGrid</div>
+                    </div>
+                </div>
+                <div class="footer-tagline">Smarter homes. Stronger grids.</div>
+                <nav class="footer-nav">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="privacy.html">Privacy</a>
+                    <a href="terms.html">Terms</a>
+                    <a href="mailto:info@microvpp.com">Contact</a>
+                </nav>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; 2025 MicroGrid LLC. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================
+        // MOBILE MENU
+        // ============================================
+        
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+                this.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('nav')) {
+                    navLinks.classList.remove('active');
+                    mobileMenuBtn.textContent = '☰';
+                }
+            });
+
+            // Close menu when clicking a link
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.classList.remove('active');
+                    mobileMenuBtn.textContent = '☰';
+                });
+            });
+        }
+
+        // ============================================
+        // LOAD STEP 1 DATA FROM SESSION STORAGE
+        // ============================================
+        
+        let step1Data = {};
+        let uploadedFiles = [];
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load step 1 data
+            const storedData = sessionStorage.getItem('registrationStep1');
+            if (!storedData) {
+                alert('⚠️ No data from Step 1 found. Redirecting back to Step 1...');
+                window.location.href = 'diy-registration.html';
+                return;
+            }
+            
+            try {
+                step1Data = JSON.parse(storedData);
+                console.log('Loaded Step 1 data:', step1Data);
+                
+                // Load files from session storage (as data URLs)
+                const storedFiles = sessionStorage.getItem('registrationFiles');
+                if (storedFiles) {
+                    const filesData = JSON.parse(storedFiles);
+                    uploadedFiles = filesData;
+                    console.log(`Loaded ${uploadedFiles.length} file(s) from Step 1`);
+                }
+            } catch (error) {
+                console.error('Error loading Step 1 data:', error);
+                alert('⚠️ Error loading data from Step 1. Please start over.');
+                window.location.href = 'diy-registration.html';
+                return;
+            }
+        });
+
+        // ============================================
+        // API CONFIGURATION
+        // ============================================
+        
+        const API_BASE_URL = 'https://3dbhitxwoc.execute-api.us-east-2.amazonaws.com/dev';
+        const REGISTER_ENDPOINT = '/auth/signup';
+        const UPLOAD_BILLS_ENDPOINT = '/admin/upload-utility-bills';
+
+        // Dynamic validation based on credentials input and alternative specs
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const batteryCapacityInput = document.getElementById('batteryCapacity');
+        const pvWattageInput = document.getElementById('pvWattage');
+        const inverterManufacturerInput = document.getElementById('inverterManufacturer');
+        const batteryCapacityRequired = document.getElementById('batteryCapacityRequired');
+        const pvWattageRequired = document.getElementById('pvWattageRequired');
+        const inverterManufacturerRequired = document.getElementById('inverterManufacturerRequired');
+
+        // Function to update field requirements based on what's provided
+        function updateFieldRequirements() {
+            const hasCredentials = usernameInput.value.trim() !== '' && passwordInput.value.trim() !== '';
+            const hasAlternativeSpecs = batteryCapacityInput.value.trim() !== '' && pvWattageInput.value.trim() !== '';
+            const submitBtn = document.getElementById('submitBtn');
+            const submitHelpText = document.getElementById('submitHelpText');
+            
+            if (hasCredentials) {
+                // If credentials provided, make battery/solar optional
+                batteryCapacityRequired.style.display = 'none';
+                pvWattageRequired.style.display = 'none';
+                batteryCapacityInput.removeAttribute('required');
+                pvWattageInput.removeAttribute('required');
+                
+                // Inverter manufacturer is still required when using credentials
+                inverterManufacturerRequired.style.display = 'inline';
+                inverterManufacturerInput.setAttribute('required', 'required');
+                
+                // Update button text for direct connection
+                submitBtn.textContent = 'Complete Registration';
+                submitHelpText.textContent = '💡 You\'ll receive your results within 24 hours.';
+            } else if (hasAlternativeSpecs) {
+                // If alternative specs provided, make inverter manufacturer optional
+                inverterManufacturerRequired.style.display = 'none';
+                inverterManufacturerInput.removeAttribute('required');
+                
+                // Battery and solar are still required (already filled)
+                batteryCapacityRequired.style.display = 'inline';
+                pvWattageRequired.style.display = 'inline';
+                batteryCapacityInput.setAttribute('required', 'required');
+                pvWattageInput.setAttribute('required', 'required');
+                
+                // Update button text for specs-only (will go to step 3)
+                submitBtn.textContent = 'Continue to Step 3 →';
+                submitHelpText.textContent = '💡 Next: Upload electricity bills for accurate estimates.';
+            } else {
+                // If neither credentials nor alternative specs, everything is required
+                batteryCapacityRequired.style.display = 'inline';
+                pvWattageRequired.style.display = 'inline';
+                batteryCapacityInput.setAttribute('required', 'required');
+                pvWattageInput.setAttribute('required', 'required');
+                inverterManufacturerRequired.style.display = 'inline';
+                inverterManufacturerInput.setAttribute('required', 'required');
+                
+                // Default button text
+                submitBtn.textContent = 'Continue';
+                submitHelpText.textContent = '💡 You\'ll receive your results within 24 hours.';
+            }
+        }
+
+        // Listen for changes in username, password, and alternative spec fields
+        usernameInput.addEventListener('input', updateFieldRequirements);
+        passwordInput.addEventListener('input', updateFieldRequirements);
+        batteryCapacityInput.addEventListener('input', updateFieldRequirements);
+        pvWattageInput.addEventListener('input', updateFieldRequirements);
+        
+        // Initialize on page load
+        updateFieldRequirements();
+
+        // Handle manufacturer-specific field visibility
+        document.getElementById('inverterManufacturer').addEventListener('change', function() {
+            const manufacturer = this.value;
+            const serialNumberGroup = document.getElementById('serialNumberGroup');
+            const serialNumberInput = document.getElementById('serialNumber');
+            const otherManufacturerGroup = document.getElementById('otherManufacturerGroup');
+            const otherManufacturerInput = document.getElementById('otherManufacturer');
+            
+            // Show serial number field for Franklin and EG4
+            if (manufacturer === 'Franklin' || manufacturer === 'EG4') {
+                serialNumberGroup.style.display = 'block';
+                serialNumberInput.required = true;
+            } else {
+                serialNumberGroup.style.display = 'none';
+                serialNumberInput.required = false;
+                serialNumberInput.value = '';
+            }
+            
+            // Show other manufacturer field when "Other" is selected
+            if (manufacturer === 'Other') {
+                otherManufacturerGroup.style.display = 'block';
+                otherManufacturerInput.required = true;
+            } else {
+                otherManufacturerGroup.style.display = 'none';
+                otherManufacturerInput.required = false;
+                otherManufacturerInput.value = '';
+            }
+        });
+
+        // Generate a unique inverter ID
+        function generateInverterId() {
+            return 'INV-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        }
+
+        // Format phone number to E.164 format
+        function formatPhoneToE164(phone) {
+            if (!phone) return null;
+            
+            const digits = phone.replace(/\D/g, '');
+            
+            if (digits.length === 10) {
+                return '+1' + digits;
+            } else if (digits.length === 11 && digits.startsWith('1')) {
+                return '+' + digits;
+            } else if (phone.startsWith('+')) {
+                return phone;
+            } else if (digits.length === 11) {
+                return '+' + digits;
+            }
+            
+            return '+1' + digits;
+        }
+
+        // Convert data URL files back to File objects for upload
+        async function dataURLtoFile(dataurl, filename) {
+            const arr = dataurl.split(',');
+            const mime = arr[0].match(/:(.*?);/)[1];
+            const bstr = atob(arr[1]);
+            let n = bstr.length;
+            const u8arr = new Uint8Array(n);
+            while(n--){
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new File([u8arr], filename, {type:mime});
+        }
+
+        // Map form data to API payload
+        async function mapFormToPayload(formData) {
+            const manufacturer = formData.get('inverterManufacturer');
+            const otherManufacturer = formData.get('otherManufacturer');
+            const inverterId = generateInverterId();
+            const username = formData.get('username');
+            const password = formData.get('password');
+            const hasCredentials = username && username.trim() !== '' && password && password.trim() !== '';
+            const isSimulationMode = !hasCredentials;
+            
+            // Determine the inverter type
+            const inverterManufacturer = manufacturer === 'Other' && otherManufacturer 
+                ? otherManufacturer 
+                : manufacturer;
+
+            // Build the info object with all additional user and system information
+            const info = {
+                contact: {
+                    name: step1Data.fullName || null,
+                    email: step1Data.email,
+                    phone: step1Data.phone || null
+                },
+                location: {
+                    address: step1Data.address || null,
+                    city: step1Data.city,
+                    state: step1Data.state
+                },
+                system: {
+                    battery_capacity_kwh: formData.get('batteryCapacity') ? parseFloat(formData.get('batteryCapacity')) : null,
+                    pv_wattage_kw: formData.get('pvWattage') ? parseFloat(formData.get('pvWattage')) : null,
+                    installation_date: formData.get('installationDate') || null,
+                    utility_company: step1Data.utilityCompany || null,
+                    serial_number: formData.get('serialNumber') || null
+                },
+                registration: {
+                    mode: isSimulationMode ? 'simulation' : 'direct_connection',
+                    vpp_participation: formData.get('vppParticipation') === 'on',
+                    marketing_consent: formData.get('marketing') === 'on',
+                    terms_accepted: step1Data.termsAccepted || false,
+                    registration_date: new Date().toISOString(),
+                    registration_source: 'diy-web-form-step2'
+                },
+                electricity_bills: {
+                    uploaded_count: uploadedFiles.length,
+                    files: uploadedFiles.map(file => ({
+                        name: file.name,
+                        size: file.size,
+                        type: file.type
+                    }))
+                },
+                notes: formData.get('additionalNotes') || null
+            };
+
+            // Build the API payload
+            const payload = {
+                entity_type: "inverter",
+                username: step1Data.fullName || null,
+                email: step1Data.email,
+                phone_number: formatPhoneToE164(step1Data.phone),
+                full_address: step1Data.address || null,
+                city: step1Data.city || null,
+                state: step1Data.state || null,
+                zip: step1Data.zip || null,
+                country: "US",
+                latitude: null,
+                longitude: null,
+                timezone: null,
+                locale: "en-US",
+                inverter_inverter_id: inverterId,
+                inverter_inverter_type: "hybrid_inverter",
+                inverter_manufacturer: inverterManufacturer,
+                inverter_serial_number: formData.get('serialNumber'),
+                inverter_monitoring_id: null,
+                inverter_monitoring_token: null,
+                inverter_monitoring_url: null,
+                inverter_api_key: formData.get('username'),
+                inverter_api_secret: formData.get('password'),
+                info: JSON.stringify(info),
+                site_id: null,
+                site_type: "residential",
+                installation_date: formData.get('installationDate') || null,
+            };
+
+            return payload;
+        }
+
+        // Upload utility bills using the user_id from signup
+        async function uploadUtilityBills(userId, files) {
+            if (!files || files.length === 0) {
+                console.log('No utility bills to upload');
+                return { success: true, message: 'No files to upload' };
+            }
+
+            try {
+                const formData = new FormData();
+                formData.append('account_id', userId);
+                
+                // Convert data URLs back to File objects
+                for (const fileData of files) {
+                    const file = await dataURLtoFile(fileData.dataURL, fileData.name);
+                    formData.append('files', file);
+                }
+                
+                console.log(`Uploading ${files.length} utility bill(s) for account_id: ${userId}`);
+
+                const response = await fetch(API_BASE_URL + UPLOAD_BILLS_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => null);
+                    throw new Error(
+                        errorData?.detail || 
+                        `Utility bill upload failed with status: ${response.status}`
+                    );
+                }
+
+                const result = await response.json();
+                console.log('Utility bills uploaded successfully:', result);
+                
+                return { success: true, result };
+            } catch (error) {
+                console.error('Utility bill upload error:', error);
+                return { success: false, error: error.message };
+            }
+        }
+
+        // Submit form to API
+        async function submitRegistration(payload) {
+            const submitBtn = document.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            
+            try {
+                // Show loading state
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Connecting Your System...';
+                submitBtn.style.opacity = '0.7';
+
+                const response = await fetch(API_BASE_URL + REGISTER_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => null);
+                    throw new Error(
+                        errorData?.detail || 
+                        `Registration failed with status: ${response.status}`
+                    );
+                }
+
+                const result = await response.json();
+                console.log('Registration successful:', result);
+                
+                // Parse info to access registration mode
+                const infoObj = JSON.parse(payload.info);
+
+                // Upload utility bills if any files were selected
+                if (uploadedFiles.length > 0 && result.user_id) {
+                    submitBtn.textContent = 'Uploading Utility Bills...';
+                    const uploadResult = await uploadUtilityBills(result.user_id, uploadedFiles);
+                    
+                    if (!uploadResult.success) {
+                        console.warn('Utility bill upload failed, but registration succeeded:', uploadResult.error);
+                    }
+                }
+
+                // Build success message based on mode
+                const isSimulationMode = infoObj.registration.mode === 'simulation';
+                let successMessage = '';
+                
+                if (isSimulationMode) {
+                    successMessage = '🎉 Success! We\'re preparing your savings estimate!\n\n';
+                    
+                    if (uploadedFiles.length > 0) {
+                        successMessage += `We've received ${uploadedFiles.length} electricity bill file(s) for analysis.\n\n`;
+                    }
+                    
+                    successMessage += 
+                        'What happens next:\n' +
+                        '1. Our AI analyzes your utility bills and system specs\n' +
+                        '2. You\'ll receive a detailed savings estimate within 24 hours\n' +
+                        '3. We\'ll email instructions to connect your actual system\n' +
+                        '4. Download the MicroVPP™ app to view your results\n\n' +
+                        'Check your email (' + payload.email + ') for your savings estimate!';
+                } else {
+                    successMessage = '🎉 Success! Your system is being connected to MicroGrid\'s VPP network!\n\n';
+                    
+                    if (uploadedFiles.length > 0) {
+                        successMessage += `We've received ${uploadedFiles.length} electricity bill file(s) for additional analysis.\n\n`;
+                    }
+                    
+                    successMessage += 
+                        'What\'s next:\n' +
+                        '1. We\'re verifying your connection (usually takes a few minutes)\n' +
+                        '2. Download the MicroVPP™ app from the App Store\n' +
+                        '3. Sign in with your email: ' + payload.email + '\n' +
+                        '4. Start monitoring your system and earning from VPP programs\n\n' +
+                        'Check your email for confirmation and next steps!';
+                }
+
+                // Show success message
+                alert(successMessage);
+
+                // Clear session storage
+                sessionStorage.removeItem('registrationStep1');
+                sessionStorage.removeItem('registrationFiles');
+
+                // Redirect to home or app store
+                window.location.href = 'index.html';
+
+            } catch (error) {
+                console.error('Registration error:', error);
+                
+                // Show error message
+                alert(
+                    '❌ Registration Error\n\n' +
+                    'We encountered an issue while connecting your system:\n' +
+                    error.message + '\n\n' +
+                    'Please try again or contact support@microvpp.com for assistance.'
+                );
+            } finally {
+                // Restore button state
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+                submitBtn.style.opacity = '1';
+            }
+        }
+
+        // Form submit handler
+        document.getElementById('diyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const username = formData.get('username');
+            const password = formData.get('password');
+            const batteryCapacity = formData.get('batteryCapacity');
+            const pvWattage = formData.get('pvWattage');
+            const inverterManufacturer = formData.get('inverterManufacturer');
+            
+            const hasCredentials = username && username.trim() !== '' && password && password.trim() !== '';
+            const hasAlternativeSpecs = batteryCapacity && batteryCapacity.trim() !== '' && pvWattage && pvWattage.trim() !== '';
+            
+            // Custom validation based on what's provided
+            let errors = [];
+            
+            if (hasCredentials) {
+                // Direct connection mode: inverter manufacturer is required
+                if (!inverterManufacturer || inverterManufacturer === '') {
+                    errors.push('• Inverter brand is required when providing credentials');
+                    document.getElementById('inverterManufacturer').style.borderColor = '#ef4444';
+                } else {
+                    document.getElementById('inverterManufacturer').style.borderColor = '#e5e7eb';
+                }
+            } else if (hasAlternativeSpecs) {
+                // Alternative specs mode: battery and solar are required
+                if (!batteryCapacity || parseFloat(batteryCapacity) <= 0) {
+                    errors.push('• Battery capacity must be greater than 0');
+                    document.getElementById('batteryCapacity').style.borderColor = '#ef4444';
+                } else {
+                    document.getElementById('batteryCapacity').style.borderColor = '#e5e7eb';
+                }
+                
+                if (!pvWattage || parseFloat(pvWattage) <= 0) {
+                    errors.push('• Solar panel capacity must be greater than 0');
+                    document.getElementById('pvWattage').style.borderColor = '#ef4444';
+                } else {
+                    document.getElementById('pvWattage').style.borderColor = '#e5e7eb';
+                }
+                
+                document.getElementById('inverterManufacturer').style.borderColor = '#e5e7eb';
+            } else {
+                // No credentials and no alternative specs: need to provide one or the other
+                if (!inverterManufacturer || inverterManufacturer === '') {
+                    errors.push('• Inverter brand is required');
+                    document.getElementById('inverterManufacturer').style.borderColor = '#ef4444';
+                } else {
+                    document.getElementById('inverterManufacturer').style.borderColor = '#e5e7eb';
+                }
+                
+                if (!batteryCapacity || parseFloat(batteryCapacity) <= 0) {
+                    errors.push('• Battery capacity is required');
+                    document.getElementById('batteryCapacity').style.borderColor = '#ef4444';
+                } else {
+                    document.getElementById('batteryCapacity').style.borderColor = '#e5e7eb';
+                }
+                
+                if (!pvWattage || parseFloat(pvWattage) <= 0) {
+                    errors.push('• Solar panel capacity is required');
+                    document.getElementById('pvWattage').style.borderColor = '#ef4444';
+                } else {
+                    document.getElementById('pvWattage').style.borderColor = '#e5e7eb';
+                }
+            }
+            
+            // Show custom validation errors
+            if (errors.length > 0) {
+                let errorMessage = '⚠️ Missing Required Information:\n\n' + errors.join('\n');
+                
+                if (!hasCredentials && !hasAlternativeSpecs) {
+                    errorMessage += '\n\n💡 Tip: You can either:\n';
+                    errorMessage += '1. Provide inverter credentials (username & password) for direct connection, OR\n';
+                    errorMessage += '2. Fill in battery capacity and solar capacity for estimates';
+                }
+                
+                alert(errorMessage);
+                return;
+            }
+            
+            // Check if user provided credentials
+            if (hasCredentials) {
+                // Direct connection mode: Complete registration at step 2 (bills optional)
+                mapFormToPayload(formData).then(payload => {
+                    console.log('Direct connection mode - completing registration at step 2');
+                    console.log('Sending registration payload:', payload);
+                    submitRegistration(payload);
+                });
+            } else {
+                // No credentials mode: Save step 2 data and redirect to step 3 for mandatory bill upload
+                console.log('No credentials mode - redirecting to step 3 for mandatory bill upload');
+                
+                // Save step 2 data to session storage
+                const step2Data = {
+                    inverterManufacturer: formData.get('inverterManufacturer'),
+                    otherManufacturer: formData.get('otherManufacturer'),
+                    serialNumber: formData.get('serialNumber'),
+                    installationDate: formData.get('installationDate'),
+                    batteryCapacity: formData.get('batteryCapacity'),
+                    pvWattage: formData.get('pvWattage'),
+                    additionalNotes: formData.get('additionalNotes'),
+                    vppParticipation: formData.get('vppParticipation') === 'on',
+                    marketing: formData.get('marketing') === 'on'
+                };
+                
+                sessionStorage.setItem('registrationStep2', JSON.stringify(step2Data));
+                
+                // Redirect to step 3
+                window.location.href = 'diy-registration-step3.html';
+            }
+        });
+    </script>
+</body>
+</html>
+
