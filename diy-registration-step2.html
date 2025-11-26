@@ -587,7 +587,7 @@
                                     <strong>ℹ️ About these credentials:</strong> Your installer should have created the inverter web service username and password during installation. <strong>These are different from your consumer app login.</strong>
                                 </p>
                                 <p style="color: #065f46; font-size: 0.875rem; line-height: 1.6; margin: 0.75rem 0 0 0; padding: 0.75rem; background: rgba(6, 182, 212, 0.1); border-radius: 8px; border-left: 3px solid #06B6D4;">
-                                    <strong>🤝 Don't have your credentials?</strong> No worries! Even if you don't know your inverter username and password, we will contact you to help coordinate with your installer to collect this information. You can still register now!
+                                    <strong>🤝 Don't have your credentials?</strong> No worries! Even if you don't know your inverter username and password, we will contact you to help you collect this information from your installer. You can still register now!
                                 </p>
                             </div>
                         </div>
@@ -745,7 +745,7 @@
         }
 
         // ============================================
-        // LOAD STEP 1 DATA FROM SESSION STORAGE
+        // LOAD STEP 1 DATA FROM SESSION STORAGE & PRE-FILL FORM
         // ============================================
         
         let step1Data = {};
@@ -771,6 +771,43 @@
                     uploadedFiles = filesData;
                     console.log(`Loaded ${uploadedFiles.length} file(s) from Step 1`);
                 }
+                
+                // Check if user_id exists
+                const userId = sessionStorage.getItem('registrationUserId');
+                if (!userId) {
+                    console.warn('⚠️ No user_id found. User may need to complete Step 1 again.');
+                }
+                
+                // Pre-fill form if returning from Step 3
+                const storedStep2 = sessionStorage.getItem('registrationStep2');
+                if (storedStep2) {
+                    try {
+                        const step2Data = JSON.parse(storedStep2);
+                        console.log('Pre-filling Step 2 form with saved data:', step2Data);
+                        
+                        // Pre-fill form fields
+                        if (step2Data.inverterManufacturer) {
+                            document.getElementById('inverterManufacturer').value = step2Data.inverterManufacturer;
+                            // Trigger change event to show conditional fields
+                            document.getElementById('inverterManufacturer').dispatchEvent(new Event('change'));
+                        }
+                        if (step2Data.otherManufacturer) document.getElementById('otherManufacturer').value = step2Data.otherManufacturer;
+                        if (step2Data.serialNumber) document.getElementById('serialNumber').value = step2Data.serialNumber;
+                        if (step2Data.installationDate) document.getElementById('installationDate').value = step2Data.installationDate;
+                        if (step2Data.batteryCapacity) document.getElementById('batteryCapacity').value = step2Data.batteryCapacity;
+                        if (step2Data.pvWattage) document.getElementById('pvWattage').value = step2Data.pvWattage;
+                        if (step2Data.username) document.getElementById('username').value = step2Data.username;
+                        if (step2Data.password) document.getElementById('password').value = step2Data.password;
+                        if (step2Data.additionalNotes) document.getElementById('additionalNotes').value = step2Data.additionalNotes;
+                        if (step2Data.vppParticipation) document.getElementById('vppParticipation').checked = true;
+                        if (step2Data.marketing) document.getElementById('marketing').checked = true;
+                        
+                        // Update field requirements after pre-filling
+                        updateFieldRequirements();
+                    } catch (error) {
+                        console.error('Error pre-filling Step 2 form:', error);
+                    }
+                }
             } catch (error) {
                 console.error('Error loading Step 1 data:', error);
                 alert('⚠️ Error loading data from Step 1. Please start over.');
@@ -785,6 +822,7 @@
         
         const API_BASE_URL = 'https://3dbhitxwoc.execute-api.us-east-2.amazonaws.com/dev';
         const REGISTER_ENDPOINT = '/auth/signup';
+        const UPDATE_PROFILE_ENDPOINT = '/auth/update-profile';
         const UPLOAD_BILLS_ENDPOINT = '/admin/upload-utility-bills';
 
         // Dynamic validation based on credentials input and alternative specs
@@ -1053,6 +1091,121 @@
             }
         }
 
+        // Update profile with Step 2 data
+        async function updateProfile(formData) {
+            try {
+                const userId = sessionStorage.getItem('registrationUserId');
+                if (!userId) {
+                    throw new Error('No user_id found. Please complete Step 1 first.');
+                }
+                
+                const manufacturer = formData.get('inverterManufacturer');
+                const otherManufacturer = formData.get('otherManufacturer');
+                
+                // Determine the inverter type
+                const inverterManufacturer = manufacturer === 'Other' && otherManufacturer 
+                    ? otherManufacturer 
+                    : manufacturer;
+                
+                // Build the info object with all data from step 1 and step 2
+                const info = {
+                    contact: {
+                        name: step1Data.fullName || null,
+                        email: step1Data.email,
+                        phone: step1Data.phone || null
+                    },
+                    location: {
+                        address: step1Data.address || null,
+                        city: step1Data.city,
+                        state: step1Data.state
+                    },
+                    system: {
+                        battery_capacity_kwh: formData.get('batteryCapacity') ? parseFloat(formData.get('batteryCapacity')) : null,
+                        pv_wattage_kw: formData.get('pvWattage') ? parseFloat(formData.get('pvWattage')) : null,
+                        installation_date: formData.get('installationDate') || null,
+                        utility_company: step1Data.utilityCompany || null,
+                        serial_number: formData.get('serialNumber') || null
+                    },
+                    registration: {
+                        mode: 'partial',
+                        status: 'step2_completed',
+                        vpp_participation: formData.get('vppParticipation') === 'on',
+                        marketing_consent: formData.get('marketing') === 'on',
+                        terms_accepted: step1Data.termsAccepted || false,
+                        registration_date: new Date().toISOString(),
+                        registration_source: 'diy-web-form-step2'
+                    },
+                    electricity_bills: {
+                        uploaded_count: uploadedFiles.length,
+                        files: uploadedFiles.map(file => ({
+                            name: file.name,
+                            size: file.size,
+                            type: file.type
+                        }))
+                    },
+                    notes: formData.get('additionalNotes') || null
+                };
+                
+                // Build the API payload for profile update
+                const payload = {
+                    account_id: userId,
+                    entity_type: "inverter",
+                    username: step1Data.fullName || null,
+                    email: step1Data.email,
+                    phone_number: formatPhoneToE164(step1Data.phone),
+                    full_address: step1Data.address || null,
+                    city: step1Data.city || null,
+                    state: step1Data.state || null,
+                    zip: step1Data.zip || null,
+                    country: "US",
+                    latitude: null,
+                    longitude: null,
+                    timezone: null,
+                    locale: "en-US",
+                    inverter_inverter_id: null, // Don't change inverter_id if already set
+                    inverter_inverter_type: "hybrid_inverter",
+                    inverter_manufacturer: inverterManufacturer,
+                    inverter_serial_number: formData.get('serialNumber'),
+                    inverter_monitoring_id: null,
+                    inverter_monitoring_token: null,
+                    inverter_monitoring_url: null,
+                    inverter_api_key: formData.get('username'),
+                    inverter_api_secret: formData.get('password'),
+                    info: JSON.stringify(info),
+                    site_id: null,
+                    site_type: "residential",
+                    installation_date: formData.get('installationDate') || null,
+                };
+                
+                console.log('Updating profile (Step 2) for user_id:', userId, payload);
+                
+                const response = await fetch(API_BASE_URL + UPDATE_PROFILE_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => null);
+                    throw new Error(
+                        errorData?.detail || 
+                        `Profile update failed with status: ${response.status}`
+                    );
+                }
+                
+                const result = await response.json();
+                console.log('Profile updated successfully (Step 2):', result);
+                
+                return { success: true, result };
+            } catch (error) {
+                console.error('Error updating profile (Step 2):', error);
+                return { success: false, error: error.message };
+            }
+        }
+        
         // Submit form to API
         async function submitRegistration(payload) {
             const submitBtn = document.querySelector('.submit-btn');
@@ -1248,8 +1401,8 @@
                     submitRegistration(payload);
                 });
             } else {
-                // No credentials mode: Save step 2 data and redirect to step 3 for mandatory bill upload
-                console.log('No credentials mode - redirecting to step 3 for mandatory bill upload');
+                // No credentials mode: Update profile and redirect to step 3 for mandatory bill upload
+                console.log('No credentials mode - updating profile and redirecting to step 3');
                 
                 // Save step 2 data to session storage
                 const step2Data = {
@@ -1259,6 +1412,8 @@
                     installationDate: formData.get('installationDate'),
                     batteryCapacity: formData.get('batteryCapacity'),
                     pvWattage: formData.get('pvWattage'),
+                    username: formData.get('username'),
+                    password: formData.get('password'),
                     additionalNotes: formData.get('additionalNotes'),
                     vppParticipation: formData.get('vppParticipation') === 'on',
                     marketing: formData.get('marketing') === 'on'
@@ -1266,8 +1421,28 @@
                 
                 sessionStorage.setItem('registrationStep2', JSON.stringify(step2Data));
                 
-                // Redirect to step 3
-                window.location.href = 'diy-registration-step3.html';
+                // Update profile with step 2 data to backend
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Saving your information...';
+                
+                updateProfile(formData).then(result => {
+                    if (!result.success) {
+                        // Show error but allow user to continue (data is in sessionStorage)
+                        alert(
+                            '⚠️ Profile Update Issue\n\n' +
+                            'We encountered an issue updating your profile:\n' +
+                            result.error + '\n\n' +
+                            'You can continue, but please contact support@microvpp.com if this persists.'
+                        );
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Continue to Step 3 →';
+                        return;
+                    }
+                    
+                    // Redirect to step 3
+                    window.location.href = 'diy-registration-step3.html';
+                });
             }
         });
     </script>

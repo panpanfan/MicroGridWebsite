@@ -1114,7 +1114,183 @@
         });
 
         // ============================================
-        // FORM SUBMIT HANDLER - SAVE TO SESSION STORAGE
+        // API CONFIGURATION
+        // ============================================
+        
+        const API_BASE_URL = 'https://3dbhitxwoc.execute-api.us-east-2.amazonaws.com/dev';
+        const SIGNUP_ENDPOINT = '/auth/signup';
+        
+        // Format phone number to E.164 format
+        function formatPhoneToE164(phone) {
+            if (!phone) return null;
+            
+            const digits = phone.replace(/\D/g, '');
+            
+            if (digits.length === 10) {
+                return '+1' + digits;
+            } else if (digits.length === 11 && digits.startsWith('1')) {
+                return '+' + digits;
+            } else if (phone.startsWith('+')) {
+                return phone;
+            } else if (digits.length === 11) {
+                return '+' + digits;
+            }
+            
+            return '+1' + digits;
+        }
+        
+        // Generate a unique inverter ID
+        function generateInverterId() {
+            return 'INV-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        }
+        
+        // ============================================
+        // PRE-FILL FORM FROM SESSION STORAGE
+        // ============================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is returning from a later step
+            const storedData = sessionStorage.getItem('registrationStep1');
+            if (storedData) {
+                try {
+                    const step1Data = JSON.parse(storedData);
+                    console.log('Pre-filling Step 1 form with saved data:', step1Data);
+                    
+                    // Pre-fill form fields
+                    if (step1Data.fullName) document.getElementById('fullName').value = step1Data.fullName;
+                    if (step1Data.email) document.getElementById('email').value = step1Data.email;
+                    if (step1Data.phone) document.getElementById('phone').value = step1Data.phone;
+                    if (step1Data.address) document.getElementById('address').value = step1Data.address;
+                    if (step1Data.city) document.getElementById('city').value = step1Data.city;
+                    if (step1Data.state) document.getElementById('state').value = step1Data.state;
+                    if (step1Data.utilityCompany) document.getElementById('utilityCompany').value = step1Data.utilityCompany;
+                    if (step1Data.termsAccepted) document.getElementById('terms').checked = true;
+                    
+                    // Load files if any
+                    const storedFiles = sessionStorage.getItem('registrationFiles');
+                    if (storedFiles) {
+                        const filesData = JSON.parse(storedFiles);
+                        console.log(`Restoring ${filesData.length} file(s) from session`);
+                        // Note: We can't restore actual File objects, but we show what was uploaded
+                        // The files are stored as data URLs and will be re-uploaded on form submit
+                    }
+                } catch (error) {
+                    console.error('Error pre-filling Step 1 form:', error);
+                }
+            }
+        });
+        
+        // Sign up new user (Step 1 only)
+        async function signupUser(step1Data, filesData) {
+            try {
+                // Convert uploaded files data to info format
+                const fileInfo = filesData.map(file => ({
+                    name: file.name,
+                    size: file.size,
+                    type: file.type
+                }));
+                
+                // Build the info object with step 1 data
+                const info = {
+                    contact: {
+                        name: step1Data.fullName || null,
+                        email: step1Data.email,
+                        phone: step1Data.phone || null
+                    },
+                    location: {
+                        address: step1Data.address || null,
+                        city: step1Data.city,
+                        state: step1Data.state
+                    },
+                    system: {
+                        battery_capacity_kwh: null,
+                        pv_wattage_kw: null,
+                        installation_date: null,
+                        utility_company: step1Data.utilityCompany || null,
+                        serial_number: null
+                    },
+                    registration: {
+                        mode: 'partial',
+                        status: 'step1_completed',
+                        vpp_participation: false,
+                        marketing_consent: false,
+                        terms_accepted: step1Data.termsAccepted || false,
+                        registration_date: new Date().toISOString(),
+                        registration_source: 'diy-web-form-step1'
+                    },
+                    electricity_bills: {
+                        uploaded_count: fileInfo.length,
+                        files: fileInfo
+                    },
+                    notes: null
+                };
+                
+                // Build the API payload for signup
+                const payload = {
+                    entity_type: "inverter",
+                    username: step1Data.fullName || null,
+                    email: step1Data.email,
+                    phone_number: formatPhoneToE164(step1Data.phone),
+                    full_address: step1Data.address || null,
+                    city: step1Data.city || null,
+                    state: step1Data.state || null,
+                    zip: null,
+                    country: "US",
+                    latitude: null,
+                    longitude: null,
+                    timezone: null,
+                    locale: "en-US",
+                    inverter_inverter_id: generateInverterId(),
+                    inverter_inverter_type: "hybrid_inverter",
+                    inverter_manufacturer: null,
+                    inverter_serial_number: null,
+                    inverter_monitoring_id: null,
+                    inverter_monitoring_token: null,
+                    inverter_monitoring_url: null,
+                    inverter_api_key: null,
+                    inverter_api_secret: null,
+                    info: JSON.stringify(info),
+                    site_id: null,
+                    site_type: "residential",
+                    installation_date: null,
+                };
+                
+                console.log('Signing up user (Step 1):', payload);
+                
+                const response = await fetch(API_BASE_URL + SIGNUP_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => null);
+                    throw new Error(
+                        errorData?.detail || 
+                        `Signup failed with status: ${response.status}`
+                    );
+                }
+                
+                const result = await response.json();
+                console.log('Signup successful, user_id:', result.user_id);
+                
+                // Store user_id for later use in Step 2 and Step 3
+                if (result.user_id) {
+                    sessionStorage.setItem('registrationUserId', result.user_id);
+                }
+                
+                return { success: true, result };
+            } catch (error) {
+                console.error('Error signing up user:', error);
+                return { success: false, error: error.message };
+            }
+        }
+        
+        // ============================================
+        // FORM SUBMIT HANDLER - SAVE TO SESSION STORAGE AND BACKEND
         // ============================================
         
         document.getElementById('step1Form').addEventListener('submit', async function(e) {
@@ -1157,12 +1333,12 @@
             sessionStorage.setItem('registrationStep1', JSON.stringify(step1Data));
             
             // Convert files to data URLs for storage
+            const filesData = [];
             if (uploadedFiles.length > 0) {
                 const submitBtn = document.getElementById('submitBtn');
                 submitBtn.disabled = true;
                 submitBtn.textContent = 'Preparing files...';
                 
-                const filesData = [];
                 for (const file of uploadedFiles) {
                     const dataURL = await new Promise((resolve) => {
                         const reader = new FileReader();
@@ -1182,9 +1358,30 @@
             // Track step 1 completion
             FormTracker.trackStep1Complete();
             
-            console.log('Step 1 data saved:', step1Data);
+            console.log('Step 1 data saved to session:', step1Data);
             
-            // Redirect to step 2
+            // Sign up user to backend (since terms were accepted)
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Creating your account...';
+            
+            const signupResult = await signupUser(step1Data, filesData);
+            
+            if (!signupResult.success) {
+                // Show error but allow user to continue (data is in sessionStorage)
+                alert(
+                    '⚠️ Account Creation Issue\n\n' +
+                    'We encountered an issue creating your account:\n' +
+                    signupResult.error + '\n\n' +
+                    'You can continue, but please contact support@microvpp.com if this persists.'
+                );
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Save & Continue to Step 2 →';
+                return;
+            }
+            
+            // Continue to step 2
+            console.log('Redirecting to Step 2...');
             window.location.href = 'diy-registration-step2.html';
         });
     </script>

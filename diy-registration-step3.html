@@ -743,6 +743,12 @@
                 step2Data = JSON.parse(storedStep2);
                 console.log('Loaded Step 1 data:', step1Data);
                 console.log('Loaded Step 2 data:', step2Data);
+                
+                // Check if user_id exists
+                const userId = sessionStorage.getItem('registrationUserId');
+                if (!userId) {
+                    console.warn('⚠️ No user_id found. User may need to complete Step 1 again.');
+                }
             } catch (error) {
                 console.error('Error loading previous step data:', error);
                 alert('⚠️ Error loading data from previous steps. Please start over.');
@@ -757,6 +763,7 @@
         
         const API_BASE_URL = 'https://3dbhitxwoc.execute-api.us-east-2.amazonaws.com/dev';
         const REGISTER_ENDPOINT = '/auth/signup';
+        const UPDATE_PROFILE_ENDPOINT = '/auth/update-profile';
         const UPLOAD_BILLS_ENDPOINT = '/admin/upload-utility-bills';
 
         // ============================================
@@ -826,6 +833,11 @@
             displayFiles();
             updateSubmitButton();
             fileInput.value = '';
+            
+            // Update profile with uploaded files (since terms were already accepted in Step 1)
+            if (uploadedFiles.length > 0) {
+                updateProfileWithFiles();
+            }
         }
 
         function displayFiles() {
@@ -881,6 +893,127 @@
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
         }
+        
+        // Update profile with files uploaded at Step 3
+        async function updateProfileWithFiles() {
+            try {
+                const userId = sessionStorage.getItem('registrationUserId');
+                if (!userId) {
+                    throw new Error('No user_id found. Please complete Step 1 first.');
+                }
+                
+                const manufacturer = step2Data.inverterManufacturer;
+                const otherManufacturer = step2Data.otherManufacturer;
+                
+                // Determine the inverter type
+                const inverterManufacturer = manufacturer === 'Other' && otherManufacturer 
+                    ? otherManufacturer 
+                    : manufacturer;
+                
+                // Convert uploaded files to data URLs for info
+                const fileInfo = [];
+                for (const file of uploadedFiles) {
+                    fileInfo.push({
+                        name: file.name,
+                        size: file.size,
+                        type: file.type
+                    });
+                }
+                
+                // Build the info object with all data from steps 1, 2, and 3
+                const info = {
+                    contact: {
+                        name: step1Data.fullName || null,
+                        email: step1Data.email,
+                        phone: step1Data.phone || null
+                    },
+                    location: {
+                        address: step1Data.address || null,
+                        city: step1Data.city,
+                        state: step1Data.state
+                    },
+                    system: {
+                        battery_capacity_kwh: step2Data.batteryCapacity ? parseFloat(step2Data.batteryCapacity) : null,
+                        pv_wattage_kw: step2Data.pvWattage ? parseFloat(step2Data.pvWattage) : null,
+                        installation_date: step2Data.installationDate || null,
+                        utility_company: step1Data.utilityCompany || null,
+                        serial_number: step2Data.serialNumber || null
+                    },
+                    registration: {
+                        mode: 'partial',
+                        status: 'step3_in_progress',
+                        vpp_participation: step2Data.vppParticipation || false,
+                        marketing_consent: step2Data.marketing || false,
+                        terms_accepted: step1Data.termsAccepted || false,
+                        registration_date: new Date().toISOString(),
+                        registration_source: 'diy-web-form-step3'
+                    },
+                    electricity_bills: {
+                        uploaded_count: fileInfo.length,
+                        files: fileInfo
+                    },
+                    notes: step2Data.additionalNotes || null
+                };
+                
+                // Build the API payload for profile update
+                const payload = {
+                    account_id: userId,
+                    entity_type: "inverter",
+                    username: step1Data.fullName || null,
+                    email: step1Data.email,
+                    phone_number: formatPhoneToE164(step1Data.phone),
+                    full_address: step1Data.address || null,
+                    city: step1Data.city || null,
+                    state: step1Data.state || null,
+                    zip: step1Data.zip || null,
+                    country: "US",
+                    latitude: null,
+                    longitude: null,
+                    timezone: null,
+                    locale: "en-US",
+                    inverter_inverter_id: null, // Don't change inverter_id if already set
+                    inverter_inverter_type: "hybrid_inverter",
+                    inverter_manufacturer: inverterManufacturer,
+                    inverter_serial_number: step2Data.serialNumber,
+                    inverter_monitoring_id: null,
+                    inverter_monitoring_token: null,
+                    inverter_monitoring_url: null,
+                    inverter_api_key: null,
+                    inverter_api_secret: null,
+                    info: JSON.stringify(info),
+                    site_id: null,
+                    site_type: "residential",
+                    installation_date: step2Data.installationDate || null,
+                };
+                
+                console.log('Updating profile (Step 3) for user_id:', userId);
+                
+                const response = await fetch(API_BASE_URL + UPDATE_PROFILE_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => null);
+                    console.warn('Profile update (Step 3) failed:', errorData);
+                    // Don't block the user - they can continue even if this fails
+                    return { success: false, error: errorData };
+                }
+                
+                const result = await response.json();
+                console.log('Profile updated successfully (Step 3):', result);
+                
+                return { success: true, result };
+            } catch (error) {
+                console.error('Error updating profile (Step 3):', error);
+                // Don't block the user - they can continue even if this fails
+                return { success: false, error: error.message };
+            }
+        }
 
         // Generate a unique inverter ID
         function generateInverterId() {
@@ -934,11 +1067,15 @@
             return new File([u8arr], filename, {type: mime});
         }
 
-        // Map form data to API payload
+        // Map form data to API payload for final submission
         async function mapFormToPayload() {
+            const userId = sessionStorage.getItem('registrationUserId');
+            if (!userId) {
+                throw new Error('No user_id found. Please complete Step 1 first.');
+            }
+            
             const manufacturer = step2Data.inverterManufacturer;
             const otherManufacturer = step2Data.otherManufacturer;
-            const inverterId = generateInverterId();
             
             // Determine the inverter type
             const inverterManufacturer = manufacturer === 'Other' && otherManufacturer 
@@ -973,6 +1110,7 @@
                 },
                 registration: {
                     mode: 'simulation',
+                    status: 'completed',
                     vpp_participation: step2Data.vppParticipation || false,
                     marketing_consent: step2Data.marketing || false,
                     terms_accepted: step1Data.termsAccepted || false,
@@ -990,8 +1128,9 @@
                 notes: step2Data.additionalNotes || null
             };
 
-            // Build the API payload
+            // Build the API payload for final profile update
             const payload = {
+                account_id: userId,
                 entity_type: "inverter",
                 username: step1Data.fullName || null,
                 email: step1Data.email,
@@ -1005,7 +1144,7 @@
                 longitude: null,
                 timezone: null,
                 locale: "en-US",
-                inverter_inverter_id: inverterId,
+                inverter_inverter_id: null, // Don't change inverter_id if already set
                 inverter_inverter_type: "hybrid_inverter",
                 inverter_manufacturer: inverterManufacturer,
                 inverter_serial_number: step2Data.serialNumber,
@@ -1068,7 +1207,7 @@
             }
         }
 
-        // Submit form to API
+        // Submit form to API (final update)
         async function submitRegistration(payload, fileData) {
             const submitBtn = document.querySelector('.submit-btn');
             const originalText = submitBtn.textContent;
@@ -1076,10 +1215,10 @@
             try {
                 // Show loading state
                 submitBtn.disabled = true;
-                submitBtn.textContent = 'Processing Your Registration...';
+                submitBtn.textContent = 'Completing Your Registration...';
                 submitBtn.style.opacity = '0.7';
 
-                const response = await fetch(API_BASE_URL + REGISTER_ENDPOINT, {
+                const response = await fetch(API_BASE_URL + UPDATE_PROFILE_ENDPOINT, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1092,17 +1231,20 @@
                     const errorData = await response.json().catch(() => null);
                     throw new Error(
                         errorData?.detail || 
-                        `Registration failed with status: ${response.status}`
+                        `Registration completion failed with status: ${response.status}`
                     );
                 }
 
                 const result = await response.json();
-                console.log('Registration successful:', result);
+                console.log('Registration completed successfully:', result);
 
+                // Get user_id from session storage (should already exist from Step 1)
+                const userId = sessionStorage.getItem('registrationUserId');
+                
                 // Upload utility bills
-                if (fileData.length > 0 && result.user_id) {
+                if (fileData.length > 0 && userId) {
                     submitBtn.textContent = 'Uploading Utility Bills...';
-                    const uploadResult = await uploadUtilityBills(result.user_id, fileData);
+                    const uploadResult = await uploadUtilityBills(userId, fileData);
                     
                     if (!uploadResult.success) {
                         console.warn('Utility bill upload failed, but registration succeeded:', uploadResult.error);
