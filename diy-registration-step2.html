@@ -1222,25 +1222,68 @@
                 submitBtn.textContent = 'Connecting Your System...';
                 submitBtn.style.opacity = '0.7';
 
-                const response = await fetch(API_BASE_URL + REGISTER_ENDPOINT, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
-                });
+                // Check if user_id exists in session storage
+                const userId = sessionStorage.getItem('registrationUserId');
+                let endpoint = REGISTER_ENDPOINT;
+                let result;
+                
+                if (userId) {
+                    // User already registered, use update-profile endpoint
+                    console.log('User ID found, using update-profile endpoint:', userId);
+                    endpoint = UPDATE_PROFILE_ENDPOINT;
+                    
+                    // Add account_id to payload for update
+                    const updatePayload = {
+                        ...payload,
+                        account_id: userId
+                    };
+                    
+                    const response = await fetch(API_BASE_URL + endpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(updatePayload)
+                    });
 
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => null);
-                    throw new Error(
-                        errorData?.detail || 
-                        `Registration failed with status: ${response.status}`
-                    );
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => null);
+                        throw new Error(
+                            errorData?.detail || 
+                            `Profile update failed with status: ${response.status}`
+                        );
+                    }
+
+                    result = await response.json();
+                    console.log('Profile update successful:', result);
+                    
+                    // Use existing user_id for result
+                    result.user_id = userId;
+                } else {
+                    // New user, use signup endpoint
+                    console.log('No user ID found, using signup endpoint');
+                    
+                    const response = await fetch(API_BASE_URL + endpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => null);
+                        throw new Error(
+                            errorData?.detail || 
+                            `Registration failed with status: ${response.status}`
+                        );
+                    }
+
+                    result = await response.json();
+                    console.log('Registration successful:', result);
                 }
-
-                const result = await response.json();
-                console.log('Registration successful:', result);
                 
                 // Parse info to access registration mode
                 const infoObj = JSON.parse(payload.info);
