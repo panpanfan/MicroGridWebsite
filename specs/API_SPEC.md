@@ -206,7 +206,39 @@ Update user profile information.
 | `username` | string | No | Username |
 | `password` | string | No | Password |
 | `phone_number` | string | No | Phone number |
-| ... | ... | ... | (Other profile fields similar to sign-up) |
+| `full_address` | string | No | Full address string |
+| `address1` | string | No | Address line 1 |
+| `address2` | string | No | Address line 2 |
+| `city` | string | No | City |
+| `county` | string | No | County |
+| `state` | string | No | State |
+| `zip` | string | No | Zip code |
+| `first_name` | string | No | First name |
+| `middle_name` | string | No | Middle name |
+| `last_name` | string | No | Last name |
+| `locale` | string | No | User locale |
+| `timezone` | string | No | User timezone |
+| `inverter_api_key` | string | No | Inverter API Key |
+| `inverter_api_secret` | string | No | Inverter API Secret |
+| `inverter_inverter_id` | string | No | Inverter ID |
+| `inverter_inverter_type` | string | No | Inverter Type |
+| `inverter_monitoring_api_url` | string | No | Monitoring API URL |
+| `inverter_monitoring_id` | string | No | Monitoring ID |
+| `inverter_monitoring_token` | string | No | Monitoring Token |
+| `inverter_manufacturer` | string | No | Inverter Manufacturer |
+| `inverter_serial_number` | string | No | Inverter Serial Number |
+| `site_id` | string | No | Site ID |
+| `site_type` | string | No | Site Type |
+| `installation_date` | string | No | Installation Date |
+| `installer_id` | string | No | Installer ID |
+| `installer_name` | string | No | Installer Name |
+| `installer_email` | string | No | Installer Email |
+| `installer_phone` | string | No | Installer Phone |
+| `installer_address` | string | No | Installer Address |
+| `installer_city` | string | No | Installer City |
+| `installer_state` | string | No | Installer State |
+| `installer_zip` | string | No | Installer Zip |
+| `info` | string | No | Additional info |
 
 #### Responses
 
@@ -235,9 +267,13 @@ Register a new inverter.
 | `inverter_monitoring_id` | string | No | Monitoring ID |
 | `inverter_monitoring_token` | string | No | Monitoring Token |
 | `inverter_monitoring_url` | string | No | Monitoring URL |
+| `inverter_monitoring_api_key` | string | No | Monitoring API Key |
+| `inverter_monitoring_api_secret` | string | No | Monitoring API Secret |
+| `inverter_monitoring_api_url` | string | No | Monitoring API URL |
+| `inverter_monitoring_api_version` | string | No | Monitoring API Version |
 | `inverter_manufacturer` | string | No | Manufacturer |
 | `inverter_serial_number` | string | No | Serial Number |
-| ... | ... | ... | Other monitoring API fields |
+| `info` | string | No | Additional info |
 
 #### Responses
 
@@ -264,7 +300,17 @@ Register a site and inverter together.
 | `inverter_type` | string | Yes | Inverter Type |
 | `site_id` | string | No | Site ID |
 | `site_type` | string | No | Site Type |
-| ... | ... | ... | Inverter fields similar to Register Inverter |
+| `entity_type` | string | No | Default: "inverter" |
+| `inverter_monitoring_id` | string | No | Monitoring ID |
+| `inverter_monitoring_token` | string | No | Monitoring Token |
+| `inverter_monitoring_url` | string | No | Monitoring URL |
+| `inverter_monitoring_api_key` | string | No | Monitoring API Key |
+| `inverter_monitoring_api_secret` | string | No | Monitoring API Secret |
+| `inverter_monitoring_api_url` | string | No | Monitoring API URL |
+| `inverter_monitoring_api_version` | string | No | Monitoring API Version |
+| `inverter_manufacturer` | string | No | Manufacturer |
+| `inverter_serial_number` | string | No | Serial Number |
+| `info` | string | No | Additional info |
 
 #### Responses
 

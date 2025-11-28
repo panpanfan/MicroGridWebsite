@@ -206,7 +206,39 @@
 | `username` | string | 否 | 用户名 |
 | `password` | string | 否 | 密码 |
 | `phone_number` | string | 否 | 电话号码 |
-| ... | ... | ... | (类似于注册的其他个人资料字段) |
+| `full_address` | string | 否 | 完整地址字符串 |
+| `address1` | string | 否 | 地址行 1 |
+| `address2` | string | 否 | 地址行 2 |
+| `city` | string | 否 | 城市 |
+| `county` | string | 否 | 县/郡 |
+| `state` | string | 否 | 州/省 |
+| `zip` | string | 否 | 邮政编码 |
+| `first_name` | string | 否 | 名 |
+| `middle_name` | string | 否 | 中间名 |
+| `last_name` | string | 否 | 姓 |
+| `locale` | string | 否 | 用户区域设置 |
+| `timezone` | string | 否 | 用户时区 |
+| `inverter_api_key` | string | 否 | 逆变器 API 密钥 |
+| `inverter_api_secret` | string | 否 | 逆变器 API 密钥 (Secret) |
+| `inverter_inverter_id` | string | 否 | 逆变器 ID |
+| `inverter_inverter_type` | string | 否 | 逆变器类型 |
+| `inverter_monitoring_api_url` | string | 否 | 监控 API URL |
+| `inverter_monitoring_id` | string | 否 | 监控 ID |
+| `inverter_monitoring_token` | string | 否 | 监控令牌 |
+| `inverter_manufacturer` | string | 否 | 逆变器制造商 |
+| `inverter_serial_number` | string | 否 | 逆变器序列号 |
+| `site_id` | string | 否 | 站点 ID |
+| `site_type` | string | 否 | 站点类型 |
+| `installation_date` | string | 否 | 安装日期 |
+| `installer_id` | string | 否 | 安装商 ID |
+| `installer_name` | string | 否 | 安装商名称 |
+| `installer_email` | string | 否 | 安装商电子邮件 |
+| `installer_phone` | string | 否 | 安装商电话 |
+| `installer_address` | string | 否 | 安装商地址 |
+| `installer_city` | string | 否 | 安装商城市 |
+| `installer_state` | string | 否 | 安装商州/省 |
+| `installer_zip` | string | 否 | 安装商邮政编码 |
+| `info` | string | 否 | 其他信息 |
 
 #### 响应 (Responses)
 
@@ -235,9 +267,13 @@
 | `inverter_monitoring_id` | string | 否 | 监控 ID |
 | `inverter_monitoring_token` | string | 否 | 监控令牌 |
 | `inverter_monitoring_url` | string | 否 | 监控 URL |
+| `inverter_monitoring_api_key` | string | 否 | 监控 API 密钥 |
+| `inverter_monitoring_api_secret` | string | 否 | 监控 API 密钥 (Secret) |
+| `inverter_monitoring_api_url` | string | 否 | 监控 API URL |
+| `inverter_monitoring_api_version` | string | 否 | 监控 API 版本 |
 | `inverter_manufacturer` | string | 否 | 制造商 |
 | `inverter_serial_number` | string | 否 | 序列号 |
-| ... | ... | ... | 其他监控 API 字段 |
+| `info` | string | 否 | 其他信息 |
 
 #### 响应 (Responses)
 
@@ -264,7 +300,17 @@
 | `inverter_type` | string | 是 | 逆变器类型 |
 | `site_id` | string | 否 | 站点 ID |
 | `site_type` | string | 否 | 站点类型 |
-| ... | ... | ... | 类似于注册逆变器的字段 |
+| `entity_type` | string | 否 | 默认值: "inverter" |
+| `inverter_monitoring_id` | string | 否 | 监控 ID |
+| `inverter_monitoring_token` | string | 否 | 监控令牌 |
+| `inverter_monitoring_url` | string | 否 | 监控 URL |
+| `inverter_monitoring_api_key` | string | 否 | 监控 API 密钥 |
+| `inverter_monitoring_api_secret` | string | 否 | 监控 API 密钥 (Secret) |
+| `inverter_monitoring_api_url` | string | 否 | 监控 API URL |
+| `inverter_monitoring_api_version` | string | 否 | 监控 API 版本 |
+| `inverter_manufacturer` | string | 否 | 制造商 |
+| `inverter_serial_number` | string | 否 | 序列号 |
+| `info` | string | 否 | 其他信息 |
 
 #### 响应 (Responses)
 
