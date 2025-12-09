@@ -1120,6 +1120,7 @@
         const API_BASE_URL = 'https://3dbhitxwoc.execute-api.us-east-2.amazonaws.com/dev';
         const SIGNUP_ENDPOINT = '/auth/signup';
         const UPDATE_PROFILE_ENDPOINT = '/auth/update-profile';
+        const UPLOAD_BILLS_ENDPOINT = '/admin/upload-utility-bills';
         
         // Format phone number to E.164 format
         function formatPhoneToE164(phone) {
@@ -1167,13 +1168,17 @@
                     if (step1Data.utilityCompany) document.getElementById('utilityCompany').value = step1Data.utilityCompany;
                     if (step1Data.termsAccepted) document.getElementById('terms').checked = true;
                     
-                    // Load files if any
+                    // Load file info if any (files already uploaded to server in previous submission)
                     const storedFiles = sessionStorage.getItem('registrationFiles');
                     if (storedFiles) {
                         const filesData = JSON.parse(storedFiles);
-                        console.log(`Restoring ${filesData.length} file(s) from session`);
-                        // Note: We can't restore actual File objects, but we show what was uploaded
-                        // The files are stored as data URLs and will be re-uploaded on form submit
+                        // New format: {uploaded: true, files: [...]}
+                        const filesList = filesData.uploaded ? filesData.files : filesData;
+                        const fileCount = Array.isArray(filesList) ? filesList.length : 0;
+                        if (fileCount > 0) {
+                            console.log(`${fileCount} file(s) already uploaded from previous submission`);
+                            // Note: Files can't be restored to input, but they're already on the server
+                        }
                     }
                 } catch (error) {
                     console.error('Error pre-filling Step 1 form:', error);
@@ -1400,6 +1405,168 @@
             }
         }
         
+        // Upload a single file with 5-minute timeout
+        async function uploadSingleFile(userId, file, fileNum, totalFiles) {
+            const formData = new FormData();
+            formData.append('account_id', userId);
+            formData.append('files', file);
+            
+            const fileSizeMB = (file.size / 1024 / 1024).toFixed(2);
+            console.log(`Uploading file ${fileNum}/${totalFiles}: ${file.name} (${fileSizeMB}MB)`);
+
+            // Create abort controller with 5-minute timeout
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5 * 60 * 1000); // 5 minutes
+            
+            try {
+                const response = await fetch(API_BASE_URL + UPLOAD_BILLS_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json'
+                    },
+                    body: formData,
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => null);
+                    throw new Error(
+                        errorData?.detail || 
+                        `File ${fileNum} upload failed with status: ${response.status}`
+                    );
+                }
+
+                return await response.json();
+            } catch (error) {
+                clearTimeout(timeoutId);
+                if (error.name === 'AbortError') {
+                    throw new Error(`File ${fileNum} (${file.name}) upload timed out after 5 minutes`);
+                }
+                throw error;
+            }
+        }
+        
+        // Upload all files in a single request with 5-minute timeout
+        async function uploadAllFiles(userId, files) {
+            const formData = new FormData();
+            formData.append('account_id', userId);
+            
+            for (const file of files) {
+                formData.append('files', file);
+            }
+            
+            const totalSize = files.reduce((sum, f) => sum + f.size, 0);
+            console.log(`Uploading all ${files.length} file(s) in single request (${(totalSize / 1024 / 1024).toFixed(2)}MB)`);
+
+            // Create abort controller with 5-minute timeout
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5 * 60 * 1000); // 5 minutes
+            
+            try {
+                const response = await fetch(API_BASE_URL + UPLOAD_BILLS_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json'
+                    },
+                    body: formData,
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => null);
+                    throw new Error(
+                        errorData?.detail || 
+                        `Upload failed with status: ${response.status}`
+                    );
+                }
+
+                return await response.json();
+            } catch (error) {
+                clearTimeout(timeoutId);
+                if (error.name === 'AbortError') {
+                    throw new Error('Upload timed out after 5 minutes');
+                }
+                throw error;
+            }
+        }
+        
+        // Upload utility bills - single request if small, one-by-one if large
+        async function uploadUtilityBills(userId, files, onProgress) {
+            if (!files || files.length === 0) {
+                console.log('No utility bills to upload');
+                return { success: true, message: 'No files to upload', uploadedFiles: [], failedFiles: [], errors: [] };
+            }
+
+            const totalSize = files.reduce((sum, f) => sum + f.size, 0);
+            const maxSingleRequestSize = 5 * 1024 * 1024; // 5MB threshold
+            
+            const uploadedFiles = [];
+            const failedFiles = [];
+            const errors = []; // Track actual error messages
+
+            try {
+                if (totalSize <= maxSingleRequestSize) {
+                    // Small total size - upload all files in single request
+                    console.log(`Total size ${(totalSize / 1024 / 1024).toFixed(2)}MB <= 5MB, uploading in single request`);
+                    
+                    if (onProgress) onProgress(0, 1, 0, files.length);
+                    
+                    try {
+                        await uploadAllFiles(userId, files);
+                        uploadedFiles.push(...files);
+                    } catch (error) {
+                        failedFiles.push(...files);
+                        errors.push(error.message);
+                        console.error('Single request upload failed:', error.message);
+                    }
+                } else {
+                    // Large total size - upload files one by one
+                    console.log(`Total size ${(totalSize / 1024 / 1024).toFixed(2)}MB > 5MB, uploading files one by one`);
+                    
+                    for (let i = 0; i < files.length; i++) {
+                        const file = files[i];
+                        
+                        if (onProgress) {
+                            onProgress(i, files.length, uploadedFiles.length, files.length);
+                        }
+                        
+                        try {
+                            await uploadSingleFile(userId, file, i + 1, files.length);
+                            uploadedFiles.push(file);
+                        } catch (error) {
+                            failedFiles.push(file);
+                            errors.push(`${file.name}: ${error.message}`);
+                            console.error(`File ${i + 1} (${file.name}) failed:`, error.message);
+                            // Continue with remaining files even if one fails
+                        }
+                    }
+                }
+                
+                console.log(`Upload complete: ${uploadedFiles.length} uploaded, ${failedFiles.length} failed`);
+                if (errors.length > 0) {
+                    console.log('Errors:', errors);
+                }
+                
+                return {
+                    success: failedFiles.length === 0,
+                    partial: uploadedFiles.length > 0 && failedFiles.length > 0,
+                    uploadedFiles,
+                    failedFiles,
+                    errors,
+                    message: failedFiles.length === 0 
+                        ? `All ${uploadedFiles.length} files uploaded successfully`
+                        : `${uploadedFiles.length} files uploaded, ${failedFiles.length} failed`
+                };
+            } catch (error) {
+                console.error('Utility bill upload error:', error);
+                return { success: false, error: error.message, uploadedFiles: [], failedFiles: files, errors: [error.message] };
+            }
+        }
+        
         // ============================================
         // FORM SUBMIT HANDLER - SAVE TO SESSION STORAGE AND BACKEND
         // ============================================
@@ -1443,28 +1610,12 @@
             // Save to session storage
             sessionStorage.setItem('registrationStep1', JSON.stringify(step1Data));
             
-            // Convert files to data URLs for storage
-            const filesData = [];
-            if (uploadedFiles.length > 0) {
-                const submitBtn = document.getElementById('submitBtn');
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Preparing files...';
-                
-                for (const file of uploadedFiles) {
-                    const dataURL = await new Promise((resolve) => {
-                        const reader = new FileReader();
-                        reader.onload = (e) => resolve(e.target.result);
-                        reader.readAsDataURL(file);
-                    });
-                    filesData.push({
-                        name: file.name,
-                        size: file.size,
-                        type: file.type,
-                        dataURL: dataURL
-                    });
-                }
-                sessionStorage.setItem('registrationFiles', JSON.stringify(filesData));
-            }
+            // Prepare file metadata (without dataURL to avoid sessionStorage quota issues)
+            const filesData = uploadedFiles.map(file => ({
+                name: file.name,
+                size: file.size,
+                type: file.type
+            }));
             
             // Track step 1 completion
             FormTracker.trackStep1Complete();
@@ -1502,6 +1653,138 @@
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Save & Continue to Step 2 →';
                 return;
+            }
+            
+            // Upload files directly to server (one by one if total > 5MB)
+            const userId = apiResult.result?.user_id || existingUserId;
+            if (uploadedFiles.length > 0 && userId) {
+                const totalFileSize = uploadedFiles.reduce((sum, f) => sum + f.size, 0);
+                const totalFileSizeMB = (totalFileSize / 1024 / 1024).toFixed(1);
+                
+                // Inform user about large upload
+                if (totalFileSize > 5 * 1024 * 1024) {
+                    console.log(`Large upload detected (${totalFileSizeMB}MB), will upload files one by one`);
+                }
+                
+                submitBtn.textContent = 'Uploading utility bills...';
+                
+                // Progress callback to update button text
+                const onProgress = (batchIndex, totalBatches, filesUploaded, totalFiles) => {
+                    const percent = Math.round((filesUploaded / totalFiles) * 100);
+                    submitBtn.textContent = `Uploading utility bills (${percent}%)...`;
+                };
+                
+                const uploadResult = await uploadUtilityBills(userId, uploadedFiles, onProgress);
+                
+                if (uploadResult.success) {
+                    // All files uploaded successfully
+                    sessionStorage.setItem('registrationFiles', JSON.stringify({
+                        uploaded: true,
+                        files: filesData
+                    }));
+                    console.log(`All ${uploadedFiles.length} files uploaded successfully`);
+                } else if (uploadResult.partial) {
+                    // Some files uploaded, some failed
+                    console.warn(`Partial upload: ${uploadResult.uploadedFiles.length} succeeded, ${uploadResult.failedFiles.length} failed`);
+                    
+                    // Store info about uploaded files
+                    const uploadedFilesData = uploadResult.uploadedFiles.map(f => ({
+                        name: f.name, size: f.size, type: f.type
+                    }));
+                    
+                    // Try to store failed files as dataURLs for step 2
+                    const failedFilesSize = uploadResult.failedFiles.reduce((sum, f) => sum + f.size, 0);
+                    const maxStorageSize = 4 * 1024 * 1024; // 4MB limit
+                    
+                    if (failedFilesSize < maxStorageSize) {
+                        try {
+                            submitBtn.textContent = 'Preparing remaining files...';
+                            const failedFilesWithData = [];
+                            for (const file of uploadResult.failedFiles) {
+                                const dataURL = await new Promise((resolve) => {
+                                    const reader = new FileReader();
+                                    reader.onload = (e) => resolve(e.target.result);
+                                    reader.readAsDataURL(file);
+                                });
+                                failedFilesWithData.push({
+                                    name: file.name, size: file.size, type: file.type, dataURL
+                                });
+                            }
+                            sessionStorage.setItem('registrationFiles', JSON.stringify({
+                                uploaded: 'partial',
+                                uploadedFiles: uploadedFilesData,
+                                pendingFiles: failedFilesWithData
+                            }));
+                        } catch (e) {
+                            sessionStorage.setItem('registrationFiles', JSON.stringify({
+                                uploaded: 'partial',
+                                uploadedFiles: uploadedFilesData,
+                                needsReupload: true,
+                                failedFileNames: uploadResult.failedFiles.map(f => f.name)
+                            }));
+                            const errorDetails = uploadResult.errors?.length > 0 
+                                ? `\n\nErrors:\n${uploadResult.errors.slice(0, 3).join('\n')}${uploadResult.errors.length > 3 ? '\n...' : ''}`
+                                : '';
+                            alert(`⚠️ ${uploadResult.uploadedFiles.length} files uploaded.\n\n${uploadResult.failedFiles.length} files failed to upload.${errorDetails}\n\nPlease re-select them in Step 2.`);
+                        }
+                    } else {
+                        sessionStorage.setItem('registrationFiles', JSON.stringify({
+                            uploaded: 'partial',
+                            uploadedFiles: uploadedFilesData,
+                            needsReupload: true,
+                            failedFileNames: uploadResult.failedFiles.map(f => f.name)
+                        }));
+                        const errorDetails = uploadResult.errors?.length > 0 
+                            ? `\n\nErrors:\n${uploadResult.errors.slice(0, 3).join('\n')}${uploadResult.errors.length > 3 ? '\n...' : ''}`
+                            : '';
+                        alert(`⚠️ ${uploadResult.uploadedFiles.length} files uploaded.\n\n${uploadResult.failedFiles.length} files failed to upload.${errorDetails}\n\nPlease re-select them in Step 2.`);
+                    }
+                } else {
+                    // All files failed to upload
+                    console.warn('All file uploads failed:', uploadResult.error);
+                    
+                    // Try to store files as dataURLs for step 2 (with size limit check)
+                    const totalSize = uploadedFiles.reduce((sum, f) => sum + f.size, 0);
+                    const maxStorageSize = 4 * 1024 * 1024; // 4MB limit for safety
+                    
+                    if (totalSize < maxStorageSize) {
+                        try {
+                            submitBtn.textContent = 'Preparing files for next step...';
+                            const filesWithData = [];
+                            for (const file of uploadedFiles) {
+                                const dataURL = await new Promise((resolve) => {
+                                    const reader = new FileReader();
+                                    reader.onload = (e) => resolve(e.target.result);
+                                    reader.readAsDataURL(file);
+                                });
+                                filesWithData.push({
+                                    name: file.name, size: file.size, type: file.type, dataURL
+                                });
+                            }
+                            sessionStorage.setItem('registrationFiles', JSON.stringify({
+                                uploaded: false,
+                                files: filesWithData
+                            }));
+                            console.log('Files stored for upload in Step 2');
+                        } catch (storageError) {
+                            console.warn('Could not store files:', storageError);
+                            sessionStorage.setItem('registrationFiles', JSON.stringify({
+                                uploaded: false,
+                                needsReupload: true,
+                                files: filesData
+                            }));
+                            alert('⚠️ File Upload Notice\n\nWe couldn\'t upload your utility bills yet. Please re-select them in the next step.');
+                        }
+                    } else {
+                        // Files too large to store - user needs to re-select in step 2
+                        sessionStorage.setItem('registrationFiles', JSON.stringify({
+                            uploaded: false,
+                            needsReupload: true,
+                            files: filesData
+                        }));
+                        alert('⚠️ File Upload Notice\n\nYour utility bills are too large to transfer between steps. Please re-select them in Step 2.');
+                    }
+                }
             }
             
             // Continue to step 2
