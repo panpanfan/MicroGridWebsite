@@ -10,6 +10,7 @@
 
         gtag('config', 'G-05XLDKW0MN');
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DIY System Registration - Step 1 - MicroGrid</title>
@@ -1405,166 +1406,241 @@
             }
         }
         
-        // Upload a single file with 5-minute timeout
-        async function uploadSingleFile(userId, file, fileNum, totalFiles) {
-            const formData = new FormData();
-            formData.append('account_id', userId);
-            formData.append('files', file);
+        // Get pre-signed URLs from the API
+        async function getPresignedUrls(userId, files) {
+            const filesMetadata = files.map(file => ({
+                filename: file.name,
+                content_type: file.type || 'application/octet-stream'
+            }));
             
+            console.log(`Requesting pre-signed URLs for ${files.length} file(s)...`);
+            
+            const response = await fetch(API_BASE_URL + UPLOAD_BILLS_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    account_id: userId,
+                    files: filesMetadata
+                })
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => null);
+                throw new Error(errorData?.detail || `Failed to get upload URLs: ${response.status}`);
+            }
+            
+            return await response.json();
+        }
+        
+        // Upload a single file to S3 using pre-signed URL
+        async function uploadFileToS3(file, presignedInfo, fileNum, totalFiles) {
             const fileSizeMB = (file.size / 1024 / 1024).toFixed(2);
-            console.log(`Uploading file ${fileNum}/${totalFiles}: ${file.name} (${fileSizeMB}MB)`);
+            console.log(`Uploading file ${fileNum}/${totalFiles}: ${file.name} (${fileSizeMB}MB) to S3...`);
+
+            // Build form data with all required fields from pre-signed URL
+            const formData = new FormData();
+            
+            // Add all the pre-signed fields first (order matters for S3)
+            for (const [key, value] of Object.entries(presignedInfo.presigned_fields)) {
+                formData.append(key, value);
+            }
+            
+            // Add the file last (required by S3)
+            formData.append('file', file);
 
             // Create abort controller with 5-minute timeout
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 5 * 60 * 1000); // 5 minutes
             
             try {
-                const response = await fetch(API_BASE_URL + UPLOAD_BILLS_ENDPOINT, {
+                const response = await fetch(presignedInfo.presigned_url, {
                     method: 'POST',
-                    headers: {
-                        'Accept': 'application/json'
-                    },
                     body: formData,
                     signal: controller.signal
                 });
                 
                 clearTimeout(timeoutId);
 
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => null);
-                    throw new Error(
-                        errorData?.detail || 
-                        `File ${fileNum} upload failed with status: ${response.status}`
-                    );
+                // S3 returns 204 on success for pre-signed POST
+                if (!response.ok && response.status !== 204) {
+                    const errorText = await response.text().catch(() => '');
+                    throw new Error(`S3 upload failed: ${response.status} - ${errorText}`);
                 }
 
-                return await response.json();
+                console.log(`File ${fileNum} uploaded successfully to: ${presignedInfo.s3_key}`);
+                return { success: true, s3_key: presignedInfo.s3_key };
             } catch (error) {
                 clearTimeout(timeoutId);
                 if (error.name === 'AbortError') {
                     throw new Error(`File ${fileNum} (${file.name}) upload timed out after 5 minutes`);
                 }
+                console.warn(`S3 upload failed for file ${fileNum}: ${error.message}`);
                 throw error;
             }
         }
         
-        // Upload all files in a single request with 5-minute timeout
+        // Legacy function for backwards compatibility
+        async function uploadSingleFile(userId, file, fileNum, totalFiles) {
+            // Get pre-signed URL for this single file
+            const presignedResponse = await getPresignedUrls(userId, [file]);
+            
+            if (presignedResponse.failed_files?.length > 0) {
+                throw new Error(presignedResponse.failed_files[0].error || 'Failed to get upload URL');
+            }
+            
+            if (!presignedResponse.presigned_urls?.length) {
+                throw new Error('No pre-signed URL returned from server');
+            }
+            
+            return await uploadFileToS3(file, presignedResponse.presigned_urls[0], fileNum, totalFiles);
+        }
+        
+        // Upload all files - get all pre-signed URLs at once, then upload
         async function uploadAllFiles(userId, files) {
-            const formData = new FormData();
-            formData.append('account_id', userId);
-            
-            for (const file of files) {
-                formData.append('files', file);
-            }
-            
             const totalSize = files.reduce((sum, f) => sum + f.size, 0);
-            console.log(`Uploading all ${files.length} file(s) in single request (${(totalSize / 1024 / 1024).toFixed(2)}MB)`);
-
-            // Create abort controller with 5-minute timeout
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 5 * 60 * 1000); // 5 minutes
+            console.log(`Uploading all ${files.length} file(s) (${(totalSize / 1024 / 1024).toFixed(2)}MB) using pre-signed URLs`);
             
-            try {
-                const response = await fetch(API_BASE_URL + UPLOAD_BILLS_ENDPOINT, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json'
-                    },
-                    body: formData,
-                    signal: controller.signal
-                });
-                
-                clearTimeout(timeoutId);
-
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => null);
-                    throw new Error(
-                        errorData?.detail || 
-                        `Upload failed with status: ${response.status}`
-                    );
-                }
-
-                return await response.json();
-            } catch (error) {
-                clearTimeout(timeoutId);
-                if (error.name === 'AbortError') {
-                    throw new Error('Upload timed out after 5 minutes');
-                }
-                throw error;
+            // Get pre-signed URLs for all files
+            const presignedResponse = await getPresignedUrls(userId, files);
+            
+            if (presignedResponse.failed_files?.length > 0) {
+                console.warn('Some files failed to get pre-signed URLs:', presignedResponse.failed_files);
             }
+            
+            // Upload each file to S3
+            const results = [];
+            for (let i = 0; i < presignedResponse.presigned_urls.length; i++) {
+                const presignedInfo = presignedResponse.presigned_urls[i];
+                const file = files.find(f => f.name === presignedInfo.filename);
+                
+                if (file) {
+                    const result = await uploadFileToS3(file, presignedInfo, i + 1, presignedResponse.presigned_urls.length);
+                    results.push(result);
+                }
+            }
+            
+            return {
+                success: true,
+                uploaded: results,
+                failed: presignedResponse.failed_files || []
+            };
         }
         
-        // Upload utility bills - single request if small, one-by-one if large
+        // Upload utility bills using S3 pre-signed URLs
         async function uploadUtilityBills(userId, files, onProgress) {
             if (!files || files.length === 0) {
                 console.log('No utility bills to upload');
                 return { success: true, message: 'No files to upload', uploadedFiles: [], failedFiles: [], errors: [] };
             }
 
-            const totalSize = files.reduce((sum, f) => sum + f.size, 0);
-            const maxSingleRequestSize = 5 * 1024 * 1024; // 5MB threshold
-            
             const uploadedFiles = [];
             const failedFiles = [];
-            const errors = []; // Track actual error messages
-
-            try {
-                if (totalSize <= maxSingleRequestSize) {
-                    // Small total size - upload all files in single request
-                    console.log(`Total size ${(totalSize / 1024 / 1024).toFixed(2)}MB <= 5MB, uploading in single request`);
+            const errors = [];
+            
+            // Check if we can use ZIP compression (reduces number of uploads)
+            if (files.length > 1 && window.JSZip) {
+                try {
+                    console.log('Preparing to upload files as single ZIP...');
                     
-                    if (onProgress) onProgress(0, 1, 0, files.length);
+                    const zip = new JSZip();
+                    Array.from(files).forEach(file => {
+                        zip.file(file.name, file);
+                    });
+                    
+                    const zipBlob = await zip.generateAsync({
+                        type: "blob",
+                        compression: "DEFLATE",
+                        compressionOptions: { level: 6 }
+                    });
+                    
+                    console.log(`ZIP created: ${(zipBlob.size/1024/1024).toFixed(2)}MB`);
+                    
+                    if (zipBlob.size < 50 * 1024 * 1024) { // 50MB limit (S3 pre-signed URL limit)
+                        const zipFile = new File([zipBlob], `utility_bills_${Date.now()}.zip`, { type: "application/zip" });
+                        
+                        if (onProgress) onProgress(0, 1, 0, 1);
+                        
+                        // Get pre-signed URL and upload the ZIP
+                        await uploadSingleFile(userId, zipFile, 1, 1);
+                        
+                        // Mark all original files as uploaded
+                        uploadedFiles.push(...files);
+                        console.log(`ZIP upload successful`);
+                        
+                        return {
+                            success: true,
+                            partial: false,
+                            uploadedFiles,
+                            failedFiles: [],
+                            errors: [],
+                            message: `All files uploaded as ZIP`
+                        };
+                    } else {
+                        console.warn(`ZIP is too large (>50MB), will upload files individually`);
+                    }
+                } catch (zipError) {
+                    console.warn(`ZIP upload failed:`, zipError.message);
+                    // Fallthrough to individual upload logic below
+                }
+            }
+
+            // Upload files individually using pre-signed URLs
+            console.log(`Uploading ${files.length} file(s) individually using pre-signed URLs...`);
+            
+            try {
+                // Get all pre-signed URLs at once (more efficient)
+                const presignedResponse = await getPresignedUrls(userId, files);
+                
+                // Handle files that failed to get pre-signed URLs
+                if (presignedResponse.failed_files?.length > 0) {
+                    for (const failed of presignedResponse.failed_files) {
+                        const file = files.find(f => f.name === failed.filename);
+                        if (file) {
+                            failedFiles.push(file);
+                            errors.push(`${failed.filename}: ${failed.error}`);
+                        }
+                    }
+                }
+                
+                // Upload each file to S3
+                const presignedUrls = presignedResponse.presigned_urls || [];
+                for (let i = 0; i < presignedUrls.length; i++) {
+                    const presignedInfo = presignedUrls[i];
+                    const file = files.find(f => f.name === presignedInfo.filename);
+                    
+                    if (!file) continue;
+                    
+                    if (onProgress) onProgress(i, presignedUrls.length, uploadedFiles.length, files.length);
                     
                     try {
-                        await uploadAllFiles(userId, files);
-                        uploadedFiles.push(...files);
+                        await uploadFileToS3(file, presignedInfo, i + 1, presignedUrls.length);
+                        uploadedFiles.push(file);
                     } catch (error) {
-                        failedFiles.push(...files);
-                        errors.push(error.message);
-                        console.error('Single request upload failed:', error.message);
-                    }
-                } else {
-                    // Large total size - upload files one by one
-                    console.log(`Total size ${(totalSize / 1024 / 1024).toFixed(2)}MB > 5MB, uploading files one by one`);
-                    
-                    for (let i = 0; i < files.length; i++) {
-                        const file = files[i];
-                        
-                        if (onProgress) {
-                            onProgress(i, files.length, uploadedFiles.length, files.length);
-                        }
-                        
-                        try {
-                            await uploadSingleFile(userId, file, i + 1, files.length);
-                            uploadedFiles.push(file);
-                        } catch (error) {
-                            failedFiles.push(file);
-                            errors.push(`${file.name}: ${error.message}`);
-                            console.error(`File ${i + 1} (${file.name}) failed:`, error.message);
-                            // Continue with remaining files even if one fails
-                        }
+                        failedFiles.push(file);
+                        errors.push(`${file.name}: ${error.message}`);
                     }
                 }
                 
-                console.log(`Upload complete: ${uploadedFiles.length} uploaded, ${failedFiles.length} failed`);
-                if (errors.length > 0) {
-                    console.log('Errors:', errors);
-                }
-                
-                return {
-                    success: failedFiles.length === 0,
-                    partial: uploadedFiles.length > 0 && failedFiles.length > 0,
-                    uploadedFiles,
-                    failedFiles,
-                    errors,
-                    message: failedFiles.length === 0 
-                        ? `All ${uploadedFiles.length} files uploaded successfully`
-                        : `${uploadedFiles.length} files uploaded, ${failedFiles.length} failed`
-                };
             } catch (error) {
-                console.error('Utility bill upload error:', error);
-                return { success: false, error: error.message, uploadedFiles: [], failedFiles: files, errors: [error.message] };
+                // Failed to get pre-signed URLs entirely
+                console.error('Failed to get pre-signed URLs:', error);
+                errors.push(`Failed to get upload URLs: ${error.message}`);
+                failedFiles.push(...files.filter(f => !uploadedFiles.includes(f)));
             }
+            
+            return {
+                success: failedFiles.length === 0,
+                partial: uploadedFiles.length > 0 && failedFiles.length > 0,
+                uploadedFiles,
+                failedFiles,
+                errors,
+                message: failedFiles.length === 0 
+                    ? `All ${uploadedFiles.length} files uploaded successfully`
+                    : `${uploadedFiles.length} files uploaded, ${failedFiles.length} failed`
+            };
         }
         
         // ============================================
