@@ -1118,7 +1118,7 @@
         // API CONFIGURATION
         // ============================================
         
-        const API_BASE_URL = 'https://3dbhitxwoc.execute-api.us-east-2.amazonaws.com/dev';
+        const API_BASE_URL = 'http://localhost:8001';
         const SIGNUP_ENDPOINT = '/auth/signup';
         const UPDATE_PROFILE_ENDPOINT = '/auth/update-profile';
         const UPLOAD_BILLS_ENDPOINT = '/admin/upload-utility-bills';
@@ -1439,6 +1439,15 @@
         async function uploadFileToS3(file, presignedInfo, fileNum, totalFiles) {
             const fileSizeMB = (file.size / 1024 / 1024).toFixed(2);
             console.log(`Uploading file ${fileNum}/${totalFiles}: ${file.name} (${fileSizeMB}MB) to S3...`);
+            
+            // Debug logging
+            console.log('=== DEBUG: S3 Upload Details ===');
+            console.log('Pre-signed URL:', presignedInfo.presigned_url);
+            console.log('Pre-signed fields:', JSON.stringify(presignedInfo.presigned_fields, null, 2));
+            console.log('File name:', file.name);
+            console.log('File size:', file.size, 'bytes');
+            console.log('File type:', file.type);
+            console.log('================================');
 
             // Build form data with all required fields from pre-signed URL
             const formData = new FormData();
@@ -1446,14 +1455,22 @@
             // Add all the pre-signed fields first (order matters for S3)
             for (const [key, value] of Object.entries(presignedInfo.presigned_fields)) {
                 formData.append(key, value);
+                console.log(`FormData field: ${key} = ${value.substring ? value.substring(0, 50) + '...' : value}`);
             }
             
             // Add the file last (required by S3)
             formData.append('file', file);
+            console.log('FormData file appended:', file.name);
 
-            // Create abort controller with 5-minute timeout
+            // Create abort controller with 10-minute timeout
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 5 * 60 * 1000); // 5 minutes
+            const timeoutId = setTimeout(() => {
+                console.log('!!! TIMEOUT TRIGGERED - aborting request');
+                controller.abort();
+            }, 10 * 60 * 1000); // 10 minutes
+            
+            const startTime = Date.now();
+            console.log('Starting fetch to S3 at:', new Date().toISOString());
             
             try {
                 const response = await fetch(presignedInfo.presigned_url, {
@@ -1463,10 +1480,13 @@
                 });
                 
                 clearTimeout(timeoutId);
+                const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
+                console.log(`Fetch completed in ${elapsed}s, status: ${response.status}`);
 
                 // S3 returns 204 on success for pre-signed POST
                 if (!response.ok && response.status !== 204) {
                     const errorText = await response.text().catch(() => '');
+                    console.error('S3 error response:', errorText);
                     throw new Error(`S3 upload failed: ${response.status} - ${errorText}`);
                 }
 
@@ -1474,8 +1494,14 @@
                 return { success: true, s3_key: presignedInfo.s3_key };
             } catch (error) {
                 clearTimeout(timeoutId);
+                const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
+                console.error(`=== DEBUG: Upload Failed after ${elapsed}s ===`);
+                console.error('Error name:', error.name);
+                console.error('Error message:', error.message);
+                console.error('Full error:', error);
+                
                 if (error.name === 'AbortError') {
-                    throw new Error(`File ${fileNum} (${file.name}) upload timed out after 5 minutes`);
+                    throw new Error(`File ${fileNum} (${file.name}) upload timed out after 10 minutes`);
                 }
                 console.warn(`S3 upload failed for file ${fileNum}: ${error.message}`);
                 throw error;
