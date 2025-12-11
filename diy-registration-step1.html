@@ -639,15 +639,11 @@
                 </div>
 
                 <div class="section-header">
-                    <h2>Step 1 — Understand Your Earnings Potential</h2>
-                    <p>Connect your system to get personalized savings estimates</p>
+                    <h2>Step 1 — System Specifications & Usage Data</h2>
+                    <p>Tell us about your battery system and electricity usage</p>
                 </div>
 
                 <form id="diyForm" action="#" method="POST">
-                    
-                    <p style="color: #6b7280; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem; padding: 1rem; background: #f9fafb; border-radius: 8px; border-left: 4px solid #10B981;">
-                        <strong style="color: #059669;">🔒 Your System Security:</strong> We only request <strong>read-only access</strong> to view your system data. We will never control, modify, or operate your system without your explicit written consent. Your inverter web service credentials are encrypted and stored securely.
-                    </p>
 
                     <!-- Easy Start: Provide System Specs -->
                     <div style="background: #f9fafb; border: 2px solid #d1d5db; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
@@ -882,11 +878,11 @@
 
                     <p style="text-align: center; margin: 1.5rem 0 0.75rem 0; padding: 1rem; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border-radius: 12px; border: 2px solid #10B981;">
                         <span style="display: block; color: #059669; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">🎁 UNLOCK YOUR EARNING POTENTIAL</span>
-                        <span style="display: block; color: #047857; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem;">Typical range for similar systems: $50–$200/month</span>
-                        <span style="display: block; color: #6b7280; font-size: 0.85rem;">Get your personalized estimate ↓</span>
+                        <span style="display: block; color: #047857; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem;">Typical range for similar systems: $600–$2,400/year</span>
+                        <span style="display: block; color: #6b7280; font-size: 0.85rem;">Get your quick estimate ↓</span>
                     </p>
 
-                    <button type="submit" class="submit-btn" id="submitBtn">Continue</button>
+                    <button type="submit" class="submit-btn" id="submitBtn">Calculate Quick Estimate & Continue</button>
                     
                     <p style="text-align: center; margin-top: 1rem; color: #6b7280; font-size: 0.95rem;" id="submitHelpText">💡 You'll receive your results within 24 hours.</p>
 
@@ -2055,6 +2051,290 @@
             }
         }
 
+        // ============================================
+        // ESTIMATION CACHING
+        // ============================================
+        // 
+        // The quick estimation is cached based on a signature of:
+        //   - Battery capacity
+        //   - PV wattage
+        //   - Monthly kWh data
+        //   - Daily average kWh
+        //   - Whether utility bills were uploaded
+        //   - Whether usage chart was uploaded
+        //   - Number of files uploaded
+        //
+        // Benefits:
+        //   1. If user clicks cancel and then continue again, shows saved result instantly
+        //   2. If user doesn't change any data and resubmits, no API call is made
+        //   3. If user changes any input, cache is invalidated and new calculation occurs
+        //
+        // Cache is stored in sessionStorage and persists until:
+        //   - User closes the tab/browser
+        //   - User clears browser data
+        //   - User changes any Step 1 input data
+        // ============================================
+        
+        // Generate a signature/hash of the form data to detect changes
+        function generateDataSignature(systemData, uploadedFilesInfo) {
+            const dataString = JSON.stringify({
+                batteryCapacity: systemData.batteryCapacity,
+                pvWattage: systemData.pvWattage,
+                monthlyKwh: systemData.monthlyKwh,
+                dailyAverageKwh: systemData.dailyAverageKwh,
+                hasUtilityBills: systemData.hasUtilityBills,
+                hasUsageChart: systemData.hasUsageChart,
+                filesCount: uploadedFilesInfo.total,
+                filesUploaded: uploadedFilesInfo.uploaded
+            });
+            
+            // Simple hash function (for production, consider using a proper hash library)
+            let hash = 0;
+            for (let i = 0; i < dataString.length; i++) {
+                const char = dataString.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash; // Convert to 32bit integer
+            }
+            return hash.toString();
+        }
+        
+        // Check if we have a cached estimation for the current data
+        function getCachedEstimation(systemData, uploadedFilesInfo) {
+            const currentSignature = generateDataSignature(systemData, uploadedFilesInfo);
+            const cachedData = sessionStorage.getItem('quickEstimationCache');
+            
+            if (!cachedData) {
+                return null;
+            }
+            
+            try {
+                const cache = JSON.parse(cachedData);
+                if (cache.signature === currentSignature) {
+                    console.log('Using cached estimation (data unchanged)');
+                    return {
+                        estimation: cache.estimation,
+                        filesUploaded: cache.filesUploaded,
+                        totalFiles: cache.totalFiles
+                    };
+                } else {
+                    console.log('Data changed, cache invalidated');
+                    return null;
+                }
+            } catch (error) {
+                console.error('Error reading estimation cache:', error);
+                return null;
+            }
+        }
+        
+        // Save estimation to cache
+        function cacheEstimation(systemData, uploadedFilesInfo, estimation) {
+            const signature = generateDataSignature(systemData, uploadedFilesInfo);
+            const cache = {
+                signature: signature,
+                estimation: estimation,
+                filesUploaded: uploadedFilesInfo.uploaded,
+                totalFiles: uploadedFilesInfo.total,
+                timestamp: new Date().toISOString()
+            };
+            
+            sessionStorage.setItem('quickEstimationCache', JSON.stringify(cache));
+            console.log('Estimation cached with signature:', signature);
+        }
+        
+        // ============================================
+        // QUICK ESTIMATION API (MOCK - TO BE REPLACED)
+        // ============================================
+        
+        async function calculateQuickEstimation(systemData) {
+            // TODO: Replace this mock function with actual backend REST API call
+            // Expected endpoint: POST /api/calculate-quick-estimate
+            
+            // Simulate API delay (500ms - 1500ms)
+            const delay = 500 + Math.random() * 1000;
+            await new Promise(resolve => setTimeout(resolve, delay));
+            
+            // Mock calculation based on system specs
+            const batteryCapacity = parseFloat(systemData.batteryCapacity) || 10;
+            const pvWattage = parseFloat(systemData.pvWattage) || 8;
+            
+            // Check if usage data was provided for confidence level
+            const hasUsageData = systemData.hasUtilityBills || systemData.hasUsageChart || 
+                                 (systemData.monthlyKwh && Object.keys(systemData.monthlyKwh).length > 0) ||
+                                 (systemData.dailyAverageKwh && systemData.dailyAverageKwh.trim() !== '');
+            
+            // Simple mock formula: base on battery and solar capacity
+            // Actual API will use sophisticated algorithms with usage data
+            const baseEarnings = batteryCapacity * 50; // $50 per kWh of battery
+            const solarBonus = pvWattage * 30; // $30 per kW of solar
+            const randomVariation = (Math.random() * 0.3 - 0.15); // ±15% variation
+            
+            const estimatedYearlyEarnings = Math.round((baseEarnings + solarBonus) * (1 + randomVariation));
+            const lowEstimate = Math.round(estimatedYearlyEarnings * 0.7);
+            const highEstimate = Math.round(estimatedYearlyEarnings * 1.3);
+            
+            // Mock API response format
+            return {
+                success: true,
+                estimation: {
+                    yearly_low: lowEstimate,
+                    yearly_high: highEstimate,
+                    yearly_average: estimatedYearlyEarnings,
+                    monthly_average: Math.round(estimatedYearlyEarnings / 12),
+                    confidence_level: hasUsageData ? 'medium' : 'low',
+                    message: 'Quick estimation calculated. More accurate estimates will be provided after detailed analysis.'
+                }
+            };
+            
+            // Uncomment below when actual API is ready:
+            /*
+            // NOTE: This function is called AFTER files are uploaded
+            // The backend should use the uploaded files (utility bills, usage chart screenshot)
+            // along with the system specs to calculate the estimation
+            const response = await fetch(API_BASE_URL + '/api/calculate-quick-estimate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    battery_capacity_kwh: systemData.batteryCapacity,
+                    pv_wattage_kw: systemData.pvWattage,
+                    monthly_kwh: systemData.monthlyKwh,
+                    daily_average_kwh: systemData.dailyAverageKwh,
+                    has_utility_bills: systemData.hasUtilityBills,
+                    has_usage_chart: systemData.hasUsageChart,
+                    temp_user_id: systemData.tempUserId,
+                    // Backend should fetch the uploaded files using temp_user_id
+                    // Files are already uploaded to S3 at this point
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error('Quick estimation API failed');
+            }
+            
+            return await response.json();
+            */
+        }
+        
+        function showEstimationDialog(estimation, filesUploaded, totalFiles, isCached = false) {
+            const yearlyRange = `$${estimation.yearly_low.toLocaleString()}–$${estimation.yearly_high.toLocaleString()}`;
+            const monthlyAvg = `$${estimation.monthly_average.toLocaleString()}`;
+            
+            let confidenceText = '';
+            if (estimation.confidence_level === 'medium') {
+                confidenceText = 'This is a preliminary estimate based on your system specs and usage data.';
+            } else {
+                confidenceText = 'This is a preliminary estimate based on your system specs.';
+            }
+            
+            let uploadStatus = '';
+            if (totalFiles > 0) {
+                if (filesUploaded === totalFiles) {
+                    uploadStatus = `\n📁 All ${filesUploaded} file(s) uploaded successfully!\n`;
+                } else if (filesUploaded > 0) {
+                    uploadStatus = `\n⚠️ ${filesUploaded} of ${totalFiles} file(s) uploaded.\n`;
+                } else {
+                    uploadStatus = '\n⚠️ Files could not be uploaded.\n';
+                }
+            }
+            
+            const cacheNote = isCached ? '\n(Showing saved estimate - no changes detected)\n' : '';
+            
+            const message = 
+                '🎉 Your Quick Earnings Estimate\n' +
+                uploadStatus + cacheNote + '\n' +
+                `💰 Estimated Annual Earnings: ${yearlyRange}/year\n` +
+                `📊 Average Monthly: ${monthlyAvg}/month\n\n` +
+                `${confidenceText}\n\n` +
+                `We'll provide a more detailed analysis after you complete registration and we review your full information.\n\n` +
+                'Continue to Step 2 to provide your contact information?';
+            
+            return confirm(message);
+        }
+        
+        // Helper function to calculate estimation and handle navigation after files uploaded
+        async function calculateAndShowEstimation(systemData, submitBtn, filesUploaded, totalFiles) {
+            try {
+                const uploadedFilesInfo = {
+                    uploaded: filesUploaded,
+                    total: totalFiles
+                };
+                
+                // Check if we have a cached estimation for this exact data
+                const cachedResult = getCachedEstimation(systemData, uploadedFilesInfo);
+                
+                let estimation, resultFilesUploaded, resultTotalFiles;
+                
+                if (cachedResult) {
+                    // Use cached estimation (no API call needed)
+                    console.log('Using cached estimation result');
+                    estimation = cachedResult.estimation;
+                    resultFilesUploaded = cachedResult.filesUploaded;
+                    resultTotalFiles = cachedResult.totalFiles;
+                    
+                    // Store estimation in session storage for later use
+                    sessionStorage.setItem('quickEstimation', JSON.stringify(estimation));
+                } else {
+                    // Calculate new estimation
+                    submitBtn.textContent = 'Calculating your estimate...';
+                    
+                    console.log('Calculating quick estimation after file upload...');
+                    const estimationResult = await calculateQuickEstimation(systemData);
+                    
+                    if (!estimationResult.success) {
+                        console.warn('Quick estimation failed, asking user to continue anyway');
+                        if (confirm('Unable to calculate estimate, but your data has been saved. Continue to Step 2?')) {
+                            window.location.href = 'diy-registration-step2.html';
+                        } else {
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = 'Calculate Quick Estimate & Continue';
+                        }
+                        return;
+                    }
+                    
+                    console.log('Quick estimation calculated:', estimationResult.estimation);
+                    estimation = estimationResult.estimation;
+                    resultFilesUploaded = filesUploaded;
+                    resultTotalFiles = totalFiles;
+                    
+                    // Cache the estimation result
+                    cacheEstimation(systemData, uploadedFilesInfo, estimation);
+                    
+                    // Store estimation in session storage for later use
+                    sessionStorage.setItem('quickEstimation', JSON.stringify(estimation));
+                }
+                
+                // Show estimation dialog with upload status
+                const userWantsToContinue = showEstimationDialog(
+                    estimation, 
+                    resultFilesUploaded, 
+                    resultTotalFiles,
+                    cachedResult !== null  // indicate if this is cached data
+                );
+                
+                if (userWantsToContinue) {
+                    // User confirmed, proceed to step 2
+                    window.location.href = 'diy-registration-step2.html';
+                } else {
+                    // User cancelled, restore button
+                    // Estimation is cached, so clicking again will show same result
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Calculate Quick Estimate & Continue';
+                }
+                
+            } catch (error) {
+                console.error('Error calculating quick estimation:', error);
+                // Ask user if they want to continue despite estimation error
+                if (confirm('Unable to calculate quick estimate at this time, but your data has been saved. Continue to Step 2?')) {
+                    window.location.href = 'diy-registration-step2.html';
+                } else {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Calculate Quick Estimate & Continue';
+                }
+            }
+        }
+
         // Form submit handler
         document.getElementById('diyForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -2137,11 +2417,6 @@
                 return;
             }
             
-            // Save step 1 data and redirect to step 2
-            console.log('Saving step 1 data and redirecting to step 2');
-            
-            // Monthly kWh data already collected above for validation
-            
             // Generate or retrieve temporary UUID for this session
             let tempUserId = sessionStorage.getItem('tempUserId');
             if (!tempUserId) {
@@ -2150,17 +2425,25 @@
                 console.log('Generated temporary user ID:', tempUserId);
             }
             
-            // Save step 1 (system setup) data to session storage
-            // Note: Inverter connection fields are now in step 2
+            // Prepare system data
             const step1SystemData = {
                 batteryCapacity: formData.get('batteryCapacity'),
                 pvWattage: formData.get('pvWattage'),
                 monthlyKwh: monthlyKwhData,
                 dailyAverageKwh: formData.get('dailyAverageKwh'),
+                hasUtilityBills: hasUtilityBills,
+                hasUsageChart: hasUsageChart,
                 tempUserId: tempUserId
             };
             
+            // Save step 1 data
+            console.log('Saving step 1 data');
             sessionStorage.setItem('registrationStep1', JSON.stringify(step1SystemData));
+            
+            // Prepare for upload and estimation
+            const submitBtn = document.getElementById('submitBtn');
+            const originalButtonText = submitBtn.textContent;
+            submitBtn.disabled = true;
             
             // Separate utility bills from usage chart screenshot
             const utilityBills = [...uploadedFiles];
@@ -2169,7 +2452,6 @@
             const hasFilesToUpload = utilityBills.length > 0 || screenshots.length > 0;
             
             if (hasFilesToUpload) {
-                const submitBtn = document.getElementById('submitBtn');
                 submitBtn.textContent = 'Uploading files...';
                 submitBtn.disabled = true;
                 
@@ -2234,38 +2516,22 @@
                     // Handle results
                     const totalFiles = utilityBills.length + screenshots.length;
                     
-                    if (totalFilesUploaded === totalFiles) {
-                        // All files uploaded successfully
-                        window.location.href = 'diy-registration-step2.html';
-                    } else if (totalFilesUploaded > 0) {
-                        // Some files uploaded
-                        if (confirm(`${totalFilesUploaded} of ${totalFiles} files uploaded successfully. Continue anyway?`)) {
-                            window.location.href = 'diy-registration-step2.html';
-                        } else {
-                            submitBtn.textContent = 'Continue';
-                            submitBtn.disabled = false;
-                        }
-                    } else {
-                        // No files uploaded
-                        if (confirm('File upload failed. Continue without files?')) {
-                            window.location.href = 'diy-registration-step2.html';
-                        } else {
-                            submitBtn.textContent = 'Continue';
-                            submitBtn.disabled = false;
-                        }
-                    }
+                    // Calculate estimation after files are uploaded
+                    await calculateAndShowEstimation(step1SystemData, submitBtn, totalFilesUploaded, totalFiles);
+                    
                 } catch (error) {
                     console.error('Error uploading files:', error);
                     if (confirm('Error uploading files. Continue without files?')) {
-                        window.location.href = 'diy-registration-step2.html';
+                        // Calculate estimation even if files failed
+                        await calculateAndShowEstimation(step1SystemData, submitBtn, 0, 0);
                     } else {
-                        submitBtn.textContent = 'Continue';
+                        submitBtn.textContent = originalButtonText;
                         submitBtn.disabled = false;
                     }
                 }
             } else {
-                // No files, just redirect
-                window.location.href = 'diy-registration-step2.html';
+                // No files to upload, calculate estimation immediately
+                await calculateAndShowEstimation(step1SystemData, submitBtn, 0, 0);
             }
         });
     </script>
