@@ -1494,11 +1494,6 @@
                 return { success: true, s3_key: presignedInfo.s3_key };
             } catch (error) {
                 clearTimeout(timeoutId);
-                const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
-                console.error(`=== DEBUG: Upload Failed after ${elapsed}s ===`);
-                console.error('Error name:', error.name);
-                console.error('Error message:', error.message);
-                console.error('Full error:', error);
                 
                 if (error.name === 'AbortError') {
                     throw new Error(`File ${fileNum} (${file.name}) upload timed out after 10 minutes`);
