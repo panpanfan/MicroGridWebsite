@@ -10,9 +10,10 @@
 
         gtag('config', 'G-05XLDKW0MN');
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Setup - Step 2 - MicroGrid</title>
+    <title>DIY System Registration - Step 2 - MicroGrid</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -183,7 +184,7 @@
             left: 25%;
             right: 25%;
             height: 3px;
-            background: #10B981;
+            background: #e5e7eb;
             z-index: 0;
         }
 
@@ -271,11 +272,6 @@
             box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
         }
 
-        .form-group textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
         .checkbox-group {
             display: flex;
             align-items: flex-start;
@@ -314,23 +310,114 @@
             box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
         }
 
-        .back-btn {
-            background: transparent;
-            color: #6b7280;
-            padding: 1rem 2rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            margin-bottom: 1rem;
+        .file-upload-container {
+            margin-top: 0.5rem;
         }
 
-        .back-btn:hover {
+        .file-upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            background: #f9fafb;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-area:hover {
             border-color: #059669;
-            color: #059669;
+            background: #f0fdf4;
+        }
+
+        .file-upload-area.drag-over {
+            border-color: #059669;
+            background: #ecfdf5;
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-text {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.25rem;
+        }
+
+        .upload-subtext {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .file-list {
+            margin-top: 1rem;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .file-item:hover {
+            border-color: #059669;
+            box-shadow: 0 2px 8px rgba(5, 150, 105, 0.1);
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1;
+        }
+
+        .file-icon {
+            font-size: 1.5rem;
+        }
+
+        .file-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .file-name {
+            font-weight: 500;
+            color: #374151;
+            font-size: 0.9rem;
+        }
+
+        .file-size {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .file-remove {
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .file-remove:hover {
+            background: #dc2626;
+            transform: scale(1.1);
         }
 
         /* Mobile Menu Button */
@@ -394,6 +481,115 @@
         @media (max-width: 640px) {
             .cta-button.hide-mobile {
                 display: none;
+            }
+        }
+
+        /* Sticky CTA Bar */
+        .sticky-cta-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(16, 185, 129, 0.15);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+            padding: 1rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .cta-bar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .cta-bar-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1f2937;
+            flex-shrink: 0;
+        }
+
+        .cta-bar-buttons {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .cta-bar-primary {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cta-bar-primary:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        body {
+            padding-bottom: 100px;
+        }
+
+        @media (max-width: 768px) {
+            .cta-bar-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.75rem;
+            }
+
+            .cta-bar-text {
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .cta-bar-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .cta-bar-primary {
+                flex: 1;
+                min-width: 140px;
+                padding: 0.75rem;
+                font-size: 0.9rem;
+            }
+
+            .sticky-cta-bar {
+                padding: 1rem 0.75rem;
+            }
+
+            body {
+                padding-bottom: 140px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cta-bar-primary {
+                width: 100%;
+                padding: 1rem;
+            }
+
+            body {
+                padding-bottom: 160px;
             }
         }
 
@@ -508,6 +704,7 @@
             </ul>
             <div class="header-buttons">
                 <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
+                <a href="diy-registration-step1.html" class="cta-button hide-mobile">Start Free</a>
                 <a href="https://apps.apple.com/us/app/dgrid/id6747276150" class="cta-button-outline">Download App</a>
             </div>
         </nav>
@@ -521,57 +718,73 @@
                 <div class="progress-bar">
                     <div class="progress-step completed">
                         <div class="progress-step-circle">✓</div>
-                        <div class="progress-step-label">Contact Info</div>
+                        <div class="progress-step-label">System Setup</div>
                     </div>
                     <div class="progress-step active">
                         <div class="progress-step-circle">2</div>
-                        <div class="progress-step-label">System Setup</div>
+                        <div class="progress-step-label">Contact Info</div>
                     </div>
                 </div>
 
                 <div class="section-header">
-                    <h2>Step 2 — Understand Your Earnings Potential</h2>
-                    <p>Connect your system to get personalized savings estimates</p>
+                    <h2>Step 2 — Tell Us About Yourself</h2>
+                    <p>Optional: Provide your contact information to receive personalized estimates</p>
                 </div>
 
-                <form id="diyForm" action="#" method="POST">
+                <form id="step1Form" action="#" method="POST">
                     
-                    <p style="color: #6b7280; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem; padding: 1rem; background: #f9fafb; border-radius: 8px; border-left: 4px solid #10B981;">
-                        <strong style="color: #059669;">🔒 Your System Security:</strong> We only request <strong>read-only access</strong> to view your system data. We will never control, modify, or operate your system without your explicit written consent. Your inverter web service credentials are encrypted and stored securely.
-                    </p>
+                    <h2 style="font-size: 1.5rem; color: #059669; margin-bottom: 0.5rem;">Step 2 — Contact Information (Optional)</h2>
+                    <p style="color: #6b7280; margin-bottom: 2rem;">You can skip this step if you prefer. We'll save your info so you don't lose progress.</p>
+                    
+                    <div class="form-group full-width">
+                        <label for="fullName">Full Name or Preferred Name</label>
+                        <input type="text" id="fullName" name="fullName" placeholder="Enter your full name or preferred name">
+                    </div>
 
-                    <!-- Easy Start: Provide System Specs -->
-                    <div style="background: #f9fafb; border: 2px solid #d1d5db; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
-                        <div style="display: flex; align-items: start; gap: 0.75rem;">
-                            <span style="font-size: 1.5rem;">📊</span>
-                            <div style="flex: 1;">
-                                <h3 style="font-size: 1.1rem; color: #374151; font-weight: 700; margin-bottom: 0.5rem;">Quick Start: Tell Us Your System Specs</h3>
-                                <p style="color: #4b5563; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
-                                    <strong>Don't have your inverter web service credentials handy? That's perfectly fine!</strong> Just provide your system specifications below, and we'll calculate your estimated earnings. You can complete registration now and connect your system later.
-                                </p>
-                                
-                                <p style="color: #374151; font-size: 0.875rem; margin-bottom: 1rem; padding: 0.75rem; background: #e0f2fe; border-radius: 8px; border-left: 3px solid #0ea5e9;">
-                                    <strong>✅ This is enough to get started!</strong> Simply enter your battery and solar capacity below. We'll send you personalized estimates within 24 hours.
-                                </p>
-
-                                <div class="form-grid">
-                                    <div class="form-group">
-                                        <label for="batteryCapacity">Battery Capacity (kWh) <span id="batteryCapacityRequired" style="display: none; color: #ef4444;">*</span></label>
-                                        <input type="number" id="batteryCapacity" name="batteryCapacity" placeholder="e.g., 13.5" step="0.1" min="0">
-                                        <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">
-                                            Total usable battery storage capacity.
-                                        </small>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="pvWattage">Solar Panel Capacity (kW) <span id="pvWattageRequired" style="display: none; color: #ef4444;">*</span></label>
-                                        <input type="number" id="pvWattage" name="pvWattage" placeholder="e.g., 8.5" step="0.1" min="0">
-                                        <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">
-                                            Total solar panel capacity in kilowatts.
-                                        </small>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="you@example.com">
+                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">We'll send your earning estimates and setup instructions.</small>
                         </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="(800) 555-0100 or 8005550100">
+                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">US phone numbers only. Enter 10 digits.</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="address">Address</label>
+                        <input type="text" id="address" name="address" placeholder="Street address (optional)">
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" id="city" name="city" placeholder="City">
+                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Certain utility rules differ by location.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State</label>
+                            <select id="state" name="state">
+                                <option value="">Select State</option>
+                                <option value="California" selected>California</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="utilityCompany">Utility Company</label>
+                        <select id="utilityCompany" name="utilityCompany">
+                            <option value="">Select Utility Company</option>
+                            <option value="PG&E">Pacific Gas & Electric (PG&E)</option>
+                            <option value="SCE">Southern California Edison (SCE)</option>
+                            <option value="SDG&E">San Diego Gas & Electric (SDG&E)</option>
+                            <option value="SMUD">Sacramento Municipal Utility District (SMUD)</option>
+                            <option value="LADWP">Los Angeles Department of Water and Power (LADWP)</option>
+                            <option value="Other">Other Utility</option>
+                        </select>
                     </div>
 
                     <!-- Strongly Recommended: Direct Connection -->
@@ -661,22 +874,21 @@
                         <label for="marketing">I would like to receive updates about MicroGrid products and VPP opportunities</label>
                     </div>
 
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="terms" name="terms">
+                        <label for="terms">I agree to the <a href="terms.html" style="color: #059669;">Terms of Service</a> and <a href="privacy.html" style="color: #059669;">Privacy Policy</a></label>
+                    </div>
+
                     <p style="text-align: center; margin: 1.5rem 0 0.75rem 0; padding: 1rem; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border-radius: 12px; border: 2px solid #10B981;">
-                        <span style="display: block; color: #059669; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">🎁 UNLOCK YOUR EARNING POTENTIAL</span>
-                        <span style="display: block; color: #047857; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem;">Typical range for similar systems: $50–$200/month</span>
-                        <span style="display: block; color: #6b7280; font-size: 0.85rem;">Get your personalized estimate ↓</span>
+                        <span style="display: block; color: #059669; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">✨ YOUR PROGRESS IS SAVED</span>
+                        <span style="display: block; color: #047857; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">We'll save your info when you click continue</span>
+                        <span style="display: block; color: #6b7280; font-size: 0.85rem;">You won't lose any data if you need to come back later</span>
                     </p>
 
-                    <button type="button" class="back-btn" onclick="window.location.href='diy-registration.html'">← Back to Step 1</button>
-                    <button type="submit" class="submit-btn" id="submitBtn">Continue</button>
+                    <button type="button" class="back-btn" onclick="window.location.href='diy-registration-step1.html'">← Back to Step 1</button>
+                    <button type="submit" class="submit-btn" id="submitBtn">Complete Registration</button>
                     
-                    <p style="text-align: center; margin-top: 1rem; color: #6b7280; font-size: 0.95rem;" id="submitHelpText">💡 You'll receive your results within 24 hours.</p>
-
-                    <div style="text-align: center; margin-top: 1.25rem;">
-                        <a href="mailto:support@microvpp.com" style="display: inline-block; padding: 0.75rem 1.5rem; background: #f0fdf4; color: #059669; text-decoration: none; font-weight: 600; border-radius: 8px; border: 2px solid #10B981; transition: all 0.3s ease;">
-                            💬 Need help connecting? Contact Support
-                        </a>
-                    </div>
+                    <p style="text-align: center; margin-top: 1rem; color: #6b7280; font-size: 0.95rem;">💡 You can skip this step if you prefer. Your system setup is already saved.</p>
 
                     <small style="display: block; text-align: center; margin-top: 1.5rem; color: #6b7280; font-size: 0.875rem; line-height: 1.6;">
                         By continuing you agree to our <a href="privacy.html" style="color: #059669;">Privacy Policy</a>.  
@@ -713,7 +925,86 @@
         </div>
     </footer>
 
+    <!-- Sticky CTA Bar -->
+    <div class="sticky-cta-bar">
+        <div class="cta-bar-content">
+            <div class="cta-bar-text">Ready to activate your smart battery?</div>
+            <div class="cta-bar-buttons">
+                <a href="https://apps.apple.com/us/app/dgrid/id6747276150" class="cta-bar-primary">Download App</a>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // ============================================
+        // FORM ANALYTICS TRACKING
+        // ============================================
+        
+        const FormTracker = {
+            formStarted: false,
+            fieldsInteracted: new Set(),
+            abandonmentTimer: null,
+            
+            trackFormStart() {
+                if (!this.formStarted) {
+                    this.formStarted = true;
+                    gtag('event', 'form_start', {
+                        form_name: 'diy_registration_step2',
+                        form_type: 'registration'
+                    });
+                    console.log('📊 Analytics: Form Step 1 started');
+                }
+            },
+            
+            trackFieldInteraction(fieldName, fieldType) {
+                if (!this.fieldsInteracted.has(fieldName)) {
+                    this.fieldsInteracted.add(fieldName);
+                    gtag('event', 'form_field_interaction', {
+                        form_name: 'diy_registration_step2',
+                        field_name: fieldName,
+                        field_type: fieldType,
+                        step: 2
+                    });
+                    console.log('📊 Analytics: Field interaction -', fieldName);
+                }
+            },
+            
+            trackFileUpload(fileCount, totalSize) {
+                gtag('event', 'file_upload', {
+                    form_name: 'diy_registration_step2',
+                    file_count: fileCount,
+                    total_size_mb: (totalSize / (1024 * 1024)).toFixed(2),
+                    step: 1
+                });
+                console.log('📊 Analytics: Files uploaded -', fileCount);
+            },
+            
+            trackStep1Complete() {
+                gtag('event', 'form_step_complete', {
+                    form_name: 'diy_registration_step2',
+                        step_number: 2,
+                        step_name: 'contact_info',
+                    fields_completed: this.fieldsInteracted.size
+                });
+                console.log('📊 Analytics: Step 1 completed');
+            },
+            
+            resetAbandonmentTimer() {
+                if (this.abandonmentTimer) {
+                    clearTimeout(this.abandonmentTimer);
+                }
+                this.abandonmentTimer = setTimeout(() => {
+                    if (this.formStarted) {
+                        gtag('event', 'form_abandon', {
+                            form_name: 'diy_registration_step2',
+                            step: 2,
+                            fields_completed: this.fieldsInteracted.size
+                        });
+                    }
+                }, 120000); // 2 minutes
+            }
+        };
+
         // ============================================
         // MOBILE MENU
         // ============================================
@@ -727,7 +1018,6 @@
                 this.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
             });
 
-            // Close menu when clicking outside
             document.addEventListener('click', function(event) {
                 if (!event.target.closest('nav')) {
                     navLinks.classList.remove('active');
@@ -735,7 +1025,6 @@
                 }
             });
 
-            // Close menu when clicking a link
             navLinks.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', function() {
                     navLinks.classList.remove('active');
@@ -745,116 +1034,46 @@
         }
 
         // ============================================
-        // LOAD STEP 1 DATA FROM SESSION STORAGE & PRE-FILL FORM
+        // FILE UPLOAD HANDLING
+        // ============================================
+        let uploadedFiles = [];
+        const MAX_FILES = 12;
+        const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB per file
+
+        // Note: File upload UI removed from Step 2
+        // Files are now uploaded in Step 1 and transferred via sessionStorage
+
+        // ============================================
+        // ATTACH ANALYTICS TO FORM FIELDS
         // ============================================
         
-        let step1Data = {};
-        let uploadedFiles = [];
-        
         document.addEventListener('DOMContentLoaded', function() {
-            // Load step 1 data
-            const storedData = sessionStorage.getItem('registrationStep1');
-            if (!storedData) {
-                alert('⚠️ No data from Step 1 found. Redirecting back to Step 1...');
-                window.location.href = 'diy-registration.html';
-                return;
-            }
+            const form = document.getElementById('step1Form');
             
-            try {
-                step1Data = JSON.parse(storedData);
-                console.log('Loaded Step 1 data:', step1Data);
+            const formFields = form.querySelectorAll('input, select, textarea');
+            formFields.forEach(field => {
+                field.addEventListener('focus', function() {
+                    FormTracker.trackFormStart();
+                    FormTracker.trackFieldInteraction(this.name || this.id, this.type || this.tagName.toLowerCase());
+                    FormTracker.resetAbandonmentTimer();
+                });
                 
-                // Load file metadata from session storage
-                const storedFiles = sessionStorage.getItem('registrationFiles');
-                if (storedFiles) {
-                    const filesData = JSON.parse(storedFiles);
-                    
-                    if (filesData.uploaded === true) {
-                        // All files already uploaded to server in Step 1
-                        uploadedFiles = filesData.files;
-                        window.filesAlreadyUploaded = true;
-                        console.log(`${uploadedFiles.length} file(s) already uploaded in Step 1`);
-                    } else if (filesData.uploaded === 'partial') {
-                        // Some files uploaded, some pending
-                        window.filesPartialUpload = true;
-                        window.alreadyUploadedCount = filesData.uploadedFiles?.length || 0;
-                        console.log(`${window.alreadyUploadedCount} file(s) already uploaded in Step 1`);
-                        
-                        if (filesData.pendingFiles && filesData.pendingFiles.length > 0) {
-                            // Pending files have dataURLs - load them for upload
-                            uploadedFiles = filesData.pendingFiles;
-                            window.filesAlreadyUploaded = false;
-                            console.log(`${uploadedFiles.length} file(s) pending upload`);
-                        } else if (filesData.needsReupload && filesData.failedFileNames) {
-                            // Some files need to be re-selected
-                            window.filesNeedReupload = true;
-                            setTimeout(() => {
-                                alert(`📎 ${window.alreadyUploadedCount} files were uploaded successfully.\n\nPlease re-select these files that couldn't be transferred:\n• ${filesData.failedFileNames.join('\n• ')}`);
-                            }, 500);
-                        }
-                    } else if (filesData.needsReupload) {
-                        // Files couldn't be transferred - user needs to re-select
-                        window.filesAlreadyUploaded = false;
-                        window.filesNeedReupload = true;
-                        console.log(`${filesData.files?.length || 0} file(s) need to be re-selected`);
-                        setTimeout(() => {
-                            alert('📎 Please re-select your utility bill files below.\n\nThe files from Step 1 couldn\'t be transferred automatically.');
-                        }, 500);
-                    } else if (filesData.uploaded === false && filesData.files) {
-                        // Files stored as dataURLs - need to upload in Step 2
-                        uploadedFiles = filesData.files;
-                        window.filesAlreadyUploaded = false;
-                        console.log(`${uploadedFiles.length} file(s) loaded with data, will upload in Step 2`);
-                    } else if (Array.isArray(filesData)) {
-                        // Legacy format with dataURLs
-                        uploadedFiles = filesData;
-                        window.filesAlreadyUploaded = false;
-                        console.log(`Loaded ${uploadedFiles.length} file(s) from Step 1 (legacy format)`);
-                    }
-                }
+                field.addEventListener('input', function() {
+                    FormTracker.resetAbandonmentTimer();
+                });
                 
-                // Check if user_id exists
-                const userId = sessionStorage.getItem('registrationUserId');
-                if (!userId) {
-                    console.warn('⚠️ No user_id found. User may need to complete Step 1 again.');
-                }
-                
-                // Pre-fill form if returning from Step 3
-                const storedStep2 = sessionStorage.getItem('registrationStep2');
-                if (storedStep2) {
-                    try {
-                        const step2Data = JSON.parse(storedStep2);
-                        console.log('Pre-filling Step 2 form with saved data:', step2Data);
-                        
-                        // Pre-fill form fields
-                        if (step2Data.inverterManufacturer) {
-                            document.getElementById('inverterManufacturer').value = step2Data.inverterManufacturer;
-                            // Trigger change event to show conditional fields
-                            document.getElementById('inverterManufacturer').dispatchEvent(new Event('change'));
-                        }
-                        if (step2Data.otherManufacturer) document.getElementById('otherManufacturer').value = step2Data.otherManufacturer;
-                        if (step2Data.serialNumber) document.getElementById('serialNumber').value = step2Data.serialNumber;
-                        if (step2Data.installationDate) document.getElementById('installationDate').value = step2Data.installationDate;
-                        if (step2Data.batteryCapacity) document.getElementById('batteryCapacity').value = step2Data.batteryCapacity;
-                        if (step2Data.pvWattage) document.getElementById('pvWattage').value = step2Data.pvWattage;
-                        if (step2Data.username) document.getElementById('username').value = step2Data.username;
-                        if (step2Data.password) document.getElementById('password').value = step2Data.password;
-                        if (step2Data.additionalNotes) document.getElementById('additionalNotes').value = step2Data.additionalNotes;
-                        if (step2Data.vppParticipation) document.getElementById('vppParticipation').checked = true;
-                        if (step2Data.marketing) document.getElementById('marketing').checked = true;
-                        
-                        // Update field requirements after pre-filling
-                        updateFieldRequirements();
-                    } catch (error) {
-                        console.error('Error pre-filling Step 2 form:', error);
-                    }
-                }
-            } catch (error) {
-                console.error('Error loading Step 1 data:', error);
-                alert('⚠️ Error loading data from Step 1. Please start over.');
-                window.location.href = 'diy-registration.html';
-                return;
-            }
+                field.addEventListener('change', function() {
+                    FormTracker.resetAbandonmentTimer();
+                });
+            });
+            
+            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    FormTracker.trackFieldInteraction(this.name || this.id, 'checkbox');
+                    FormTracker.resetAbandonmentTimer();
+                });
+            });
         });
 
         // ============================================
@@ -862,118 +1081,10 @@
         // ============================================
         
         const API_BASE_URL = 'https://3dbhitxwoc.execute-api.us-east-2.amazonaws.com/dev';
-        const REGISTER_ENDPOINT = '/auth/signup';
+        const SIGNUP_ENDPOINT = '/auth/signup';
         const UPDATE_PROFILE_ENDPOINT = '/auth/update-profile';
         const UPLOAD_BILLS_ENDPOINT = '/admin/upload-utility-bills';
-
-        // Dynamic validation based on credentials input and alternative specs
-        const usernameInput = document.getElementById('username');
-        const passwordInput = document.getElementById('password');
-        const batteryCapacityInput = document.getElementById('batteryCapacity');
-        const pvWattageInput = document.getElementById('pvWattage');
-        const inverterManufacturerInput = document.getElementById('inverterManufacturer');
-        const batteryCapacityRequired = document.getElementById('batteryCapacityRequired');
-        const pvWattageRequired = document.getElementById('pvWattageRequired');
-        const inverterManufacturerRequired = document.getElementById('inverterManufacturerRequired');
-
-        // Function to update field requirements based on what's provided
-        function updateFieldRequirements() {
-            const hasUsername = usernameInput.value.trim() !== '';
-            const hasPassword = passwordInput.value.trim() !== '';
-            const hasCredentials = hasUsername && hasPassword;
-            const hasPartialCredentials = (hasUsername && !hasPassword) || (!hasUsername && hasPassword);
-            const hasAlternativeSpecs = batteryCapacityInput.value.trim() !== '' && pvWattageInput.value.trim() !== '';
-            const submitBtn = document.getElementById('submitBtn');
-            const submitHelpText = document.getElementById('submitHelpText');
-            
-            if (hasCredentials) {
-                // If both credentials provided, make battery/solar optional
-                batteryCapacityRequired.style.display = 'none';
-                pvWattageRequired.style.display = 'none';
-                batteryCapacityInput.removeAttribute('required');
-                pvWattageInput.removeAttribute('required');
-                
-                // Inverter manufacturer is required when both credentials are provided
-                inverterManufacturerRequired.style.display = 'inline';
-                inverterManufacturerInput.setAttribute('required', 'required');
-                
-                // Update button text for direct connection
-                submitBtn.textContent = 'Complete Registration';
-                submitHelpText.textContent = '💡 You\'ll receive your results within 24 hours.';
-            } else if (hasAlternativeSpecs) {
-                // If alternative specs provided, make inverter manufacturer optional
-                inverterManufacturerRequired.style.display = 'none';
-                inverterManufacturerInput.removeAttribute('required');
-                
-                // Battery and solar are still required (already filled)
-                batteryCapacityRequired.style.display = 'inline';
-                pvWattageRequired.style.display = 'inline';
-                batteryCapacityInput.setAttribute('required', 'required');
-                pvWattageInput.setAttribute('required', 'required');
-                
-                // Update button text for specs-only (will go to step 3)
-                submitBtn.textContent = 'Continue to Step 3 →';
-                submitHelpText.textContent = '💡 Next: Upload electricity bills for accurate estimates.';
-            } else {
-                // If neither credentials nor alternative specs, battery and solar are required
-                batteryCapacityRequired.style.display = 'inline';
-                pvWattageRequired.style.display = 'inline';
-                batteryCapacityInput.setAttribute('required', 'required');
-                pvWattageInput.setAttribute('required', 'required');
-                
-                // Inverter manufacturer is optional when no credentials provided
-                inverterManufacturerRequired.style.display = 'none';
-                inverterManufacturerInput.removeAttribute('required');
-                
-                // Default button text
-                submitBtn.textContent = 'Continue';
-                submitHelpText.textContent = '💡 You\'ll receive your results within 24 hours.';
-            }
-        }
-
-        // Listen for changes in username, password, and alternative spec fields
-        usernameInput.addEventListener('input', updateFieldRequirements);
-        passwordInput.addEventListener('input', updateFieldRequirements);
-        batteryCapacityInput.addEventListener('input', updateFieldRequirements);
-        pvWattageInput.addEventListener('input', updateFieldRequirements);
         
-        // Initialize on page load
-        updateFieldRequirements();
-
-        // Handle manufacturer-specific field visibility
-        document.getElementById('inverterManufacturer').addEventListener('change', function() {
-            const manufacturer = this.value;
-            const serialNumberGroup = document.getElementById('serialNumberGroup');
-            const serialNumberInput = document.getElementById('serialNumber');
-            const otherManufacturerGroup = document.getElementById('otherManufacturerGroup');
-            const otherManufacturerInput = document.getElementById('otherManufacturer');
-            
-            // Show serial number field for Franklin and EG4
-            if (manufacturer === 'Franklin' || manufacturer === 'EG4') {
-                serialNumberGroup.style.display = 'block';
-                serialNumberInput.required = true;
-            } else {
-                serialNumberGroup.style.display = 'none';
-                serialNumberInput.required = false;
-                serialNumberInput.value = '';
-            }
-            
-            // Show other manufacturer field when "Other" is selected
-            if (manufacturer === 'Other') {
-                otherManufacturerGroup.style.display = 'block';
-                otherManufacturerInput.required = true;
-            } else {
-                otherManufacturerGroup.style.display = 'none';
-                otherManufacturerInput.required = false;
-                otherManufacturerInput.value = '';
-            }
-        });
-
-        // Generate a unique inverter ID
-        function generateInverterId() {
-            return 'INV-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
-        }
-
         // Format phone number to E.164 format
         function formatPhoneToE164(phone) {
             if (!phone) return null;
@@ -992,318 +1103,338 @@
             
             return '+1' + digits;
         }
-
-        // Convert data URL files back to File objects for upload
-        async function dataURLtoFile(dataurl, filename) {
-            const arr = dataurl.split(',');
-            const mime = arr[0].match(/:(.*?);/)[1];
-            const bstr = atob(arr[1]);
-            let n = bstr.length;
-            const u8arr = new Uint8Array(n);
-            while(n--){
-                u8arr[n] = bstr.charCodeAt(n);
-            }
-            return new File([u8arr], filename, {type:mime});
-        }
-
-        // Map form data to API payload
-        async function mapFormToPayload(formData) {
-            const manufacturer = formData.get('inverterManufacturer');
-            const otherManufacturer = formData.get('otherManufacturer');
-            const inverterId = generateInverterId();
-            const username = formData.get('username');
-            const password = formData.get('password');
-            const hasCredentials = username && username.trim() !== '' && password && password.trim() !== '';
-            const isSimulationMode = !hasCredentials;
-            
-            // Determine the inverter type
-            const inverterManufacturer = manufacturer === 'Other' && otherManufacturer 
-                ? otherManufacturer 
-                : manufacturer;
-
-            // Build the info object with all additional user and system information
-            const info = {
-                contact: {
-                    name: step1Data.fullName || null,
-                    email: step1Data.email,
-                    phone: step1Data.phone || null
-                },
-                location: {
-                    address: step1Data.address || null,
-                    city: step1Data.city,
-                    state: step1Data.state
-                },
-                system: {
-                    battery_capacity_kwh: formData.get('batteryCapacity') ? parseFloat(formData.get('batteryCapacity')) : null,
-                    pv_wattage_kw: formData.get('pvWattage') ? parseFloat(formData.get('pvWattage')) : null,
-                    installation_date: formData.get('installationDate') || null,
-                    utility_company: step1Data.utilityCompany || null,
-                    serial_number: formData.get('serialNumber') || null
-                },
-                registration: {
-                    mode: isSimulationMode ? 'simulation' : 'direct_connection',
-                    vpp_participation: formData.get('vppParticipation') === 'on',
-                    marketing_consent: formData.get('marketing') === 'on',
-                    terms_accepted: step1Data.termsAccepted || false,
-                    registration_date: new Date().toISOString(),
-                    registration_source: 'diy-web-form-step2'
-                },
-                electricity_bills: {
-                    uploaded_count: uploadedFiles.length,
-                    files: uploadedFiles.map(file => ({
-                        name: file.name,
-                        size: file.size,
-                        type: file.type
-                    }))
-                },
-                notes: formData.get('additionalNotes') || null
-            };
-
-            // Build the API payload
-            const payload = {
-                entity_type: "inverter",
-                username: step1Data.fullName || null,
-                email: step1Data.email,
-                phone_number: formatPhoneToE164(step1Data.phone),
-                full_address: step1Data.address || null,
-                city: step1Data.city || null,
-                state: step1Data.state || null,
-                zip: step1Data.zip || null,
-                country: "US",
-                latitude: null,
-                longitude: null,
-                timezone: null,
-                locale: "en-US",
-                inverter_inverter_id: inverterId,
-                inverter_inverter_type: "hybrid_inverter",
-                inverter_manufacturer: inverterManufacturer,
-                inverter_serial_number: formData.get('serialNumber'),
-                inverter_monitoring_id: null,
-                inverter_monitoring_token: null,
-                inverter_monitoring_url: null,
-                inverter_api_key: formData.get('username'),
-                inverter_api_secret: formData.get('password'),
-                info: JSON.stringify(info),
-                site_id: null,
-                site_type: "residential",
-                installation_date: formData.get('installationDate') || null,
-            };
-
-            return payload;
-        }
-
-        // Upload a single file with 5-minute timeout
-        async function uploadSingleFile(userId, file, fileNum, totalFiles) {
-            const formData = new FormData();
-            formData.append('account_id', userId);
-            formData.append('files', file);
-            
-            const fileSizeMB = (file.size / 1024 / 1024).toFixed(2);
-            console.log(`Uploading file ${fileNum}/${totalFiles}: ${file.name} (${fileSizeMB}MB)`);
-
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 5 * 60 * 1000); // 5 minutes
-            
-            try {
-                const response = await fetch(API_BASE_URL + UPLOAD_BILLS_ENDPOINT, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json'
-                    },
-                    body: formData,
-                    signal: controller.signal
-                });
-                
-                clearTimeout(timeoutId);
-
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => null);
-                    throw new Error(
-                        errorData?.detail || 
-                        `File ${fileNum} upload failed with status: ${response.status}`
-                    );
-                }
-
-                return await response.json();
-            } catch (error) {
-                clearTimeout(timeoutId);
-                if (error.name === 'AbortError') {
-                    throw new Error(`File ${fileNum} upload timed out after 5 minutes`);
-                }
-                throw error;
-            }
+        
+        // Generate a unique inverter ID
+        function generateInverterId() {
+            return 'INV-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
         }
         
-        // Upload all files in single request with 5-minute timeout
-        async function uploadAllFilesAtOnce(userId, fileObjects) {
-            const formData = new FormData();
-            formData.append('account_id', userId);
-            
-            for (const file of fileObjects) {
-                formData.append('files', file);
-            }
-            
-            const totalSize = fileObjects.reduce((sum, f) => sum + f.size, 0);
-            console.log(`Uploading all ${fileObjects.length} file(s) in single request (${(totalSize / 1024 / 1024).toFixed(2)}MB)`);
-
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 5 * 60 * 1000); // 5 minutes
-            
-            try {
-                const response = await fetch(API_BASE_URL + UPLOAD_BILLS_ENDPOINT, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json'
-                    },
-                    body: formData,
-                    signal: controller.signal
-                });
-                
-                clearTimeout(timeoutId);
-
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => null);
-                    throw new Error(
-                        errorData?.detail || 
-                        `Upload failed with status: ${response.status}`
-                    );
-                }
-
-                return await response.json();
-            } catch (error) {
-                clearTimeout(timeoutId);
-                if (error.name === 'AbortError') {
-                    throw new Error('Upload timed out after 5 minutes');
-                }
-                throw error;
-            }
-        }
-
-        // Upload utility bills - single request if small, one-by-one if large
-        async function uploadUtilityBills(userId, files) {
-            if (!files || files.length === 0) {
-                console.log('No utility bills to upload');
-                return { success: true, message: 'No files to upload' };
-            }
-
-            try {
-                // Convert data URLs back to File objects first
-                const fileObjects = [];
-                for (const fileData of files) {
-                    const file = await dataURLtoFile(fileData.dataURL, fileData.name);
-                    fileObjects.push(file);
-                }
-                
-                const totalSize = fileObjects.reduce((sum, f) => sum + f.size, 0);
-                const maxSingleRequestSize = 5 * 1024 * 1024; // 5MB threshold
-                
-                console.log(`Uploading ${files.length} utility bill(s) for account_id: ${userId}`);
-
-                if (totalSize <= maxSingleRequestSize) {
-                    // Small total size - upload all files in single request
-                    console.log(`Total size ${(totalSize / 1024 / 1024).toFixed(2)}MB <= 5MB, uploading in single request`);
-                    const result = await uploadAllFilesAtOnce(userId, fileObjects);
-                    return { success: true, result };
-                } else {
-                    // Large total size - upload files one by one
-                    console.log(`Total size ${(totalSize / 1024 / 1024).toFixed(2)}MB > 5MB, uploading files one by one`);
+        // ============================================
+        // HANDLE MANUFACTURER-SPECIFIC FIELD VISIBILITY
+        // ============================================
+        
+        // Handle manufacturer-specific field visibility
+        document.addEventListener('DOMContentLoaded', function() {
+            const inverterManufacturerSelect = document.getElementById('inverterManufacturer');
+            if (inverterManufacturerSelect) {
+                inverterManufacturerSelect.addEventListener('change', function() {
+                    const manufacturer = this.value;
+                    const serialNumberGroup = document.getElementById('serialNumberGroup');
+                    const serialNumberInput = document.getElementById('serialNumber');
+                    const otherManufacturerGroup = document.getElementById('otherManufacturerGroup');
+                    const otherManufacturerInput = document.getElementById('otherManufacturer');
                     
-                    const uploadedFiles = [];
-                    const failedFiles = [];
-                    
-                    for (let i = 0; i < fileObjects.length; i++) {
-                        try {
-                            await uploadSingleFile(userId, fileObjects[i], i + 1, fileObjects.length);
-                            uploadedFiles.push(fileObjects[i]);
-                        } catch (error) {
-                            failedFiles.push(fileObjects[i]);
-                            console.error(`File ${i + 1} failed:`, error.message);
-                            // Continue with remaining files
-                        }
-                    }
-                    
-                    console.log(`Upload complete: ${uploadedFiles.length} uploaded, ${failedFiles.length} failed`);
-                    
-                    if (failedFiles.length === 0) {
-                        return { success: true, message: `All ${uploadedFiles.length} files uploaded` };
-                    } else if (uploadedFiles.length > 0) {
-                        return { success: false, error: `${failedFiles.length} of ${fileObjects.length} files failed to upload` };
+                    // Show serial number field for Franklin and EG4
+                    if (manufacturer === 'Franklin' || manufacturer === 'EG4') {
+                        serialNumberGroup.style.display = 'block';
+                        serialNumberInput.required = true;
                     } else {
-                        return { success: false, error: 'All files failed to upload' };
+                        serialNumberGroup.style.display = 'none';
+                        serialNumberInput.required = false;
+                        serialNumberInput.value = '';
                     }
-                }
-            } catch (error) {
-                console.error('Utility bill upload error:', error);
-                return { success: false, error: error.message };
+                    
+                    // Show other manufacturer field when "Other" is selected
+                    if (manufacturer === 'Other') {
+                        otherManufacturerGroup.style.display = 'block';
+                        otherManufacturerInput.required = true;
+                    } else {
+                        otherManufacturerGroup.style.display = 'none';
+                        otherManufacturerInput.required = false;
+                        otherManufacturerInput.value = '';
+                    }
+                });
             }
-        }
-
-        // Update profile with Step 2 data
-        async function updateProfile(formData) {
-            try {
-                const userId = sessionStorage.getItem('registrationUserId');
-                if (!userId) {
-                    throw new Error('No user_id found. Please complete Step 1 first.');
+        });
+        
+        // ============================================
+        // PRE-FILL FORM FROM SESSION STORAGE
+        // ============================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if Step 1 (system setup) data exists
+            const storedStep1Data = sessionStorage.getItem('registrationStep1');
+            if (!storedStep1Data) {
+                // No Step 1 data - redirect to Step 1
+                console.log('No Step 1 data found, redirecting to Step 1');
+                window.location.href = 'diy-registration-step1.html';
+                return;
+            }
+            
+            // Load files from Step 1 if available (includes utility bills and usage chart screenshot)
+            const storedFiles = sessionStorage.getItem('registrationFiles');
+            if (storedFiles) {
+                try {
+                    const filesData = JSON.parse(storedFiles);
+                    if (Array.isArray(filesData) && filesData.length > 0) {
+                        // Convert dataURLs back to File objects
+                        Promise.all(filesData.map(fileData => {
+                            return fetch(fileData.dataURL)
+                                .then(res => res.blob())
+                                .then(blob => new File([blob], fileData.name, { type: fileData.type }));
+                        })).then(files => {
+                            // All files (bills + usage chart) are restored together
+                            uploadedFiles = files;
+                            console.log(`Restored ${uploadedFiles.length} file(s) from Step 1 (includes utility bills and usage chart if provided)`);
+                        }).catch(error => {
+                            console.error('Error restoring files:', error);
+                        });
+                    } else if (filesData.needsReupload) {
+                        console.log('Files need to be re-uploaded');
+                    }
+                } catch (error) {
+                    console.error('Error loading files from Step 1:', error);
                 }
+            }
+            
+            // Pre-fill fields from Step 1 that are now in Step 2
+            if (storedStep1Data) {
+                try {
+                    const step1Data = JSON.parse(storedStep1Data);
+                    
+                    // Pre-fill inverter fields
+                    if (step1Data.inverterManufacturer) {
+                        document.getElementById('inverterManufacturer').value = step1Data.inverterManufacturer;
+                        // Trigger change event to show conditional fields
+                        document.getElementById('inverterManufacturer').dispatchEvent(new Event('change'));
+                    }
+                    if (step1Data.otherManufacturer) document.getElementById('otherManufacturer').value = step1Data.otherManufacturer;
+                    if (step1Data.serialNumber) document.getElementById('serialNumber').value = step1Data.serialNumber;
+                    if (step1Data.installationDate) document.getElementById('installationDate').value = step1Data.installationDate;
+                    if (step1Data.username) document.getElementById('username').value = step1Data.username;
+                    if (step1Data.password) document.getElementById('password').value = step1Data.password;
+                    if (step1Data.additionalNotes) document.getElementById('additionalNotes').value = step1Data.additionalNotes;
+                    if (step1Data.vppParticipation) document.getElementById('vppParticipation').checked = true;
+                    if (step1Data.marketing) document.getElementById('marketing').checked = true;
+                } catch (error) {
+                    console.error('Error pre-filling Step 1 fields in Step 2:', error);
+                }
+            }
+            
+            // Check if user is returning from a later step or has saved Step 2 (contact info) data
+            const storedStep2Data = sessionStorage.getItem('registrationStep2');
+            if (storedStep2Data) {
+                try {
+                    const step2Data = JSON.parse(storedStep2Data);
+                    console.log('Pre-filling Step 2 form with saved data:', step2Data);
+                    
+                    // Pre-fill form fields
+                    if (step2Data.fullName) document.getElementById('fullName').value = step2Data.fullName;
+                    if (step2Data.email) document.getElementById('email').value = step2Data.email;
+                    if (step2Data.phone) document.getElementById('phone').value = step2Data.phone;
+                    if (step2Data.address) document.getElementById('address').value = step2Data.address;
+                    if (step2Data.city) document.getElementById('city').value = step2Data.city;
+                    if (step2Data.state) document.getElementById('state').value = step2Data.state;
+                    if (step2Data.utilityCompany) document.getElementById('utilityCompany').value = step2Data.utilityCompany;
+                    if (step2Data.termsAccepted) document.getElementById('terms').checked = true;
+                } catch (error) {
+                    console.error('Error pre-filling Step 2 form:', error);
+                }
+            }
+        });
+        
+        // Sign up new user (Step 2 - combines Step 1 system setup and Step 2 contact info)
+        async function signupUser(step2Data, filesData, step1Data) {
+            try {
+                // Convert uploaded files data to info format
+                const fileInfo = filesData.map(file => ({
+                    name: file.name,
+                    size: file.size,
+                    type: file.type
+                }));
                 
-                const manufacturer = formData.get('inverterManufacturer');
-                const otherManufacturer = formData.get('otherManufacturer');
-                
-                // Determine the inverter type
-                const inverterManufacturer = manufacturer === 'Other' && otherManufacturer 
-                    ? otherManufacturer 
-                    : manufacturer;
-                
-                // Build the info object with all data from step 1 and step 2
+                // Build the info object combining Step 1 (system setup) and Step 2 (contact info)
                 const info = {
                     contact: {
-                        name: step1Data.fullName || null,
-                        email: step1Data.email,
-                        phone: step1Data.phone || null
+                        name: step2Data.fullName || null,
+                        email: step2Data.email || null,
+                        phone: step2Data.phone || null
                     },
                     location: {
-                        address: step1Data.address || null,
-                        city: step1Data.city,
-                        state: step1Data.state
+                        address: step2Data.address || null,
+                        city: step2Data.city || null,
+                        state: step2Data.state || null
                     },
                     system: {
-                        battery_capacity_kwh: formData.get('batteryCapacity') ? parseFloat(formData.get('batteryCapacity')) : null,
-                        pv_wattage_kw: formData.get('pvWattage') ? parseFloat(formData.get('pvWattage')) : null,
-                        installation_date: formData.get('installationDate') || null,
-                        utility_company: step1Data.utilityCompany || null,
-                        serial_number: formData.get('serialNumber') || null
+                        battery_capacity_kwh: step1Data.batteryCapacity ? parseFloat(step1Data.batteryCapacity) : null,
+                        pv_wattage_kw: step1Data.pvWattage ? parseFloat(step1Data.pvWattage) : null,
+                        installation_date: step2Data.installationDate || null,
+                        utility_company: step2Data.utilityCompany || null,
+                        serial_number: step2Data.serialNumber || null
                     },
                     registration: {
-                        mode: 'partial',
+                        mode: (step2Data.username && step2Data.password) ? 'direct_connection' : 'simulation',
                         status: 'step2_completed',
-                        vpp_participation: formData.get('vppParticipation') === 'on',
-                        marketing_consent: formData.get('marketing') === 'on',
-                        terms_accepted: step1Data.termsAccepted || false,
+                        vpp_participation: step2Data.vppParticipation || false,
+                        marketing_consent: step2Data.marketing || false,
+                        terms_accepted: step2Data.termsAccepted || false,
                         registration_date: new Date().toISOString(),
                         registration_source: 'diy-web-form-step2'
                     },
                     electricity_bills: {
-                        uploaded_count: uploadedFiles.length,
-                        files: uploadedFiles.map(file => ({
-                            name: file.name,
-                            size: file.size,
-                            type: file.type
-                        }))
+                        uploaded_count: fileInfo.length,
+                        files: fileInfo,
+                        monthly_kwh_provided: step1Data.monthlyKwh && Object.keys(step1Data.monthlyKwh).length > 0,
+                        monthly_kwh: step1Data.monthlyKwh ? (() => {
+                            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
+                                               'July', 'August', 'September', 'October', 'November', 'December'];
+                            return monthNames.map(month => {
+                                const val = step1Data.monthlyKwh[`month${month}`];
+                                return val ? parseFloat(val) : null;
+                            });
+                        })() : null,
+                        daily_average_kwh_provided: step1Data.dailyAverageKwh && step1Data.dailyAverageKwh.trim() !== '',
+                        daily_average_kwh: step1Data.dailyAverageKwh ? parseFloat(step1Data.dailyAverageKwh) : null
                     },
-                    notes: formData.get('additionalNotes') || null
+                    notes: step2Data.additionalNotes || null
                 };
+                
+                // Determine inverter manufacturer
+                const inverterManufacturer = step2Data.inverterManufacturer === 'Other' && step2Data.otherManufacturer 
+                    ? step2Data.otherManufacturer 
+                    : step2Data.inverterManufacturer;
+                
+                // Build the API payload for signup
+                const payload = {
+                    entity_type: "inverter",
+                    username: step2Data.fullName || null,
+                    email: step2Data.email || null,
+                    phone_number: formatPhoneToE164(step2Data.phone),
+                    full_address: step2Data.address || null,
+                    city: step2Data.city || null,
+                    state: step2Data.state || null,
+                    zip: null,
+                    country: "US",
+                    latitude: null,
+                    longitude: null,
+                    timezone: null,
+                    locale: "en-US",
+                    inverter_inverter_id: generateInverterId(),
+                    inverter_inverter_type: "hybrid_inverter",
+                    inverter_manufacturer: inverterManufacturer || null,
+                    inverter_serial_number: step2Data.serialNumber || null,
+                    inverter_monitoring_id: null,
+                    inverter_monitoring_token: null,
+                    inverter_monitoring_url: null,
+                    inverter_api_key: step2Data.username || null,
+                    inverter_api_secret: step2Data.password || null,
+                    info: JSON.stringify(info),
+                    site_id: null,
+                    site_type: "residential",
+                    installation_date: step2Data.installationDate || null,
+                };
+                
+                console.log('Signing up user (Step 2 - combining Step 1 and Step 2):', payload);
+                
+                const response = await fetch(API_BASE_URL + SIGNUP_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => null);
+                    throw new Error(
+                        errorData?.detail || 
+                        `Signup failed with status: ${response.status}`
+                    );
+                }
+                
+                const result = await response.json();
+                console.log('Signup successful, user_id:', result.user_id);
+                
+                // Store user_id for later use
+                if (result.user_id) {
+                    sessionStorage.setItem('registrationUserId', result.user_id);
+                }
+                
+                return { success: true, result };
+            } catch (error) {
+                console.error('Error signing up user:', error);
+                return { success: false, error: error.message };
+            }
+        }
+        
+        // Update existing user profile (Step 2 - when returning from later steps)
+        async function updateProfileStep1(step2Data, filesData, step1Data) {
+            try {
+                const userId = sessionStorage.getItem('registrationUserId');
+                if (!userId) {
+                    throw new Error('No user_id found for profile update.');
+                }
+                
+                // Convert uploaded files data to info format
+                const fileInfo = filesData.map(file => ({
+                    name: file.name,
+                    size: file.size,
+                    type: file.type
+                }));
+                
+                // Build the info object combining Step 1 (system setup) and Step 2 (contact info)
+                const info = {
+                    contact: {
+                        name: step2Data.fullName || null,
+                        email: step2Data.email || null,
+                        phone: step2Data.phone || null
+                    },
+                    location: {
+                        address: step2Data.address || null,
+                        city: step2Data.city || null,
+                        state: step2Data.state || null
+                    },
+                    system: {
+                        battery_capacity_kwh: step1Data.batteryCapacity ? parseFloat(step1Data.batteryCapacity) : null,
+                        pv_wattage_kw: step1Data.pvWattage ? parseFloat(step1Data.pvWattage) : null,
+                        installation_date: step2Data.installationDate || null,
+                        utility_company: step2Data.utilityCompany || null,
+                        serial_number: step2Data.serialNumber || null
+                    },
+                    registration: {
+                        mode: (step2Data.username && step2Data.password) ? 'direct_connection' : 'simulation',
+                        status: 'step2_updated',
+                        vpp_participation: step2Data.vppParticipation || false,
+                        marketing_consent: step2Data.marketing || false,
+                        terms_accepted: step2Data.termsAccepted || false,
+                        registration_date: new Date().toISOString(),
+                        registration_source: 'diy-web-form-step2'
+                    },
+                    electricity_bills: {
+                        uploaded_count: fileInfo.length,
+                        files: fileInfo,
+                        monthly_kwh_provided: step1Data.monthlyKwh && Object.keys(step1Data.monthlyKwh).length > 0,
+                        monthly_kwh: step1Data.monthlyKwh ? (() => {
+                            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
+                                               'July', 'August', 'September', 'October', 'November', 'December'];
+                            return monthNames.map(month => {
+                                const val = step1Data.monthlyKwh[`month${month}`];
+                                return val ? parseFloat(val) : null;
+                            });
+                        })() : null,
+                        daily_average_kwh_provided: step1Data.dailyAverageKwh && step1Data.dailyAverageKwh.trim() !== '',
+                        daily_average_kwh: step1Data.dailyAverageKwh ? parseFloat(step1Data.dailyAverageKwh) : null
+                    },
+                    notes: step2Data.additionalNotes || null
+                };
+                
+                // Determine inverter manufacturer
+                const inverterManufacturer = step2Data.inverterManufacturer === 'Other' && step2Data.otherManufacturer 
+                    ? step2Data.otherManufacturer 
+                    : step2Data.inverterManufacturer;
                 
                 // Build the API payload for profile update
                 const payload = {
                     account_id: userId,
                     entity_type: "inverter",
-                    username: step1Data.fullName || null,
-                    email: step1Data.email,
-                    phone_number: formatPhoneToE164(step1Data.phone),
-                    full_address: step1Data.address || null,
-                    city: step1Data.city || null,
-                    state: step1Data.state || null,
-                    zip: step1Data.zip || null,
+                    username: step2Data.fullName || null,
+                    email: step2Data.email || null,
+                    phone_number: formatPhoneToE164(step2Data.phone),
+                    full_address: step2Data.address || null,
+                    city: step2Data.city || null,
+                    state: step2Data.state || null,
+                    zip: null,
                     country: "US",
                     latitude: null,
                     longitude: null,
@@ -1311,17 +1442,17 @@
                     locale: "en-US",
                     inverter_inverter_id: null, // Don't change inverter_id if already set
                     inverter_inverter_type: "hybrid_inverter",
-                    inverter_manufacturer: inverterManufacturer,
-                    inverter_serial_number: formData.get('serialNumber'),
+                    inverter_manufacturer: inverterManufacturer || null,
+                    inverter_serial_number: step2Data.serialNumber || null,
                     inverter_monitoring_id: null,
                     inverter_monitoring_token: null,
                     inverter_monitoring_url: null,
-                    inverter_api_key: formData.get('username'),
-                    inverter_api_secret: formData.get('password'),
+                    inverter_api_key: step2Data.username || null,
+                    inverter_api_secret: step2Data.password || null,
                     info: JSON.stringify(info),
                     site_id: null,
                     site_type: "residential",
-                    installation_date: formData.get('installationDate') || null,
+                    installation_date: step2Data.installationDate || null,
                 };
                 
                 console.log('Updating profile (Step 2) for user_id:', userId, payload);
@@ -1353,328 +1484,508 @@
             }
         }
         
-        // Submit form to API
-        async function submitRegistration(payload) {
-            const submitBtn = document.querySelector('.submit-btn');
-            const originalText = submitBtn.textContent;
+        // Get pre-signed URLs from the API
+        async function getPresignedUrls(userId, files) {
+            const filesMetadata = files.map(file => ({
+                filename: file.name,
+                content_type: file.type || 'application/octet-stream'
+            }));
+            
+            console.log(`Requesting pre-signed URLs for ${files.length} file(s)...`);
+            
+            const response = await fetch(API_BASE_URL + UPLOAD_BILLS_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    account_id: userId,
+                    files: filesMetadata
+                })
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => null);
+                throw new Error(errorData?.detail || `Failed to get upload URLs: ${response.status}`);
+            }
+            
+            return await response.json();
+        }
+        
+        // Upload a single file to S3 using pre-signed URL
+        async function uploadFileToS3(file, presignedInfo, fileNum, totalFiles) {
+            const fileSizeMB = (file.size / 1024 / 1024).toFixed(2);
+            console.log(`Uploading file ${fileNum}/${totalFiles}: ${file.name} (${fileSizeMB}MB) to S3...`);
+            
+            // Debug logging
+            console.log('=== DEBUG: S3 Upload Details ===');
+            console.log('Pre-signed URL:', presignedInfo.presigned_url);
+            console.log('Pre-signed fields:', JSON.stringify(presignedInfo.presigned_fields, null, 2));
+            console.log('File name:', file.name);
+            console.log('File size:', file.size, 'bytes');
+            console.log('File type:', file.type);
+            console.log('================================');
+
+            // Build form data with all required fields from pre-signed URL
+            const formData = new FormData();
+            
+            // Add all the pre-signed fields first (order matters for S3)
+            for (const [key, value] of Object.entries(presignedInfo.presigned_fields)) {
+                formData.append(key, value);
+                console.log(`FormData field: ${key} = ${value.substring ? value.substring(0, 50) + '...' : value}`);
+            }
+            
+            // Add the file last (required by S3)
+            formData.append('file', file);
+            console.log('FormData file appended:', file.name);
+
+            // Create abort controller with 10-minute timeout
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => {
+                console.log('!!! TIMEOUT TRIGGERED - aborting request');
+                controller.abort();
+            }, 10 * 60 * 1000); // 10 minutes
+            
+            const startTime = Date.now();
+            console.log('Starting fetch to S3 at:', new Date().toISOString());
             
             try {
-                // Show loading state
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Connecting Your System...';
-                submitBtn.style.opacity = '0.7';
-
-                // Check if user_id exists in session storage
-                const userId = sessionStorage.getItem('registrationUserId');
-                let endpoint = REGISTER_ENDPOINT;
-                let result;
+                const response = await fetch(presignedInfo.presigned_url, {
+                    method: 'POST',
+                    body: formData,
+                    signal: controller.signal
+                });
                 
-                if (userId) {
-                    // User already registered, use update-profile endpoint
-                    console.log('User ID found, using update-profile endpoint:', userId);
-                    endpoint = UPDATE_PROFILE_ENDPOINT;
-                    
-                    // Add account_id to payload for update
-                    const updatePayload = {
-                        ...payload,
-                        account_id: userId
-                    };
-                    
-                    const response = await fetch(API_BASE_URL + endpoint, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify(updatePayload)
-                    });
+                clearTimeout(timeoutId);
+                const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
+                console.log(`Fetch completed in ${elapsed}s, status: ${response.status}`);
 
-                    if (!response.ok) {
-                        const errorData = await response.json().catch(() => null);
-                        throw new Error(
-                            errorData?.detail || 
-                            `Profile update failed with status: ${response.status}`
-                        );
-                    }
-
-                    result = await response.json();
-                    console.log('Profile update successful:', result);
-                    
-                    // Use existing user_id for result
-                    result.user_id = userId;
-                } else {
-                    // New user, use signup endpoint
-                    console.log('No user ID found, using signup endpoint');
-                    
-                    const response = await fetch(API_BASE_URL + endpoint, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) {
-                        const errorData = await response.json().catch(() => null);
-                        throw new Error(
-                            errorData?.detail || 
-                            `Registration failed with status: ${response.status}`
-                        );
-                    }
-
-                    result = await response.json();
-                    console.log('Registration successful:', result);
-                }
-                
-                // Parse info to access registration mode
-                const infoObj = JSON.parse(payload.info);
-
-                // Upload utility bills if any files were selected and not already uploaded in Step 1
-                let totalFilesUploaded = window.alreadyUploadedCount || 0;
-                
-                if (uploadedFiles.length > 0 && result.user_id && !window.filesAlreadyUploaded) {
-                    const totalFileSize = uploadedFiles.reduce((sum, f) => sum + (f.size || 0), 0);
-                    
-                    // Large files will be uploaded one by one automatically
-                    if (totalFileSize > 5 * 1024 * 1024) {
-                        console.log(`Large upload detected (${(totalFileSize / 1024 / 1024).toFixed(1)}MB), will upload files one by one`);
-                    }
-                    
-                    submitBtn.textContent = 'Uploading Utility Bills...';
-                    const uploadResult = await uploadUtilityBills(result.user_id, uploadedFiles);
-                    
-                    if (!uploadResult.success) {
-                        console.warn('Utility bill upload failed, but registration succeeded:', uploadResult.error);
-                    } else {
-                        totalFilesUploaded += uploadedFiles.length;
-                    }
-                } else if (uploadedFiles.length > 0 && window.filesAlreadyUploaded) {
-                    totalFilesUploaded = uploadedFiles.length;
-                    console.log('Utility bills already uploaded in Step 1, skipping upload');
+                // S3 returns 204 on success for pre-signed POST
+                if (!response.ok && response.status !== 204) {
+                    const errorText = await response.text().catch(() => '');
+                    console.error('S3 error response:', errorText);
+                    throw new Error(`S3 upload failed: ${response.status} - ${errorText}`);
                 }
 
-                // Build success message based on mode
-                const isSimulationMode = infoObj.registration.mode === 'simulation';
-                let successMessage = '';
-                
-                if (isSimulationMode) {
-                    successMessage = '🎉 Success! We\'re preparing your savings estimate!\n\n';
-                    
-                    if (totalFilesUploaded > 0) {
-                        successMessage += `We've received ${totalFilesUploaded} electricity bill file(s) for analysis.\n\n`;
-                    }
-                    
-                    successMessage += 
-                        'What happens next:\n' +
-                        '1. Our AI analyzes your utility bills and system specs\n' +
-                        '2. You\'ll receive a detailed savings estimate within 24 hours\n' +
-                        '3. We\'ll email instructions to connect your actual system\n' +
-                        '4. Download the MicroVPP™ app to view your results\n\n' +
-                        'Check your email (' + payload.email + ') for your savings estimate!';
-                } else {
-                    successMessage = '🎉 Success! Your system is being connected to MicroGrid\'s VPP network!\n\n';
-                    
-                    if (totalFilesUploaded > 0) {
-                        successMessage += `We've received ${totalFilesUploaded} electricity bill file(s) for additional analysis.\n\n`;
-                    }
-                    
-                    successMessage += 
-                        'What\'s next:\n' +
-                        '1. We\'re verifying your connection (usually takes a few minutes)\n' +
-                        '2. Download the MicroVPP™ app from the App Store\n' +
-                        '3. Sign in with your email: ' + payload.email + '\n' +
-                        '4. Start monitoring your system and earning from VPP programs\n\n' +
-                        'Check your email for confirmation and next steps!';
-                }
-
-                // Show success message
-                alert(successMessage);
-
-                // Clear session storage
-                sessionStorage.removeItem('registrationStep1');
-                sessionStorage.removeItem('registrationFiles');
-
-                // Redirect to home or app store
-                window.location.href = 'index.html';
-
+                console.log(`File ${fileNum} uploaded successfully to: ${presignedInfo.s3_key}`);
+                return { success: true, s3_key: presignedInfo.s3_key };
             } catch (error) {
-                console.error('Registration error:', error);
+                clearTimeout(timeoutId);
                 
-                // Show error message
-                alert(
-                    '❌ Registration Error\n\n' +
-                    'We encountered an issue while connecting your system:\n' +
-                    error.message + '\n\n' +
-                    'Please try again or contact support@microvpp.com for assistance.'
-                );
-            } finally {
-                // Restore button state
-                submitBtn.disabled = false;
-                submitBtn.textContent = originalText;
-                submitBtn.style.opacity = '1';
+                if (error.name === 'AbortError') {
+                    throw new Error(`File ${fileNum} (${file.name}) upload timed out after 10 minutes`);
+                }
+                console.warn(`S3 upload failed for file ${fileNum}: ${error.message}`);
+                throw error;
             }
         }
+        
+        // Legacy function for backwards compatibility
+        async function uploadSingleFile(userId, file, fileNum, totalFiles) {
+            // Get pre-signed URL for this single file
+            const presignedResponse = await getPresignedUrls(userId, [file]);
+            
+            if (presignedResponse.failed_files?.length > 0) {
+                throw new Error(presignedResponse.failed_files[0].error || 'Failed to get upload URL');
+            }
+            
+            if (!presignedResponse.presigned_urls?.length) {
+                throw new Error('No pre-signed URL returned from server');
+            }
+            
+            return await uploadFileToS3(file, presignedResponse.presigned_urls[0], fileNum, totalFiles);
+        }
+        
+        // Upload all files - get all pre-signed URLs at once, then upload
+        async function uploadAllFiles(userId, files) {
+            const totalSize = files.reduce((sum, f) => sum + f.size, 0);
+            console.log(`Uploading all ${files.length} file(s) (${(totalSize / 1024 / 1024).toFixed(2)}MB) using pre-signed URLs`);
+            
+            // Get pre-signed URLs for all files
+            const presignedResponse = await getPresignedUrls(userId, files);
+            
+            if (presignedResponse.failed_files?.length > 0) {
+                console.warn('Some files failed to get pre-signed URLs:', presignedResponse.failed_files);
+            }
+            
+            // Upload each file to S3
+            const results = [];
+            for (let i = 0; i < presignedResponse.presigned_urls.length; i++) {
+                const presignedInfo = presignedResponse.presigned_urls[i];
+                const file = files.find(f => f.name === presignedInfo.filename);
+                
+                if (file) {
+                    const result = await uploadFileToS3(file, presignedInfo, i + 1, presignedResponse.presigned_urls.length);
+                    results.push(result);
+                }
+            }
+            
+            return {
+                success: true,
+                uploaded: results,
+                failed: presignedResponse.failed_files || []
+            };
+        }
+        
+        // Upload utility bills using S3 pre-signed URLs
+        async function uploadUtilityBills(userId, files, onProgress) {
+            if (!files || files.length === 0) {
+                console.log('No utility bills to upload');
+                return { success: true, message: 'No files to upload', uploadedFiles: [], failedFiles: [], errors: [] };
+            }
 
-        // Form submit handler
-        document.getElementById('diyForm').addEventListener('submit', function(e) {
+            const uploadedFiles = [];
+            const failedFiles = [];
+            const errors = [];
+            
+            // Check if we can use ZIP compression (reduces number of uploads)
+            if (files.length > 1 && window.JSZip) {
+                try {
+                    console.log('Preparing to upload files as single ZIP...');
+                    
+                    const zip = new JSZip();
+                    Array.from(files).forEach(file => {
+                        zip.file(file.name, file);
+                    });
+                    
+                    const zipBlob = await zip.generateAsync({
+                        type: "blob",
+                        compression: "DEFLATE",
+                        compressionOptions: { level: 6 }
+                    });
+                    
+                    console.log(`ZIP created: ${(zipBlob.size/1024/1024).toFixed(2)}MB`);
+                    
+                    if (zipBlob.size < 50 * 1024 * 1024) { // 50MB limit (S3 pre-signed URL limit)
+                        const zipFile = new File([zipBlob], `utility_bills_${Date.now()}.zip`, { type: "application/zip" });
+                        
+                        if (onProgress) onProgress(0, 1, 0, 1);
+                        
+                        // Get pre-signed URL and upload the ZIP
+                        await uploadSingleFile(userId, zipFile, 1, 1);
+                        
+                        // Mark all original files as uploaded
+                        uploadedFiles.push(...files);
+                        console.log(`ZIP upload successful`);
+                        
+                        return {
+                            success: true,
+                            partial: false,
+                            uploadedFiles,
+                            failedFiles: [],
+                            errors: [],
+                            message: `All files uploaded as ZIP`
+                        };
+                    } else {
+                        console.warn(`ZIP is too large (>50MB), will upload files individually`);
+                    }
+                } catch (zipError) {
+                    console.warn(`ZIP upload failed:`, zipError.message);
+                    // Fallthrough to individual upload logic below
+                }
+            }
+
+            // Upload files individually using pre-signed URLs
+            console.log(`Uploading ${files.length} file(s) individually using pre-signed URLs...`);
+            
+            try {
+                // Get all pre-signed URLs at once (more efficient)
+                const presignedResponse = await getPresignedUrls(userId, files);
+                
+                // Handle files that failed to get pre-signed URLs
+                if (presignedResponse.failed_files?.length > 0) {
+                    for (const failed of presignedResponse.failed_files) {
+                        const file = files.find(f => f.name === failed.filename);
+                        if (file) {
+                            failedFiles.push(file);
+                            errors.push(`${failed.filename}: ${failed.error}`);
+                        }
+                    }
+                }
+                
+                // Upload each file to S3
+                const presignedUrls = presignedResponse.presigned_urls || [];
+                for (let i = 0; i < presignedUrls.length; i++) {
+                    const presignedInfo = presignedUrls[i];
+                    const file = files.find(f => f.name === presignedInfo.filename);
+                    
+                    if (!file) continue;
+                    
+                    if (onProgress) onProgress(i, presignedUrls.length, uploadedFiles.length, files.length);
+                    
+                    try {
+                        await uploadFileToS3(file, presignedInfo, i + 1, presignedUrls.length);
+                        uploadedFiles.push(file);
+                    } catch (error) {
+                        failedFiles.push(file);
+                        errors.push(`${file.name}: ${error.message}`);
+                    }
+                }
+                
+            } catch (error) {
+                // Failed to get pre-signed URLs entirely
+                console.error('Failed to get pre-signed URLs:', error);
+                errors.push(`Failed to get upload URLs: ${error.message}`);
+                failedFiles.push(...files.filter(f => !uploadedFiles.includes(f)));
+            }
+            
+            return {
+                success: failedFiles.length === 0,
+                partial: uploadedFiles.length > 0 && failedFiles.length > 0,
+                uploadedFiles,
+                failedFiles,
+                errors,
+                message: failedFiles.length === 0 
+                    ? `All ${uploadedFiles.length} files uploaded successfully`
+                    : `${uploadedFiles.length} files uploaded, ${failedFiles.length} failed`
+            };
+        }
+        
+        // ============================================
+        // FORM SUBMIT HANDLER - SAVE TO SESSION STORAGE AND BACKEND
+        // ============================================
+        
+        document.getElementById('step1Form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const formData = new FormData(this);
-            const username = formData.get('username');
-            const password = formData.get('password');
-            const batteryCapacity = formData.get('batteryCapacity');
-            const pvWattage = formData.get('pvWattage');
-            const inverterManufacturer = formData.get('inverterManufacturer');
             
-            const hasUsername = username && username.trim() !== '';
-            const hasPassword = password && password.trim() !== '';
-            const hasCredentials = hasUsername && hasPassword;
-            const hasPartialCredentials = (hasUsername && !hasPassword) || (!hasUsername && hasPassword);
-            const hasAlternativeSpecs = batteryCapacity && batteryCapacity.trim() !== '' && pvWattage && pvWattage.trim() !== '';
+            // Prepare data to save (Step 2 - Contact Info + Inverter Connection)
+            // Note: All fields are optional now
+            const step2Data = {
+                fullName: formData.get('fullName') || null,
+                email: formData.get('email') || null,
+                phone: formData.get('phone') || null,
+                address: formData.get('address') || null,
+                city: formData.get('city') || null,
+                state: formData.get('state') || null,
+                utilityCompany: formData.get('utilityCompany') || null,
+                // Inverter connection fields (moved from step 1)
+                inverterManufacturer: formData.get('inverterManufacturer') || null,
+                otherManufacturer: formData.get('otherManufacturer') || null,
+                serialNumber: formData.get('serialNumber') || null,
+                installationDate: formData.get('installationDate') || null,
+                username: formData.get('username') || null,
+                password: formData.get('password') || null,
+                additionalNotes: formData.get('additionalNotes') || null,
+                vppParticipation: formData.get('vppParticipation') === 'on',
+                marketing: formData.get('marketing') === 'on',
+                termsAccepted: formData.get('terms') === 'on',
+                timestamp: new Date().toISOString()
+            };
             
-            // Custom validation based on what's provided
-            let errors = [];
-            let warnings = [];
+            // Save to session storage (Step 2 - Contact Info + Inverter Connection)
+            sessionStorage.setItem('registrationStep2', JSON.stringify(step2Data));
             
-            // Check for partial credentials
-            if (hasPartialCredentials) {
-                if (hasUsername && !hasPassword) {
-                    warnings.push('⚠️ You provided an inverter web service username but no password. Both are required to connect your inverter.');
-                } else {
-                    warnings.push('⚠️ You provided an inverter web service password but no username. Both are required to connect your inverter.');
-                }
-            }
-            
-            if (hasCredentials) {
-                // Direct connection mode: inverter manufacturer is required
-                if (!inverterManufacturer || inverterManufacturer === '') {
-                    errors.push('• Inverter brand is required when providing inverter web service credentials');
-                    document.getElementById('inverterManufacturer').style.borderColor = '#ef4444';
-                } else {
-                    document.getElementById('inverterManufacturer').style.borderColor = '#e5e7eb';
-                }
-            } else if (hasAlternativeSpecs) {
-                // Alternative specs mode: battery and solar are required
-                if (!batteryCapacity || parseFloat(batteryCapacity) <= 0) {
-                    errors.push('• Battery capacity must be greater than 0');
-                    document.getElementById('batteryCapacity').style.borderColor = '#ef4444';
-                } else {
-                    document.getElementById('batteryCapacity').style.borderColor = '#e5e7eb';
-                }
-                
-                if (!pvWattage || parseFloat(pvWattage) <= 0) {
-                    errors.push('• Solar panel capacity must be greater than 0');
-                    document.getElementById('pvWattage').style.borderColor = '#ef4444';
-                } else {
-                    document.getElementById('pvWattage').style.borderColor = '#e5e7eb';
-                }
-                
-                document.getElementById('inverterManufacturer').style.borderColor = '#e5e7eb';
-            } else {
-                // No complete credentials and no alternative specs: need battery and solar specs
-                document.getElementById('inverterManufacturer').style.borderColor = '#e5e7eb';
-                
-                if (!batteryCapacity || parseFloat(batteryCapacity) <= 0) {
-                    errors.push('• Battery capacity is required');
-                    document.getElementById('batteryCapacity').style.borderColor = '#ef4444';
-                } else {
-                    document.getElementById('batteryCapacity').style.borderColor = '#e5e7eb';
-                }
-                
-                if (!pvWattage || parseFloat(pvWattage) <= 0) {
-                    errors.push('• Solar panel capacity is required');
-                    document.getElementById('pvWattage').style.borderColor = '#ef4444';
-                } else {
-                    document.getElementById('pvWattage').style.borderColor = '#e5e7eb';
-                }
-            }
-            
-            // Show warnings first (allow user to continue despite warnings)
-            if (warnings.length > 0 && errors.length === 0) {
-                const continueAnyway = confirm(
-                    warnings.join('\n\n') + 
-                    '\n\n💡 You can continue without inverter web service credentials and provide your system specifications instead.\n\n' +
-                    'Click OK to continue, or Cancel to fix the inverter web service credentials.'
-                );
-                
-                if (!continueAnyway) {
-                    return;
-                }
-            }
-            
-            // Show custom validation errors
-            if (errors.length > 0) {
-                let errorMessage = '⚠️ Missing Required Information:\n\n' + errors.join('\n');
-                
-                if (warnings.length > 0) {
-                    errorMessage = warnings.join('\n\n') + '\n\n' + errorMessage;
-                }
-                
-                if (!hasCredentials && !hasAlternativeSpecs && !hasPartialCredentials) {
-                    errorMessage += '\n\n💡 Tip: You can either:\n';
-                    errorMessage += '1. Provide inverter web service credentials (username & password) for direct connection, OR\n';
-                    errorMessage += '2. Fill in battery capacity and solar capacity for estimates';
-                }
-                
-                alert(errorMessage);
+            // Load Step 1 (System Setup) data
+            const storedStep1Data = sessionStorage.getItem('registrationStep1');
+            if (!storedStep1Data) {
+                alert('⚠️ No system setup data found. Please complete Step 1 first.');
+                window.location.href = 'diy-registration-step1.html';
                 return;
             }
             
-            // Check if user provided credentials
-            if (hasCredentials) {
-                // Direct connection mode: Complete registration at step 2 (bills optional)
-                mapFormToPayload(formData).then(payload => {
-                    console.log('Direct connection mode - completing registration at step 2');
-                    console.log('Sending registration payload:', payload);
-                    submitRegistration(payload);
-                });
+            let step1Data;
+            try {
+                step1Data = JSON.parse(storedStep1Data);
+            } catch (error) {
+                console.error('Error loading Step 1 data:', error);
+                alert('⚠️ Error loading system setup data. Please start over.');
+                window.location.href = 'diy-registration-step1.html';
+                return;
+            }
+            
+            // Prepare file metadata (without dataURL to avoid sessionStorage quota issues)
+            const filesData = uploadedFiles.map(file => ({
+                name: file.name,
+                size: file.size,
+                type: file.type
+            }));
+            
+            // Track step 2 completion
+            FormTracker.trackStep1Complete();
+            
+            console.log('Step 2 (Contact Info) data saved to session:', step2Data);
+            console.log('Step 1 (System Setup) data loaded:', step1Data);
+            
+            // Check if user_id exists to determine if we should signup or update profile
+            const existingUserId = sessionStorage.getItem('registrationUserId');
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            
+            let apiResult;
+            
+            if (existingUserId) {
+                // User is returning from a later step - update existing profile
+                console.log('User ID found - updating existing profile');
+                submitBtn.textContent = 'Updating your information...';
+                apiResult = await updateProfileStep1(step2Data, filesData, step1Data);
             } else {
-                // No credentials mode: Update profile and redirect to step 3 for mandatory bill upload
-                console.log('No credentials mode - updating profile and redirecting to step 3');
+                // New user - create account
+                console.log('No User ID found - creating new account');
+                submitBtn.textContent = 'Creating your account...';
+                apiResult = await signupUser(step2Data, filesData, step1Data);
+            }
+            
+            if (!apiResult.success) {
+                // Show error but allow user to continue (data is in sessionStorage)
+                const actionText = existingUserId ? 'updating your profile' : 'creating your account';
+                alert(
+                    '⚠️ Account ' + (existingUserId ? 'Update' : 'Creation') + ' Issue\n\n' +
+                    'We encountered an issue ' + actionText + ':\n' +
+                    apiResult.error + '\n\n' +
+                    'You can continue, but please contact support@microvpp.com if this persists.'
+                );
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Complete Registration';
+                return;
+            }
+            
+            // Upload files directly to server (one by one if total > 5MB)
+            const userId = apiResult.result?.user_id || existingUserId;
+            if (uploadedFiles.length > 0 && userId) {
+                const totalFileSize = uploadedFiles.reduce((sum, f) => sum + f.size, 0);
+                const totalFileSizeMB = (totalFileSize / 1024 / 1024).toFixed(1);
                 
-                // Save step 2 data to session storage
-                const step2Data = {
-                    inverterManufacturer: formData.get('inverterManufacturer'),
-                    otherManufacturer: formData.get('otherManufacturer'),
-                    serialNumber: formData.get('serialNumber'),
-                    installationDate: formData.get('installationDate'),
-                    batteryCapacity: formData.get('batteryCapacity'),
-                    pvWattage: formData.get('pvWattage'),
-                    username: formData.get('username'),
-                    password: formData.get('password'),
-                    additionalNotes: formData.get('additionalNotes'),
-                    vppParticipation: formData.get('vppParticipation') === 'on',
-                    marketing: formData.get('marketing') === 'on'
+                // Inform user about large upload
+                if (totalFileSize > 5 * 1024 * 1024) {
+                    console.log(`Large upload detected (${totalFileSizeMB}MB), will upload files one by one`);
+                }
+                
+                submitBtn.textContent = 'Uploading utility bills...';
+                
+                // Progress callback to update button text
+                const onProgress = (batchIndex, totalBatches, filesUploaded, totalFiles) => {
+                    const percent = Math.round((filesUploaded / totalFiles) * 100);
+                    submitBtn.textContent = `Uploading utility bills (${percent}%)...`;
                 };
                 
-                sessionStorage.setItem('registrationStep2', JSON.stringify(step2Data));
+                const uploadResult = await uploadUtilityBills(userId, uploadedFiles, onProgress);
                 
-                // Update profile with step 2 data to backend
-                const submitBtn = document.getElementById('submitBtn');
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Saving your information...';
-                
-                updateProfile(formData).then(result => {
-                    if (!result.success) {
-                        // Show error but allow user to continue (data is in sessionStorage)
-                        alert(
-                            '⚠️ Profile Update Issue\n\n' +
-                            'We encountered an issue updating your profile:\n' +
-                            result.error + '\n\n' +
-                            'You can continue, but please contact support@microvpp.com if this persists.'
-                        );
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = 'Continue to Step 3 →';
-                        return;
-                    }
+                if (uploadResult.success) {
+                    // All files uploaded successfully
+                    sessionStorage.setItem('registrationFiles', JSON.stringify({
+                        uploaded: true,
+                        files: filesData
+                    }));
+                    console.log(`All ${uploadedFiles.length} files uploaded successfully`);
+                } else if (uploadResult.partial) {
+                    // Some files uploaded, some failed
+                    console.warn(`Partial upload: ${uploadResult.uploadedFiles.length} succeeded, ${uploadResult.failedFiles.length} failed`);
                     
-                    // Redirect to step 3
-                    window.location.href = 'diy-registration-step3.html';
-                });
+                    // Store info about uploaded files
+                    const uploadedFilesData = uploadResult.uploadedFiles.map(f => ({
+                        name: f.name, size: f.size, type: f.type
+                    }));
+                    
+                    // Try to store failed files as dataURLs for step 2
+                    const failedFilesSize = uploadResult.failedFiles.reduce((sum, f) => sum + f.size, 0);
+                    const maxStorageSize = 4 * 1024 * 1024; // 4MB limit
+                    
+                    if (failedFilesSize < maxStorageSize) {
+                        try {
+                            submitBtn.textContent = 'Preparing remaining files...';
+                            const failedFilesWithData = [];
+                            for (const file of uploadResult.failedFiles) {
+                                const dataURL = await new Promise((resolve) => {
+                                    const reader = new FileReader();
+                                    reader.onload = (e) => resolve(e.target.result);
+                                    reader.readAsDataURL(file);
+                                });
+                                failedFilesWithData.push({
+                                    name: file.name, size: file.size, type: file.type, dataURL
+                                });
+                            }
+                            sessionStorage.setItem('registrationFiles', JSON.stringify({
+                                uploaded: 'partial',
+                                uploadedFiles: uploadedFilesData,
+                                pendingFiles: failedFilesWithData
+                            }));
+                        } catch (e) {
+                            sessionStorage.setItem('registrationFiles', JSON.stringify({
+                                uploaded: 'partial',
+                                uploadedFiles: uploadedFilesData,
+                                needsReupload: true,
+                                failedFileNames: uploadResult.failedFiles.map(f => f.name)
+                            }));
+                            const errorDetails = uploadResult.errors?.length > 0 
+                                ? `\n\nErrors:\n${uploadResult.errors.slice(0, 3).join('\n')}${uploadResult.errors.length > 3 ? '\n...' : ''}`
+                                : '';
+                            alert(`⚠️ ${uploadResult.uploadedFiles.length} files uploaded.\n\n${uploadResult.failedFiles.length} files failed to upload.${errorDetails}\n\nPlease re-select them in Step 2.`);
+                        }
+                    } else {
+                        sessionStorage.setItem('registrationFiles', JSON.stringify({
+                            uploaded: 'partial',
+                            uploadedFiles: uploadedFilesData,
+                            needsReupload: true,
+                            failedFileNames: uploadResult.failedFiles.map(f => f.name)
+                        }));
+                        const errorDetails = uploadResult.errors?.length > 0 
+                            ? `\n\nErrors:\n${uploadResult.errors.slice(0, 3).join('\n')}${uploadResult.errors.length > 3 ? '\n...' : ''}`
+                            : '';
+                        alert(`⚠️ ${uploadResult.uploadedFiles.length} files uploaded.\n\n${uploadResult.failedFiles.length} files failed to upload.${errorDetails}\n\nPlease re-select them in Step 2.`);
+                    }
+                } else {
+                    // All files failed to upload
+                    console.warn('All file uploads failed:', uploadResult.error);
+                    
+                    // Try to store files as dataURLs for step 2 (with size limit check)
+                    const totalSize = uploadedFiles.reduce((sum, f) => sum + f.size, 0);
+                    const maxStorageSize = 4 * 1024 * 1024; // 4MB limit for safety
+                    
+                    if (totalSize < maxStorageSize) {
+                        try {
+                            submitBtn.textContent = 'Preparing files for next step...';
+                            const filesWithData = [];
+                            for (const file of uploadedFiles) {
+                                const dataURL = await new Promise((resolve) => {
+                                    const reader = new FileReader();
+                                    reader.onload = (e) => resolve(e.target.result);
+                                    reader.readAsDataURL(file);
+                                });
+                                filesWithData.push({
+                                    name: file.name, size: file.size, type: file.type, dataURL
+                                });
+                            }
+                            sessionStorage.setItem('registrationFiles', JSON.stringify({
+                                uploaded: false,
+                                files: filesWithData
+                            }));
+                            console.log('Files stored for upload in Step 2');
+                        } catch (storageError) {
+                            console.warn('Could not store files:', storageError);
+                            sessionStorage.setItem('registrationFiles', JSON.stringify({
+                                uploaded: false,
+                                needsReupload: true,
+                                files: filesData
+                            }));
+                            alert('⚠️ File Upload Notice\n\nWe couldn\'t upload your utility bills yet. Please re-select them in the next step.');
+                        }
+                    } else {
+                        // Files too large to store - user needs to re-select in step 2
+                        sessionStorage.setItem('registrationFiles', JSON.stringify({
+                            uploaded: false,
+                            needsReupload: true,
+                            files: filesData
+                        }));
+                        alert('⚠️ File Upload Notice\n\nYour utility bills are too large to transfer between steps. Please re-select them in Step 2.');
+                    }
+                }
             }
+            
+            // Registration complete - clear session storage and redirect
+            console.log('Registration complete!');
+            sessionStorage.removeItem('registrationStep1');
+            sessionStorage.removeItem('registrationStep2');
+            sessionStorage.removeItem('registrationFiles');
+            
+            // Show success message
+            alert('🎉 Registration Complete!\n\nYour system has been registered successfully. You\'ll receive your personalized savings estimate soon!');
+            
+            // Redirect to home
+            window.location.href = 'index.html';
         });
     </script>
 </body>
 </html>
-
