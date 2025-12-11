@@ -10,6 +10,7 @@
 
         gtag('config', 'G-05XLDKW0MN');
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>System Setup - Step 1 - MicroGrid</title>
@@ -655,7 +656,7 @@
                             <div style="flex: 1;">
                                 <h3 style="font-size: 1.1rem; color: #374151; font-weight: 700; margin-bottom: 0.5rem;">Quick Start: Tell Us Your System Specs</h3>
                                 <p style="color: #4b5563; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
-                                    <strong>Don't have your inverter web service credentials handy? That's perfectly fine!</strong> Just provide your system specifications below, and we'll calculate your estimated earnings. You can complete registration now and connect your system later.
+                                    Just provide your system specifications below, and we'll calculate your estimated earnings. You can complete registration now and connect your system later.
                                 </p>
                                 
                                 <p style="color: #374151; font-size: 0.875rem; margin-bottom: 1rem; padding: 0.75rem; background: #e0f2fe; border-radius: 8px; border-left: 3px solid #0ea5e9;">
@@ -1337,6 +1338,15 @@
         function generateInverterId() {
             return 'INV-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
         }
+        
+        // Generate a random UUID v4
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0;
+                const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
 
         // Format phone number to E.164 format
         function formatPhoneToE164(phone) {
@@ -1486,149 +1496,228 @@
             return payload;
         }
 
-        // Upload a single file with 5-minute timeout
-        async function uploadSingleFile(userId, file, fileNum, totalFiles) {
-            const formData = new FormData();
-            formData.append('account_id', userId);
-            formData.append('files', file);
+        // Get pre-signed URLs from the API
+        async function getPresignedUrls(userId, files) {
+            const filesMetadata = files.map(file => ({
+                filename: file.name,
+                content_type: file.type || 'application/octet-stream'
+            }));
             
+            console.log(`Requesting pre-signed URLs for ${files.length} file(s)...`);
+            
+            const response = await fetch(API_BASE_URL + UPLOAD_BILLS_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    account_id: userId,
+                    files: filesMetadata
+                })
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => null);
+                throw new Error(errorData?.detail || `Failed to get upload URLs: ${response.status}`);
+            }
+            
+            return await response.json();
+        }
+        
+        // Upload a single file to S3 using pre-signed URL
+        async function uploadFileToS3(file, presignedInfo, fileNum, totalFiles) {
             const fileSizeMB = (file.size / 1024 / 1024).toFixed(2);
-            console.log(`Uploading file ${fileNum}/${totalFiles}: ${file.name} (${fileSizeMB}MB)`);
+            console.log(`Uploading file ${fileNum}/${totalFiles}: ${file.name} (${fileSizeMB}MB) to S3...`);
 
+            // Build form data with all required fields from pre-signed URL
+            const formData = new FormData();
+
+            // Add all the pre-signed fields first (order matters for S3)
+            for (const [key, value] of Object.entries(presignedInfo.presigned_fields)) {
+                formData.append(key, value);
+            }
+
+            // Add the file last (required by S3)
+            formData.append('file', file);
+
+            // Create abort controller with 10-minute timeout
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 5 * 60 * 1000); // 5 minutes
-            
+            const timeoutId = setTimeout(() => {
+                controller.abort();
+            }, 10 * 60 * 1000); // 10 minutes
+
             try {
-                const response = await fetch(API_BASE_URL + UPLOAD_BILLS_ENDPOINT, {
+                const response = await fetch(presignedInfo.presigned_url, {
                     method: 'POST',
-                    headers: {
-                        'Accept': 'application/json'
-                    },
                     body: formData,
                     signal: controller.signal
                 });
-                
+
                 clearTimeout(timeoutId);
 
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => null);
-                    throw new Error(
-                        errorData?.detail || 
-                        `File ${fileNum} upload failed with status: ${response.status}`
-                    );
+                // S3 returns 204 on success for pre-signed POST
+                if (!response.ok && response.status !== 204) {
+                    const errorText = await response.text().catch(() => '');
+                    throw new Error(`S3 upload failed: ${response.status} - ${errorText}`);
                 }
 
-                return await response.json();
+                console.log(`File ${fileNum} uploaded successfully to: ${presignedInfo.s3_key}`);
+                return { success: true, s3_key: presignedInfo.s3_key };
             } catch (error) {
                 clearTimeout(timeoutId);
+
                 if (error.name === 'AbortError') {
-                    throw new Error(`File ${fileNum} upload timed out after 5 minutes`);
+                    throw new Error(`File ${fileNum} (${file.name}) upload timed out after 10 minutes`);
                 }
+                console.warn(`S3 upload failed for file ${fileNum}: ${error.message}`);
                 throw error;
             }
         }
         
-        // Upload all files in single request with 5-minute timeout
-        async function uploadAllFilesAtOnce(userId, fileObjects) {
-            const formData = new FormData();
-            formData.append('account_id', userId);
-            
-            for (const file of fileObjects) {
-                formData.append('files', file);
+        // Legacy function for backwards compatibility
+        async function uploadSingleFile(userId, file, fileNum, totalFiles) {
+            // Get pre-signed URL for this single file
+            const presignedResponse = await getPresignedUrls(userId, [file]);
+
+            if (presignedResponse.failed_files?.length > 0) {
+                throw new Error(presignedResponse.failed_files[0].error || 'Failed to get upload URL');
             }
-            
-            const totalSize = fileObjects.reduce((sum, f) => sum + f.size, 0);
-            console.log(`Uploading all ${fileObjects.length} file(s) in single request (${(totalSize / 1024 / 1024).toFixed(2)}MB)`);
 
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 5 * 60 * 1000); // 5 minutes
-            
-            try {
-                const response = await fetch(API_BASE_URL + UPLOAD_BILLS_ENDPOINT, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json'
-                    },
-                    body: formData,
-                    signal: controller.signal
-                });
-                
-                clearTimeout(timeoutId);
-
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => null);
-                    throw new Error(
-                        errorData?.detail || 
-                        `Upload failed with status: ${response.status}`
-                    );
-                }
-
-                return await response.json();
-            } catch (error) {
-                clearTimeout(timeoutId);
-                if (error.name === 'AbortError') {
-                    throw new Error('Upload timed out after 5 minutes');
-                }
-                throw error;
+            if (!presignedResponse.presigned_urls?.length) {
+                throw new Error('No pre-signed URL returned from server');
             }
+
+            return await uploadFileToS3(file, presignedResponse.presigned_urls[0], fileNum, totalFiles);
         }
 
-        // Upload utility bills - single request if small, one-by-one if large
-        async function uploadUtilityBills(userId, files) {
+        // Upload utility bills using S3 pre-signed URLs
+        // Zips multiple utility bills, uploads screenshots individually
+        async function uploadUtilityBills(userId, files, onProgress) {
             if (!files || files.length === 0) {
                 console.log('No utility bills to upload');
-                return { success: true, message: 'No files to upload' };
+                return { success: true, message: 'No files to upload', uploadedFiles: [], failedFiles: [], errors: [] };
             }
 
-            try {
-                // Convert data URLs back to File objects first
-                const fileObjects = [];
-                for (const fileData of files) {
-                    const file = await dataURLtoFile(fileData.dataURL, fileData.name);
-                    fileObjects.push(file);
-                }
-                
-                const totalSize = fileObjects.reduce((sum, f) => sum + f.size, 0);
-                const maxSingleRequestSize = 5 * 1024 * 1024; // 5MB threshold
-                
-                console.log(`Uploading ${files.length} utility bill(s) for account_id: ${userId}`);
+            const uploadedFiles = [];
+            const failedFiles = [];
+            const errors = [];
 
-                if (totalSize <= maxSingleRequestSize) {
-                    // Small total size - upload all files in single request
-                    console.log(`Total size ${(totalSize / 1024 / 1024).toFixed(2)}MB <= 5MB, uploading in single request`);
-                    const result = await uploadAllFilesAtOnce(userId, fileObjects);
-                    return { success: true, result };
-                } else {
-                    // Large total size - upload files one by one
-                    console.log(`Total size ${(totalSize / 1024 / 1024).toFixed(2)}MB > 5MB, uploading files one by one`);
-                    
-                    const uploadedFiles = [];
-                    const failedFiles = [];
-                    
-                    for (let i = 0; i < fileObjects.length; i++) {
-                        try {
-                            await uploadSingleFile(userId, fileObjects[i], i + 1, fileObjects.length);
-                            uploadedFiles.push(fileObjects[i]);
-                        } catch (error) {
-                            failedFiles.push(fileObjects[i]);
-                            console.error(`File ${i + 1} failed:`, error.message);
-                            // Continue with remaining files
+            // Check if we can use ZIP compression for utility bills (reduces number of uploads)
+            if (files.length > 1 && window.JSZip) {
+                try {
+                    console.log('Preparing to upload files as single ZIP...');
+
+                    const zip = new JSZip();
+                    Array.from(files).forEach(file => {
+                        zip.file(file.name, file);
+                    });
+
+                    const zipBlob = await zip.generateAsync({
+                        type: "blob",
+                        compression: "DEFLATE",
+                        compressionOptions: { level: 6 }
+                    });
+
+                    console.log(`ZIP created: ${(zipBlob.size/1024/1024).toFixed(2)}MB`);
+
+                    if (zipBlob.size < 50 * 1024 * 1024) { // 50MB limit (S3 pre-signed URL limit)
+                        const zipFile = new File([zipBlob], `utility_bills_${Date.now()}.zip`, { type: "application/zip" });
+
+                        if (onProgress) onProgress(0, 1, 0, 1);
+
+                        // Get pre-signed URL and upload the ZIP
+                        const presignedResponse = await getPresignedUrls(userId, [zipFile]);
+                        
+                        if (presignedResponse.presigned_urls && presignedResponse.presigned_urls.length > 0) {
+                            await uploadFileToS3(zipFile, presignedResponse.presigned_urls[0], 1, 1);
+                            
+                            // Mark all original files as uploaded
+                            uploadedFiles.push(...files);
+                            console.log(`ZIP upload successful`);
+
+                            if (onProgress) onProgress(1, 1, files.length, files.length);
+
+                            return {
+                                success: true,
+                                partial: false,
+                                uploadedFiles,
+                                failedFiles: [],
+                                errors: [],
+                                message: `All files uploaded as ZIP`
+                            };
+                        } else {
+                            console.warn('Failed to get pre-signed URL for ZIP');
+                        }
+                    } else {
+                        console.warn(`ZIP is too large (>50MB), will upload files individually`);
+                    }
+                } catch (zipError) {
+                    console.warn(`ZIP upload failed:`, zipError.message);
+                    // Fallthrough to individual upload logic below
+                }
+            }
+
+            // Upload files individually using pre-signed URLs
+            console.log(`Uploading ${files.length} file(s) individually using pre-signed URLs...`);
+
+            try {
+                // Get all pre-signed URLs at once (more efficient)
+                const presignedResponse = await getPresignedUrls(userId, files);
+
+                // Handle files that failed to get pre-signed URLs
+                if (presignedResponse.failed_files?.length > 0) {
+                    for (const failed of presignedResponse.failed_files) {
+                        const file = files.find(f => f.name === failed.filename);
+                        if (file) {
+                            failedFiles.push(file);
+                            errors.push(`${failed.filename}: ${failed.error}`);
                         }
                     }
-                    
-                    console.log(`Upload complete: ${uploadedFiles.length} uploaded, ${failedFiles.length} failed`);
-                    
-                    if (failedFiles.length === 0) {
-                        return { success: true, message: `All ${uploadedFiles.length} files uploaded` };
-                    } else if (uploadedFiles.length > 0) {
-                        return { success: false, error: `${failedFiles.length} of ${fileObjects.length} files failed to upload` };
-                    } else {
-                        return { success: false, error: 'All files failed to upload' };
+                }
+
+                // Upload each file to S3
+                const presignedUrls = presignedResponse.presigned_urls || [];
+                for (let i = 0; i < presignedUrls.length; i++) {
+                    const presignedInfo = presignedUrls[i];
+                    const file = files.find(f => f.name === presignedInfo.filename);
+
+                    if (!file) continue;
+
+                    if (onProgress) onProgress(i, presignedUrls.length, uploadedFiles.length, files.length);
+
+                    try {
+                        await uploadFileToS3(file, presignedInfo, i + 1, presignedUrls.length);
+                        uploadedFiles.push(file);
+                    } catch (error) {
+                        failedFiles.push(file);
+                        errors.push(`${file.name}: ${error.message}`);
                     }
                 }
+
+                const summary = `${uploadedFiles.length}/${files.length} files uploaded successfully`;
+                console.log(summary);
+
+                if (failedFiles.length > 0) {
+                    console.warn('Some files failed:', errors);
+                }
+
+                return {
+                    success: failedFiles.length === 0,
+                    uploadedFiles,
+                    failedFiles,
+                    errors,
+                    message: summary
+                };
             } catch (error) {
                 console.error('Utility bill upload error:', error);
-                return { success: false, error: error.message };
+                return {
+                    success: false,
+                    uploadedFiles,
+                    failedFiles,
+                    errors: [...errors, error.message],
+                    message: error.message
+                };
             }
         }
 
@@ -1864,19 +1953,21 @@
                 
                 if (allFilesToUpload.length > 0 && result.user_id && !window.filesAlreadyUploaded) {
                     const totalFileSize = allFilesToUpload.reduce((sum, f) => sum + (f.size || 0), 0);
+                    console.log(`Uploading ${allFilesToUpload.length} file(s) (${(totalFileSize / 1024 / 1024).toFixed(1)}MB) using S3 pre-signed URLs`);
                     
-                    // Large files will be uploaded one by one automatically
-                    if (totalFileSize > 5 * 1024 * 1024) {
-                        console.log(`Large upload detected (${(totalFileSize / 1024 / 1024).toFixed(1)}MB), will upload files one by one`);
-                    }
+                    // Progress callback
+                    const onProgress = (batchIndex, totalBatches, filesUploaded, totalFiles) => {
+                        const percent = Math.round((filesUploaded / totalFiles) * 100);
+                        submitBtn.textContent = `Uploading utility bills (${percent}%)...`;
+                    };
                     
-                    submitBtn.textContent = 'Uploading Utility Bills...';
-                    const uploadResult = await uploadUtilityBills(result.user_id, allFilesToUpload);
+                    const uploadResult = await uploadUtilityBills(result.user_id, allFilesToUpload, onProgress);
                     
                     if (!uploadResult.success) {
-                        console.warn('Utility bill upload failed, but registration succeeded:', uploadResult.error);
+                        console.warn('Some utility bills failed to upload:', uploadResult.errors);
+                        totalFilesUploaded += uploadResult.uploadedFiles.length;
                     } else {
-                        totalFilesUploaded += allFilesToUpload.length;
+                        totalFilesUploaded += uploadResult.uploadedFiles.length;
                     }
                 } else if (allFilesToUpload.length > 0 && window.filesAlreadyUploaded) {
                     totalFilesUploaded = allFilesToUpload.length;
@@ -1965,7 +2056,7 @@
         }
 
         // Form submit handler
-        document.getElementById('diyForm').addEventListener('submit', function(e) {
+        document.getElementById('diyForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const formData = new FormData(this);
@@ -1989,10 +2080,58 @@
                 document.getElementById('pvWattage').style.borderColor = '#e5e7eb';
             }
             
+            // Check usage data - at least one of three options is required
+            // Collect monthly kWh data first to check if any was provided
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
+                               'July', 'August', 'September', 'October', 'November', 'December'];
+            const monthlyKwhData = {};
+            let hasMonthlyData = false;
+            for (const monthName of monthNames) {
+                const monthValue = formData.get(`month${monthName}`);
+                if (monthValue && monthValue.trim() !== '') {
+                    monthlyKwhData[`month${monthName}`] = monthValue;
+                    hasMonthlyData = true;
+                }
+            }
+            
+            // Check daily average
+            const dailyAverageKwh = formData.get('dailyAverageKwh');
+            const hasDailyAverage = dailyAverageKwh && dailyAverageKwh.trim() !== '';
+            
+            // Check if utility bills were uploaded
+            const hasUtilityBills = uploadedFiles.length > 0;
+            
+            // Check if usage chart screenshot was uploaded
+            const hasUsageChart = usageChartFile !== null;
+            
+            // Validate that at least one usage data option is provided
+            if (!hasUtilityBills && !hasMonthlyData && !hasDailyAverage && !hasUsageChart) {
+                errors.push('- Usage data is required');
+            }
+            
             // Show validation errors
             if (errors.length > 0) {
-                let errorMessage = 'Missing Required Information:\n\n' + errors.join('\n');
-                errorMessage += '\n\nPlease provide your system specifications to continue.';
+                let errorMessage = '⚠️ Missing Required Information:\n\n' + errors.join('\n');
+                
+                // Add helpful hint if usage data is missing
+                if (!hasUtilityBills && !hasMonthlyData && !hasDailyAverage && !hasUsageChart) {
+                    errorMessage += '\n\n💡 You must provide at least ONE of the following:\n';
+                    errorMessage += '   • Upload utility bills (PDF or images)\n';
+                    errorMessage += '   • Upload a screenshot of your usage chart\n';
+                    errorMessage += '   • Enter monthly kWh usage for at least one month\n';
+                    errorMessage += '   • Enter your daily average kWh usage\n';
+                    errorMessage += '\nScroll down to the "Usage Data" section to provide this information.';
+                    
+                    // Scroll to the usage data section
+                    setTimeout(() => {
+                        const usageSection = document.querySelector('.tab-content');
+                        if (usageSection) {
+                            usageSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }, 500);
+                } else {
+                    errorMessage += '\n\nPlease provide the required information to continue.';
+                }
                 
                 alert(errorMessage);
                 return;
@@ -2001,15 +2140,14 @@
             // Save step 1 data and redirect to step 2
             console.log('Saving step 1 data and redirecting to step 2');
             
-            // Collect monthly kWh data
-            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
-                               'July', 'August', 'September', 'October', 'November', 'December'];
-            const monthlyKwhData = {};
-            for (const monthName of monthNames) {
-                const monthValue = formData.get(`month${monthName}`);
-                if (monthValue && monthValue.trim() !== '') {
-                    monthlyKwhData[`month${monthName}`] = monthValue;
-                }
+            // Monthly kWh data already collected above for validation
+            
+            // Generate or retrieve temporary UUID for this session
+            let tempUserId = sessionStorage.getItem('tempUserId');
+            if (!tempUserId) {
+                tempUserId = generateUUID();
+                sessionStorage.setItem('tempUserId', tempUserId);
+                console.log('Generated temporary user ID:', tempUserId);
             }
             
             // Save step 1 (system setup) data to session storage
@@ -2018,61 +2156,112 @@
                 batteryCapacity: formData.get('batteryCapacity'),
                 pvWattage: formData.get('pvWattage'),
                 monthlyKwh: monthlyKwhData,
-                dailyAverageKwh: formData.get('dailyAverageKwh')
+                dailyAverageKwh: formData.get('dailyAverageKwh'),
+                tempUserId: tempUserId
             };
             
             sessionStorage.setItem('registrationStep1', JSON.stringify(step1SystemData));
             
-            // Save uploaded files to session storage (convert to dataURLs for transfer)
-            const allFilesToSave = [...uploadedFiles];
-            if (usageChartFile) {
-                allFilesToSave.push(usageChartFile);
-            }
+            // Separate utility bills from usage chart screenshot
+            const utilityBills = [...uploadedFiles];
+            const screenshots = usageChartFile ? [usageChartFile] : [];
             
-            if (allFilesToSave.length > 0) {
+            const hasFilesToUpload = utilityBills.length > 0 || screenshots.length > 0;
+            
+            if (hasFilesToUpload) {
                 const submitBtn = document.getElementById('submitBtn');
-                submitBtn.textContent = 'Preparing files...';
+                submitBtn.textContent = 'Uploading files...';
                 submitBtn.disabled = true;
                 
-                const totalSize = allFilesToSave.reduce((sum, f) => sum + f.size, 0);
-                const maxStorageSize = 4 * 1024 * 1024; // 4MB limit for safety
+                let totalFilesUploaded = 0;
+                let uploadErrors = [];
                 
-                if (totalSize < maxStorageSize) {
-                    Promise.all(allFilesToSave.map(file => {
-                        return new Promise((resolve) => {
-                            const reader = new FileReader();
-                            reader.onload = (e) => resolve({
-                                name: file.name,
-                                size: file.size,
-                                type: file.type,
-                                dataURL: e.target.result,
-                                isUsageChart: file === usageChartFile
-                            });
-                            reader.readAsDataURL(file);
-                        });
-                    })).then(filesData => {
-                        sessionStorage.setItem('registrationFiles', JSON.stringify(filesData));
-                        console.log(`Saved ${filesData.length} file(s) to session storage`);
+                try {
+                    // Upload utility bills as ZIP if multiple, otherwise as single file
+                    if (utilityBills.length > 0) {
+                        console.log(`Uploading ${utilityBills.length} utility bill(s)...`);
+                        
+                        const onProgress = (batchIndex, totalBatches, filesUploaded, totalFiles) => {
+                            const percent = Math.round((filesUploaded / (utilityBills.length + screenshots.length)) * 100);
+                            submitBtn.textContent = `Uploading files (${percent}%)...`;
+                        };
+                        
+                        const billUploadResult = await uploadUtilityBills(tempUserId, utilityBills, onProgress);
+                        
+                        if (billUploadResult.success) {
+                            totalFilesUploaded += billUploadResult.uploadedFiles.length;
+                            console.log(`Successfully uploaded ${billUploadResult.uploadedFiles.length} utility bill(s)`);
+                        } else {
+                            uploadErrors.push(...billUploadResult.errors);
+                            console.warn('Some utility bills failed to upload:', billUploadResult.errors);
+                        }
+                    }
+                    
+                    // Upload screenshots individually (not zipped)
+                    if (screenshots.length > 0) {
+                        console.log(`Uploading ${screenshots.length} screenshot(s) individually...`);
+                        
+                        for (let i = 0; i < screenshots.length; i++) {
+                            const screenshot = screenshots[i];
+                            const percent = Math.round(((totalFilesUploaded + i) / (utilityBills.length + screenshots.length)) * 100);
+                            submitBtn.textContent = `Uploading screenshot (${percent}%)...`;
+                            
+                            try {
+                                // Get pre-signed URL for screenshot
+                                const presignedResponse = await getPresignedUrls(tempUserId, [screenshot]);
+                                
+                                if (presignedResponse.presigned_urls && presignedResponse.presigned_urls.length > 0) {
+                                    await uploadFileToS3(screenshot, presignedResponse.presigned_urls[0], 1, 1);
+                                    totalFilesUploaded++;
+                                    console.log(`Successfully uploaded screenshot: ${screenshot.name}`);
+                                } else {
+                                    uploadErrors.push(`Screenshot upload failed: no pre-signed URL`);
+                                }
+                            } catch (error) {
+                                uploadErrors.push(`Screenshot ${screenshot.name}: ${error.message}`);
+                                console.error('Screenshot upload error:', error);
+                            }
+                        }
+                    }
+                    
+                    // Mark files as uploaded
+                    if (totalFilesUploaded > 0) {
+                        sessionStorage.setItem('filesUploadedInStep1', 'true');
+                        sessionStorage.setItem('uploadedFileCount', totalFilesUploaded.toString());
+                        console.log(`Total files uploaded: ${totalFilesUploaded}/${utilityBills.length + screenshots.length}`);
+                    }
+                    
+                    // Handle results
+                    const totalFiles = utilityBills.length + screenshots.length;
+                    
+                    if (totalFilesUploaded === totalFiles) {
+                        // All files uploaded successfully
                         window.location.href = 'diy-registration-step2.html';
-                    }).catch(error => {
-                        console.error('Error saving files:', error);
-                        // Continue without files
+                    } else if (totalFilesUploaded > 0) {
+                        // Some files uploaded
+                        if (confirm(`${totalFilesUploaded} of ${totalFiles} files uploaded successfully. Continue anyway?`)) {
+                            window.location.href = 'diy-registration-step2.html';
+                        } else {
+                            submitBtn.textContent = 'Continue';
+                            submitBtn.disabled = false;
+                        }
+                    } else {
+                        // No files uploaded
+                        if (confirm('File upload failed. Continue without files?')) {
+                            window.location.href = 'diy-registration-step2.html';
+                        } else {
+                            submitBtn.textContent = 'Continue';
+                            submitBtn.disabled = false;
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error uploading files:', error);
+                    if (confirm('Error uploading files. Continue without files?')) {
                         window.location.href = 'diy-registration-step2.html';
-                    });
-                } else {
-                    // Files too large - just save metadata
-                    const filesMetadata = allFilesToSave.map(file => ({
-                        name: file.name,
-                        size: file.size,
-                        type: file.type,
-                        isUsageChart: file === usageChartFile
-                    }));
-                    sessionStorage.setItem('registrationFiles', JSON.stringify({
-                        needsReupload: true,
-                        files: filesMetadata
-                    }));
-                    alert('Your utility bill files are too large to transfer between steps. Please re-upload them in Step 2.');
-                    window.location.href = 'diy-registration-step2.html';
+                    } else {
+                        submitBtn.textContent = 'Continue';
+                        submitBtn.disabled = false;
+                    }
                 }
             } else {
                 // No files, just redirect

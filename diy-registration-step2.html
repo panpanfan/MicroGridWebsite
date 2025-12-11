@@ -310,6 +310,25 @@
             box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
         }
 
+        .back-btn {
+            background: transparent;
+            color: #6b7280;
+            padding: 1rem 2rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .back-btn:hover {
+            border-color: #059669;
+            color: #059669;
+        }
+
         .file-upload-container {
             margin-top: 0.5rem;
         }
@@ -1269,7 +1288,8 @@
                         marketing_consent: step2Data.marketing || false,
                         terms_accepted: step2Data.termsAccepted || false,
                         registration_date: new Date().toISOString(),
-                        registration_source: 'diy-web-form-step2'
+                        registration_source: 'diy-web-form-step2',
+                        temp_user_id: step1Data.tempUserId || null
                     },
                     electricity_bills: {
                         uploaded_count: fileInfo.length,
@@ -1285,6 +1305,13 @@
                         })() : null,
                         daily_average_kwh_provided: step1Data.dailyAverageKwh && step1Data.dailyAverageKwh.trim() !== '',
                         daily_average_kwh: step1Data.dailyAverageKwh ? parseFloat(step1Data.dailyAverageKwh) : null
+                    },
+                    step1_inputs: {
+                        battery_capacity: step1Data.batteryCapacity || null,
+                        pv_wattage: step1Data.pvWattage || null,
+                        monthly_kwh: step1Data.monthlyKwh || null,
+                        daily_average_kwh: step1Data.dailyAverageKwh || null,
+                        temp_user_id: step1Data.tempUserId || null
                     },
                     notes: step2Data.additionalNotes || null
                 };
@@ -1399,7 +1426,8 @@
                         marketing_consent: step2Data.marketing || false,
                         terms_accepted: step2Data.termsAccepted || false,
                         registration_date: new Date().toISOString(),
-                        registration_source: 'diy-web-form-step2'
+                        registration_source: 'diy-web-form-step2',
+                        temp_user_id: step1Data.tempUserId || null
                     },
                     electricity_bills: {
                         uploaded_count: fileInfo.length,
@@ -1415,6 +1443,13 @@
                         })() : null,
                         daily_average_kwh_provided: step1Data.dailyAverageKwh && step1Data.dailyAverageKwh.trim() !== '',
                         daily_average_kwh: step1Data.dailyAverageKwh ? parseFloat(step1Data.dailyAverageKwh) : null
+                    },
+                    step1_inputs: {
+                        battery_capacity: step1Data.batteryCapacity || null,
+                        pv_wattage: step1Data.pvWattage || null,
+                        monthly_kwh: step1Data.monthlyKwh || null,
+                        daily_average_kwh: step1Data.dailyAverageKwh || null,
+                        temp_user_id: step1Data.tempUserId || null
                     },
                     notes: step2Data.additionalNotes || null
                 };
