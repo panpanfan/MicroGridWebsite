@@ -992,6 +992,178 @@
             }
         }
 
+        /* Waitlist Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: #f3f4f6;
+            color: #333;
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-header p {
+            font-size: 1rem;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .modal-form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.95rem;
+        }
+
+        .modal-form-group input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .modal-form-group input:focus {
+            outline: none;
+            border-color: #10B981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .modal-form-group small {
+            display: block;
+            margin-top: 0.5rem;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn-primary {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .modal-btn-primary:hover:not(:disabled) {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .modal-btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .modal-btn-secondary {
+            background: transparent;
+            color: #6b7280;
+            border: 2px solid #e5e7eb;
+        }
+
+        .modal-btn-secondary:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+        @media (max-width: 480px) {
+            .modal-content {
+                padding: 2rem 1.5rem;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
+
 
         @media (max-width: 480px) {
             .container {
@@ -1674,7 +1846,7 @@
         <div class="container" style="text-align: center; margin-top: 3rem;">
             <div style="padding: 1rem 1.5rem; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 15px; display: inline-block;">
                 <p style="color: #065f46; font-weight: 600; margin: 0;">
-                    ⚡ <strong>Tesla Powerwall owners:</strong> Support coming soon! <a href="diy-registration-step1.html" style="color: #047857; text-decoration: underline;">Register to join our waitlist</a> to be first in line.
+                    ⚡ <strong>Tesla Powerwall owners:</strong> Support coming soon! <a href="#" onclick="openWaitlistModal(event)" style="color: #047857; text-decoration: underline;">Register to join our waitlist</a> to be first in line.
                 </p>
             </div>
         </div>
@@ -1694,7 +1866,7 @@
                         <span class="faq-icon">▼</span>
                     </button>
                     <div class="faq-answer">
-                        MicroVPP™ supports most major home battery brands including Enphase, SolarEdge, Sol-Ark, EG4, Franklin, and Liniotech. <strong>Tesla Powerwall support is coming soon!</strong> We're actively working on Tesla integration and have a waitlist for Powerwall owners. If you have a Tesla Powerwall, please <a href="diy-registration-step1.html" style="color: #10B981; font-weight: 600;">register to join our waitlist</a> to be notified when support launches. For other systems, our app will automatically detect compatible systems during setup.
+                        MicroVPP™ supports most major home battery brands including Enphase, SolarEdge, Sol-Ark, EG4, Franklin, and Liniotech. <strong>Tesla Powerwall support is coming soon!</strong> We're actively working on Tesla integration and have a waitlist for Powerwall owners. If you have a Tesla Powerwall, please <a href="#" onclick="openWaitlistModal(event)" style="color: #10B981; font-weight: 600;">register to join our waitlist</a> to be notified when support launches. For other systems, our app will automatically detect compatible systems during setup.
                     </div>
                 </div>
                 <div class="faq-item">
@@ -1815,8 +1987,13 @@
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                // Skip if href is just "#" (used for modal triggers)
+                if (!href || href === '#') {
+                    return;
+                }
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
+                const target = document.querySelector(href);
                 if (target) {
                     target.scrollIntoView({
                         behavior: 'smooth',
@@ -1909,6 +2086,235 @@
             </div>
         </div>
     </div>
+
+    <!-- Waitlist Modal -->
+    <div class="modal-overlay" id="waitlistModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeWaitlistModal()">&times;</button>
+            <div class="modal-header">
+                <h2>Join Tesla Powerwall Waitlist</h2>
+                <p>Be the first to know when we launch Tesla Powerwall support. Leave your email (optional) and we'll notify you!</p>
+            </div>
+            <form id="waitlistForm" onsubmit="submitWaitlist(event)">
+                <div class="modal-form-group">
+                    <label for="waitlistEmail">Email Address (Optional)</label>
+                    <input type="email" id="waitlistEmail" name="waitlistEmail" placeholder="you@example.com">
+                    <small>We'll only use this to notify you about Tesla Powerwall support. You can skip this field if you prefer.</small>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="modal-btn modal-btn-secondary" onclick="closeWaitlistModal()">Cancel</button>
+                    <button type="submit" class="modal-btn modal-btn-primary" id="waitlistSubmitBtn">Join Waitlist</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Waitlist API Script -->
+    <script>
+        // API Configuration
+        const API_BASE_URL = 'https://3dbhitxwoc.execute-api.us-east-2.amazonaws.com/dev';
+        const SIGNUP_ENDPOINT = '/auth/signup';
+
+        // Format phone number to E.164 format
+        function formatPhoneToE164(phone) {
+            if (!phone) return null;
+            const digits = phone.replace(/\D/g, '');
+            if (digits.length === 10) {
+                return '+1' + digits;
+            } else if (digits.length === 11 && digits.startsWith('1')) {
+                return '+' + digits;
+            } else if (phone.startsWith('+')) {
+                return phone;
+            } else if (digits.length === 11) {
+                return '+' + digits;
+            }
+            return '+1' + digits;
+        }
+
+        // Generate a unique inverter ID
+        function generateInverterId() {
+            return 'INV-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        }
+
+        // Generate dummy email if not provided
+        function generateDummyEmail() {
+            const timestamp = Date.now();
+            const randomStr = Math.random().toString(36).substr(2, 9);
+            return `powerwall-waitlist-${timestamp}-${randomStr}@dummy.com`;
+        }
+
+        // Open waitlist modal
+        function openWaitlistModal(event) {
+            event.preventDefault();
+            document.getElementById('waitlistModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Track modal open event
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'waitlist_modal_open', {
+                    event_category: 'engagement',
+                    event_label: 'tesla_powerwall_waitlist'
+                });
+            }
+        }
+
+        // Close waitlist modal
+        function closeWaitlistModal() {
+            document.getElementById('waitlistModal').classList.remove('active');
+            document.body.style.overflow = '';
+            document.getElementById('waitlistForm').reset();
+        }
+
+        // Submit waitlist form
+        async function submitWaitlist(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('waitlistSubmitBtn');
+            const emailInput = document.getElementById('waitlistEmail');
+            const originalBtnText = submitBtn.textContent;
+            
+            // Disable button and show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Joining...';
+            
+            try {
+                // Get email or generate dummy email
+                const userEmail = emailInput.value.trim();
+                const email = userEmail || generateDummyEmail();
+                
+                // Build the info object for Tesla Powerwall waitlist
+                const info = {
+                    waitlist: {
+                        type: 'tesla_powerwall',
+                        requested_date: new Date().toISOString(),
+                        email_provided: !!userEmail,
+                        source: 'index-page-waitlist'
+                    },
+                    registration: {
+                        mode: 'waitlist',
+                        status: 'waitlist_pending',
+                        registration_date: new Date().toISOString(),
+                        registration_source: 'index-page-waitlist'
+                    }
+                };
+                
+                // Build the API payload for signup
+                const payload = {
+                    entity_type: "inverter",
+                    username: null,
+                    email: email,
+                    phone_number: null,
+                    full_address: null,
+                    city: null,
+                    state: null,
+                    zip: null,
+                    country: "US",
+                    latitude: null,
+                    longitude: null,
+                    timezone: null,
+                    locale: "en-US",
+                    inverter_inverter_id: generateInverterId(),
+                    inverter_inverter_type: "hybrid_inverter",
+                    inverter_manufacturer: "Tesla",
+                    inverter_serial_number: null,
+                    inverter_monitoring_id: null,
+                    inverter_monitoring_token: null,
+                    inverter_monitoring_url: null,
+                    inverter_api_key: null,
+                    inverter_api_secret: null,
+                    info: JSON.stringify(info),
+                    site_id: null,
+                    site_type: "tesla_powerwall",
+                    installation_date: null,
+                };
+                
+                console.log('Submitting Tesla Powerwall waitlist:', payload);
+                
+                const response = await fetch(API_BASE_URL + SIGNUP_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => null);
+                    throw new Error(
+                        errorData?.detail || 
+                        `Waitlist signup failed with status: ${response.status}`
+                    );
+                }
+                
+                const result = await response.json();
+                console.log('Waitlist signup successful:', result);
+                
+                // Track successful signup
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'waitlist_signup', {
+                        event_category: 'conversion',
+                        event_label: 'tesla_powerwall_waitlist',
+                        email_provided: !!userEmail
+                    });
+                }
+                
+                // Show success message
+                alert(
+                    '✅ Success! You\'re on the waitlist!\n\n' +
+                    (userEmail 
+                        ? 'We\'ll notify you at ' + userEmail + ' when Tesla Powerwall support launches.'
+                        : 'You\'ve been added to our Tesla Powerwall waitlist. Check back soon for updates!'
+                    ) +
+                    '\n\nIn the meantime, if you have a compatible system (Enphase, SolarEdge, etc.), you can start earning today!'
+                );
+                
+                closeWaitlistModal();
+                
+            } catch (error) {
+                console.error('Error submitting waitlist:', error);
+                alert(
+                    '⚠️ Oops! Something went wrong.\n\n' +
+                    'We couldn\'t add you to the waitlist right now: ' + error.message + '\n\n' +
+                    'Please try again later or contact us at info@microvpp.com'
+                );
+                
+                // Track error
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'waitlist_signup_error', {
+                        event_category: 'error',
+                        event_label: error.message
+                    });
+                }
+            } finally {
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalBtnText;
+            }
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('waitlistModal');
+            if (modal) {
+                modal.addEventListener('click', function(event) {
+                    if (event.target === modal) {
+                        closeWaitlistModal();
+                    }
+                });
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const modal = document.getElementById('waitlistModal');
+                if (modal && modal.classList.contains('active')) {
+                    closeWaitlistModal();
+                }
+            }
+        });
+    </script>
 </body>
 </html>
 
