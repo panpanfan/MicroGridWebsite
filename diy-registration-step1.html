@@ -181,8 +181,8 @@
             content: '';
             position: absolute;
             top: 20px;
-            left: 25%;
-            right: 25%;
+            left: 16.5%;
+            right: 16.5%;
             height: 3px;
             background: #10B981;
             z-index: 0;
@@ -475,8 +475,8 @@
             }
 
             .progress-bar::before {
-                left: 20%;
-                right: 20%;
+                left: 12%;
+                right: 12%;
             }
             
             /* SCE bill examples - stack on mobile */
@@ -621,6 +621,10 @@
                         <div class="progress-step-circle">2</div>
                         <div class="progress-step-label">Contact Info</div>
                     </div>
+                    <div class="progress-step">
+                        <div class="progress-step-circle">3</div>
+                        <div class="progress-step-label">Inverter Connection</div>
+                    </div>
                 </div>
 
                 <div class="section-header">
@@ -671,18 +675,18 @@
                             <div style="flex: 1;">
                                 <h3 style="font-size: 1.1rem; color: #374151; font-weight: 700; margin-bottom: 0.5rem;">Provide Your Energy Usage</h3>
                                 <p style="color: #4b5563; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
-                                    <strong>Help us estimate your savings faster!</strong> Either upload your recent utility bills or manually enter your daily average kWh usage.
+                                    <strong>Help us estimate your savings faster!</strong> Either upload your recent utility bills or manually enter your annual or monthly daily average kWh usage.
                                 </p>
                                 
                                 <!-- Toggle between Usage Input Methods -->
                                 <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; padding: 1rem; background: #f9fafb; border-radius: 8px; flex-wrap: wrap;">
                                     <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; flex: 1; min-width: 250px;">
                                         <input type="radio" name="usageInputMethod" id="dailyAverageRadio" value="dailyAverage" checked style="width: 18px; height: 18px; cursor: pointer; accent-color: #10B981;">
-                                        <span style="font-weight: 600; color: #374151; font-size: 1rem;">📊 Daily Average kWh (Most Recent Year)</span>
+                                        <span style="font-weight: 600; color: #374151; font-size: 1rem;">📊 Annual Daily Average kWh</span>
                                     </label>
                                     <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; flex: 1; min-width: 250px;">
                                         <input type="radio" name="usageInputMethod" id="manualRadio" value="manual" style="width: 18px; height: 18px; cursor: pointer; accent-color: #10B981;">
-                                        <span style="font-weight: 600; color: #374151; font-size: 1rem;">⌨️ Daily Average kWh (Last 12 Months)</span>
+                                        <span style="font-weight: 600; color: #374151; font-size: 1rem;">⌨️ Monthly Daily Average kWh</span>
                                     </label>
                                     <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; flex: 1; min-width: 250px;">
                                         <input type="radio" name="usageInputMethod" id="uploadRadio" value="upload" style="width: 18px; height: 18px; cursor: pointer; accent-color: #10B981;">
@@ -690,17 +694,17 @@
                                     </label>
                                 </div>
                                 
-                                <!-- Daily Average Section (Most Recent Year) -->
+                                <!-- Annual Daily Average Section -->
                                 <div id="dailyAverageSection" class="usage-section">
                                     <p style="color: #4b5563; font-size: 0.9rem; margin-bottom: 1rem;">
-                                        Provide your daily average electricity usage (kWh) for the most recent year. This is the quickest option.
+                                        Provide your annual daily average electricity usage (kWh). This is the quickest option.
                                     </p>
                                     
                                     <!-- Daily Average Input -->
                                     <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem;">
                                         <div style="max-width: 400px;">
                                             <label for="dailyAverageKwh" style="display: block; font-weight: 600; color: #374151; font-size: 1rem; margin-bottom: 0.5rem;">
-                                                Daily Average (kWh) - Most Recent Year
+                                                Annual Daily Average (kWh)
                                             </label>
                                             <input type="number" id="dailyAverageKwh" name="dailyAverageKwh" placeholder="e.g., 24.10" step="0.01" min="0" style="width: 100%; padding: 0.75rem; font-size: 1rem; border: 2px solid #e5e7eb; border-radius: 8px;">
                                             <small style="color: #6b7280; font-size: 0.875rem; display: block; margin-top: 0.5rem;">
@@ -709,13 +713,13 @@
                                         </div>
                                     </div>
                                     
-                    <!-- Helper Note for Users Who Don't Know -->
-                    <div style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 1rem; margin-top: 1rem;">
-                        <p style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin: 0;">
-                            <strong>💡 Don't know where to find your daily average kWh for the most recent year?</strong> Select the <strong>"Daily Average kWh (Last 12 Months)"</strong> option above — it has a quick guide showing you exactly where to find it on your bill.
-                        </p>
-                    </div>
-                </div>
+                                    <!-- Helper Note for Users Who Don't Know -->
+                                    <div style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 1rem; margin-top: 1rem;">
+                                        <p style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin: 0;">
+                                            <strong>💡 Don't know where to find your annual daily average kWh?</strong> Select the <strong>"Monthly Daily Average kWh"</strong> option above — it has a quick guide showing you exactly where to find it on your bill.
+                                        </p>
+                                    </div>
+                                </div>
                                 
                                 <!-- File Upload Section -->
                                 <div id="uploadSection" class="usage-section" style="display: none;">
@@ -734,10 +738,10 @@
                                     </small>
                                 </div>
                                 
-                                <!-- Manual Entry Section (Last 12 Months) -->
+                                <!-- Monthly Daily Average Section -->
                                 <div id="manualSection" class="usage-section" style="display: none;">
                                     <p style="color: #4b5563; font-size: 0.9rem; margin-bottom: 1rem;">
-                                        Enter your daily average electricity usage (kWh) for each of the last 12 months. You can start from any month.
+                                        Enter your monthly daily average electricity usage (kWh) for each of the last 12 months. You can start from any month.
                                     </p>
                                     
                                     <!-- Important Note -->

@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-05XLDKW0MN"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-05XLDKW0MN');
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIY System Registration - Step 3 - MicroGrid</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        :root {
+            --brand-green: #10B981;
+            --brand-green-dark: #065f46;
+            --brand-green-medium: #059669;
+            --brand-green-darker: #047857;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.15);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #10B981;
+        }
+
+        .header-buttons {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .cta-button:hover {
+            background: linear-gradient(135deg, #059669, #047857);
+        }
+
+        .cta-button-outline {
+            background: transparent;
+            color: var(--brand-green);
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--brand-green);
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .cta-button-outline:hover {
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: #6b7280;
+        }
+
+        /* Registration form section */
+        .registration-form-section {
+            padding: 140px 0 80px;
+            background: #f8fafc;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 16.5%;
+            right: 16.5%;
+            height: 3px;
+            background: #10B981;
+            z-index: 0;
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .progress-step.completed .progress-step-circle {
+            background: #10B981;
+            color: white;
+        }
+
+        .progress-step.active .progress-step-circle {
+            background: #10B981;
+            color: white;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+        }
+
+        .progress-step-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .progress-step.active .progress-step-label {
+            color: #059669;
+            font-weight: 600;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #059669;
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-top: 0.25rem;
+        }
+
+        .checkbox-group label {
+            margin-bottom: 0;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+        }
+
+        .back-btn {
+            background: transparent;
+            color: #6b7280;
+            padding: 1rem 2rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .back-btn:hover {
+            border-color: #059669;
+            color: #059669;
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                gap: 0;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                padding: 0.75rem 0;
+                border-bottom: 1px solid #f0f0f0;
+            }
+
+            .nav-links li:last-child {
+                border-bottom: none;
+            }
+
+            .form-container {
+                padding: 2rem 1.5rem;
+                margin: 0 1rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .progress-bar::before {
+                left: 12%;
+                right: 12%;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .cta-button.hide-mobile {
+                display: none;
+            }
+        }
+
+        /* Sticky CTA Bar */
+        .sticky-cta-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(16, 185, 129, 0.15);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+            padding: 1rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .cta-bar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .cta-bar-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1f2937;
+            flex-shrink: 0;
+        }
+
+        .cta-bar-buttons {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .cta-bar-primary {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cta-bar-primary:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        body {
+            padding-bottom: 100px;
+        }
+
+        @media (max-width: 768px) {
+            .cta-bar-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.75rem;
+            }
+
+            .cta-bar-text {
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .cta-bar-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .cta-bar-primary {
+                flex: 1;
+                min-width: 140px;
+                padding: 0.75rem;
+                font-size: 0.9rem;
+            }
+
+            .sticky-cta-bar {
+                padding: 1rem 0.75rem;
+            }
+
+            body {
+                padding-bottom: 140px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cta-bar-primary {
+                width: 100%;
+                padding: 1rem;
+            }
+
+            body {
+                padding-bottom: 160px;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: white;
+            padding: 2.5rem 0;
+            border-top: 1px solid rgba(16, 185, 129, 0.1);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--brand-green);
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+
+        .footer-logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .footer-logo-title {
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        .footer-logo-subtitle {
+            font-size: 0.875rem;
+            color: #9CA3AF;
+        }
+
+        .footer-tagline {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            letter-spacing: -0.015em;
+        }
+
+        .footer-nav {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .footer-nav a {
+            color: #9CA3AF;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-nav a:hover {
+            color: white;
+        }
+
+        .footer-copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 0.75rem;
+            margin-top: 0.75rem;
+            text-align: center;
+        }
+
+        .footer-copyright p {
+            font-size: 0.875rem;
+            color: #9CA3AF;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <a href="index.html" class="logo">
+                <img src="assets/images/microgrid_logo.png" alt="MicroGrid" height="50">
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#join-movement">How It Works</a></li>
+                <li><a href="index.html#nem">California (NEM 3.0)</a></li>
+                <li><a href="index.html#impact">Results</a></li>
+                <li><a href="index.html#compat">Compatibility</a></li>
+                <li><a href="index.html#faq">FAQ</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+            <div class="header-buttons">
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
+                <a href="diy-registration-step1.html" class="cta-button hide-mobile">Start Free</a>
+                <a href="https://apps.apple.com/us/app/dgrid/id6747276150" class="cta-button-outline">Download App</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Registration Form Section -->
+    <section class="registration-form-section">
+        <div class="container">
+            <div class="form-container">
+                <!-- Progress Bar -->
+                <div class="progress-bar">
+                    <div class="progress-step completed">
+                        <div class="progress-step-circle">✓</div>
+                        <div class="progress-step-label">System Setup</div>
+                    </div>
+                    <div class="progress-step completed">
+                        <div class="progress-step-circle">✓</div>
+                        <div class="progress-step-label">Contact Info</div>
+                    </div>
+                    <div class="progress-step active">
+                        <div class="progress-step-circle">3</div>
+                        <div class="progress-step-label">Inverter Connection</div>
+                    </div>
+                </div>
+
+                <div class="section-header">
+                    <h2>Step 3 — Connect Your Inverter (Optional)</h2>
+                    <p>Maximize earnings with direct inverter connection</p>
+                </div>
+
+                <form id="step3Form" action="#" method="POST">
+                    
+                    <p style="color: #6b7280; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem; padding: 1rem; background: #f9fafb; border-radius: 8px; border-left: 4px solid #10B981;">
+                        <strong style="color: #059669;">🔒 Your System Security:</strong> We only request <strong>read-only access</strong> to view your system data. We will never control, modify, or operate your system without your explicit written consent. Your inverter web service credentials are encrypted and stored securely.
+                    </p>
+
+                    <!-- Strongly Recommended: Direct Connection -->
+                    <div style="background: #f0fdf4; border: 2px solid #10B981; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
+                        <div style="display: flex; align-items: start; gap: 0.75rem; margin-bottom: 1rem;">
+                            <span style="font-size: 1.5rem;">⚡</span>
+                            <div>
+                                <h3 style="font-size: 1.1rem; color: #059669; font-weight: 700; margin-bottom: 0.25rem;">⭐ Strongly Recommended: Direct Connection</h3>
+                                <p style="color: #047857; font-size: 0.95rem; line-height: 1.6; margin: 0 0 0.75rem 0;">
+                                    <strong>Get the most accurate earnings estimates and make it much easier to participate in VPP programs</strong> by connecting your inverter directly. With direct access, you can seamlessly join utility company scheduling events to earn extra money when available, plus get real-time data that maximizes your earning potential.
+                                </p>
+                                <p style="color: #065f46; font-size: 0.875rem; line-height: 1.6; margin: 0; padding: 0.75rem; background: rgba(16, 185, 129, 0.1); border-radius: 8px; border-left: 3px solid #10B981;">
+                                    <strong>ℹ️ About these credentials:</strong> Your installer should have created the inverter web service username and password during installation. <strong>These are different from your consumer app login.</strong>
+                                </p>
+                                <p style="color: #065f46; font-size: 0.875rem; line-height: 1.6; margin: 0.75rem 0 0 0; padding: 0.75rem; background: rgba(6, 182, 212, 0.1); border-radius: 8px; border-left: 3px solid #06B6D4;">
+                                    <strong>🤝 Don't have your inverter web service credentials?</strong> No worries! Even if you don't know your inverter web service username and password, we will contact you to help you collect this information from your installer. You can still register now!
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="inverterManufacturer">Inverter Brand <span id="inverterManufacturerRequired" style="display: none; color: #ef4444;">*</span></label>
+                            <select id="inverterManufacturer" name="inverterManufacturer">
+                                <option value="">Select your brand</option>
+                                <option value="Enphase">Enphase</option>
+                                <option value="SolarEdge">SolarEdge</option>
+                                <option value="Sol-Ark">Sol-Ark</option>
+                                <option value="EG4">EG4</option>
+                                <option value="Franklin">Franklin</option>
+                                <option value="Liniotech">Liniotech</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <small style="color: #047857; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Required only when providing both inverter web service username and password. (Clear both credential fields to skip this)</small>
+                        </div>
+
+                        <div class="form-group full-width" id="otherManufacturerGroup" style="display: none;">
+                            <label for="otherManufacturer">Please specify manufacturer *</label>
+                            <input type="text" id="otherManufacturer" name="otherManufacturer" placeholder="Enter manufacturer name">
+                            <small style="color: #047857; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Please provide the name of your inverter manufacturer</small>
+                        </div>
+
+                        <div class="form-group full-width" id="serialNumberGroup" style="display: none;">
+                            <label for="serialNumber">Inverter Serial Number *</label>
+                            <input type="text" id="serialNumber" name="serialNumber" placeholder="Enter inverter serial number">
+                            <small style="color: #047857; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Required for Franklin and EG4 inverters</small>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="installationDate">System Installation Date</label>
+                            <input type="date" id="installationDate" name="installationDate">
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="username">Inverter Web Service Username</label>
+                                <input type="text" id="username" name="username" placeholder="Enter inverter web service username">
+                                <small style="color: #047857; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Used only to read performance data. We never share or sell data.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Inverter Web Service Password</label>
+                                <input type="password" id="password" name="password" placeholder="Enter inverter web service password">
+                                <small style="color: #047857; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Encrypted in transit and at rest. You can change it later.</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="additionalNotes">Additional Notes</label>
+                        <textarea id="additionalNotes" name="additionalNotes" placeholder="Any additional information about your system or setup..."></textarea>
+                    </div>
+
+                    <div id="securityBadge" style="background: #f0fdf4; border: 2px solid #d1fae5; border-radius: 12px; padding: 1.5rem; margin: 2rem 0;">
+                        <p style="margin: 0; line-height: 1.8; color: #047857;">
+                            👍 Read-only data access<br>
+                            👍 No hardware changes<br>
+                            👍 Disconnect anytime in one click
+                        </p>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="vppParticipation" name="vppParticipation">
+                        <label for="vppParticipation">I want to participate in Virtual Power Plant programs and earn money from my battery</label>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="marketing" name="marketing">
+                        <label for="marketing">I would like to receive updates about MicroGrid products and VPP opportunities</label>
+                    </div>
+
+                    <p style="text-align: center; margin: 1.5rem 0 0.75rem 0; padding: 1rem; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border-radius: 12px; border: 2px solid #10B981;">
+                        <span style="display: block; color: #059669; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">✨ YOUR PROGRESS IS SAVED</span>
+                        <span style="display: block; color: #047857; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">We'll save your info when you click continue</span>
+                        <span style="display: block; color: #6b7280; font-size: 0.85rem;">You won't lose any data if you need to come back later</span>
+                    </p>
+
+                    <button type="button" class="back-btn" onclick="window.location.href='diy-registration-step2.html'">← Back to Step 2</button>
+                    <button type="submit" class="submit-btn" id="submitBtn">Complete Registration</button>
+                    
+                    <p style="text-align: center; margin-top: 1rem; color: #6b7280; font-size: 0.95rem;">💡 This step is optional. Skip if you don't want to connect your inverter.</p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="footer-logo-icon"></span>
+                    <div class="footer-logo-text">
+                        <div class="footer-logo-title">MicroVPP™</div>
+                        <div class="footer-logo-subtitle">by MicroGrid</div>
+                    </div>
+                </div>
+                <div class="footer-tagline">Smarter homes. Stronger grids.</div>
+                <nav class="footer-nav">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="privacy.html">Privacy</a>
+                    <a href="terms.html">Terms</a>
+                    <a href="mailto:info@microvpp.com">Contact</a>
+                </nav>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; 2025 MicroGrid LLC. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Sticky CTA Bar -->
+    <div class="sticky-cta-bar">
+        <div class="cta-bar-content">
+            <div class="cta-bar-text">Ready to activate your smart battery?</div>
+            <div class="cta-bar-buttons">
+                <a href="https://apps.apple.com/us/app/dgrid/id6747276150" class="cta-bar-primary">Download App</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log('Step 3 loaded - inverter connection page');
+        
+        // API Configuration
+        const API_BASE_URL = 'https://3dbhitxwoc.execute-api.us-east-2.amazonaws.com/dev';
+        const UPDATE_PROFILE_ENDPOINT = '/auth/update-profile';
+        
+        // Format phone number to E.164 format
+        function formatPhoneToE164(phone) {
+            if (!phone) return null;
+            const digits = phone.replace(/\D/g, '');
+            if (digits.length === 10) {
+                return '+1' + digits;
+            } else if (digits.length === 11 && digits.startsWith('1')) {
+                return '+' + digits;
+            } else if (phone.startsWith('+')) {
+                return phone;
+            }
+            return '+1' + digits;
+        }
+        
+        // Update user profile with inverter connection details
+        async function updateUserProfile(step3Data, step2Data, step1Data, userId) {
+            try {
+                // Determine inverter manufacturer
+                const inverterManufacturer = step3Data.inverterManufacturer === 'Other' && step3Data.otherManufacturer 
+                    ? step3Data.otherManufacturer 
+                    : step3Data.inverterManufacturer;
+                
+                // Build the info object
+                const info = {
+                    contact: {
+                        name: step2Data.fullName || null,
+                        email: step2Data.email || null,
+                        phone: step2Data.phone || null
+                    },
+                    location: {
+                        address: step2Data.address || null,
+                        city: step2Data.city || null,
+                        state: step2Data.state || null
+                    },
+                    system: {
+                        battery_capacity_kwh: step1Data.batteryCapacity ? parseFloat(step1Data.batteryCapacity) : null,
+                        pv_wattage_kw: step1Data.pvWattage ? parseFloat(step1Data.pvWattage) : null,
+                        installation_date: step3Data.installationDate || null,
+                        utility_company: step2Data.utilityCompany || null,
+                        serial_number: step3Data.serialNumber || null
+                    },
+                    registration: {
+                        mode: (step3Data.username && step3Data.password) ? 'direct_connection' : 'simulation',
+                        status: 'completed',
+                        vpp_participation: step3Data.vppParticipation || false,
+                        marketing_consent: step3Data.marketing || false,
+                        terms_accepted: step2Data.termsAccepted || false,
+                        terms_accepted_date: step2Data.termsAccepted ? (step2Data.timestamp || new Date().toISOString()) : null,
+                        registration_date: new Date().toISOString(),
+                        registration_source: 'diy-web-form-step3'
+                    },
+                    electricity_bills: {
+                        monthly_kwh_provided: step1Data.monthlyKwh && Object.keys(step1Data.monthlyKwh).length > 0,
+                        monthly_kwh: step1Data.monthlyKwh ? (() => {
+                            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
+                                               'July', 'August', 'September', 'October', 'November', 'December'];
+                            return monthNames.map(month => {
+                                const val = step1Data.monthlyKwh[`month${month}`];
+                                return val ? parseFloat(val) : null;
+                            });
+                        })() : null,
+                        daily_average_kwh_provided: step1Data.dailyAverageKwh && step1Data.dailyAverageKwh.trim() !== '',
+                        daily_average_kwh: step1Data.dailyAverageKwh ? parseFloat(step1Data.dailyAverageKwh) : null
+                    },
+                    notes: step3Data.additionalNotes || null
+                };
+                
+                const payload = {
+                    account_id: userId,
+                    entity_type: "inverter",
+                    username: step2Data.fullName || null,
+                    email: step2Data.email || null,
+                    phone_number: formatPhoneToE164(step2Data.phone),
+                    full_address: step2Data.address || null,
+                    city: step2Data.city || null,
+                    state: step2Data.state || null,
+                    zip: null,
+                    country: "US",
+                    inverter_manufacturer: inverterManufacturer || null,
+                    inverter_serial_number: step3Data.serialNumber || null,
+                    inverter_api_key: step3Data.username || null,
+                    inverter_api_secret: step3Data.password || null,
+                    info: JSON.stringify(info),
+                    site_type: "residential",
+                    installation_date: step3Data.installationDate || null,
+                };
+                
+                console.log('Updating user profile (Step 3):', payload);
+                
+                const response = await fetch(API_BASE_URL + UPDATE_PROFILE_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => null);
+                    throw new Error(errorData?.detail || `Profile update failed with status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                console.log('Profile updated successfully:', result);
+                return { success: true, result };
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                return { success: false, error: error.message };
+            }
+        }
+        
+        // Mobile menu
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+                this.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+            });
+
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('nav')) {
+                    navLinks.classList.remove('active');
+                    mobileMenuBtn.textContent = '☰';
+                }
+            });
+
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.classList.remove('active');
+                    mobileMenuBtn.textContent = '☰';
+                });
+            });
+        }
+
+        // Handle manufacturer-specific field visibility
+        document.addEventListener('DOMContentLoaded', function() {
+            const inverterManufacturerSelect = document.getElementById('inverterManufacturer');
+            if (inverterManufacturerSelect) {
+                inverterManufacturerSelect.addEventListener('change', function() {
+                    const manufacturer = this.value;
+                    const serialNumberGroup = document.getElementById('serialNumberGroup');
+                    const serialNumberInput = document.getElementById('serialNumber');
+                    const otherManufacturerGroup = document.getElementById('otherManufacturerGroup');
+                    const otherManufacturerInput = document.getElementById('otherManufacturer');
+                    
+                    if (manufacturer === 'Franklin' || manufacturer === 'EG4') {
+                        serialNumberGroup.style.display = 'block';
+                        serialNumberInput.required = true;
+                    } else {
+                        serialNumberGroup.style.display = 'none';
+                        serialNumberInput.required = false;
+                        serialNumberInput.value = '';
+                    }
+                    
+                    if (manufacturer === 'Other') {
+                        otherManufacturerGroup.style.display = 'block';
+                        otherManufacturerInput.required = true;
+                    } else {
+                        otherManufacturerGroup.style.display = 'none';
+                        otherManufacturerInput.required = false;
+                        otherManufacturerInput.value = '';
+                    }
+                });
+            }
+
+            // Check if previous steps are complete
+            const storedStep1Data = sessionStorage.getItem('registrationStep1');
+            const storedStep2Data = sessionStorage.getItem('registrationStep2');
+            
+            if (!storedStep1Data || !storedStep2Data) {
+                console.log('Missing previous step data, redirecting to Step 1');
+                window.location.href = 'diy-registration-step1.html';
+                return;
+            }
+
+            // Pre-fill step 3 form if data exists
+            const storedStep3Data = sessionStorage.getItem('registrationStep3');
+            if (storedStep3Data) {
+                try {
+                    const step3Data = JSON.parse(storedStep3Data);
+                    console.log('Pre-filling Step 3 form with saved data:', step3Data);
+                    
+                    if (step3Data.inverterManufacturer) {
+                        document.getElementById('inverterManufacturer').value = step3Data.inverterManufacturer;
+                        document.getElementById('inverterManufacturer').dispatchEvent(new Event('change'));
+                    }
+                    if (step3Data.otherManufacturer) document.getElementById('otherManufacturer').value = step3Data.otherManufacturer;
+                    if (step3Data.serialNumber) document.getElementById('serialNumber').value = step3Data.serialNumber;
+                    if (step3Data.installationDate) document.getElementById('installationDate').value = step3Data.installationDate;
+                    if (step3Data.username) document.getElementById('username').value = step3Data.username;
+                    if (step3Data.password) document.getElementById('password').value = step3Data.password;
+                    if (step3Data.additionalNotes) document.getElementById('additionalNotes').value = step3Data.additionalNotes;
+                    if (step3Data.vppParticipation) document.getElementById('vppParticipation').checked = true;
+                    if (step3Data.marketing) document.getElementById('marketing').checked = true;
+                } catch (error) {
+                    console.error('Error pre-filling Step 3 form:', error);
+                }
+            }
+        });
+
+        // Form submission - complete registration
+        document.getElementById('step3Form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            // Save step 3 data
+            const step3Data = {
+                inverterManufacturer: formData.get('inverterManufacturer') || null,
+                otherManufacturer: formData.get('otherManufacturer') || null,
+                serialNumber: formData.get('serialNumber') || null,
+                installationDate: formData.get('installationDate') || null,
+                username: formData.get('username') || null,
+                password: formData.get('password') || null,
+                additionalNotes: formData.get('additionalNotes') || null,
+                vppParticipation: formData.get('vppParticipation') === 'on',
+                marketing: formData.get('marketing') === 'on',
+                timestamp: new Date().toISOString()
+            };
+            
+            sessionStorage.setItem('registrationStep3', JSON.stringify(step3Data));
+            console.log('Step 3 (Inverter Connection) data saved to session:', step3Data);
+            
+            // Get previous step data
+            const storedStep1Data = sessionStorage.getItem('registrationStep1');
+            const storedStep2Data = sessionStorage.getItem('registrationStep2');
+            const userId = sessionStorage.getItem('registrationUserId');
+            
+            if (!storedStep1Data || !storedStep2Data || !userId) {
+                alert('⚠️ Missing registration data. Please start over from Step 1.');
+                window.location.href = 'diy-registration-step1.html';
+                return;
+            }
+            
+            const step1Data = JSON.parse(storedStep1Data);
+            const step2Data = JSON.parse(storedStep2Data);
+            
+            // Update profile with inverter connection details
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Completing registration...';
+            
+            const updateResult = await updateUserProfile(step3Data, step2Data, step1Data, userId);
+            
+            if (!updateResult.success) {
+                alert(
+                    '⚠️ Registration Issue\n\n' +
+                    'We encountered an issue completing your registration:\n' +
+                    updateResult.error + '\n\n' +
+                    'Your account was created in Step 2. Please contact support@microvpp.com to complete setup.'
+                );
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Complete Registration';
+                return;
+            }
+            
+            // Success! Clear session storage
+            sessionStorage.removeItem('registrationStep1');
+            sessionStorage.removeItem('registrationStep2');
+            sessionStorage.removeItem('registrationStep3');
+            sessionStorage.removeItem('registrationFiles');
+            sessionStorage.removeItem('registrationUserId');
+            
+            alert('🎉 Registration Complete!\n\nYour system has been registered successfully. You\'ll receive your personalized savings estimate soon!');
+            
+            // Redirect to home
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

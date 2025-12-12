@@ -181,8 +181,8 @@
             content: '';
             position: absolute;
             top: 20px;
-            left: 25%;
-            right: 25%;
+            left: 16.5%;
+            right: 16.5%;
             height: 3px;
             background: #e5e7eb;
             z-index: 0;
@@ -492,8 +492,8 @@
             }
 
             .progress-bar::before {
-                left: 20%;
-                right: 20%;
+                left: 12%;
+                right: 12%;
             }
         }
 
@@ -743,11 +743,15 @@
                         <div class="progress-step-circle">2</div>
                         <div class="progress-step-label">Contact Info</div>
                     </div>
+                    <div class="progress-step">
+                        <div class="progress-step-circle">3</div>
+                        <div class="progress-step-label">Inverter Connection</div>
+                    </div>
                 </div>
 
                 <div class="section-header">
                     <h2>Step 2 — Tell Us About Yourself</h2>
-                    <p>Connect your system to get personalized savings estimates</p>
+                    <p>Help us provide personalized savings estimates</p>
                 </div>
 
                 <form id="step1Form" action="#" method="POST">
@@ -810,97 +814,6 @@
                         </select>
                     </div>
 
-                    <!-- Strongly Recommended: Direct Connection -->
-                    <div style="background: #f0fdf4; border: 2px solid #10B981; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
-                        <div style="display: flex; align-items: start; gap: 0.75rem; margin-bottom: 1rem;">
-                            <span style="font-size: 1.5rem;">⚡</span>
-                            <div>
-                                <h3 style="font-size: 1.1rem; color: #059669; font-weight: 700; margin-bottom: 0.25rem;">⭐ Strongly Recommended: Direct Connection</h3>
-                                <p style="color: #047857; font-size: 0.95rem; line-height: 1.6; margin: 0 0 0.75rem 0;">
-                                    <strong>Get the most accurate earnings estimates and make it much easier to participate in VPP programs</strong> by connecting your inverter directly. With direct access, you can seamlessly join utility company scheduling events to earn extra money when available, plus get real-time data that maximizes your earning potential.
-                                </p>
-                                <p style="color: #065f46; font-size: 0.875rem; line-height: 1.6; margin: 0; padding: 0.75rem; background: rgba(16, 185, 129, 0.1); border-radius: 8px; border-left: 3px solid #10B981;">
-                                    <strong>ℹ️ About these credentials:</strong> Your installer should have created the inverter web service username and password during installation. <strong>These are different from your consumer app login.</strong>
-                                </p>
-                                <p style="color: #065f46; font-size: 0.875rem; line-height: 1.6; margin: 0.75rem 0 0 0; padding: 0.75rem; background: rgba(6, 182, 212, 0.1); border-radius: 8px; border-left: 3px solid #06B6D4;">
-                                    <strong>🤝 Don't have your inverter web service credentials?</strong> No worries! Even if you don't know your inverter web service username and password, we will contact you to help you collect this information from your installer. You can still register now!
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="form-group full-width">
-                            <label for="inverterManufacturer">Inverter Brand <span id="inverterManufacturerRequired" style="display: none; color: #ef4444;">*</span></label>
-                            <select id="inverterManufacturer" name="inverterManufacturer">
-                                <option value="">Select your brand</option>
-                                <option value="Enphase">Enphase</option>
-                                <option value="SolarEdge">SolarEdge</option>
-                                <option value="Sol-Ark">Sol-Ark</option>
-                                <option value="EG4">EG4</option>
-                                <option value="Franklin">Franklin</option>
-                                <option value="Liniotech">Liniotech</option>
-                                <option value="Other">Other</option>
-                            </select>
-                            <small style="color: #047857; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Required only when providing both inverter web service username and password. (Clear both credential fields to skip this)</small>
-                        </div>
-
-                        <div class="form-group full-width" id="otherManufacturerGroup" style="display: none;">
-                            <label for="otherManufacturer">Please specify manufacturer *</label>
-                            <input type="text" id="otherManufacturer" name="otherManufacturer" placeholder="Enter manufacturer name">
-                            <small style="color: #047857; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Please provide the name of your inverter manufacturer</small>
-                        </div>
-
-                        <div class="form-group full-width" id="serialNumberGroup" style="display: none;">
-                            <label for="serialNumber">Inverter Serial Number *</label>
-                            <input type="text" id="serialNumber" name="serialNumber" placeholder="Enter inverter serial number">
-                            <small style="color: #047857; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Required for Franklin and EG4 inverters</small>
-                        </div>
-
-                        <div class="form-group full-width">
-                            <label for="installationDate">System Installation Date</label>
-                            <input type="date" id="installationDate" name="installationDate">
-                        </div>
-
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="username">Inverter Web Service Username</label>
-                                <input type="text" id="username" name="username" placeholder="Enter inverter web service username">
-                                <small style="color: #047857; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Used only to read performance data. We never share or sell data.</small>
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Inverter Web Service Password</label>
-                                <input type="password" id="password" name="password" placeholder="Enter inverter web service password">
-                                <small style="color: #047857; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Encrypted in transit and at rest. You can change it later.</small>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group full-width">
-                        <label for="additionalNotes">Additional Notes</label>
-                        <textarea id="additionalNotes" name="additionalNotes" placeholder="Any additional information about your system or setup..."></textarea>
-                    </div>
-
-                    <div id="securityBadge" style="background: #f0fdf4; border: 2px solid #d1fae5; border-radius: 12px; padding: 1.5rem; margin: 2rem 0;">
-                        <p style="margin: 0; line-height: 1.8; color: #047857;">
-                            👍 Read-only data access<br>
-                            👍 No hardware changes<br>
-                            👍 Disconnect anytime in one click
-                        </p>
-                    </div>
-
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="vppParticipation" name="vppParticipation">
-                        <label for="vppParticipation">I want to participate in Virtual Power Plant programs and earn money from my battery</label>
-                    </div>
-
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="marketing" name="marketing">
-                        <label for="marketing">I would like to receive updates about MicroGrid products and VPP opportunities</label>
-                    </div>
-
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="terms" name="terms">
-                        <label for="terms">I agree to the <a href="terms.html" style="color: #059669;">Terms of Service</a> and <a href="privacy.html" style="color: #059669;">Privacy Policy</a></label>
-                    </div>
 
                     <p style="text-align: center; margin: 1.5rem 0 0.75rem 0; padding: 1rem; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border-radius: 12px; border: 2px solid #10B981;">
                         <span style="display: block; color: #059669; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">✨ YOUR PROGRESS IS SAVED</span>
@@ -908,15 +821,26 @@
                         <span style="display: block; color: #6b7280; font-size: 0.85rem;">You won't lose any data if you need to come back later</span>
                     </p>
 
+                    <!-- Terms and Privacy Agreement (REQUIRED) -->
+                    <div class="form-group full-width" style="margin-top: 2rem; padding: 1.5rem; background: #f9fafb; border-radius: 8px; border: 2px solid #e5e7eb;">
+                        <label style="display: flex; align-items: flex-start; cursor: pointer; margin: 0;">
+                            <input type="checkbox" id="termsAccepted" name="termsAccepted" required style="margin-right: 12px; margin-top: 4px; width: 18px; height: 18px; cursor: pointer;">
+                            <span style="flex: 1; color: #374151; font-size: 0.95rem; line-height: 1.6;">
+                                <strong style="color: #059669;">I agree to the Terms of Service and Privacy Policy</strong>
+                                <span style="display: block; margin-top: 0.5rem; color: #6b7280; font-size: 0.875rem;">
+                                    By checking this box, you agree to our 
+                                    <a href="terms.html" target="_blank" style="color: #059669; text-decoration: underline;">Terms of Service</a> and 
+                                    <a href="privacy.html" target="_blank" style="color: #059669; text-decoration: underline;">Privacy Policy</a>. 
+                                    We only request read-only access to your system data and will never sell your personal information.
+                                </span>
+                            </span>
+                        </label>
+                    </div>
+
                     <button type="button" class="back-btn" onclick="window.location.href='diy-registration-step1.html'">← Back to Step 1</button>
-                    <button type="submit" class="submit-btn" id="submitBtn">Complete Registration</button>
+                    <button type="submit" class="submit-btn" id="submitBtn">Continue to Step 3 →</button>
                     
                     <p style="text-align: center; margin-top: 1rem; color: #6b7280; font-size: 0.95rem;">💡 You can skip this step if you prefer. Your system setup is already saved.</p>
-
-                    <small style="display: block; text-align: center; margin-top: 1.5rem; color: #6b7280; font-size: 0.875rem; line-height: 1.6;">
-                        By continuing you agree to our <a href="privacy.html" style="color: #059669;">Privacy Policy</a>.  
-                        We only read system data to generate savings; we never sell personal data.
-                    </small>
                 </form>
             </div>
         </div>
@@ -1098,7 +1022,7 @@
                 });
             });
         });
-
+        
         // ============================================
         // API CONFIGURATION
         // ============================================
@@ -1106,7 +1030,6 @@
         const API_BASE_URL = 'https://3dbhitxwoc.execute-api.us-east-2.amazonaws.com/dev';
         const SIGNUP_ENDPOINT = '/auth/signup';
         const UPDATE_PROFILE_ENDPOINT = '/auth/update-profile';
-        const UPLOAD_BILLS_ENDPOINT = '/admin/upload-utility-bills';
         
         // Format phone number to E.164 format
         function formatPhoneToE164(phone) {
@@ -1132,139 +1055,25 @@
             return 'INV-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
         }
         
-        // ============================================
-        // HANDLE MANUFACTURER-SPECIFIC FIELD VISIBILITY
-        // ============================================
-        
-        // Handle manufacturer-specific field visibility
-        document.addEventListener('DOMContentLoaded', function() {
-            const inverterManufacturerSelect = document.getElementById('inverterManufacturer');
-            if (inverterManufacturerSelect) {
-                inverterManufacturerSelect.addEventListener('change', function() {
-                    const manufacturer = this.value;
-                    const serialNumberGroup = document.getElementById('serialNumberGroup');
-                    const serialNumberInput = document.getElementById('serialNumber');
-                    const otherManufacturerGroup = document.getElementById('otherManufacturerGroup');
-                    const otherManufacturerInput = document.getElementById('otherManufacturer');
-                    
-                    // Show serial number field for Franklin and EG4
-                    if (manufacturer === 'Franklin' || manufacturer === 'EG4') {
-                        serialNumberGroup.style.display = 'block';
-                        serialNumberInput.required = true;
-                    } else {
-                        serialNumberGroup.style.display = 'none';
-                        serialNumberInput.required = false;
-                        serialNumberInput.value = '';
-                    }
-                    
-                    // Show other manufacturer field when "Other" is selected
-                    if (manufacturer === 'Other') {
-                        otherManufacturerGroup.style.display = 'block';
-                        otherManufacturerInput.required = true;
-                    } else {
-                        otherManufacturerGroup.style.display = 'none';
-                        otherManufacturerInput.required = false;
-                        otherManufacturerInput.value = '';
-                    }
-                });
-            }
-        });
-        
-        // ============================================
-        // PRE-FILL FORM FROM SESSION STORAGE
-        // ============================================
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if Step 1 (system setup) data exists
-            const storedStep1Data = sessionStorage.getItem('registrationStep1');
-            if (!storedStep1Data) {
-                // No Step 1 data - redirect to Step 1
-                console.log('No Step 1 data found, redirecting to Step 1');
-                window.location.href = 'diy-registration-step1.html';
-                return;
-            }
-            
-            // Load files from Step 1 if available (includes utility bills and usage chart screenshot)
-            const storedFiles = sessionStorage.getItem('registrationFiles');
-            if (storedFiles) {
-                try {
-                    const filesData = JSON.parse(storedFiles);
-                    if (Array.isArray(filesData) && filesData.length > 0) {
-                        // Convert dataURLs back to File objects
-                        Promise.all(filesData.map(fileData => {
-                            return fetch(fileData.dataURL)
-                                .then(res => res.blob())
-                                .then(blob => new File([blob], fileData.name, { type: fileData.type }));
-                        })).then(files => {
-                            // All files (bills + usage chart) are restored together
-                            uploadedFiles = files;
-                            console.log(`Restored ${uploadedFiles.length} file(s) from Step 1 (includes utility bills and usage chart if provided)`);
-                        }).catch(error => {
-                            console.error('Error restoring files:', error);
-                        });
-                    } else if (filesData.needsReupload) {
-                        console.log('Files need to be re-uploaded');
-                    }
-                } catch (error) {
-                    console.error('Error loading files from Step 1:', error);
-                }
-            }
-            
-            // Pre-fill fields from Step 1 that are now in Step 2
-            if (storedStep1Data) {
-                try {
-                    const step1Data = JSON.parse(storedStep1Data);
-                    
-                    // Pre-fill inverter fields
-                    if (step1Data.inverterManufacturer) {
-                        document.getElementById('inverterManufacturer').value = step1Data.inverterManufacturer;
-                        // Trigger change event to show conditional fields
-                        document.getElementById('inverterManufacturer').dispatchEvent(new Event('change'));
-                    }
-                    if (step1Data.otherManufacturer) document.getElementById('otherManufacturer').value = step1Data.otherManufacturer;
-                    if (step1Data.serialNumber) document.getElementById('serialNumber').value = step1Data.serialNumber;
-                    if (step1Data.installationDate) document.getElementById('installationDate').value = step1Data.installationDate;
-                    if (step1Data.username) document.getElementById('username').value = step1Data.username;
-                    if (step1Data.password) document.getElementById('password').value = step1Data.password;
-                    if (step1Data.additionalNotes) document.getElementById('additionalNotes').value = step1Data.additionalNotes;
-                    if (step1Data.vppParticipation) document.getElementById('vppParticipation').checked = true;
-                    if (step1Data.marketing) document.getElementById('marketing').checked = true;
-                } catch (error) {
-                    console.error('Error pre-filling Step 1 fields in Step 2:', error);
-                }
-            }
-            
-            // Check if user is returning from a later step or has saved Step 2 (contact info) data
-            const storedStep2Data = sessionStorage.getItem('registrationStep2');
-            if (storedStep2Data) {
-                try {
-                    const step2Data = JSON.parse(storedStep2Data);
-                    console.log('Pre-filling Step 2 form with saved data:', step2Data);
-                    
-                    // Pre-fill form fields
-                    if (step2Data.fullName) document.getElementById('fullName').value = step2Data.fullName;
-                    if (step2Data.email) document.getElementById('email').value = step2Data.email;
-                    if (step2Data.phone) document.getElementById('phone').value = step2Data.phone;
-                    if (step2Data.address) document.getElementById('address').value = step2Data.address;
-                    if (step2Data.city) document.getElementById('city').value = step2Data.city;
-                    if (step2Data.state) document.getElementById('state').value = step2Data.state;
-                    if (step2Data.utilityCompany) document.getElementById('utilityCompany').value = step2Data.utilityCompany;
-                    if (step2Data.termsAccepted) document.getElementById('terms').checked = true;
-                } catch (error) {
-                    console.error('Error pre-filling Step 2 form:', error);
-                }
-            }
-        });
-        
-        // Sign up new user (Step 2 - combines Step 1 system setup and Step 2 contact info)
-        async function signupUser(step2Data, filesData, step1Data) {
+        // Sign up new user (using Step 1 and Step 2 data)
+        async function signupUser(step2Data, step1Data) {
             try {
-                // Convert uploaded files data to info format
-                const fileInfo = filesData.map(file => ({
-                    name: file.name,
-                    size: file.size,
-                    type: file.type
-                }));
+                // Get files data from session storage (uploaded in step 1)
+                let filesInfo = [];
+                try {
+                    const storedFiles = sessionStorage.getItem('registrationFiles');
+                    if (storedFiles) {
+                        const filesData = JSON.parse(storedFiles);
+                        // Handle both old and new format
+                        if (filesData.uploaded && Array.isArray(filesData.files)) {
+                            filesInfo = filesData.files;
+                        } else if (Array.isArray(filesData)) {
+                            filesInfo = filesData;
+                        }
+                    }
+                } catch (e) {
+                    console.warn('Could not load files data:', e);
+                }
                 
                 // Build the info object combining Step 1 (system setup) and Step 2 (contact info)
                 const info = {
@@ -1281,23 +1090,20 @@
                     system: {
                         battery_capacity_kwh: step1Data.batteryCapacity ? parseFloat(step1Data.batteryCapacity) : null,
                         pv_wattage_kw: step1Data.pvWattage ? parseFloat(step1Data.pvWattage) : null,
-                        installation_date: step2Data.installationDate || null,
-                        utility_company: step2Data.utilityCompany || null,
-                        serial_number: step2Data.serialNumber || null
+                        utility_company: step2Data.utilityCompany || null
                     },
                     registration: {
-                        mode: (step2Data.username && step2Data.password) ? 'direct_connection' : 'simulation',
+                        mode: 'simulation', // Will be updated in step 3 if inverter is connected
                         status: 'step2_completed',
-                        vpp_participation: step2Data.vppParticipation || false,
-                        marketing_consent: step2Data.marketing || false,
-                        terms_accepted: step2Data.termsAccepted || false,
                         registration_date: new Date().toISOString(),
                         registration_source: 'diy-web-form-step2',
-                        temp_user_id: step1Data.tempUserId || null
+                        temp_user_id: step1Data.tempUserId || null,
+                        terms_accepted: step2Data.termsAccepted || false,
+                        terms_accepted_date: step2Data.termsAccepted ? new Date().toISOString() : null
                     },
                     electricity_bills: {
-                        uploaded_count: fileInfo.length,
-                        files: fileInfo,
+                        uploaded_count: filesInfo.length,
+                        files: filesInfo,
                         monthly_kwh_provided: step1Data.monthlyKwh && Object.keys(step1Data.monthlyKwh).length > 0,
                         monthly_kwh: step1Data.monthlyKwh ? (() => {
                             const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
@@ -1316,14 +1122,8 @@
                         monthly_kwh: step1Data.monthlyKwh || null,
                         daily_average_kwh: step1Data.dailyAverageKwh || null,
                         temp_user_id: step1Data.tempUserId || null
-                    },
-                    notes: step2Data.additionalNotes || null
+                    }
                 };
-                
-                // Determine inverter manufacturer
-                const inverterManufacturer = step2Data.inverterManufacturer === 'Other' && step2Data.otherManufacturer 
-                    ? step2Data.otherManufacturer 
-                    : step2Data.inverterManufacturer;
                 
                 // Build the API payload for signup
                 const payload = {
@@ -1342,17 +1142,17 @@
                     locale: "en-US",
                     inverter_inverter_id: generateInverterId(),
                     inverter_inverter_type: "hybrid_inverter",
-                    inverter_manufacturer: inverterManufacturer || null,
-                    inverter_serial_number: step2Data.serialNumber || null,
+                    inverter_manufacturer: null,
+                    inverter_serial_number: null,
                     inverter_monitoring_id: null,
                     inverter_monitoring_token: null,
                     inverter_monitoring_url: null,
-                    inverter_api_key: step2Data.username || null,
-                    inverter_api_secret: step2Data.password || null,
+                    inverter_api_key: null,
+                    inverter_api_secret: null,
                     info: JSON.stringify(info),
                     site_id: null,
                     site_type: "residential",
-                    installation_date: step2Data.installationDate || null,
+                    installation_date: null,
                 };
                 
                 console.log('Signing up user (Step 2 - combining Step 1 and Step 2):', payload);
@@ -1389,6 +1189,42 @@
             }
         }
         
+        // ============================================
+        // PRE-FILL FORM FROM SESSION STORAGE
+        // ============================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if Step 1 (system setup) data exists
+            const storedStep1Data = sessionStorage.getItem('registrationStep1');
+            if (!storedStep1Data) {
+                // No Step 1 data - redirect to Step 1
+                console.log('No Step 1 data found, redirecting to Step 1');
+                window.location.href = 'diy-registration-step1.html';
+                return;
+            }
+            
+            // Check if user is returning from a later step or has saved Step 2 (contact info) data
+            const storedStep2Data = sessionStorage.getItem('registrationStep2');
+            if (storedStep2Data) {
+                try {
+                    const step2Data = JSON.parse(storedStep2Data);
+                    console.log('Pre-filling Step 2 form with saved data:', step2Data);
+                    
+                    // Pre-fill form fields
+                    if (step2Data.fullName) document.getElementById('fullName').value = step2Data.fullName;
+                    if (step2Data.email) document.getElementById('email').value = step2Data.email;
+                    if (step2Data.phone) document.getElementById('phone').value = step2Data.phone;
+                    if (step2Data.address) document.getElementById('address').value = step2Data.address;
+                    if (step2Data.city) document.getElementById('city').value = step2Data.city;
+                    if (step2Data.state) document.getElementById('state').value = step2Data.state;
+                    if (step2Data.utilityCompany) document.getElementById('utilityCompany').value = step2Data.utilityCompany;
+                    if (step2Data.termsAccepted) document.getElementById('termsAccepted').checked = step2Data.termsAccepted;
+                } catch (error) {
+                    console.error('Error pre-filling Step 2 form:', error);
+                }
+            }
+        });
+        
         // Update existing user profile (Step 2 - when returning from later steps)
         async function updateProfileStep1(step2Data, filesData, step1Data) {
             try {
@@ -1397,12 +1233,12 @@
                     throw new Error('No user_id found for profile update.');
                 }
                 
-                // Convert uploaded files data to info format
-                const fileInfo = filesData.map(file => ({
+                // Convert uploaded files data to info format - handle null/undefined
+                const fileInfo = Array.isArray(filesData) ? filesData.map(file => ({
                     name: file.name,
                     size: file.size,
                     type: file.type
-                }));
+                })) : [];
                 
                 // Build the info object combining Step 1 (system setup) and Step 2 (contact info)
                 const info = {
@@ -1788,10 +1624,22 @@
         document.getElementById('step1Form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            // REQUIRED: Check if user has agreed to Terms and Privacy Policy
+            const termsCheckbox = document.getElementById('termsAccepted');
+            if (!termsCheckbox.checked) {
+                alert(
+                    '⚠️ Terms and Privacy Policy Required\n\n' +
+                    'You must agree to our Terms of Service and Privacy Policy to continue.\n\n' +
+                    'Please check the box above to proceed with registration.'
+                );
+                termsCheckbox.focus();
+                termsCheckbox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+            
             const formData = new FormData(this);
             
-            // Prepare data to save (Step 2 - Contact Info + Inverter Connection)
-            // Note: All fields are optional now
+            // Prepare data to save (Step 2 - Contact Info only)
             const step2Data = {
                 fullName: formData.get('fullName') || null,
                 email: formData.get('email') || null,
@@ -1800,22 +1648,17 @@
                 city: formData.get('city') || null,
                 state: formData.get('state') || null,
                 utilityCompany: formData.get('utilityCompany') || null,
-                // Inverter connection fields (moved from step 1)
-                inverterManufacturer: formData.get('inverterManufacturer') || null,
-                otherManufacturer: formData.get('otherManufacturer') || null,
-                serialNumber: formData.get('serialNumber') || null,
-                installationDate: formData.get('installationDate') || null,
-                username: formData.get('username') || null,
-                password: formData.get('password') || null,
-                additionalNotes: formData.get('additionalNotes') || null,
-                vppParticipation: formData.get('vppParticipation') === 'on',
-                marketing: formData.get('marketing') === 'on',
-                termsAccepted: formData.get('terms') === 'on',
+                termsAccepted: termsCheckbox.checked,
                 timestamp: new Date().toISOString()
             };
             
-            // Save to session storage (Step 2 - Contact Info + Inverter Connection)
+            // Save to session storage
             sessionStorage.setItem('registrationStep2', JSON.stringify(step2Data));
+            
+            // Track step 2 completion
+            FormTracker.trackStep1Complete();
+            
+            console.log('Step 2 (Contact Info) data saved to session:', step2Data);
             
             // Load Step 1 (System Setup) data
             const storedStep1Data = sessionStorage.getItem('registrationStep1');
@@ -1835,195 +1678,38 @@
                 return;
             }
             
-            // Prepare file metadata (without dataURL to avoid sessionStorage quota issues)
-            const filesData = uploadedFiles.map(file => ({
-                name: file.name,
-                size: file.size,
-                type: file.type
-            }));
-            
-            // Track step 2 completion
-            FormTracker.trackStep1Complete();
-            
-            console.log('Step 2 (Contact Info) data saved to session:', step2Data);
-            console.log('Step 1 (System Setup) data loaded:', step1Data);
-            
-            // Check if user_id exists to determine if we should signup or update profile
+            // Check if user already exists (returning from step 3)
             const existingUserId = sessionStorage.getItem('registrationUserId');
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
             
-            let apiResult;
-            
-            if (existingUserId) {
-                // User is returning from a later step - update existing profile
-                console.log('User ID found - updating existing profile');
-                submitBtn.textContent = 'Updating your information...';
-                apiResult = await updateProfileStep1(step2Data, filesData, step1Data);
-            } else {
+            if (!existingUserId) {
                 // New user - create account
-                console.log('No User ID found - creating new account');
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.disabled = true;
                 submitBtn.textContent = 'Creating your account...';
-                apiResult = await signupUser(step2Data, filesData, step1Data);
-            }
-            
-            if (!apiResult.success) {
-                // Show error but allow user to continue (data is in sessionStorage)
-                const actionText = existingUserId ? 'updating your profile' : 'creating your account';
-                alert(
-                    '⚠️ Account ' + (existingUserId ? 'Update' : 'Creation') + ' Issue\n\n' +
-                    'We encountered an issue ' + actionText + ':\n' +
-                    apiResult.error + '\n\n' +
-                    'You can continue, but please contact support@microvpp.com if this persists.'
-                );
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Complete Registration';
-                return;
-            }
-            
-            // Upload files directly to server (one by one if total > 5MB)
-            const userId = apiResult.result?.user_id || existingUserId;
-            if (uploadedFiles.length > 0 && userId) {
-                const totalFileSize = uploadedFiles.reduce((sum, f) => sum + f.size, 0);
-                const totalFileSizeMB = (totalFileSize / 1024 / 1024).toFixed(1);
                 
-                // Inform user about large upload
-                if (totalFileSize > 5 * 1024 * 1024) {
-                    console.log(`Large upload detected (${totalFileSizeMB}MB), will upload files one by one`);
-                }
+                console.log('No User ID found - creating new account');
+                const apiResult = await signupUser(step2Data, step1Data);
                 
-                submitBtn.textContent = 'Uploading utility bills...';
-                
-                // Progress callback to update button text
-                const onProgress = (batchIndex, totalBatches, filesUploaded, totalFiles) => {
-                    const percent = Math.round((filesUploaded / totalFiles) * 100);
-                    submitBtn.textContent = `Uploading utility bills (${percent}%)...`;
-                };
-                
-                const uploadResult = await uploadUtilityBills(userId, uploadedFiles, onProgress);
-                
-                if (uploadResult.success) {
-                    // All files uploaded successfully
-                    sessionStorage.setItem('registrationFiles', JSON.stringify({
-                        uploaded: true,
-                        files: filesData
-                    }));
-                    console.log(`All ${uploadedFiles.length} files uploaded successfully`);
-                } else if (uploadResult.partial) {
-                    // Some files uploaded, some failed
-                    console.warn(`Partial upload: ${uploadResult.uploadedFiles.length} succeeded, ${uploadResult.failedFiles.length} failed`);
-                    
-                    // Store info about uploaded files
-                    const uploadedFilesData = uploadResult.uploadedFiles.map(f => ({
-                        name: f.name, size: f.size, type: f.type
-                    }));
-                    
-                    // Try to store failed files as dataURLs for step 2
-                    const failedFilesSize = uploadResult.failedFiles.reduce((sum, f) => sum + f.size, 0);
-                    const maxStorageSize = 4 * 1024 * 1024; // 4MB limit
-                    
-                    if (failedFilesSize < maxStorageSize) {
-                        try {
-                            submitBtn.textContent = 'Preparing remaining files...';
-                            const failedFilesWithData = [];
-                            for (const file of uploadResult.failedFiles) {
-                                const dataURL = await new Promise((resolve) => {
-                                    const reader = new FileReader();
-                                    reader.onload = (e) => resolve(e.target.result);
-                                    reader.readAsDataURL(file);
-                                });
-                                failedFilesWithData.push({
-                                    name: file.name, size: file.size, type: file.type, dataURL
-                                });
-                            }
-                            sessionStorage.setItem('registrationFiles', JSON.stringify({
-                                uploaded: 'partial',
-                                uploadedFiles: uploadedFilesData,
-                                pendingFiles: failedFilesWithData
-                            }));
-                        } catch (e) {
-                            sessionStorage.setItem('registrationFiles', JSON.stringify({
-                                uploaded: 'partial',
-                                uploadedFiles: uploadedFilesData,
-                                needsReupload: true,
-                                failedFileNames: uploadResult.failedFiles.map(f => f.name)
-                            }));
-                            const errorDetails = uploadResult.errors?.length > 0 
-                                ? `\n\nErrors:\n${uploadResult.errors.slice(0, 3).join('\n')}${uploadResult.errors.length > 3 ? '\n...' : ''}`
-                                : '';
-                            alert(`⚠️ ${uploadResult.uploadedFiles.length} files uploaded.\n\n${uploadResult.failedFiles.length} files failed to upload.${errorDetails}\n\nPlease re-select them in Step 2.`);
-                        }
-                    } else {
-                        sessionStorage.setItem('registrationFiles', JSON.stringify({
-                            uploaded: 'partial',
-                            uploadedFiles: uploadedFilesData,
-                            needsReupload: true,
-                            failedFileNames: uploadResult.failedFiles.map(f => f.name)
-                        }));
-                        const errorDetails = uploadResult.errors?.length > 0 
-                            ? `\n\nErrors:\n${uploadResult.errors.slice(0, 3).join('\n')}${uploadResult.errors.length > 3 ? '\n...' : ''}`
-                            : '';
-                        alert(`⚠️ ${uploadResult.uploadedFiles.length} files uploaded.\n\n${uploadResult.failedFiles.length} files failed to upload.${errorDetails}\n\nPlease re-select them in Step 2.`);
-                    }
+                if (!apiResult.success) {
+                    // Show error but allow user to continue (data is in sessionStorage)
+                    alert(
+                        '⚠️ Account Creation Issue\n\n' +
+                        'We encountered an issue creating your account:\n' +
+                        apiResult.error + '\n\n' +
+                        'You can continue to Step 3, and we\'ll try again. If this persists, please contact support@microvpp.com.'
+                    );
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Continue to Step 3 →';
+                    // Still allow navigation to step 3
                 } else {
-                    // All files failed to upload
-                    console.warn('All file uploads failed:', uploadResult.error);
-                    
-                    // Try to store files as dataURLs for step 2 (with size limit check)
-                    const totalSize = uploadedFiles.reduce((sum, f) => sum + f.size, 0);
-                    const maxStorageSize = 4 * 1024 * 1024; // 4MB limit for safety
-                    
-                    if (totalSize < maxStorageSize) {
-                        try {
-                            submitBtn.textContent = 'Preparing files for next step...';
-                            const filesWithData = [];
-                            for (const file of uploadedFiles) {
-                                const dataURL = await new Promise((resolve) => {
-                                    const reader = new FileReader();
-                                    reader.onload = (e) => resolve(e.target.result);
-                                    reader.readAsDataURL(file);
-                                });
-                                filesWithData.push({
-                                    name: file.name, size: file.size, type: file.type, dataURL
-                                });
-                            }
-                            sessionStorage.setItem('registrationFiles', JSON.stringify({
-                                uploaded: false,
-                                files: filesWithData
-                            }));
-                            console.log('Files stored for upload in Step 2');
-                        } catch (storageError) {
-                            console.warn('Could not store files:', storageError);
-                            sessionStorage.setItem('registrationFiles', JSON.stringify({
-                                uploaded: false,
-                                needsReupload: true,
-                                files: filesData
-                            }));
-                            alert('⚠️ File Upload Notice\n\nWe couldn\'t upload your utility bills yet. Please re-select them in the next step.');
-                        }
-                    } else {
-                        // Files too large to store - user needs to re-select in step 2
-                        sessionStorage.setItem('registrationFiles', JSON.stringify({
-                            uploaded: false,
-                            needsReupload: true,
-                            files: filesData
-                        }));
-                        alert('⚠️ File Upload Notice\n\nYour utility bills are too large to transfer between steps. Please re-select them in Step 2.');
-                    }
+                    console.log('Signup successful!');
                 }
+            } else {
+                console.log('User already exists (ID: ' + existingUserId + '), skipping signup');
             }
             
-            // Registration complete - clear session storage and redirect
-            console.log('Registration complete!');
-            sessionStorage.removeItem('registrationStep1');
-            sessionStorage.removeItem('registrationStep2');
-            sessionStorage.removeItem('registrationFiles');
-            
-            // Show success message
-            alert('🎉 Registration Complete!\n\nYour system has been registered successfully. You\'ll receive your personalized savings estimate soon!');
-            
-            // Redirect to home
-            window.location.href = 'index.html';
+            // Navigate to step 3
+            window.location.href = 'diy-registration-step3.html';
         });
     </script>
 </body>
