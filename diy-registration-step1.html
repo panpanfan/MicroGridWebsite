@@ -422,21 +422,6 @@
             transform: scale(1.1);
         }
 
-        /* Usage Input Tabs */
-        .usage-tab {
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .usage-tab:hover {
-            color: #059669 !important;
-        }
-
-        .usage-tab.active {
-            color: #059669 !important;
-            border-bottom-color: #10B981 !important;
-        }
-
         /* Mobile Menu Button */
         .mobile-menu-btn {
             display: none;
@@ -684,23 +669,56 @@
                         <div style="display: flex; align-items: start; gap: 0.75rem;">
                             <span style="font-size: 1.5rem;">💡</span>
                             <div style="flex: 1;">
-                                <h3 style="font-size: 1.1rem; color: #374151; font-weight: 700; margin-bottom: 0.5rem;">Provide Your Energy Usage (Optional)</h3>
+                                <h3 style="font-size: 1.1rem; color: #374151; font-weight: 700; margin-bottom: 0.5rem;">Provide Your Energy Usage</h3>
                                 <p style="color: #4b5563; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
-                                    <strong>Help us estimate your savings faster!</strong> Either upload your recent utility bills or manually enter your monthly kWh usage for the past 12 months.
+                                    <strong>Help us estimate your savings faster!</strong> Either upload your recent utility bills or manually enter your daily average kWh usage.
                                 </p>
                                 
-                                <!-- Toggle between Upload and Manual Entry -->
-                                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 2px solid #e5e7eb;">
-                                    <button type="button" id="uploadTabBtn" class="usage-tab active" style="padding: 0.75rem 1.5rem; background: transparent; border: none; border-bottom: 3px solid #10B981; color: #059669; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
-                                        📄 Upload Bills
-                                    </button>
-                                    <button type="button" id="manualTabBtn" class="usage-tab" style="padding: 0.75rem 1.5rem; background: transparent; border: none; border-bottom: 3px solid transparent; color: #6b7280; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
-                                        ⌨️ Enter Monthly kWh
-                                    </button>
+                                <!-- Toggle between Usage Input Methods -->
+                                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; padding: 1rem; background: #f9fafb; border-radius: 8px; flex-wrap: wrap;">
+                                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; flex: 1; min-width: 250px;">
+                                        <input type="radio" name="usageInputMethod" id="dailyAverageRadio" value="dailyAverage" checked style="width: 18px; height: 18px; cursor: pointer; accent-color: #10B981;">
+                                        <span style="font-weight: 600; color: #374151; font-size: 1rem;">📊 Daily Average kWh (Most Recent Year)</span>
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; flex: 1; min-width: 250px;">
+                                        <input type="radio" name="usageInputMethod" id="manualRadio" value="manual" style="width: 18px; height: 18px; cursor: pointer; accent-color: #10B981;">
+                                        <span style="font-weight: 600; color: #374151; font-size: 1rem;">⌨️ Daily Average kWh (Last 12 Months)</span>
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; flex: 1; min-width: 250px;">
+                                        <input type="radio" name="usageInputMethod" id="uploadRadio" value="upload" style="width: 18px; height: 18px; cursor: pointer; accent-color: #10B981;">
+                                        <span style="font-weight: 600; color: #374151; font-size: 1rem;">📄 Upload Bills</span>
+                                    </label>
                                 </div>
                                 
+                                <!-- Daily Average Section (Most Recent Year) -->
+                                <div id="dailyAverageSection" class="usage-section">
+                                    <p style="color: #4b5563; font-size: 0.9rem; margin-bottom: 1rem;">
+                                        Provide your daily average electricity usage (kWh) for the most recent year. This is the quickest option.
+                                    </p>
+                                    
+                                    <!-- Daily Average Input -->
+                                    <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem;">
+                                        <div style="max-width: 400px;">
+                                            <label for="dailyAverageKwh" style="display: block; font-weight: 600; color: #374151; font-size: 1rem; margin-bottom: 0.5rem;">
+                                                Daily Average (kWh) - Most Recent Year
+                                            </label>
+                                            <input type="number" id="dailyAverageKwh" name="dailyAverageKwh" placeholder="e.g., 24.10" step="0.01" min="0" style="width: 100%; padding: 0.75rem; font-size: 1rem; border: 2px solid #e5e7eb; border-radius: 8px;">
+                                            <small style="color: #6b7280; font-size: 0.875rem; display: block; margin-top: 0.5rem;">
+                                                Look for "This year:" in the daily average section of your utility bill
+                                            </small>
+                                        </div>
+                                    </div>
+                                    
+                    <!-- Helper Note for Users Who Don't Know -->
+                    <div style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 1rem; margin-top: 1rem;">
+                        <p style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin: 0;">
+                            <strong>💡 Don't know where to find your daily average kWh for the most recent year?</strong> Select the <strong>"Daily Average kWh (Last 12 Months)"</strong> option above — it has a quick guide showing you exactly where to find it on your bill.
+                        </p>
+                    </div>
+                </div>
+                                
                                 <!-- File Upload Section -->
-                                <div id="uploadSection" class="usage-section">
+                                <div id="uploadSection" class="usage-section" style="display: none;">
                                     <div class="file-upload-container">
                                         <div class="file-upload-area" id="fileUploadArea" style="border: 2px dashed #d1d5db; border-radius: 8px; padding: 2rem; text-align: center; background: #ffffff; cursor: pointer; transition: all 0.3s ease;">
                                             <div class="upload-icon" style="font-size: 3rem; margin-bottom: 0.5rem;">📄</div>
@@ -716,10 +734,10 @@
                                     </small>
                                 </div>
                                 
-                                <!-- Manual Entry Section -->
+                                <!-- Manual Entry Section (Last 12 Months) -->
                                 <div id="manualSection" class="usage-section" style="display: none;">
                                     <p style="color: #4b5563; font-size: 0.9rem; margin-bottom: 1rem;">
-                                        Enter your average monthly electricity usage (kWh) for each month. You can start from any month of the year.
+                                        Enter your daily average electricity usage (kWh) for each of the last 12 months. You can start from any month.
                                     </p>
                                     
                                     <!-- Important Note -->
@@ -732,7 +750,7 @@
                                     <!-- SCE Bill Instructions -->
                                     <div style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
                                         <h4 style="color: #1e40af; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-                                            <span>📊</span> How to Find Your Monthly Usage (SCE Customers)
+                                            <span>📊</span> How to Find Your Daily Average Usage (SCE Customers)
                                         </h4>
                                         <p style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin-bottom: 1rem;">
                                             If you have <strong>Southern California Edison (SCE)</strong> as your utility provider, you can easily find your last 12 months of usage in the <strong>"Your past and current electricity usage"</strong> section of your bill.
@@ -846,31 +864,6 @@
                                     <small style="color: #6b7280; font-size: 0.875rem; margin-top: 1rem; display: block;">
                                         <strong style="color: #059669;">💡 Tip:</strong> You can find your kWh usage on your utility bills. Don't worry if you don't have all 12 months—fill in what you have!
                                     </small>
-                                    
-                                    <div style="text-align: center; margin: 1.5rem 0;">
-                                        <p style="color: #6b7280; font-size: 0.875rem; font-weight: 600;">- OR (Last Resort) -</p>
-                                        <p style="color: #6b7280; font-size: 0.875rem;">Just provide your daily average for the most recent year:</p>
-                                    </div>
-                                    
-                                    <!-- Daily Average Quick Entry -->
-                                    <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem;">
-                                        <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
-                                            <div style="flex: 1; min-width: 200px;">
-                                                <label for="dailyAverageKwh" style="display: block; font-weight: 600; color: #374151; font-size: 0.875rem; margin-bottom: 0.5rem;">
-                                                    Daily Average (kWh) - This Year
-                                                </label>
-                                                <input type="number" id="dailyAverageKwh" name="dailyAverageKwh" placeholder="e.g., 24.10" step="0.01" min="0" style="width: 100%; padding: 0.75rem; font-size: 1rem; border: 2px solid #e5e7eb; border-radius: 8px;">
-                                                <small style="color: #6b7280; font-size: 0.75rem; display: block; margin-top: 0.25rem;">
-                                                    Look for "This year:" in the daily average section
-                                                </small>
-                                            </div>
-                                            <div style="flex: 1; min-width: 200px; padding: 1rem; background: #fffbeb; border-radius: 8px; border: 1px solid #fbbf24;">
-                                                <p style="color: #92400e; font-size: 0.75rem; line-height: 1.5; margin: 0;">
-                                                    <strong>⚠️ Least Accurate Method:</strong> This provides the least precise estimate as it's a single average value. For better accuracy, use one of the options above.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -961,36 +954,36 @@
         // ============================================
         // USAGE INPUT TAB SWITCHING
         // ============================================
-        const uploadTabBtn = document.getElementById('uploadTabBtn');
-        const manualTabBtn = document.getElementById('manualTabBtn');
+        const uploadRadio = document.getElementById('uploadRadio');
+        const manualRadio = document.getElementById('manualRadio');
+        const dailyAverageRadio = document.getElementById('dailyAverageRadio');
         const uploadSection = document.getElementById('uploadSection');
         const manualSection = document.getElementById('manualSection');
-        
-        if (uploadTabBtn && manualTabBtn) {
-            uploadTabBtn.addEventListener('click', function() {
-                uploadTabBtn.classList.add('active');
-                uploadTabBtn.style.borderBottomColor = '#10B981';
-                uploadTabBtn.style.color = '#059669';
-                
-                manualTabBtn.classList.remove('active');
-                manualTabBtn.style.borderBottomColor = 'transparent';
-                manualTabBtn.style.color = '#6b7280';
-                
-                uploadSection.style.display = 'block';
-                manualSection.style.display = 'none';
+        const dailyAverageSection = document.getElementById('dailyAverageSection');
+
+        if (uploadRadio && manualRadio && dailyAverageRadio) {
+            uploadRadio.addEventListener('change', function() {
+                if (this.checked) {
+                    uploadSection.style.display = 'block';
+                    manualSection.style.display = 'none';
+                    dailyAverageSection.style.display = 'none';
+                }
             });
-            
-            manualTabBtn.addEventListener('click', function() {
-                manualTabBtn.classList.add('active');
-                manualTabBtn.style.borderBottomColor = '#10B981';
-                manualTabBtn.style.color = '#059669';
-                
-                uploadTabBtn.classList.remove('active');
-                uploadTabBtn.style.borderBottomColor = 'transparent';
-                uploadTabBtn.style.color = '#6b7280';
-                
-                manualSection.style.display = 'block';
-                uploadSection.style.display = 'none';
+
+            manualRadio.addEventListener('change', function() {
+                if (this.checked) {
+                    manualSection.style.display = 'block';
+                    uploadSection.style.display = 'none';
+                    dailyAverageSection.style.display = 'none';
+                }
+            });
+
+            dailyAverageRadio.addEventListener('change', function() {
+                if (this.checked) {
+                    dailyAverageSection.style.display = 'block';
+                    uploadSection.style.display = 'none';
+                    manualSection.style.display = 'none';
+                }
             });
         }
 
@@ -1257,17 +1250,19 @@
                             }
                         }
                         // If monthly data was provided, switch to manual tab
-                        if (hasMonthlyData && manualTabBtn) {
-                            manualTabBtn.click();
+                        if (hasMonthlyData && manualRadio) {
+                            manualRadio.checked = true;
+                            manualRadio.dispatchEvent(new Event('change'));
                         }
                     }
-                    
+
                     // Pre-fill daily average kWh if available
                     if (step1Data.dailyAverageKwh) {
                         document.getElementById('dailyAverageKwh').value = step1Data.dailyAverageKwh;
-                        // If daily average was provided, switch to manual tab
-                        if (manualTabBtn) {
-                            manualTabBtn.click();
+                        // If daily average was provided, switch to daily average tab
+                        if (dailyAverageRadio) {
+                            dailyAverageRadio.checked = true;
+                            dailyAverageRadio.dispatchEvent(new Event('change'));
                         }
                     }
                     
