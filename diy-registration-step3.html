@@ -809,6 +809,48 @@
             return '+1' + digits;
         }
         
+        // Generate or retrieve persistent device ID (similar to advertiser ID)
+        function getDeviceId() {
+            const DEVICE_ID_KEY = 'microvpp_device_id';
+            
+            // Try to get existing device ID from localStorage
+            let deviceId = null;
+            try {
+                deviceId = localStorage.getItem(DEVICE_ID_KEY);
+            } catch (e) {
+                console.warn('localStorage not available:', e);
+            }
+            
+            // If no device ID exists, generate a new one
+            if (!deviceId) {
+                // Generate UUID v4-like identifier
+                deviceId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                    const r = Math.random() * 16 | 0;
+                    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+                
+                // Store it for future use
+                try {
+                    localStorage.setItem(DEVICE_ID_KEY, deviceId);
+                    console.log('Generated new device ID:', deviceId);
+                } catch (e) {
+                    console.warn('Could not save device ID:', e);
+                }
+            } else {
+                console.log('Using existing device ID:', deviceId);
+            }
+            
+            return deviceId;
+        }
+        
+        // Generate dummy email if not provided (uses persistent device ID)
+        function generateDummyEmail() {
+            const deviceId = getDeviceId();
+            // Use device ID to ensure uniqueness across sessions
+            return `diy-registration-${deviceId}@dummy.com`;
+        }
+        
         // Update user profile with inverter connection details
         async function updateUserProfile(step3Data, step2Data, step1Data, userId) {
             try {
@@ -817,12 +859,28 @@
                     ? step3Data.otherManufacturer 
                     : step3Data.inverterManufacturer;
                 
+                // Get or generate device ID for tracking
+                const deviceId = getDeviceId();
+                
+                // Get email or generate dummy email
+                const userEmail = step2Data.email && step2Data.email.trim() !== '' ? step2Data.email.trim() : null;
+                const email = userEmail || generateDummyEmail();
+                
+                console.log('Email for profile update (Step 3):', userEmail ? userEmail : `(using dummy: ${email})`);
+                
                 // Build the info object
                 const info = {
                     contact: {
                         name: step2Data.fullName || null,
                         email: step2Data.email || null,
-                        phone: step2Data.phone || null
+                        phone: step2Data.phone || null,
+                        email_provided: !!userEmail
+                    },
+                    device: {
+                        device_id: deviceId,
+                        user_agent: navigator.userAgent,
+                        platform: navigator.platform,
+                        language: navigator.language
                     },
                     location: {
                         address: step2Data.address || null,
@@ -866,7 +924,7 @@
                     account_id: userId,
                     entity_type: "inverter",
                     username: step2Data.fullName || null,
-                    email: step2Data.email || null,
+                    email: email, // Use dummy email if user didn't provide one
                     phone_number: formatPhoneToE164(step2Data.phone),
                     full_address: step2Data.address || null,
                     city: step2Data.city || null,

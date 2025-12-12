@@ -1272,6 +1272,42 @@
                     
                     // Update field requirements after pre-filling
                     updateFieldRequirements();
+                    
+                    // Show a message if files were already uploaded
+                    const filesAlreadyUploaded = sessionStorage.getItem('filesUploadedInStep1') === 'true';
+                    const uploadedFileCount = sessionStorage.getItem('uploadedFileCount');
+                    if (filesAlreadyUploaded && uploadedFileCount) {
+                        // Display a message in the file list area
+                        if (fileList) {
+                            fileList.innerHTML = `
+                                <div style="padding: 1rem; background: #ecfdf5; border: 2px solid #10B981; border-radius: 8px; text-align: center;">
+                                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">✓</div>
+                                    <p style="font-weight: 600; color: #059669; margin-bottom: 0.25rem;">
+                                        Files Already Uploaded
+                                    </p>
+                                    <p style="color: #047857; font-size: 0.9rem;">
+                                        ${uploadedFileCount} file(s) from your previous session are saved.
+                                    </p>
+                                    <p style="color: #6b7280; font-size: 0.85rem; margin-top: 0.5rem;">
+                                        You can proceed to Step 2 or upload additional files if needed.
+                                    </p>
+                                </div>
+                            `;
+                        }
+                    }
+                    
+                    // Show a message if usage chart was already uploaded
+                    const usageChartAlreadyUploaded = sessionStorage.getItem('usageChartUploadedInStep1') === 'true';
+                    if (usageChartAlreadyUploaded && usageChartFileDisplay) {
+                        usageChartFileDisplay.innerHTML = `
+                            <div style="padding: 1rem; background: #ecfdf5; border: 2px solid #10B981; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">✓</div>
+                                <p style="font-weight: 600; color: #059669; font-size: 0.9rem;">
+                                    Usage chart screenshot already uploaded
+                                </p>
+                            </div>
+                        `;
+                    }
                 } catch (error) {
                     console.error('Error pre-filling Step 1 form:', error);
                 }
@@ -2028,6 +2064,9 @@
                 sessionStorage.removeItem('registrationStep1');
                 sessionStorage.removeItem('registrationStep2');
                 sessionStorage.removeItem('registrationFiles');
+                sessionStorage.removeItem('filesUploadedInStep1');
+                sessionStorage.removeItem('usageChartUploadedInStep1');
+                sessionStorage.removeItem('uploadedFileCount');
 
                 // Redirect to home or app store
                 window.location.href = 'index.html';
@@ -2376,11 +2415,11 @@
             const dailyAverageKwh = formData.get('dailyAverageKwh');
             const hasDailyAverage = dailyAverageKwh && dailyAverageKwh.trim() !== '';
             
-            // Check if utility bills were uploaded
-            const hasUtilityBills = uploadedFiles.length > 0;
+            // Check if utility bills were uploaded (either in this session or previously)
+            const hasUtilityBills = uploadedFiles.length > 0 || sessionStorage.getItem('filesUploadedInStep1') === 'true';
             
-            // Check if usage chart screenshot was uploaded
-            const hasUsageChart = usageChartFile !== null;
+            // Check if usage chart screenshot was uploaded (either in this session or previously)
+            const hasUsageChart = usageChartFile !== null || sessionStorage.getItem('usageChartUploadedInStep1') === 'true';
             
             // Validate that at least one usage data option is provided
             if (!hasUtilityBills && !hasMonthlyData && !hasDailyAverage && !hasUsageChart) {
@@ -2447,7 +2486,10 @@
             const utilityBills = [...uploadedFiles];
             const screenshots = usageChartFile ? [usageChartFile] : [];
             
-            const hasFilesToUpload = utilityBills.length > 0 || screenshots.length > 0;
+            // Check if files were already uploaded in a previous session
+            const filesAlreadyUploaded = sessionStorage.getItem('filesUploadedInStep1') === 'true';
+            
+            const hasFilesToUpload = (utilityBills.length > 0 || screenshots.length > 0) && !filesAlreadyUploaded;
             
             if (hasFilesToUpload) {
                 submitBtn.textContent = 'Uploading files...';
@@ -2481,6 +2523,7 @@
                     if (screenshots.length > 0) {
                         console.log(`Uploading ${screenshots.length} screenshot(s) individually...`);
                         
+                        let screenshotsUploaded = 0;
                         for (let i = 0; i < screenshots.length; i++) {
                             const screenshot = screenshots[i];
                             const percent = Math.round(((totalFilesUploaded + i) / (utilityBills.length + screenshots.length)) * 100);
@@ -2493,6 +2536,7 @@
                                 if (presignedResponse.presigned_urls && presignedResponse.presigned_urls.length > 0) {
                                     await uploadFileToS3(screenshot, presignedResponse.presigned_urls[0], 1, 1);
                                     totalFilesUploaded++;
+                                    screenshotsUploaded++;
                                     console.log(`Successfully uploaded screenshot: ${screenshot.name}`);
                                 } else {
                                     uploadErrors.push(`Screenshot upload failed: no pre-signed URL`);
@@ -2501,6 +2545,11 @@
                                 uploadErrors.push(`Screenshot ${screenshot.name}: ${error.message}`);
                                 console.error('Screenshot upload error:', error);
                             }
+                        }
+                        
+                        // Mark usage chart screenshots as uploaded
+                        if (screenshotsUploaded > 0) {
+                            sessionStorage.setItem('usageChartUploadedInStep1', 'true');
                         }
                     }
                     
