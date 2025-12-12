@@ -756,10 +756,6 @@
 
                 <form id="step1Form" action="#" method="POST">
                     
-                    <p style="color: #6b7280; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem; padding: 1rem; background: #f9fafb; border-radius: 8px; border-left: 4px solid #10B981;">
-                        <strong style="color: #059669;">🔒 Your System Security:</strong> We only request <strong>read-only access</strong> to view your system data. We will never control, modify, or operate your system without your explicit written consent. Your inverter web service credentials are encrypted and stored securely.
-                    </p>
-                    
                     <h2 style="font-size: 1.5rem; color: #059669; margin-bottom: 0.5rem;">Step 2 — Contact Information (Optional)</h2>
                     <p style="color: #6b7280; margin-bottom: 2rem;">You can skip this step if you prefer. We'll save your info so you don't lose progress.</p>
                     
@@ -790,7 +786,7 @@
                         <div class="form-group">
                             <label for="city">City <span style="color: #059669; font-weight: 600;">*</span></label>
                             <input type="text" id="city" name="city" placeholder="City">
-                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Either City or Utility Company is required.</small>
+                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Optional, but when email is provided, either City or Utility Company should be provided.</small>
                         </div>
                         <div class="form-group">
                             <label for="state">State</label>
@@ -812,7 +808,7 @@
                             <option value="LADWP">Los Angeles Department of Water and Power (LADWP)</option>
                             <option value="Other">Other Utility</option>
                         </select>
-                        <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Either City or Utility Company is required.</small>
+                        <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Optional, but when email is provided, either City or Utility Company should be provided.</small>
                     </div>
 
 
@@ -1638,16 +1634,19 @@
                 return;
             }
             
-            // REQUIRED: Check if either city or utility company is filled
+            // Check if email is provided - if so, require either city or utility company
+            const emailInput = document.getElementById('email');
             const cityInput = document.getElementById('city');
             const utilityCompanySelect = document.getElementById('utilityCompany');
+            const emailValue = emailInput.value.trim();
             const cityValue = cityInput.value.trim();
             const utilityValue = utilityCompanySelect.value;
             
-            if (!cityValue && !utilityValue) {
+            // Only enforce city/utility requirement if email is provided
+            if (emailValue && !cityValue && !utilityValue) {
                 alert(
                     '⚠️ Location Information Required\n\n' +
-                    'Please provide either your City or Utility Company.\n\n' +
+                    'Since you provided an email address, please also provide either your City or Utility Company.\n\n' +
                     'This helps us calculate accurate energy rates and savings for your area.'
                 );
                 cityInput.focus();
