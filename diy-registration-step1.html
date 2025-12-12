@@ -602,7 +602,7 @@
             </ul>
             <div class="header-buttons">
                 <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
-                <a href="https://apps.apple.com/us/app/dgrid/id6747276150" class="cta-button-outline">Download App</a>
+                <a href="#" onclick="checkInvitationCode(event)" class="cta-button-outline">Download App</a>
             </div>
         </nav>
     </header>
@@ -2032,7 +2032,8 @@
                         '2. You\'ll receive a detailed savings estimate within 24 hours\n' +
                         '3. We\'ll email instructions to connect your actual system\n' +
                         '4. Download the MicroVPP™ app to view your results\n\n' +
-                        'Check your email (' + payload.email + ') for your savings estimate!';
+                        'Check your email (' + payload.email + ') for your savings estimate!\n\n' +
+                        '⚡ Tesla Powerwall users: Support coming soon! We\'ll add you to our waitlist.';
                 } else {
                     successMessage = '🎉 Success! Your system is being connected to MicroGrid\'s VPP network!\n\n';
                     
@@ -2054,7 +2055,8 @@
                         '2. Download the MicroVPP™ app from the App Store\n' +
                         '3. Sign in with your email: ' + payload.email + '\n' +
                         '4. Start monitoring your system and earning from VPP programs\n\n' +
-                        'Check your email for confirmation and next steps!';
+                        'Check your email for confirmation and next steps!\n\n' +
+                        '⚡ Tesla Powerwall users: Support coming soon! We\'ll add you to our waitlist.';
                 }
 
                 // Show success message
@@ -2285,7 +2287,8 @@
                 `💰 Estimated Annual Earnings: ${yearlyRange}/year\n` +
                 `📊 Average Monthly: ${monthlyAvg}/month\n\n` +
                 `${confidenceText}\n\n` +
-                'We are running your simulation now (approximately 24 hours). Leave your email to receive the results.';
+                'We are running your simulation now (approximately 24 hours). Leave your email to receive the results.\n\n' +
+                '⚡ Tesla Powerwall users: Support coming soon! We\'ll add you to our waitlist.';
             
             return confirm(message);
         }
@@ -2581,6 +2584,43 @@
                 await calculateAndShowEstimation(step1SystemData, submitBtn, 0, 0);
             }
         });
+
+        // Check for invitation code before downloading app
+        function checkInvitationCode(event) {
+            event.preventDefault();
+            
+            const hasInvitationCode = confirm(
+                '🎟️ Invitation Code Required\n\n' +
+                'Our app is currently in invitation-only beta mode.\n\n' +
+                'Do you have an invitation code?'
+            );
+            
+            if (hasInvitationCode) {
+                // User has invitation code - open App Store
+                window.open('https://apps.apple.com/us/app/dgrid/id6747276150', '_blank');
+            } else {
+                // User doesn't have invitation code - show message
+                alert(
+                    '💡 Complete Your Free Analysis!\n\n' +
+                    'You\'re already on the right page! Complete this system analysis and we\'ll send you an invitation code if you qualify for our beta test.\n\n' +
+                    'Benefits:\n' +
+                    '✓ Personalized savings estimate\n' +
+                    '✓ See your earning potential\n' +
+                    '✓ Beta invitation code (if you qualify)\n' +
+                    '✓ Priority access when we launch\n\n' +
+                    'Scroll down to complete the form - takes just 2-3 minutes!'
+                );
+            }
+            
+            // Track the interaction
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'app_download_check', {
+                    event_category: 'engagement',
+                    event_label: hasInvitationCode ? 'has_code' : 'needs_code',
+                    page: 'step1'
+                });
+            }
+        }
     </script>
 </body>
 </html>

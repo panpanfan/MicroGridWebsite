@@ -724,7 +724,7 @@
             <div class="header-buttons">
                 <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
                 <a href="diy-registration-step1.html" class="cta-button hide-mobile">Start Free</a>
-                <a href="https://apps.apple.com/us/app/dgrid/id6747276150" class="cta-button-outline">Download App</a>
+                <a href="#" onclick="checkInvitationCode(event)" class="cta-button-outline">Download App</a>
             </div>
         </nav>
     </header>
@@ -874,7 +874,7 @@
         <div class="cta-bar-content">
             <div class="cta-bar-text">Ready to activate your smart battery?</div>
             <div class="cta-bar-buttons">
-                <a href="https://apps.apple.com/us/app/dgrid/id6747276150" class="cta-bar-primary">Download App</a>
+                <a href="#" onclick="checkInvitationCode(event)" class="cta-bar-primary">Download App</a>
             </div>
         </div>
     </div>
@@ -1802,6 +1802,48 @@
             // Navigate to step 3
             window.location.href = 'diy-registration-step3.html';
         });
+
+        // Check for invitation code before downloading app
+        function checkInvitationCode(event) {
+            event.preventDefault();
+            
+            const hasInvitationCode = confirm(
+                '🎟️ Invitation Code Required\n\n' +
+                'Our app is currently in invitation-only beta mode.\n\n' +
+                'Do you have an invitation code?'
+            );
+            
+            if (hasInvitationCode) {
+                // User has invitation code - open App Store
+                window.open('https://apps.apple.com/us/app/dgrid/id6747276150', '_blank');
+            } else {
+                // User doesn't have invitation code - show message and redirect to step 1
+                alert(
+                    '💡 Complete Your Registration!\n\n' +
+                    'Complete your registration and we\'ll send you an invitation code if you qualify for our beta test.\n\n' +
+                    'What you\'ll get:\n' +
+                    '✓ Personalized savings estimate\n' +
+                    '✓ See your earning potential\n' +
+                    '✓ Beta invitation code (if you qualify)\n' +
+                    '✓ Priority access when we launch\n\n' +
+                    'Continue filling out this form or start from the beginning.'
+                );
+                
+                // Offer to go back to step 1
+                if (confirm('Would you like to start from Step 1?')) {
+                    window.location.href = 'diy-registration-step1.html';
+                }
+            }
+            
+            // Track the interaction
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'app_download_check', {
+                    event_category: 'engagement',
+                    event_label: hasInvitationCode ? 'has_code' : 'needs_code',
+                    page: 'step2'
+                });
+            }
+        }
     </script>
 </body>
 </html>
