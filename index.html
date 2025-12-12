@@ -2136,11 +2136,46 @@
             return 'INV-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
         }
 
-        // Generate dummy email if not provided
+        // Generate or retrieve persistent device ID (similar to advertiser ID)
+        function getDeviceId() {
+            const DEVICE_ID_KEY = 'microvpp_device_id';
+            
+            // Try to get existing device ID from localStorage
+            let deviceId = null;
+            try {
+                deviceId = localStorage.getItem(DEVICE_ID_KEY);
+            } catch (e) {
+                console.warn('localStorage not available:', e);
+            }
+            
+            // If no device ID exists, generate a new one
+            if (!deviceId) {
+                // Generate UUID v4-like identifier
+                deviceId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                    const r = Math.random() * 16 | 0;
+                    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+                
+                // Store it for future use
+                try {
+                    localStorage.setItem(DEVICE_ID_KEY, deviceId);
+                    console.log('Generated new device ID:', deviceId);
+                } catch (e) {
+                    console.warn('Could not save device ID:', e);
+                }
+            } else {
+                console.log('Using existing device ID:', deviceId);
+            }
+            
+            return deviceId;
+        }
+
+        // Generate dummy email if not provided (uses persistent device ID)
         function generateDummyEmail() {
-            const timestamp = Date.now();
-            const randomStr = Math.random().toString(36).substr(2, 9);
-            return `powerwall-waitlist-${timestamp}-${randomStr}@dummy.com`;
+            const deviceId = getDeviceId();
+            // Use device ID to ensure uniqueness across sessions
+            return `powerwall-waitlist-${deviceId}@dummy.com`;
         }
 
         // Open waitlist modal
@@ -2182,19 +2217,29 @@
                 const userEmail = emailInput.value.trim();
                 const email = userEmail || generateDummyEmail();
                 
+                // Get or generate device ID for tracking
+                const deviceId = getDeviceId();
+                
                 // Build the info object for Tesla Powerwall waitlist
                 const info = {
                     waitlist: {
                         type: 'tesla_powerwall',
                         requested_date: new Date().toISOString(),
                         email_provided: !!userEmail,
-                        source: 'index-page-waitlist'
+                        source: 'index-page-waitlist',
+                        device_id: deviceId
                     },
                     registration: {
                         mode: 'waitlist',
                         status: 'waitlist_pending',
                         registration_date: new Date().toISOString(),
                         registration_source: 'index-page-waitlist'
+                    },
+                    device: {
+                        device_id: deviceId,
+                        user_agent: navigator.userAgent,
+                        platform: navigator.platform,
+                        language: navigator.language
                     }
                 };
                 
@@ -2264,7 +2309,7 @@
                     '✅ Success! You\'re on the waitlist!\n\n' +
                     (userEmail 
                         ? 'We\'ll notify you at ' + userEmail + ' when Tesla Powerwall support launches.'
-                        : 'You\'ve been added to our Tesla Powerwall waitlist. Check back soon for updates!'
+                        : 'You\'ve been added to our Tesla Powerwall waitlist using your unique device ID. Check back soon for updates!'
                     ) +
                     '\n\nIn the meantime, if you have a compatible system (Enphase, SolarEdge, etc.), you can start earning today!'
                 );
