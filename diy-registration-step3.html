@@ -280,14 +280,33 @@
         }
 
         .checkbox-group input[type="checkbox"] {
-            width: auto;
+            width: 24px;
+            height: 24px;
             margin-top: 0.25rem;
+            cursor: pointer;
+            flex-shrink: 0;
+            accent-color: #10B981;
         }
 
         .checkbox-group label {
             margin-bottom: 0;
             font-weight: 400;
             line-height: 1.5;
+            cursor: pointer;
+        }
+        
+        /* Enhanced checkbox styling for mobile */
+        @media (max-width: 768px) {
+            .checkbox-group input[type="checkbox"] {
+                width: 28px;
+                height: 28px;
+                min-width: 28px;
+                min-height: 28px;
+            }
+            
+            .checkbox-group {
+                gap: 1rem;
+            }
         }
 
         .submit-btn {
