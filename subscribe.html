@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#065f46">
+    <title>Subscribe — MicroGrid</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        :root {
+            --brand: #10B981;
+            --brand-dark: #065f46;
+            --brand-mid: #059669;
+            --surface: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --error: #dc2626;
+            --radius: 14px;
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-top: env(safe-area-inset-top, 0px);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--text);
+            background: linear-gradient(165deg, #ecfdf5 0%, var(--surface) 45%, #f1f5f9 100%);
+            min-height: 100vh;
+            min-height: 100dvh;
+            line-height: 1.5;
+            padding: calc(1rem + var(--safe-top)) 1rem calc(1.5rem + var(--safe-bottom));
+        }
+
+        .wrap {
+            max-width: 440px;
+            margin: 0 auto;
+        }
+
+        .brand-row {
+            margin-bottom: 1.25rem;
+            padding: 0.85rem 1rem;
+            background: #ffffff;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 18px -14px rgba(15, 23, 42, 0.15);
+        }
+
+        .brand-link {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .brand-row .brand-logo {
+            height: 40px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .brand-row .brand-logo--microgrid {
+            max-width: min(130px, 36vw);
+        }
+
+        .brand-row .brand-logo--microvpp {
+            max-width: min(220px, calc(100vw - 9rem));
+        }
+
+        h1 {
+            font-size: clamp(1.45rem, 4.5vw, 1.65rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.35rem;
+        }
+
+        .sub {
+            color: var(--muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.35rem;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 1.15rem 1.1rem;
+            box-shadow: 0 10px 40px -20px rgba(15, 23, 42, 0.25);
+        }
+
+        .field {
+            margin-bottom: 1rem;
+        }
+
+        .field label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--muted);
+            margin-bottom: 0.35rem;
+        }
+
+        .field input[type="email"] {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            font-size: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-family: inherit;
+            min-height: 48px;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .field input:focus {
+            outline: 2px solid rgba(16, 185, 129, 0.35);
+            outline-offset: 0;
+            border-color: var(--brand);
+        }
+
+        .plans {
+            display: grid;
+            gap: 0.65rem;
+            margin-bottom: 1rem;
+        }
+
+        .plan {
+            position: relative;
+        }
+
+        .plan input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .plan label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            padding: 0.95rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            min-height: 52px;
+            transition: border-color 0.15s, background 0.15s;
+            font-weight: 500;
+        }
+
+        .plan label:hover {
+            border-color: rgba(16, 185, 129, 0.5);
+        }
+
+        .plan input:checked + label {
+            border-color: var(--brand);
+            background: rgba(16, 185, 129, 0.06);
+        }
+
+        .plan .name {
+            font-weight: 600;
+        }
+
+        .plan .hint {
+            font-size: 0.8rem;
+            color: var(--muted);
+            font-weight: 400;
+        }
+
+        .plan .price {
+            font-weight: 700;
+            color: var(--brand-dark);
+            white-space: nowrap;
+        }
+
+        .btn {
+            width: 100%;
+            border: none;
+            border-radius: 12px;
+            padding: 0.95rem 1.25rem;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            min-height: 52px;
+            background: linear-gradient(135deg, var(--brand), var(--brand-mid));
+            color: #fff;
+            box-shadow: 0 4px 14px -4px rgba(16, 185, 129, 0.65);
+            transition: transform 0.1s, filter 0.15s;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            margin-top: 0.65rem;
+            background: transparent;
+            color: var(--brand-dark);
+            border: 2px solid var(--brand);
+            box-shadow: none;
+        }
+
+        #checkout-mount {
+            margin-top: 1rem;
+            min-height: 120px;
+        }
+
+        .notice {
+            margin-top: 1rem;
+            font-size: 0.78rem;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .notice a {
+            color: var(--brand-mid);
+        }
+
+        .error {
+            display: none;
+            margin-top: 0.75rem;
+            padding: 0.65rem 0.85rem;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            color: var(--error);
+            font-size: 0.875rem;
+        }
+
+        .error.visible {
+            display: block;
+        }
+
+        .success-panel {
+            display: none;
+            text-align: center;
+            padding: 1.5rem 1rem;
+        }
+
+        .success-panel.visible {
+            display: block;
+        }
+
+        .success-panel .icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        #form-panel.hidden {
+            display: none;
+        }
+
+        .consent-block {
+            margin-top: 0.25rem;
+            margin-bottom: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .consent-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--brand-dark);
+            margin-bottom: 0.6rem;
+            letter-spacing: -0.02em;
+        }
+
+        .consent-body {
+            font-size: 0.88rem;
+            line-height: 1.55;
+            color: var(--muted);
+            margin-bottom: 1rem;
+        }
+
+        .consent-check {
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+            margin-bottom: 0.85rem;
+        }
+
+        .consent-check input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            min-width: 22px;
+            margin-top: 0.15rem;
+            accent-color: var(--brand-mid);
+            cursor: pointer;
+        }
+
+        .consent-check label {
+            font-size: 0.9rem;
+            line-height: 1.45;
+            color: var(--text);
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .consent-footer {
+            font-size: 0.78rem;
+            color: var(--muted);
+            line-height: 1.45;
+        }
+
+        .consent-footer a {
+            color: var(--brand-mid);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="brand-row">
+            <a href="index.html" class="brand-link">
+                <img class="brand-logo brand-logo--microgrid" src="assets/images/microgrid_logo.png" alt="MicroGrid">
+                <img class="brand-logo brand-logo--microvpp" src="assets/images/microvpp_logo.png" alt="MicroVPP">
+            </a>
+        </div>
+
+        <div id="success-panel" class="success-panel card" role="status">
+            <div class="icon" aria-hidden="true">✓</div>
+            <h1 style="margin-bottom:0.5rem;">You're subscribed</h1>
+            <p class="sub" style="margin-bottom:0;">Thank you. A confirmation email is on the way.</p>
+            <a href="index.html" class="btn" style="display:inline-block;text-align:center;text-decoration:none;margin-top:1.25rem;width:auto;padding-left:2rem;padding-right:2rem;">Back to home</a>
+        </div>
+
+        <div id="form-panel">
+            <h1>Choose your plan</h1>
+            <p class="sub">Secure checkout powered by Stripe. Works great on phones.</p>
+
+            <div class="card">
+                <form id="sub-form" novalidate>
+                    <div class="field">
+                        <label for="email">Email (for receipts)</label>
+                        <input type="email" id="email" name="email" autocomplete="email" inputmode="email" placeholder="you@example.com">
+                    </div>
+
+                    <div class="plans" role="radiogroup" aria-label="Billing plan">
+                        <div class="plan">
+                            <input type="radio" name="plan" id="plan-monthly" value="monthly" checked>
+                            <label for="plan-monthly">
+                                <span>
+                                    <span class="name">Monthly</span>
+                                    <span class="hint">Flexible, cancel anytime</span>
+                                </span>
+                                <span class="price">$10.00/mo</span>
+                            </label>
+                        </div>
+                        <div class="plan">
+                            <input type="radio" name="plan" id="plan-annual" value="annual">
+                            <label for="plan-annual">
+                                <span>
+                                    <span class="name">Annual</span>
+                                    <span class="hint">Best value</span>
+                                </span>
+                                <span class="price">$100.00/yr</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="consent-block">
+                        <h2 class="consent-title">Data Collection &amp; Authorization</h2>
+                        <p class="consent-body">To optimize your energy storage system and provide accurate performance monitoring, MicroVPP™ collects and analyzes your device and usage data. This data is strictly encrypted and anonymized for algorithm training and technical research.</p>
+                        <div class="consent-check">
+                            <input type="checkbox" id="data-consent" name="data_consent" value="1" autocomplete="off">
+                            <label for="data-consent">I agree to the collection of my data for system monitoring, optimization, and anonymized research.</label>
+                        </div>
+                        <p class="consent-footer">For full details, please review our <a href="https://www.microvpp.com/privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</p>
+                    </div>
+
+                    <p id="err" class="error" role="alert"></p>
+
+                    <button type="submit" class="btn" id="continue-btn" disabled aria-disabled="true">Agree and Continue</button>
+                </form>
+
+                <div id="checkout-mount"></div>
+                <button type="button" class="btn btn-secondary" id="cancel-embed" hidden>Change plan</button>
+            </div>
+
+            <p class="notice">
+                Cards are entered in Stripe’s secure form. By subscribing you agree to our
+                <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy</a>.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            /* Replace with your Stripe publishable key (test or live). */
+            var STRIPE_PUBLISHABLE_KEY = 'pk_test_REPLACE_ME';
+
+            /* Backend that returns JSON: { "client_secret": "..." }. Same origin as this file when using subscribe_server.py */
+            var CHECKOUT_SESSION_URL = window.location.origin + '/create-checkout-session';
+
+            /* Must match your Stripe Dashboard price ids passed in subscribe_server.py env */
+            var PRICE_IDS = {
+                monthly: 'price_REPLACE_MONTHLY',
+                annual: 'price_REPLACE_ANNUAL'
+            };
+
+            var errEl = document.getElementById('err');
+            function showError(msg) {
+                errEl.textContent = msg || '';
+                errEl.classList.toggle('visible', !!msg);
+            }
+
+            var params = new URLSearchParams(window.location.search);
+            if (params.get('session_id')) {
+                document.getElementById('form-panel').classList.add('hidden');
+                document.getElementById('success-panel').classList.add('visible');
+                return;
+            }
+
+            var stripe = null;
+            try {
+                stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+            } catch (e) {
+                showError('Set STRIPE_PUBLISHABLE_KEY in subscribe.html');
+                return;
+            }
+
+            var form = document.getElementById('sub-form');
+            var mount = document.getElementById('checkout-mount');
+            var continueBtn = document.getElementById('continue-btn');
+            var cancelEmbed = document.getElementById('cancel-embed');
+            var dataConsent = document.getElementById('data-consent');
+
+            function syncContinueEnabled() {
+                var ok = dataConsent.checked;
+                continueBtn.disabled = !ok;
+                continueBtn.setAttribute('aria-disabled', ok ? 'false' : 'true');
+            }
+
+            dataConsent.addEventListener('change', function () {
+                showError('');
+                syncContinueEnabled();
+            });
+            syncContinueEnabled();
+
+            function selectedPriceId() {
+                var m = document.getElementById('plan-monthly').checked;
+                return m ? PRICE_IDS.monthly : PRICE_IDS.annual;
+            }
+
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                showError('');
+                if (!dataConsent.checked) {
+                    showError('Please agree to data collection and authorization to subscribe.');
+                    return;
+                }
+                var email = document.getElementById('email').value.trim();
+                continueBtn.disabled = true;
+
+                try {
+                    var res = await fetch(CHECKOUT_SESSION_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            price_id: selectedPriceId(),
+                            customer_email: email || undefined,
+                            return_path: '/subscribe.html'
+                        })
+                    });
+                    var data = await res.json().catch(function () { return {}; });
+                    if (!res.ok) {
+                        throw new Error(data.error || 'Could not start checkout');
+                    }
+                    if (!data.client_secret) {
+                        throw new Error('Invalid server response');
+                    }
+
+                    form.querySelector('.plans').style.display = 'none';
+                    form.querySelector('.field').style.display = 'none';
+                    form.querySelector('.consent-block').style.display = 'none';
+                    continueBtn.hidden = true;
+                    cancelEmbed.hidden = false;
+
+                    var checkout = await stripe.initEmbeddedCheckout({
+                        fetchClientSecret: function () {
+                            return Promise.resolve(data.client_secret);
+                        }
+                    });
+                    checkout.mount('#checkout-mount');
+                } catch (err) {
+                    showError(err.message || 'Something went wrong');
+                } finally {
+                    syncContinueEnabled();
+                }
+            });
+
+            cancelEmbed.addEventListener('click', function () {
+                window.location.reload();
+            });
+        })();
+    </script>
+</body>
+</html>
