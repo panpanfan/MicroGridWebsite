@@ -1,5 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+<!--
+  App → subscribe page — secure auth patterns
+  --------------------------------------------
+  • Never put AWS Cognito (or any) access/id/refresh tokens in query strings. URLs leak via
+    history, logs, referrers, analytics, and screenshots.
+  • System browser (Safari/Chrome): you cannot attach Authorization headers to a normal link.
+    Use either: (1) opaque one-time `sid` in the URL that your API exchanges over HTTPS (POST,
+    cookies, short TTL), or (2) open the page without secrets and sign in on the page (PKCE).
+  • Embedded WebView: prefer postMessage from native code after the page loads, with strict
+    origin checks (TRUSTED_APP_MESSAGE_ORIGINS below). Optionally use HTTPS + first-party cookies
+    set by your API after the app posts the token to your backend.
+
+  Recommended flow (external browser): App calls your backend with Cognito token → backend
+  validates with Cognito → backend returns https://…/subscribe.html?sid=<opaque> → this page
+  calls SESSION_RESOLVE_URL to swap sid for session/account_id (see script below).
+
+  consumer-api (SolCube): set window.SUBSCRIBE_API_BASE to API origin (no trailing slash).
+  Flow: resolve ``sid`` → ``/admin/subscribe/session/resolve``; Agree → Payment Element;
+  ``POST /admin/subscribe/payment/prepare`` then ``Pay`` → ``stripe.confirmPayment``;
+  ``POST /admin/subscribe/payment/complete`` updates DB (Stripe customer id, card last4, exp, SUBSCRIBED).
+  Env: STRIPE_SECRET_KEY, STRIPE_PUBLISHABLE_KEY, STRIPE_PRICE_MONTHLY, STRIPE_PRICE_ANNUAL,
+  SUBSCRIBE_SID_SECRET (+ mint key if using mint). Local dev: window.SUBSCRIBE_ALLOW_NO_ACCOUNT + SUBSCRIBE_DEV_ACCOUNT_ID.
+-->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -326,6 +349,23 @@
             color: var(--brand-mid);
             font-weight: 600;
         }
+
+        .payment-step {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .payment-step-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--brand-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        #payment-element {
+            margin: 0.85rem 0 1rem;
+        }
     </style>
 </head>
 <body>
@@ -393,8 +433,14 @@
                     <button type="submit" class="btn" id="continue-btn" disabled aria-disabled="true">Agree and Continue</button>
                 </form>
 
-                <div id="checkout-mount"></div>
-                <button type="button" class="btn btn-secondary" id="cancel-embed" hidden>Change plan</button>
+                <div id="payment-step" class="payment-step" hidden>
+                    <p class="payment-step-title">Payment</p>
+                    <p class="sub" style="margin-top:0;margin-bottom:0.85rem;">Card details are collected securely by Stripe (PCI compliant).</p>
+                    <div id="payment-element"></div>
+                    <button type="button" class="btn" id="pay-btn" hidden>Pay and subscribe</button>
+                    <button type="button" class="btn btn-secondary" id="retry-pay-btn" hidden>Try again</button>
+                    <button type="button" class="btn btn-secondary" id="cancel-pay-btn" hidden>Cancel</button>
+                </div>
             </div>
 
             <p class="notice">
@@ -406,16 +452,53 @@
 
     <script>
         (function () {
-            /* Replace with your Stripe publishable key (test or live). */
             var STRIPE_PUBLISHABLE_KEY = 'pk_test_REPLACE_ME';
 
-            /* Backend that returns JSON: { "client_secret": "..." }. Same origin as this file when using subscribe_server.py */
-            var CHECKOUT_SESSION_URL = window.location.origin + '/create-checkout-session';
+            var SUBSCRIBE_API_BASE = (typeof window.SUBSCRIBE_API_BASE === 'string' && window.SUBSCRIBE_API_BASE.length)
+                ? window.SUBSCRIBE_API_BASE.replace(/\/$/, '')
+                : '';
 
-            /* Must match your Stripe Dashboard price ids passed in subscribe_server.py env */
+            function subscribeApiUrl(path) {
+                var base = SUBSCRIBE_API_BASE;
+                if (!base) {
+                    if (!window.location.protocol || window.location.protocol === 'file:') {
+                        return '';
+                    }
+                    var o = window.location.origin;
+                    if (!o || o === 'null') {
+                        return '';
+                    }
+                    base = o;
+                }
+                return base + path;
+            }
+
+            var PAY_PREPARE_URL = subscribeApiUrl('/admin/subscribe/payment/prepare');
+            var PAY_COMPLETE_URL = subscribeApiUrl('/admin/subscribe/payment/complete');
+
+            var SESSION_RESOLVE_URL = (function () {
+                if (typeof window.SUBSCRIBE_SESSION_RESOLVE_URL === 'string' && window.SUBSCRIBE_SESSION_RESOLVE_URL.length) {
+                    return window.SUBSCRIBE_SESSION_RESOLVE_URL;
+                }
+                if (!window.location.protocol || window.location.protocol === 'file:') {
+                    return '';
+                }
+                var o = window.location.origin;
+                if (!o || o === 'null') {
+                    return '';
+                }
+                return o + '/session/resolve';
+            })();
+
+            var TRUSTED_APP_MESSAGE_ORIGINS = [];
             var PRICE_IDS = {
                 monthly: 'price_REPLACE_MONTHLY',
                 annual: 'price_REPLACE_ANNUAL'
+            };
+
+            var subscribeContext = {
+                accountId: null,
+                cognitoAccessToken: null
             };
 
             var errEl = document.getElementById('err');
@@ -424,26 +507,172 @@
                 errEl.classList.toggle('visible', !!msg);
             }
 
+            function apiDetail(data) {
+                var d = data && data.detail;
+                return (typeof d === 'string' ? d : null) || (data && data.error) || null;
+            }
+
+            async function finalizeSubscription(accountId, subscriptionId) {
+                if (!PAY_COMPLETE_URL) {
+                    throw new Error('Payment API URL is not configured (set SUBSCRIBE_API_BASE).');
+                }
+                var res = await fetch(PAY_COMPLETE_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        account_id: accountId,
+                        subscription_id: subscriptionId
+                    })
+                });
+                var data = await res.json().catch(function () { return {}; });
+                if (!res.ok) {
+                    throw new Error(apiDetail(data) || 'Could not finalize subscription');
+                }
+                return data;
+            }
+
+            async function handle3DSReturn() {
+                var q = new URLSearchParams(window.location.search);
+                if (q.get('redirect_status') !== 'succeeded') {
+                    return false;
+                }
+                var piSec = q.get('payment_intent_client_secret');
+                if (!piSec) {
+                    return false;
+                }
+                var pendingRaw = sessionStorage.getItem('subscribe_pending');
+                if (!pendingRaw) {
+                    return false;
+                }
+                var pending;
+                try {
+                    pending = JSON.parse(pendingRaw);
+                } catch (e) {
+                    return false;
+                }
+                if (!pending.publishableKey || !pending.accountId || !pending.subscriptionId) {
+                    return false;
+                }
+                try {
+                    var stripeRet = Stripe(pending.publishableKey);
+                    var retrieved = await stripeRet.retrievePaymentIntent(piSec);
+                    if (retrieved && retrieved.error) {
+                        showError(retrieved.error.message || 'Could not verify payment.');
+                        return true;
+                    }
+                    var pIntent = retrieved && retrieved.paymentIntent ? retrieved.paymentIntent : retrieved;
+                    if (!pIntent || pIntent.status !== 'succeeded') {
+                        showError('Payment was not completed. Please try again.');
+                        return true;
+                    }
+                    await finalizeSubscription(pending.accountId, pending.subscriptionId);
+                    sessionStorage.removeItem('subscribe_pending');
+                    window.history.replaceState({}, '', window.location.pathname + window.location.hash);
+                    document.getElementById('form-panel').classList.add('hidden');
+                    document.getElementById('success-panel').classList.add('visible');
+                    return true;
+                } catch (err) {
+                    console.warn('[subscribe 3ds]', err);
+                    showError((err && err.message) || 'Could not complete payment.');
+                    return true;
+                }
+            }
+
             var params = new URLSearchParams(window.location.search);
-            if (params.get('session_id')) {
+            if (params.get('session_id') || params.get('subscribe') === 'success') {
                 document.getElementById('form-panel').classList.add('hidden');
                 document.getElementById('success-panel').classList.add('visible');
                 return;
             }
 
-            var stripe = null;
-            try {
-                stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
-            } catch (e) {
-                showError('Set STRIPE_PUBLISHABLE_KEY in subscribe.html');
-                return;
+            handle3DSReturn().then(function (handled3ds) {
+                if (handled3ds) {
+                    return;
+                }
+
+            (function rejectInsecureUrlSecrets() {
+                var sensitive = ['access_token', 'id_token', 'refresh_token', 'token', 'authorization'];
+                var found = sensitive.filter(function (k) { return params.has(k); });
+                if (found.length) {
+                    console.warn(
+                        '[subscribe] Refusing sensitive query params (' + found.join(', ') + '). ' +
+                        'Use an opaque sid + server exchange or WebView postMessage instead.'
+                    );
+                    try {
+                        var clean = new URL(window.location.href);
+                        found.forEach(function (k) { clean.searchParams.delete(k); });
+                        window.history.replaceState({}, '', clean.toString());
+                    } catch (e2) { /* noop */ }
+                }
+                if (/access_token|id_token|refresh_token/i.test(window.location.hash || '')) {
+                    console.warn('[subscribe] Token material in URL hash is visible to scripts; prefer server exchange.');
+                }
+            })();
+
+            if (TRUSTED_APP_MESSAGE_ORIGINS.length) {
+                window.addEventListener('message', function (ev) {
+                    if (TRUSTED_APP_MESSAGE_ORIGINS.indexOf(ev.origin) === -1) {
+                        return;
+                    }
+                    var d = ev.data;
+                    if (!d || typeof d !== 'object' || d.type !== 'MICROGRID_SUBSCRIBE_AUTH') {
+                        return;
+                    }
+                    if (d.accountId) {
+                        subscribeContext.accountId = d.accountId;
+                    }
+                    if (d.accessToken) {
+                        subscribeContext.cognitoAccessToken = d.accessToken;
+                    }
+                });
             }
 
+            var sessionResolvePromise = Promise.resolve();
+            (function queueSessionResolve() {
+                var sid = new URLSearchParams(window.location.search).get('sid');
+                if (!sid || !SESSION_RESOLVE_URL) {
+                    return;
+                }
+                sessionResolvePromise = fetch(SESSION_RESOLVE_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ sid: sid })
+                })
+                    .then(function (r) { return r.json().then(function (j) { return { r: r, j: j }; }); })
+                    .then(function (x) {
+                        if (!x.r.ok) {
+                            var d = x.j && x.j.detail;
+                            throw new Error(
+                                (typeof d === 'string' ? d : null) || (x.j && x.j.error) || 'Session could not be validated'
+                            );
+                        }
+                        if (x.j.account_id) {
+                            subscribeContext.accountId = x.j.account_id;
+                        }
+                    })
+                    .catch(function (e) {
+                        console.warn('[subscribe]', e);
+                        showError((e && e.message) || 'Could not verify app session.');
+                        throw e;
+                    });
+            })();
+
             var form = document.getElementById('sub-form');
-            var mount = document.getElementById('checkout-mount');
             var continueBtn = document.getElementById('continue-btn');
-            var cancelEmbed = document.getElementById('cancel-embed');
             var dataConsent = document.getElementById('data-consent');
+            var paymentStep = document.getElementById('payment-step');
+            var paymentElementMount = document.getElementById('payment-element');
+            var payBtn = document.getElementById('pay-btn');
+            var retryPayBtn = document.getElementById('retry-pay-btn');
+            var cancelPayBtn = document.getElementById('cancel-pay-btn');
+
+            var stripeClient = null;
+            var elements = null;
+            var paymentElement = null;
+            var activeSubscriptionId = null;
+            var lastPublishableKey = null;
 
             function syncContinueEnabled() {
                 var ok = dataConsent.checked;
@@ -462,6 +691,85 @@
                 return m ? PRICE_IDS.monthly : PRICE_IDS.annual;
             }
 
+            function tearDownPaymentUI() {
+                if (paymentElement) {
+                    try {
+                        paymentElement.unmount();
+                    } catch (e) { /* noop */ }
+                    paymentElement = null;
+                }
+                elements = null;
+                stripeClient = null;
+                paymentElementMount.innerHTML = '';
+            }
+
+            async function startPaymentStep(email) {
+                if (!PAY_PREPARE_URL) {
+                    throw new Error('Configure SUBSCRIBE_API_BASE to your consumer-api origin (or serve API same host).');
+                }
+                if (!subscribeContext.accountId && !window.SUBSCRIBE_ALLOW_NO_ACCOUNT) {
+                    throw new Error('Account is required. Open this page from the app with a valid subscribe link (sid) or set subscribeContext.');
+                }
+                var aid = subscribeContext.accountId;
+                if (!aid && window.SUBSCRIBE_ALLOW_NO_ACCOUNT) {
+                    aid = window.SUBSCRIBE_DEV_ACCOUNT_ID || '';
+                }
+                if (!aid) {
+                    throw new Error('Missing account_id.');
+                }
+                subscribeContext.accountId = aid;
+
+                var res = await fetch(PAY_PREPARE_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        account_id: aid,
+                        price_id: selectedPriceId(),
+                        customer_email: email || undefined
+                    })
+                });
+                var data = await res.json().catch(function () { return {}; });
+                if (!res.ok) {
+                    throw new Error(apiDetail(data) || 'Could not start payment');
+                }
+                if (!data.client_secret || !data.subscription_id) {
+                    throw new Error('Invalid server response');
+                }
+
+                var pk = data.publishable_key || STRIPE_PUBLISHABLE_KEY;
+                if (!pk || pk.indexOf('REPLACE') !== -1) {
+                    throw new Error('Set STRIPE_PUBLISHABLE_KEY in subscribe.html or STRIPE_PUBLISHABLE_KEY on the API.');
+                }
+
+                tearDownPaymentUI();
+                stripeClient = Stripe(pk);
+                lastPublishableKey = pk;
+                activeSubscriptionId = data.subscription_id;
+                var appearance = {
+                    theme: 'stripe',
+                    variables: {
+                        colorPrimary: '#059669',
+                        borderRadius: '10px'
+                    }
+                };
+                elements = stripeClient.elements({
+                    clientSecret: data.client_secret,
+                    appearance: appearance
+                });
+                paymentElement = elements.create('payment');
+                paymentElement.mount('#payment-element');
+
+                form.querySelector('.plans').style.display = 'none';
+                form.querySelector('.field').style.display = 'none';
+                form.querySelector('.consent-block').style.display = 'none';
+                continueBtn.hidden = true;
+                paymentStep.hidden = false;
+                payBtn.hidden = false;
+                retryPayBtn.hidden = true;
+                cancelPayBtn.hidden = false;
+            }
+
             form.addEventListener('submit', async function (e) {
                 e.preventDefault();
                 showError('');
@@ -469,39 +777,20 @@
                     showError('Please agree to data collection and authorization to subscribe.');
                     return;
                 }
-                var email = document.getElementById('email').value.trim();
-                continueBtn.disabled = true;
-
                 try {
-                    var res = await fetch(CHECKOUT_SESSION_URL, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            price_id: selectedPriceId(),
-                            customer_email: email || undefined,
-                            return_path: '/subscribe.html'
-                        })
-                    });
-                    var data = await res.json().catch(function () { return {}; });
-                    if (!res.ok) {
-                        throw new Error(data.error || 'Could not start checkout');
-                    }
-                    if (!data.client_secret) {
-                        throw new Error('Invalid server response');
-                    }
-
-                    form.querySelector('.plans').style.display = 'none';
-                    form.querySelector('.field').style.display = 'none';
-                    form.querySelector('.consent-block').style.display = 'none';
-                    continueBtn.hidden = true;
-                    cancelEmbed.hidden = false;
-
-                    var checkout = await stripe.initEmbeddedCheckout({
-                        fetchClientSecret: function () {
-                            return Promise.resolve(data.client_secret);
-                        }
-                    });
-                    checkout.mount('#checkout-mount');
+                    await sessionResolvePromise;
+                } catch (e3) {
+                    return;
+                }
+                continueBtn.disabled = true;
+                var email = document.getElementById('email').value.trim();
+                if (!email) {
+                    showError('Please enter your email for receipts.');
+                    syncContinueEnabled();
+                    return;
+                }
+                try {
+                    await startPaymentStep(email);
                 } catch (err) {
                     showError(err.message || 'Something went wrong');
                 } finally {
@@ -509,8 +798,78 @@
                 }
             });
 
-            cancelEmbed.addEventListener('click', function () {
+            payBtn.addEventListener('click', async function () {
+                if (!stripeClient || !elements || !activeSubscriptionId || !subscribeContext.accountId) {
+                    showError('Payment form is not ready.');
+                    return;
+                }
+                showError('');
+                payBtn.disabled = true;
+                retryPayBtn.hidden = true;
+                var returnBase = window.location.href.split('?')[0];
+                var emailVal = document.getElementById('email').value.trim();
+                try {
+                    sessionStorage.setItem('subscribe_pending', JSON.stringify({
+                        publishableKey: lastPublishableKey || '',
+                        accountId: subscribeContext.accountId,
+                        subscriptionId: activeSubscriptionId
+                    }));
+                } catch (e0) { /* noop */ }
+
+                try {
+                    var result = await stripeClient.confirmPayment({
+                        elements: elements,
+                        confirmParams: {
+                            return_url: returnBase,
+                            receipt_email: emailVal || undefined
+                        },
+                        redirect: 'if_required'
+                    });
+                    if (result.error) {
+                        throw new Error(result.error.message || 'Payment failed');
+                    }
+                    var pi = result.paymentIntent;
+                    if (pi && pi.status === 'succeeded') {
+                        await finalizeSubscription(subscribeContext.accountId, activeSubscriptionId);
+                        sessionStorage.removeItem('subscribe_pending');
+                        document.getElementById('form-panel').classList.add('hidden');
+                        document.getElementById('success-panel').classList.add('visible');
+                        return;
+                    }
+                    if (!pi || pi.status === 'requires_action') {
+                        return;
+                    }
+                    showError('Payment could not be completed (status: ' + (pi && pi.status) + ').');
+                    payBtn.disabled = false;
+                    retryPayBtn.hidden = false;
+                } catch (err) {
+                    console.warn('[subscribe pay]', err);
+                    showError((err && err.message) || 'Payment failed');
+                    payBtn.disabled = false;
+                    retryPayBtn.hidden = false;
+                }
+            });
+
+            retryPayBtn.addEventListener('click', async function () {
+                showError('');
+                var email = document.getElementById('email').value.trim();
+                payBtn.disabled = true;
+                retryPayBtn.hidden = true;
+                try {
+                    await startPaymentStep(email);
+                    payBtn.disabled = false;
+                } catch (err) {
+                    showError(err.message || 'Could not restart payment');
+                    payBtn.disabled = false;
+                    retryPayBtn.hidden = false;
+                }
+            });
+
+            cancelPayBtn.addEventListener('click', function () {
+                sessionStorage.removeItem('subscribe_pending');
                 window.location.reload();
+            });
+
             });
         })();
     </script>
