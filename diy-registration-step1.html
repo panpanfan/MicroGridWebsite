@@ -2032,8 +2032,7 @@
                         '2. You\'ll receive a detailed savings estimate within 24 hours\n' +
                         '3. We\'ll email instructions to connect your actual system\n' +
                         '4. Download the MicroVPP™ app to view your results\n\n' +
-                        'Check your email (' + payload.email + ') for your savings estimate!\n\n' +
-                        '⚡ Tesla Powerwall users: Support coming soon! We\'ll add you to our waitlist.';
+                        'Check your email (' + payload.email + ') for your savings estimate!\n\n';
                 } else {
                     successMessage = '🎉 Success! Your system is being connected to MicroGrid\'s VPP network!\n\n';
                     
@@ -2287,7 +2286,7 @@
                 `💰 Estimated Annual Earnings: ${yearlyRange}/year\n` +
                 `📊 Average Monthly: ${monthlyAvg}/month\n\n` +
                 `${confidenceText}\n\n` +
-                'We are running your simulation now (approximately 24 hours). Leave your email to receive the results.\n\n' +
+                'We are running your simulation now (approximately 48 hours). Leave your email to receive the results.\n\n' +
                 '⚡ Tesla Powerwall users: Support coming soon! We\'ll add you to our waitlist.';
             
             return confirm(message);
