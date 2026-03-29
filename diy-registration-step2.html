@@ -329,6 +329,116 @@
             color: #059669;
         }
 
+        /* Tesla info modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-dialog {
+            background: white;
+            border-radius: 16px;
+            padding: 1.75rem 1.75rem 1.5rem;
+            max-width: 520px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .modal-dialog h3 {
+            font-size: 1.35rem;
+            color: #1f2937;
+            margin-bottom: 0.75rem;
+        }
+
+        .modal-dialog p {
+            color: #4b5563;
+            font-size: 0.95rem;
+            line-height: 1.65;
+            margin-bottom: 1rem;
+        }
+
+        .modal-actions-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1.25rem;
+        }
+
+        .modal-actions-row button {
+            flex: 1;
+            min-width: 140px;
+            padding: 0.75rem 1.25rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .modal-btn-primary {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+        }
+
+        .modal-btn-primary:hover {
+            filter: brightness(1.05);
+        }
+
+        .modal-btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+            border: 2px solid #e5e7eb;
+        }
+
+        .modal-btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .tesla-token-panel {
+            display: none;
+            margin-top: 1rem;
+            padding: 1.25rem;
+            background: #f0fdf4;
+            border: 2px solid #10B981;
+            border-radius: 12px;
+        }
+
+        .tesla-token-panel.active {
+            display: block;
+        }
+
+        .tesla-token-panel .panel-actions {
+            margin-top: 0.75rem;
+        }
+
+        .tesla-open-auth-btn {
+            background: white;
+            color: #047857;
+            border: 2px solid #059669;
+            padding: 0.6rem 1.25rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .tesla-open-auth-btn:hover {
+            background: #ecfdf5;
+        }
+
         .file-upload-container {
             margin-top: 0.5rem;
         }
@@ -811,6 +921,52 @@
                         <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Optional, but when email is provided, either City or Utility Company should be provided.</small>
                     </div>
 
+                    <div class="form-group full-width">
+                        <label for="inverterBrand">Home battery / inverter brand (optional)</label>
+                        <select id="inverterBrand" name="inverterBrand">
+                            <option value="">Select if you know your brand</option>
+                            <option value="Tesla">Tesla (Powerwall / Tesla Energy)</option>
+                            <option value="Enphase">Enphase</option>
+                            <option value="SolarEdge">SolarEdge</option>
+                            <option value="Sol-Ark">Sol-Ark</option>
+                            <option value="EG4">EG4</option>
+                            <option value="Franklin">Franklin</option>
+                            <option value="Liniotech">Liniotech</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">If you choose Tesla, you’ll use Tesla’s sign-in to obtain a <strong>Tesla Owner API</strong> refresh token. We only store that token — never your password on this page.</small>
+                    </div>
+
+                    <div class="form-group full-width" id="otherInverterBrandGroup" style="display: none;">
+                        <label for="otherInverterBrand">Other brand name</label>
+                        <input type="text" id="otherInverterBrand" name="otherInverterBrand" placeholder="Manufacturer name">
+                    </div>
+
+                    <div id="teslaTokenPanel" class="tesla-token-panel" aria-live="polite">
+                        <p style="margin: 0 0 0.75rem 0; color: #065f46; font-weight: 600;">Tesla Owner API — get your refresh token</p>
+                        <p style="margin: 0 0 0.75rem 0; font-size: 0.9rem; color: #047857;">MicroVPP connects to your Powerwall via the <strong>Tesla Owner API</strong>. Choose one of the two methods below to obtain your Owner API refresh token.</p>
+
+                        <div style="margin-bottom: 1.25rem; padding: 1rem; background: white; border-radius: 10px; border: 1px solid #d1fae5;">
+                            <p style="margin: 0 0 0.5rem 0; font-weight: 700; color: #059669;">Method 1 — Authorize here (recommended)</p>
+                            <p style="margin: 0 0 0.75rem 0; font-size: 0.875rem; color: #374151; line-height: 1.6;">Click the button to open Tesla’s official login in a new tab. Sign in with your Tesla email and password. After you authenticate, Tesla will redirect to a <strong>“Page Not Found”</strong> page. <strong>Copy the entire URL</strong> from that page’s address bar and paste it into the field below. We’ll extract the authorization code and exchange it for a refresh token automatically.</p>
+                            <button type="button" class="tesla-open-auth-btn" id="teslaStartOAuthBtn" style="margin-bottom: 0.75rem;">Sign in at Tesla</button>
+                            <div class="form-group full-width" style="margin-bottom: 0.5rem;">
+                                <label for="teslaCallbackUrl">Paste the “Page Not Found” URL here</label>
+                                <input type="text" id="teslaCallbackUrl" placeholder="https://auth.tesla.com/void/callback?code=…" style="font-size: 0.85rem;">
+                            </div>
+                            <button type="button" id="teslaExchangeBtn" class="tesla-open-auth-btn" style="background: linear-gradient(135deg, #059669 0%, #047857 100%); color: white; border: none;">Extract token from URL</button>
+                            <p id="teslaExchangeStatus" style="margin: 0.5rem 0 0 0; font-size: 0.85rem; color: #6b7280; display: none;"></p>
+                        </div>
+
+                        <div style="padding: 1rem; background: white; border-radius: 10px; border: 1px solid #d1fae5;">
+                            <p style="margin: 0 0 0.5rem 0; font-weight: 700; color: #059669;">Method 2 — Paste a token from a mobile app</p>
+                            <p style="margin: 0 0 0.75rem 0; font-size: 0.875rem; color: #374151; line-height: 1.6;">If you already have a refresh token (e.g. from <em>“Auth app for Tesla”</em> on iOS or <em>“Tesla Tokens”</em> on Android), paste it directly below.</p>
+                            <div class="form-group full-width" style="margin-bottom: 0;">
+                                <label for="teslaRefreshToken">Tesla Owner API refresh token</label>
+                                <textarea id="teslaRefreshToken" name="teslaRefreshToken" rows="3" placeholder="Paste Owner API refresh token here" style="width: 100%; min-height: 72px;"></textarea>
+                            </div>
+                        </div>
+                    </div>
 
                     <p style="text-align: center; margin: 1.5rem 0 0.75rem 0; padding: 1rem; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border-radius: 12px; border: 2px solid #10B981;">
                         <span style="display: block; color: #059669; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">✨ YOUR PROGRESS IS SAVED</span>
@@ -868,6 +1024,19 @@
             </div>
         </div>
     </footer>
+
+    <div class="modal-overlay" id="teslaInfoModal" role="dialog" aria-modal="true" aria-labelledby="teslaModalTitle">
+        <div class="modal-dialog">
+            <h3 id="teslaModalTitle">Connect your Tesla account</h3>
+            <p>We’ll open <strong>Tesla’s official login</strong> in a new tab. Sign in with your Tesla email and password there — <strong>never enter your Tesla credentials on this page</strong>.</p>
+            <p>After you sign in, Tesla will redirect to a <strong>“Page Not Found”</strong> page. That’s expected! <strong>Copy the entire URL</strong> from the address bar and paste it back here. We’ll extract the authorization code and exchange it for a refresh token via our secure server.</p>
+            <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0;">MicroVPP never sees your Tesla password. The exchange uses PKCE (S256) so no secret is needed on the client side.</p>
+            <div class="modal-actions-row">
+                <button type="button" class="modal-btn-secondary" id="teslaModalDismiss">Not now</button>
+                <button type="button" class="modal-btn-primary" id="teslaModalOpenAuth">Sign in at Tesla</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Sticky CTA Bar -->
     <div class="sticky-cta-bar">
@@ -1093,6 +1262,132 @@
             // Use device ID to ensure uniqueness across sessions
             return `diy-registration-${deviceId}@dummy.com`;
         }
+
+        // ============================================
+        // TESLA OWNER API - PKCE OAuth + code exchange
+        // ============================================
+
+        const TESLA_AUTH_URL      = 'https://auth.tesla.com/oauth2/v3/authorize';
+        const TESLA_VOID_REDIRECT = 'https://auth.tesla.com/void/callback';
+        const TESLA_OWNER_SCOPE   = 'openid email offline_access';
+
+        // PKCE helpers (S256)
+        function generateCodeVerifier() {
+            const arr = new Uint8Array(32);
+            crypto.getRandomValues(arr);
+            return btoa(String.fromCharCode.apply(null, arr))
+                .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        }
+
+        async function deriveCodeChallenge(verifier) {
+            const data = new TextEncoder().encode(verifier);
+            const digest = await crypto.subtle.digest('SHA-256', data);
+            return btoa(String.fromCharCode.apply(null, new Uint8Array(digest)))
+                .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        }
+
+        // Stored per-session so the exchange step can find the verifier
+        let _teslaCodeVerifier = sessionStorage.getItem('teslaCodeVerifier') || null;
+
+        async function openTeslaOAuthFlow() {
+            const verifier = generateCodeVerifier();
+            _teslaCodeVerifier = verifier;
+            sessionStorage.setItem('teslaCodeVerifier', verifier);
+
+            const challenge = await deriveCodeChallenge(verifier);
+            const state = 'microvpp-' + Date.now();
+
+            const params = new URLSearchParams({
+                client_id: 'ownerapi',
+                redirect_uri: TESLA_VOID_REDIRECT,
+                response_type: 'code',
+                scope: TESLA_OWNER_SCOPE,
+                state: state,
+                code_challenge: challenge,
+                code_challenge_method: 'S256',
+                locale: 'en-US',
+                prompt: 'login',
+            });
+            window.open(TESLA_AUTH_URL + '?' + params.toString(), '_blank', 'noopener,noreferrer');
+        }
+
+        function extractCodeFromUrl(raw) {
+            try {
+                const url = new URL(raw);
+                return url.searchParams.get('code') || null;
+            } catch (_) {
+                const m = raw.match(/[?&]code=([^&]+)/);
+                return m ? decodeURIComponent(m[1]) : null;
+            }
+        }
+
+        async function exchangeCodeForToken(code) {
+            const verifier = _teslaCodeVerifier || sessionStorage.getItem('teslaCodeVerifier');
+            if (!verifier) throw new Error('Missing PKCE code_verifier. Please click "Sign in at Tesla" first to start the flow.');
+
+            const resp = await fetch(API_BASE_URL + '/tesla/exchange-code', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({
+                    code: code,
+                    code_verifier: verifier,
+                    redirect_uri: TESLA_VOID_REDIRECT,
+                }),
+            });
+            if (!resp.ok) {
+                const err = await resp.json().catch(() => ({}));
+                throw new Error(err.detail || ('Exchange failed: HTTP ' + resp.status));
+            }
+            return await resp.json();
+        }
+
+        function setTeslaExchangeStatus(msg, isError) {
+            const el = document.getElementById('teslaExchangeStatus');
+            if (!el) return;
+            el.textContent = msg;
+            el.style.display = msg ? 'block' : 'none';
+            el.style.color = isError ? '#dc2626' : '#059669';
+        }
+
+        function closeTeslaInfoModal() {
+            const modal = document.getElementById('teslaInfoModal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function applyInverterBrandStep2Ui(manufacturer, opts) {
+            opts = opts || {};
+            const panel = document.getElementById('teslaTokenPanel');
+            const otherGroup = document.getElementById('otherInverterBrandGroup');
+            const modal = document.getElementById('teslaInfoModal');
+            if (!panel || !otherGroup) return;
+
+            const showTesla = manufacturer === 'Tesla';
+            const showOther = manufacturer === 'Other';
+            otherGroup.style.display = showOther ? 'block' : 'none';
+
+            if (showTesla) {
+                panel.classList.add('active');
+                if (opts.showModal && modal) {
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            } else {
+                panel.classList.remove('active');
+                if (modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+                if (opts.clearToken) {
+                    const ta = document.getElementById('teslaRefreshToken');
+                    if (ta) ta.value = '';
+                }
+            }
+        }
+
+        }
         
         // Sign up new user (using Step 1 and Step 2 data)
         async function signupUser(step2Data, step1Data) {
@@ -1274,9 +1569,96 @@
                     if (step2Data.state) document.getElementById('state').value = step2Data.state;
                     if (step2Data.utilityCompany) document.getElementById('utilityCompany').value = step2Data.utilityCompany;
                     if (step2Data.termsAccepted) document.getElementById('termsAccepted').checked = step2Data.termsAccepted;
+
+                    const knownBrands = ['Tesla', 'Enphase', 'SolarEdge', 'Sol-Ark', 'EG4', 'Franklin', 'Liniotech'];
+                    const invSel = document.getElementById('inverterBrand');
+                    if (invSel && step2Data.inverterManufacturer) {
+                        const m = step2Data.inverterManufacturer;
+                        if (knownBrands.indexOf(m) >= 0) {
+                            invSel.value = m;
+                        } else {
+                            invSel.value = 'Other';
+                            const ob = document.getElementById('otherInverterBrand');
+                            if (ob) ob.value = m;
+                        }
+                        applyInverterBrandStep2Ui(invSel.value, { showModal: false, clearToken: false });
+                    }
+                    if (step2Data.teslaRefreshToken) {
+                        const tt = document.getElementById('teslaRefreshToken');
+                        if (tt) tt.value = step2Data.teslaRefreshToken;
+                    }
                 } catch (error) {
                     console.error('Error pre-filling Step 2 form:', error);
                 }
+            }
+
+            const inverterBrandSelect = document.getElementById('inverterBrand');
+            if (inverterBrandSelect) {
+                inverterBrandSelect.addEventListener('change', function() {
+                    applyInverterBrandStep2Ui(this.value, {
+                        showModal: this.value === 'Tesla',
+                        clearToken: this.value !== 'Tesla'
+                    });
+                });
+            }
+            // Modal buttons
+            const teslaModalOpen = document.getElementById('teslaModalOpenAuth');
+            if (teslaModalOpen) {
+                teslaModalOpen.addEventListener('click', function() {
+                    openTeslaOAuthFlow();
+                    closeTeslaInfoModal();
+                });
+            }
+            const teslaModalDismiss = document.getElementById('teslaModalDismiss');
+            if (teslaModalDismiss) {
+                teslaModalDismiss.addEventListener('click', closeTeslaInfoModal);
+            }
+            const teslaModalOverlay = document.getElementById('teslaInfoModal');
+            if (teslaModalOverlay) {
+                teslaModalOverlay.addEventListener('click', function(e) {
+                    if (e.target === teslaModalOverlay) closeTeslaInfoModal();
+                });
+            }
+
+            // Panel buttons (Method 1)
+            const teslaStartBtn = document.getElementById('teslaStartOAuthBtn');
+            if (teslaStartBtn) {
+                teslaStartBtn.addEventListener('click', function() { openTeslaOAuthFlow(); });
+            }
+
+            const teslaExchangeBtn = document.getElementById('teslaExchangeBtn');
+            if (teslaExchangeBtn) {
+                teslaExchangeBtn.addEventListener('click', async function() {
+                    const urlInput = document.getElementById('teslaCallbackUrl');
+                    const raw = (urlInput ? urlInput.value : '').trim();
+                    if (!raw) {
+                        setTeslaExchangeStatus('Please paste the "Page Not Found" URL first.', true);
+                        return;
+                    }
+                    const code = extractCodeFromUrl(raw);
+                    if (!code) {
+                        setTeslaExchangeStatus('Could not find an authorization code in that URL. Make sure you copied the full address bar.', true);
+                        return;
+                    }
+                    setTeslaExchangeStatus('Exchanging code for refresh token\u2026', false);
+                    teslaExchangeBtn.disabled = true;
+                    try {
+                        const tokens = await exchangeCodeForToken(code);
+                        if (tokens.refresh_token) {
+                            const ta = document.getElementById('teslaRefreshToken');
+                            if (ta) ta.value = tokens.refresh_token;
+                            setTeslaExchangeStatus('\u2705 Refresh token obtained and filled in below!', false);
+                            sessionStorage.removeItem('teslaCodeVerifier');
+                        } else {
+                            setTeslaExchangeStatus('Exchange succeeded but no refresh_token was returned. Did the scope include offline_access?', true);
+                        }
+                    } catch (err) {
+                        console.error('Tesla code exchange error:', err);
+                        setTeslaExchangeStatus('Exchange failed: ' + err.message, true);
+                    } finally {
+                        teslaExchangeBtn.disabled = false;
+                    }
+                });
             }
         });
         
@@ -1729,8 +2111,23 @@
             }
             
             const formData = new FormData(this);
+
+            const invBrand = formData.get('inverterBrand') || '';
+            const otherInv = (formData.get('otherInverterBrand') || '').trim();
+            const inverterManufacturer = invBrand === 'Other' && otherInv
+                ? otherInv
+                : (invBrand || null);
+            const teslaTokenRaw = (formData.get('teslaRefreshToken') || '').trim();
+
+            if (inverterManufacturer === 'Tesla' && !teslaTokenRaw) {
+                const ok = confirm(
+                    'You selected Tesla but haven’t pasted a Tesla Owner API refresh token yet.\n\n' +
+                    'You can open Tesla’s sign-in from this page, paste the Owner API refresh token, then continue — or click OK to add it on Step 3 instead.'
+                );
+                if (!ok) return;
+            }
             
-            // Prepare data to save (Step 2 - Contact Info only)
+            // Prepare data to save (Step 2 - Contact Info + optional inverter / Tesla token)
             const step2Data = {
                 fullName: formData.get('fullName') || null,
                 email: formData.get('email') || null,
@@ -1740,6 +2137,9 @@
                 state: formData.get('state') || null,
                 utilityCompany: formData.get('utilityCompany') || null,
                 termsAccepted: termsCheckbox.checked,
+                inverterManufacturer: inverterManufacturer,
+                otherManufacturer: invBrand === 'Other' ? (otherInv || null) : null,
+                teslaRefreshToken: teslaTokenRaw || null,
                 timestamp: new Date().toISOString()
             };
             
