@@ -943,28 +943,40 @@
                     </div>
 
                     <div id="teslaTokenPanel" class="tesla-token-panel" aria-live="polite">
-                        <p style="margin: 0 0 0.75rem 0; color: #065f46; font-weight: 600;">Tesla Owner API — get your refresh token</p>
-                        <p style="margin: 0 0 0.75rem 0; font-size: 0.9rem; color: #047857;">MicroVPP connects to your Powerwall via the <strong>Tesla Owner API</strong>. Choose one of the two methods below to obtain your Owner API refresh token.</p>
+                        <p style="margin: 0 0 0.75rem 0; color: #065f46; font-weight: 600;">Tesla Owner API — get your refresh token (optional)</p>
+                        <p style="margin: 0 0 0.75rem 0; font-size: 0.9rem; color: #047857;">MicroVPP connects to your Powerwall via the <strong>Tesla Owner API</strong>. Choose one of the methods below to obtain your Owner API refresh token, or skip this step and add it later.</p>
 
                         <div style="margin-bottom: 1.25rem; padding: 1rem; background: white; border-radius: 10px; border: 1px solid #d1fae5;">
-                            <p style="margin: 0 0 0.5rem 0; font-weight: 700; color: #059669;">Method 1 — Authorize here (recommended)</p>
+                            <p style="margin: 0 0 0.5rem 0; font-weight: 700; color: #059669;">Method 1 — Authorize here</p>
                             <p style="margin: 0 0 0.75rem 0; font-size: 0.875rem; color: #374151; line-height: 1.6;">Click the button to open Tesla’s official login in a new tab. Sign in with your Tesla email and password. After you authenticate, Tesla will redirect to a <strong>“Page Not Found”</strong> page. <strong>Copy the entire URL</strong> from that page’s address bar and paste it into the field below. We’ll extract the authorization code and exchange it for a refresh token automatically.</p>
                             <button type="button" class="tesla-open-auth-btn" id="teslaStartOAuthBtn" style="margin-bottom: 0.75rem;">Sign in at Tesla</button>
+                            <p id="teslaOAuthError" style="margin: 0 0 0.75rem 0; font-size: 0.85rem; color: #dc2626; display: none;"></p>
                             <div class="form-group full-width" style="margin-bottom: 0.5rem;">
                                 <label for="teslaCallbackUrl">Paste the “Page Not Found” URL here</label>
                                 <input type="text" id="teslaCallbackUrl" placeholder="https://auth.tesla.com/void/callback?code=…" style="font-size: 0.85rem;">
                             </div>
                             <button type="button" id="teslaExchangeBtn" class="tesla-open-auth-btn" style="background: linear-gradient(135deg, #059669 0%, #047857 100%); color: white; border: none;">Extract token from URL</button>
                             <p id="teslaExchangeStatus" style="margin: 0.5rem 0 0 0; font-size: 0.85rem; color: #6b7280; display: none;"></p>
+                            <div id="teslaAuthTrouble" style="margin-top: 0.75rem; padding: 0.75rem; background: #fffbeb; border-radius: 8px; border: 1px solid #fde68a; display: none;">
+                                <p style="margin: 0 0 0.4rem 0; font-weight: 600; font-size: 0.85rem; color: #92400e;">Having trouble with Tesla sign-in?</p>
+                                <p style="margin: 0; font-size: 0.825rem; color: #78350f; line-height: 1.55;">Try using a 3rd-party app to generate your refresh token instead:<br>
+                                <strong>iOS:</strong> <a href="https://apps.apple.com/app/auth-app-for-tesla/id1552058613" target="_blank" rel="noopener" style="color: #059669; text-decoration: underline;">Auth app for Tesla</a> (App Store)<br>
+                                <strong>Android:</strong> Search for "Tesla Tokens" on Google Play<br>
+                                Then paste the refresh token into <strong>Method 2</strong> below. You can also skip this step entirely and add the token later.</p>
+                            </div>
                         </div>
 
                         <div style="padding: 1rem; background: white; border-radius: 10px; border: 1px solid #d1fae5;">
-                            <p style="margin: 0 0 0.5rem 0; font-weight: 700; color: #059669;">Method 2 — Paste a token from a mobile app</p>
-                            <p style="margin: 0 0 0.75rem 0; font-size: 0.875rem; color: #374151; line-height: 1.6;">If you already have a refresh token (e.g. from <em>“Auth app for Tesla”</em> on iOS or <em>“Tesla Tokens”</em> on Android), paste it directly below.</p>
+                            <p style="margin: 0 0 0.5rem 0; font-weight: 700; color: #059669;">Method 2 — Paste a token from a 3rd-party app (recommended)</p>
+                            <p style="margin: 0 0 0.75rem 0; font-size: 0.875rem; color: #374151; line-height: 1.6;">Use a 3rd-party app to generate your Tesla Owner API refresh token, then paste it below. We recommend <a href="https://apps.apple.com/app/auth-app-for-tesla/id1552058613" target="_blank" rel="noopener" style="color: #059669; text-decoration: underline;"><strong>Auth app for Tesla</strong></a> (iOS App Store) or <strong>Tesla Tokens</strong> (Android).</p>
                             <div class="form-group full-width" style="margin-bottom: 0;">
                                 <label for="teslaRefreshToken">Tesla Owner API refresh token</label>
                                 <textarea id="teslaRefreshToken" name="teslaRefreshToken" rows="3" placeholder="Paste Owner API refresh token here" style="width: 100%; min-height: 72px;"></textarea>
                             </div>
+                        </div>
+
+                        <div style="margin-top: 1rem; padding: 0.75rem 1rem; background: #f0f9ff; border-radius: 8px; border: 1px solid #bae6fd;">
+                            <p style="margin: 0; font-size: 0.85rem; color: #0c4a6e; line-height: 1.55;"><strong>Don't have the token yet?</strong> No worries — you can finish your registration now and add the Tesla refresh token later. We'll send you instructions by email.</p>
                         </div>
                     </div>
 
@@ -1031,8 +1043,9 @@
             <p>We’ll open <strong>Tesla’s official login</strong> in a new tab. Sign in with your Tesla email and password there — <strong>never enter your Tesla credentials on this page</strong>.</p>
             <p>After you sign in, Tesla will redirect to a <strong>“Page Not Found”</strong> page. That’s expected! <strong>Copy the entire URL</strong> from the address bar and paste it back here. We’ll extract the authorization code and exchange it for a refresh token via our secure server.</p>
             <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0;">MicroVPP never sees your Tesla password. The exchange uses PKCE (S256) so no secret is needed on the client side.</p>
+            <p style="font-size: 0.875rem; color: #6b7280; margin-top: 0.75rem; margin-bottom: 0;"><strong>Having trouble?</strong> You can also use a 3rd-party app like <a href="https://apps.apple.com/app/auth-app-for-tesla/id1552058613" target="_blank" rel="noopener" style="color: #059669;">Auth app for Tesla</a> (iOS) to generate your refresh token, or skip this step and add it later.</p>
             <div class="modal-actions-row">
-                <button type="button" class="modal-btn-secondary" id="teslaModalDismiss">Not now</button>
+                <button type="button" class="modal-btn-secondary" id="teslaModalDismiss">Skip for now</button>
                 <button type="button" class="modal-btn-primary" id="teslaModalOpenAuth">Sign in at Tesla</button>
             </div>
         </div>
@@ -1193,7 +1206,7 @@
         // API CONFIGURATION
         // ============================================
         
-        const API_BASE_URL = 'https://3dbhitxwoc.execute-api.us-east-2.amazonaws.com/dev';
+        const API_BASE_URL = 'https://api.microvpp.com';
         const SIGNUP_ENDPOINT = '/auth/signup';
         const UPDATE_PROFILE_ENDPOINT = '/auth/update-profile';
         
@@ -1289,26 +1302,52 @@
         // Stored per-session so the exchange step can find the verifier
         let _teslaCodeVerifier = sessionStorage.getItem('teslaCodeVerifier') || null;
 
+        async function showTeslaAuthTrouble(msg) {
+            const errEl = document.getElementById('teslaOAuthError');
+            const troubleEl = document.getElementById('teslaAuthTrouble');
+            if (errEl && msg) {
+                errEl.textContent = msg;
+                errEl.style.display = 'block';
+            }
+            if (troubleEl) troubleEl.style.display = 'block';
+        }
+
         async function openTeslaOAuthFlow() {
-            const verifier = generateCodeVerifier();
-            _teslaCodeVerifier = verifier;
-            sessionStorage.setItem('teslaCodeVerifier', verifier);
+            try {
+                const verifier = generateCodeVerifier();
+                _teslaCodeVerifier = verifier;
+                sessionStorage.setItem('teslaCodeVerifier', verifier);
 
-            const challenge = await deriveCodeChallenge(verifier);
-            const state = 'microvpp-' + Date.now();
+                const challenge = await deriveCodeChallenge(verifier);
+                const state = 'microvpp-' + Date.now();
 
-            const params = new URLSearchParams({
-                client_id: 'ownerapi',
-                redirect_uri: TESLA_VOID_REDIRECT,
-                response_type: 'code',
-                scope: TESLA_OWNER_SCOPE,
-                state: state,
-                code_challenge: challenge,
-                code_challenge_method: 'S256',
-                locale: 'en-US',
-                prompt: 'login',
-            });
-            window.open(TESLA_AUTH_URL + '?' + params.toString(), '_blank', 'noopener,noreferrer');
+                const params = new URLSearchParams({
+                    client_id: 'ownerapi',
+                    redirect_uri: TESLA_VOID_REDIRECT,
+                    response_type: 'code',
+                    scope: TESLA_OWNER_SCOPE,
+                    state: state,
+                    code_challenge: challenge,
+                    code_challenge_method: 'S256',
+                    locale: 'en-US',
+                    prompt: 'login',
+                });
+                const authUrl = TESLA_AUTH_URL + '?' + params.toString();
+                const popup = window.open(authUrl, '_blank', 'noopener,noreferrer');
+
+                if (!popup || popup.closed) {
+                    showTeslaAuthTrouble(
+                        'Could not open the Tesla sign-in page. Your browser may have blocked the popup. ' +
+                        'Please allow popups for this site, or try Method 2 below using a 3rd-party app.'
+                    );
+                }
+            } catch (err) {
+                console.error('Tesla OAuth flow error:', err);
+                showTeslaAuthTrouble(
+                    'Something went wrong opening Tesla sign-in: ' + err.message +
+                    '. Please try Method 2 below instead.'
+                );
+            }
         }
 
         function extractCodeFromUrl(raw) {
@@ -1475,17 +1514,13 @@
                 
                 // Build the API payload for signup
                 const payload = {
-                    entity_type: "inverter",
                     username: step2Data.fullName || null,
-                    email: email, // Use dummy email if user didn't provide one
+                    email: email,
                     phone_number: formatPhoneToE164(step2Data.phone),
                     full_address: step2Data.address || null,
                     city: step2Data.city || null,
                     state: step2Data.state || null,
                     zip: null,
-                    country: "US",
-                    latitude: null,
-                    longitude: null,
                     timezone: null,
                     locale: "en-US",
                     inverter_inverter_id: generateInverterId(),
@@ -1494,7 +1529,7 @@
                     inverter_serial_number: null,
                     inverter_monitoring_id: null,
                     inverter_monitoring_token: null,
-                    inverter_monitoring_url: null,
+                    inverter_monitoring_api_url: null,
                     inverter_api_key: null,
                     inverter_api_secret: null,
                     info: JSON.stringify(info),
@@ -1523,11 +1558,12 @@
                 }
                 
                 const result = await response.json();
-                console.log('Signup successful, user_id:', result.user_id);
+                const userId = result.user_id || result.account_id;
+                console.log('Signup successful, user_id:', userId);
                 
                 // Store user_id for later use
-                if (result.user_id) {
-                    sessionStorage.setItem('registrationUserId', result.user_id);
+                if (userId) {
+                    sessionStorage.setItem('registrationUserId', userId);
                 }
                 
                 return { success: true, result };
@@ -1653,6 +1689,7 @@
                     } catch (err) {
                         console.error('Tesla code exchange error:', err);
                         setTeslaExchangeStatus('Exchange failed: ' + err.message, true);
+                        showTeslaAuthTrouble(null);
                     } finally {
                         teslaExchangeBtn.disabled = false;
                     }
@@ -1753,26 +1790,21 @@
                 // Build the API payload for profile update
                 const payload = {
                     account_id: userId,
-                    entity_type: "inverter",
                     username: step2Data.fullName || null,
-                    email: email, // Use dummy email if user didn't provide one
+                    email: email,
                     phone_number: formatPhoneToE164(step2Data.phone),
                     full_address: step2Data.address || null,
                     city: step2Data.city || null,
                     state: step2Data.state || null,
                     zip: null,
-                    country: "US",
-                    latitude: null,
-                    longitude: null,
                     timezone: null,
                     locale: "en-US",
-                    inverter_inverter_id: null, // Don't change inverter_id if already set
                     inverter_inverter_type: "hybrid_inverter",
                     inverter_manufacturer: inverterManufacturer || null,
                     inverter_serial_number: step2Data.serialNumber || null,
                     inverter_monitoring_id: null,
                     inverter_monitoring_token: null,
-                    inverter_monitoring_url: null,
+                    inverter_monitoring_api_url: null,
                     inverter_api_key: step2Data.username || null,
                     inverter_api_secret: step2Data.password || null,
                     info: JSON.stringify(info),
@@ -2119,8 +2151,12 @@
 
             if (inverterManufacturer === 'Tesla' && !teslaTokenRaw) {
                 const ok = confirm(
-                    'You selected Tesla but haven’t pasted a Tesla Owner API refresh token yet.\n\n' +
-                    'You can open Tesla’s sign-in from this page, paste the Owner API refresh token, then continue — or click OK to add it on Step 3 instead.'
+                    'You selected Tesla but have not added a refresh token yet.\n\n' +
+                    'That\'s OK! You can still complete your registration without it.\n\n' +
+                    'To get your token later, we recommend using a 3rd-party app:\n' +
+                    '  • iOS: "Auth app for Tesla" (App Store)\n' +
+                    '  • Android: "Tesla Tokens" (Google Play)\n\n' +
+                    'Click OK to continue without a token, or Cancel to go back and add one now.'
                 );
                 if (!ok) return;
             }
