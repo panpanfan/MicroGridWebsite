@@ -749,6 +749,13 @@
             margin-top: 3rem;
         }
 
+        .case-study-featured {
+            grid-column: 1 / -1;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
         @media (max-width: 1024px) {
             .case-studies-grid {
                 grid-template-columns: 1fr;
@@ -1516,15 +1523,58 @@
                 <p style="color: #065f46; max-width: 900px; margin: 1rem auto 0;">See how MicroVPP turns "dumb" batteries into income generators for California homeowners. Whether proven in live field pilots or projected through rigorous back testing, the difference between standard battery operation and intelligent optimization isn't incremental. It's transformative.</p>
             </div>
             
-            <p style="text-align: center; color: #666; font-size: 1rem; margin: 2rem auto 3rem; max-width: 800px;">
-                These results are computed estimates based on each household's actual usage, solar generation, EV charging behavior and utility tariffs. They represent what MicroVPP optimization <em>would have</em> delivered under real rate conditions.
+            <!-- Sub-section 1: Live Pilot -->
+            <div class="case-studies-grid">
+                <!-- Case Study 1: Control Live Pilot -->
+                <div class="case-study-featured" style="background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
+                    <h3 style="font-size: 1.8rem; font-weight: 700; color: #065f46; margin-bottom: 0.25rem;">Case Study 1: The "Blind Spot" Fix</h3>
+                    <p style="color: #059669; font-weight: 700; margin-bottom: 0.5rem;">The Live Pilot</p>
+                    <p style="color: #666; font-style: italic; margin-bottom: 2rem;">Perris, CA • SCE Territory • 25kW Solar + 27kWh Battery</p>
+
+                    <!-- Before: Standard Mode -->
+                    <div style="background: #f5f5f5; border-radius: 15px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                        <h4 style="font-size: 1.2rem; font-weight: 700; color: #333; margin-bottom: 1rem;">Standard Mode (Before)</h4>
+                        <p style="font-weight: 700; color: #333; margin-bottom: 0.5rem;">Strategy: Uncoordinated OEM Defaults</p>
+                        <p style="color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                            Two batteries ran on separate gateway logic and failed to coordinate during variable household loads, forcing expensive peak-time grid purchases while available storage remained underused.
+                        </p>
+                        <p style="font-weight: 700; color: #333; margin-bottom: 0.25rem;">Baseline</p>
+                        <p style="font-size: 1rem; font-weight: 700; color: #6b7280; margin-bottom: 0.25rem;">Idle Storage, Wasted Potential</p>
+                    </div>
+
+                    <!-- After: MicroVPP Mode -->
+                    <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 15px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                        <h4 style="font-size: 1.2rem; font-weight: 700; color: #333; margin-bottom: 1rem;">MicroVPP Mode (After)</h4>
+                        <p style="font-weight: 700; color: #333; margin-bottom: 0.5rem;">Strategy: Unified Microgrid Orchestration</p>
+                        <p style="color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                            MicroVPP AI bridged the communication gap and orchestrated both batteries as one coordinated microgrid. With software only and no new hardware, the home saw a proven utility bill reduction during live winter operations.
+                        </p>
+                        <p style="font-weight: 700; color: #333; margin-bottom: 0.25rem;">Monthly Additional Earnings</p>
+                        <p style="font-size: 1.5rem; font-weight: 700; color: #059669; margin-bottom: 0.25rem;">+$150 / mo*</p>
+                        <p style="color: #666; font-size: 0.9rem;">(Utility bill credit that can roll over month to month, or be used to deduct the current month's utility bill)</p>
+                    </div>
+
+                    <!-- Future VPP Potential -->
+                    <div style="background: #e0f2fe; border-radius: 10px; padding: 1rem; display: flex; gap: 0.75rem; align-items: start;">
+                        <span style="font-size: 1.5rem;">💡</span>
+                        <div>
+                            <p style="font-weight: 700; color: #065f46; margin-bottom: 0.25rem;">Annualized Impact:</p>
+                            <p style="color: #555; font-size: 0.9rem;">~$1,800/yr based on measured live pilot performance; future VPP grid services could add further upside.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sub-section 2: Computational Estimates -->
+            <h3 style="text-align: center; font-size: 1.6rem; font-weight: 700; color: #065f46; margin: 3rem auto 0.5rem; max-width: 800px;">What Could Your System Earn? (Computational Estimates)</h3>
+            <p style="text-align: center; color: #666; font-size: 1rem; margin: 0 auto 3rem; max-width: 800px;">
+                These results are computed estimates based on each household's actual usage, solar generation, EV charging behavior and utility tariffs.
             </p>
 
-            <!-- Case Studies Grid -->
             <div class="case-studies-grid">
-                <!-- Case Study 1: The Bill Eliminator -->
+                <!-- Case Study 2: The Bill Eliminator -->
                 <div style="background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
-                    <h3 style="font-size: 1.8rem; font-weight: 700; color: #065f46; margin-bottom: 0.5rem;">Case Study 1: The Bill Eliminator</h3>
+                    <h3 style="font-size: 1.8rem; font-weight: 700; color: #065f46; margin-bottom: 0.5rem;">Case Study 2: The Bill Eliminator</h3>
                     <p style="color: #666; font-style: italic; margin-bottom: 2rem;">Walnut, CA • SCE Territory • 6.4kW Solar + 28.6kWh Battery</p>
                     
                     <!-- Before: Standard Mode -->
@@ -1561,9 +1611,9 @@
                     </div>
                 </div>
 
-                <!-- Case Study 2: The EV Powerhouse -->
+                <!-- Case Study 3: The EV Powerhouse -->
                 <div style="background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
-                    <h3 style="font-size: 1.8rem; font-weight: 700; color: #065f46; margin-bottom: 0.5rem;">Case Study 2: The EV Powerhouse</h3>
+                    <h3 style="font-size: 1.8rem; font-weight: 700; color: #065f46; margin-bottom: 0.5rem;">Case Study 3: The EV Powerhouse</h3>
                     <p style="color: #666; font-style: italic; margin-bottom: 2rem;">Irvine, CA • SCE Territory • 9.6kW Solar + 43kWh Battery • EV Owner</p>
                     
                     <!-- Before: Standard Mode -->
