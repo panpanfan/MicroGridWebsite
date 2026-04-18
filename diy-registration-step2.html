@@ -1488,27 +1488,43 @@
                         platform: navigator.platform,
                         language: navigator.language
                     },
-                    electricity_bills: {
-                        uploaded_count: filesInfo.length,
-                        files: filesInfo,
-                        monthly_kwh_provided: step1Data.monthlyKwh && Object.keys(step1Data.monthlyKwh).length > 0,
-                        monthly_kwh: step1Data.monthlyKwh ? (() => {
-                            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
-                                               'July', 'August', 'September', 'October', 'November', 'December'];
-                            return monthNames.map(month => {
-                                const val = step1Data.monthlyKwh[`month${month}`];
-                                return val ? parseFloat(val) : null;
-                            });
-                        })() : null,
-                        daily_average_kwh_provided: step1Data.dailyAverageKwh && step1Data.dailyAverageKwh.trim() !== '',
-                        daily_average_kwh: step1Data.dailyAverageKwh ? parseFloat(step1Data.dailyAverageKwh) : null
-                    },
+                    electricity_bills: (() => {
+                        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                                           'July', 'August', 'September', 'October', 'November', 'December'];
+                        const toMonthArray = (dict) => dict
+                            ? monthNames.map(m => {
+                                const v = dict[`month${m}`];
+                                return (v !== undefined && v !== null && v !== '') ? parseFloat(v) : null;
+                            })
+                            : null;
+                        const dailyAvgStr = (val) => (val !== undefined && val !== null && String(val).trim() !== '')
+                            ? parseFloat(val) : null;
+                        return {
+                            uploaded_count: filesInfo.length,
+                            files: filesInfo,
+                            bill_type: step1Data.billType || 'no_solar',
+                            monthly_kwh_provided: step1Data.monthlyKwh && Object.keys(step1Data.monthlyKwh).length > 0,
+                            monthly_kwh: toMonthArray(step1Data.monthlyKwh),
+                            monthly_net_kwh: toMonthArray(step1Data.monthlyNetKwh),
+                            monthly_export_kwh: toMonthArray(step1Data.monthlyExportKwh),
+                            daily_average_kwh_provided: !!dailyAvgStr(step1Data.dailyAverageKwh),
+                            daily_average_kwh: dailyAvgStr(step1Data.dailyAverageKwh),
+                            daily_average_net_kwh: dailyAvgStr(step1Data.dailyAverageNetKwh),
+                            daily_average_export_kwh: dailyAvgStr(step1Data.dailyAverageExportKwh),
+                            estimated_solar_kwh_per_day_per_kw: step1Data.estimatedSolarKwhPerDayPerKw || null
+                        };
+                    })(),
                     step1_inputs: {
                         battery_capacity: step1Data.batteryCapacity || null,
                         pv_wattage: step1Data.pvWattage || null,
                         monthly_kwh: step1Data.monthlyKwh || null,
                         daily_average_kwh: step1Data.dailyAverageKwh || null,
-                        temp_user_id: step1Data.tempUserId || null
+                        temp_user_id: step1Data.tempUserId || null,
+                        bill_type: step1Data.billType || 'no_solar',
+                        monthly_net_kwh: step1Data.monthlyNetKwh || null,
+                        monthly_export_kwh: step1Data.monthlyExportKwh || null,
+                        daily_average_net_kwh: step1Data.dailyAverageNetKwh || null,
+                        daily_average_export_kwh: step1Data.dailyAverageExportKwh || null
                     }
                 };
                 
@@ -1757,27 +1773,43 @@
                         registration_source: 'diy-web-form-step2',
                         temp_user_id: step1Data.tempUserId || null
                     },
-                    electricity_bills: {
-                        uploaded_count: fileInfo.length,
-                        files: fileInfo,
-                        monthly_kwh_provided: step1Data.monthlyKwh && Object.keys(step1Data.monthlyKwh).length > 0,
-                        monthly_kwh: step1Data.monthlyKwh ? (() => {
-                            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
-                                               'July', 'August', 'September', 'October', 'November', 'December'];
-                            return monthNames.map(month => {
-                                const val = step1Data.monthlyKwh[`month${month}`];
-                                return val ? parseFloat(val) : null;
-                            });
-                        })() : null,
-                        daily_average_kwh_provided: step1Data.dailyAverageKwh && step1Data.dailyAverageKwh.trim() !== '',
-                        daily_average_kwh: step1Data.dailyAverageKwh ? parseFloat(step1Data.dailyAverageKwh) : null
-                    },
+                    electricity_bills: (() => {
+                        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                                           'July', 'August', 'September', 'October', 'November', 'December'];
+                        const toMonthArray = (dict) => dict
+                            ? monthNames.map(m => {
+                                const v = dict[`month${m}`];
+                                return (v !== undefined && v !== null && v !== '') ? parseFloat(v) : null;
+                            })
+                            : null;
+                        const dailyAvgStr = (val) => (val !== undefined && val !== null && String(val).trim() !== '')
+                            ? parseFloat(val) : null;
+                        return {
+                            uploaded_count: fileInfo.length,
+                            files: fileInfo,
+                            bill_type: step1Data.billType || 'no_solar',
+                            monthly_kwh_provided: step1Data.monthlyKwh && Object.keys(step1Data.monthlyKwh).length > 0,
+                            monthly_kwh: toMonthArray(step1Data.monthlyKwh),
+                            monthly_net_kwh: toMonthArray(step1Data.monthlyNetKwh),
+                            monthly_export_kwh: toMonthArray(step1Data.monthlyExportKwh),
+                            daily_average_kwh_provided: !!dailyAvgStr(step1Data.dailyAverageKwh),
+                            daily_average_kwh: dailyAvgStr(step1Data.dailyAverageKwh),
+                            daily_average_net_kwh: dailyAvgStr(step1Data.dailyAverageNetKwh),
+                            daily_average_export_kwh: dailyAvgStr(step1Data.dailyAverageExportKwh),
+                            estimated_solar_kwh_per_day_per_kw: step1Data.estimatedSolarKwhPerDayPerKw || null
+                        };
+                    })(),
                     step1_inputs: {
                         battery_capacity: step1Data.batteryCapacity || null,
                         pv_wattage: step1Data.pvWattage || null,
                         monthly_kwh: step1Data.monthlyKwh || null,
                         daily_average_kwh: step1Data.dailyAverageKwh || null,
-                        temp_user_id: step1Data.tempUserId || null
+                        temp_user_id: step1Data.tempUserId || null,
+                        bill_type: step1Data.billType || 'no_solar',
+                        monthly_net_kwh: step1Data.monthlyNetKwh || null,
+                        monthly_export_kwh: step1Data.monthlyExportKwh || null,
+                        daily_average_net_kwh: step1Data.dailyAverageNetKwh || null,
+                        daily_average_export_kwh: step1Data.dailyAverageExportKwh || null
                     },
                     notes: step2Data.additionalNotes || null
                 };
