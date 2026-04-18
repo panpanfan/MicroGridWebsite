@@ -924,118 +924,73 @@
                                         <p style="color: #6b7280; font-size: 0.875rem;">Manually enter your monthly usage below:</p>
                                     </div>
 
-                                    <h5 class="monthly-usage-heading" style="color: #374151; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.75rem;">
+                                    <h5 class="monthly-usage-heading" style="color: #374151; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem;">
                                         Monthly Daily Average <span class="monthly-usage-scope">Electricity Usage</span> (kWh)
                                     </h5>
+                                    <p id="monthlyCombinedHint" style="display: none; color: #6b7280; font-size: 0.825rem; margin-bottom: 0.75rem;">
+                                        For each month, enter the <strong>net usage</strong> (darker "Consumption" bar, top) and the <strong>export generation</strong> (lighter bar, bottom). Leave blank for months where no value was shown.
+                                    </p>
 
-                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
-                                        <div class="form-group" style="margin-bottom: 0;">
+                                    <div id="monthlyInputGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                                        <div class="form-group month-cell" style="margin-bottom: 0;">
                                             <label for="monthJanuary" style="font-size: 0.875rem;">January</label>
                                             <input type="number" id="monthJanuary" name="monthJanuary" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
+                                            <input type="number" id="monthExportJanuary" name="monthExportJanuary" placeholder="Export kWh" step="0.1" min="0" class="month-export-input" style="display: none; padding: 0.5rem; font-size: 0.9rem; margin-top: 0.35rem; background: #f0fdf4; border-color: #bbf7d0;">
                                         </div>
-                                        <div class="form-group" style="margin-bottom: 0;">
+                                        <div class="form-group month-cell" style="margin-bottom: 0;">
                                             <label for="monthFebruary" style="font-size: 0.875rem;">February</label>
                                             <input type="number" id="monthFebruary" name="monthFebruary" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
+                                            <input type="number" id="monthExportFebruary" name="monthExportFebruary" placeholder="Export kWh" step="0.1" min="0" class="month-export-input" style="display: none; padding: 0.5rem; font-size: 0.9rem; margin-top: 0.35rem; background: #f0fdf4; border-color: #bbf7d0;">
                                         </div>
-                                        <div class="form-group" style="margin-bottom: 0;">
+                                        <div class="form-group month-cell" style="margin-bottom: 0;">
                                             <label for="monthMarch" style="font-size: 0.875rem;">March</label>
                                             <input type="number" id="monthMarch" name="monthMarch" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
+                                            <input type="number" id="monthExportMarch" name="monthExportMarch" placeholder="Export kWh" step="0.1" min="0" class="month-export-input" style="display: none; padding: 0.5rem; font-size: 0.9rem; margin-top: 0.35rem; background: #f0fdf4; border-color: #bbf7d0;">
                                         </div>
-                                        <div class="form-group" style="margin-bottom: 0;">
+                                        <div class="form-group month-cell" style="margin-bottom: 0;">
                                             <label for="monthApril" style="font-size: 0.875rem;">April</label>
                                             <input type="number" id="monthApril" name="monthApril" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
+                                            <input type="number" id="monthExportApril" name="monthExportApril" placeholder="Export kWh" step="0.1" min="0" class="month-export-input" style="display: none; padding: 0.5rem; font-size: 0.9rem; margin-top: 0.35rem; background: #f0fdf4; border-color: #bbf7d0;">
                                         </div>
-                                        <div class="form-group" style="margin-bottom: 0;">
+                                        <div class="form-group month-cell" style="margin-bottom: 0;">
                                             <label for="monthMay" style="font-size: 0.875rem;">May</label>
                                             <input type="number" id="monthMay" name="monthMay" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
+                                            <input type="number" id="monthExportMay" name="monthExportMay" placeholder="Export kWh" step="0.1" min="0" class="month-export-input" style="display: none; padding: 0.5rem; font-size: 0.9rem; margin-top: 0.35rem; background: #f0fdf4; border-color: #bbf7d0;">
                                         </div>
-                                        <div class="form-group" style="margin-bottom: 0;">
+                                        <div class="form-group month-cell" style="margin-bottom: 0;">
                                             <label for="monthJune" style="font-size: 0.875rem;">June</label>
                                             <input type="number" id="monthJune" name="monthJune" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
+                                            <input type="number" id="monthExportJune" name="monthExportJune" placeholder="Export kWh" step="0.1" min="0" class="month-export-input" style="display: none; padding: 0.5rem; font-size: 0.9rem; margin-top: 0.35rem; background: #f0fdf4; border-color: #bbf7d0;">
                                         </div>
-                                        <div class="form-group" style="margin-bottom: 0;">
+                                        <div class="form-group month-cell" style="margin-bottom: 0;">
                                             <label for="monthJuly" style="font-size: 0.875rem;">July</label>
                                             <input type="number" id="monthJuly" name="monthJuly" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
+                                            <input type="number" id="monthExportJuly" name="monthExportJuly" placeholder="Export kWh" step="0.1" min="0" class="month-export-input" style="display: none; padding: 0.5rem; font-size: 0.9rem; margin-top: 0.35rem; background: #f0fdf4; border-color: #bbf7d0;">
                                         </div>
-                                        <div class="form-group" style="margin-bottom: 0;">
+                                        <div class="form-group month-cell" style="margin-bottom: 0;">
                                             <label for="monthAugust" style="font-size: 0.875rem;">August</label>
                                             <input type="number" id="monthAugust" name="monthAugust" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
+                                            <input type="number" id="monthExportAugust" name="monthExportAugust" placeholder="Export kWh" step="0.1" min="0" class="month-export-input" style="display: none; padding: 0.5rem; font-size: 0.9rem; margin-top: 0.35rem; background: #f0fdf4; border-color: #bbf7d0;">
                                         </div>
-                                        <div class="form-group" style="margin-bottom: 0;">
+                                        <div class="form-group month-cell" style="margin-bottom: 0;">
                                             <label for="monthSeptember" style="font-size: 0.875rem;">September</label>
                                             <input type="number" id="monthSeptember" name="monthSeptember" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
+                                            <input type="number" id="monthExportSeptember" name="monthExportSeptember" placeholder="Export kWh" step="0.1" min="0" class="month-export-input" style="display: none; padding: 0.5rem; font-size: 0.9rem; margin-top: 0.35rem; background: #f0fdf4; border-color: #bbf7d0;">
                                         </div>
-                                        <div class="form-group" style="margin-bottom: 0;">
+                                        <div class="form-group month-cell" style="margin-bottom: 0;">
                                             <label for="monthOctober" style="font-size: 0.875rem;">October</label>
                                             <input type="number" id="monthOctober" name="monthOctober" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
+                                            <input type="number" id="monthExportOctober" name="monthExportOctober" placeholder="Export kWh" step="0.1" min="0" class="month-export-input" style="display: none; padding: 0.5rem; font-size: 0.9rem; margin-top: 0.35rem; background: #f0fdf4; border-color: #bbf7d0;">
                                         </div>
-                                        <div class="form-group" style="margin-bottom: 0;">
+                                        <div class="form-group month-cell" style="margin-bottom: 0;">
                                             <label for="monthNovember" style="font-size: 0.875rem;">November</label>
                                             <input type="number" id="monthNovember" name="monthNovember" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
+                                            <input type="number" id="monthExportNovember" name="monthExportNovember" placeholder="Export kWh" step="0.1" min="0" class="month-export-input" style="display: none; padding: 0.5rem; font-size: 0.9rem; margin-top: 0.35rem; background: #f0fdf4; border-color: #bbf7d0;">
                                         </div>
-                                        <div class="form-group" style="margin-bottom: 0;">
+                                        <div class="form-group month-cell" style="margin-bottom: 0;">
                                             <label for="monthDecember" style="font-size: 0.875rem;">December</label>
                                             <input type="number" id="monthDecember" name="monthDecember" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                        </div>
-                                    </div>
-
-                                    <!-- Monthly Export Generation inputs (only for with-solar bills) -->
-                                    <div id="monthlyExportSection" style="display: none; margin-top: 1.5rem;">
-                                        <h5 style="color: #374151; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem;">
-                                            Monthly Daily Average Export Generation (kWh)
-                                        </h5>
-                                        <p style="color: #6b7280; font-size: 0.825rem; margin-bottom: 0.75rem;">
-                                            Enter the export generation daily average for each month (the lighter bar on your SCE bill). Leave blank for months where no export was shown.
-                                        </p>
-                                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
-                                            <div class="form-group" style="margin-bottom: 0;">
-                                                <label for="monthExportJanuary" style="font-size: 0.875rem;">January</label>
-                                                <input type="number" id="monthExportJanuary" name="monthExportJanuary" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                            </div>
-                                            <div class="form-group" style="margin-bottom: 0;">
-                                                <label for="monthExportFebruary" style="font-size: 0.875rem;">February</label>
-                                                <input type="number" id="monthExportFebruary" name="monthExportFebruary" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                            </div>
-                                            <div class="form-group" style="margin-bottom: 0;">
-                                                <label for="monthExportMarch" style="font-size: 0.875rem;">March</label>
-                                                <input type="number" id="monthExportMarch" name="monthExportMarch" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                            </div>
-                                            <div class="form-group" style="margin-bottom: 0;">
-                                                <label for="monthExportApril" style="font-size: 0.875rem;">April</label>
-                                                <input type="number" id="monthExportApril" name="monthExportApril" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                            </div>
-                                            <div class="form-group" style="margin-bottom: 0;">
-                                                <label for="monthExportMay" style="font-size: 0.875rem;">May</label>
-                                                <input type="number" id="monthExportMay" name="monthExportMay" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                            </div>
-                                            <div class="form-group" style="margin-bottom: 0;">
-                                                <label for="monthExportJune" style="font-size: 0.875rem;">June</label>
-                                                <input type="number" id="monthExportJune" name="monthExportJune" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                            </div>
-                                            <div class="form-group" style="margin-bottom: 0;">
-                                                <label for="monthExportJuly" style="font-size: 0.875rem;">July</label>
-                                                <input type="number" id="monthExportJuly" name="monthExportJuly" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                            </div>
-                                            <div class="form-group" style="margin-bottom: 0;">
-                                                <label for="monthExportAugust" style="font-size: 0.875rem;">August</label>
-                                                <input type="number" id="monthExportAugust" name="monthExportAugust" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                            </div>
-                                            <div class="form-group" style="margin-bottom: 0;">
-                                                <label for="monthExportSeptember" style="font-size: 0.875rem;">September</label>
-                                                <input type="number" id="monthExportSeptember" name="monthExportSeptember" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                            </div>
-                                            <div class="form-group" style="margin-bottom: 0;">
-                                                <label for="monthExportOctober" style="font-size: 0.875rem;">October</label>
-                                                <input type="number" id="monthExportOctober" name="monthExportOctober" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                            </div>
-                                            <div class="form-group" style="margin-bottom: 0;">
-                                                <label for="monthExportNovember" style="font-size: 0.875rem;">November</label>
-                                                <input type="number" id="monthExportNovember" name="monthExportNovember" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                            </div>
-                                            <div class="form-group" style="margin-bottom: 0;">
-                                                <label for="monthExportDecember" style="font-size: 0.875rem;">December</label>
-                                                <input type="number" id="monthExportDecember" name="monthExportDecember" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                            </div>
+                                            <input type="number" id="monthExportDecember" name="monthExportDecember" placeholder="Export kWh" step="0.1" min="0" class="month-export-input" style="display: none; padding: 0.5rem; font-size: 0.9rem; margin-top: 0.35rem; background: #f0fdf4; border-color: #bbf7d0;">
                                         </div>
                                     </div>
 
@@ -1184,7 +1139,7 @@
         const solarEstimateLine = document.getElementById('solarEstimateLine');
         const dailyAverageExportWrapper = document.getElementById('dailyAverageExportWrapper');
         const dailyAverageGrid = document.getElementById('dailyAverageGrid');
-        const monthlyExportSection = document.getElementById('monthlyExportSection');
+        const monthlyCombinedHint = document.getElementById('monthlyCombinedHint');
         const grossUsageEstimateBox = document.getElementById('grossUsageEstimate');
         const grossUsageEstimateValue = document.getElementById('grossUsageEstimateValue');
         const grossUsageEstimateBreakdown = document.getElementById('grossUsageEstimateBreakdown');
@@ -1275,9 +1230,35 @@
                     ? 'repeat(auto-fit, minmax(260px, 1fr))'
                     : '1fr';
             }
-            if (monthlyExportSection) {
-                monthlyExportSection.style.display = isWithSolar ? 'block' : 'none';
+            // Show/hide the per-month export inputs that live inside each month cell
+            document.querySelectorAll('.month-export-input').forEach(el => {
+                el.style.display = isWithSolar ? 'block' : 'none';
+            });
+            if (monthlyCombinedHint) {
+                monthlyCombinedHint.style.display = isWithSolar ? 'block' : 'none';
             }
+            // Usage input placeholders change to "Net usage kWh" when in with-solar mode
+            // so the two stacked inputs per cell are visually distinct. A light-red
+            // background is applied to match the red highlight used for "Electricity
+            // Usage" in the SCE bill guides (export inputs use light green to match
+            // "Export Generation").
+            const usagePlaceholder = isWithSolar ? 'Net usage kWh' : 'kWh';
+            [
+                'monthJanuary', 'monthFebruary', 'monthMarch', 'monthApril',
+                'monthMay', 'monthJune', 'monthJuly', 'monthAugust',
+                'monthSeptember', 'monthOctober', 'monthNovember', 'monthDecember'
+            ].forEach(id => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                el.placeholder = usagePlaceholder;
+                if (isWithSolar) {
+                    el.style.background = '#fef2f2';
+                    el.style.borderColor = '#fecaca';
+                } else {
+                    el.style.background = '';
+                    el.style.borderColor = '';
+                }
+            });
             if (withSolarHint) {
                 withSolarHint.style.display = isWithSolar ? 'block' : 'none';
             }
