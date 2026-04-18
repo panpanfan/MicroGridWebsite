@@ -787,11 +787,43 @@
                                         </div>
                                     </div>
                                     
-                                    <!-- Helper Note for Users Who Don't Know -->
+                                    <!-- SCE Daily Average Helper Guide (varies with bill type) -->
                                     <div style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 1rem; margin-top: 1rem;">
-                                        <p style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin: 0;">
-                                            <strong>💡 Don't know where to find your annual daily average kWh?</strong> Select the <strong>"Monthly Daily Average kWh"</strong> option above — it has a quick guide showing you exactly where to find it on your bill.
-                                        </p>
+                                        <h4 style="color: #1e40af; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                            <span>📊</span> How to Find Your Daily Average Usage (SCE Customers)
+                                        </h4>
+
+                                        <!-- Without-solar guide -->
+                                        <div id="dailyAverageGuideNoSolar">
+                                            <p style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin-bottom: 0.75rem;">
+                                                If you have <strong>Southern California Edison (SCE)</strong>, open the <strong>"Your past and current electricity usage"</strong> section of your bill and look at <strong>"Your daily average electricity usage (kWh)"</strong>. Copy the number next to <strong>"This year:"</strong> into the field above.
+                                            </p>
+                                            <div style="margin-top: 0.5rem;">
+                                                <img src="assets/images/sce_bill_no_system_daily_highlighted.png"
+                                                     alt="SCE bill (without solar) — This year's daily average highlighted"
+                                                     style="width: 100%; max-width: 520px; display: block; margin: 0 auto; border-radius: 8px; border: 1px solid #cbd5e1; cursor: pointer;"
+                                                     onclick="window.open(this.src, '_blank')">
+                                                <p style="color: #64748b; font-size: 0.75rem; margin-top: 0.4rem; text-align: center; font-style: italic;">
+                                                    In this example, the annual daily average is <strong>24.10 kWh</strong>. 💡 Click the image to view full size.
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <!-- With-solar guide -->
+                                        <div id="dailyAverageGuideWithSolar" style="display: none;">
+                                            <p style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin-bottom: 0.75rem;">
+                                                If you have <strong>Southern California Edison (SCE)</strong> and your bill shows export generation, open <strong>"Your past and current electricity usage"</strong> → <strong>"Your daily average electricity usage (kWh)"</strong>. You'll find <strong>two</strong> "This year:" values — one under <strong>Electricity Usage</strong> (your net consumption) and one under <strong>Export Generation</strong> (exported solar). Copy each into the matching field above.
+                                            </p>
+                                            <div style="margin-top: 0.5rem;">
+                                                <img src="assets/images/sce_bill_with_system_daily_highlighted.png"
+                                                     alt="SCE bill (with solar) — Electricity Usage and Export Generation daily averages highlighted"
+                                                     style="width: 100%; max-width: 520px; display: block; margin: 0 auto; border-radius: 8px; border: 1px solid #cbd5e1; cursor: pointer;"
+                                                     onclick="window.open(this.src, '_blank')">
+                                                <p style="color: #64748b; font-size: 0.75rem; margin-top: 0.4rem; text-align: center; font-style: italic;">
+                                                    In this example, <span style="color: #b91c1c;"><strong>Electricity Usage</strong> "This year: 23.20"</span> and <span style="color: #047857;"><strong>Export Generation</strong> "This year: 12.17"</span>. 💡 Click the image to view full size.
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 
@@ -825,39 +857,43 @@
                                         </p>
                                     </div>
                                     
-                                    <!-- SCE Bill Instructions -->
+                                    <!-- SCE Bill Instructions (varies with bill type) -->
                                     <div style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
                                         <h4 style="color: #1e40af; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-                                            <span>📊</span> How to Find Your Daily Average Usage (SCE Customers)
+                                            <span>📊</span> How to Find Your Monthly Usage (SCE Customers)
                                         </h4>
-                                        <p style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin-bottom: 1rem;">
-                                            If you have <strong>Southern California Edison (SCE)</strong> as your utility provider, you can easily find your last 12 months of usage in the <strong>"Your past and current electricity usage"</strong> section of your bill.
-                                        </p>
-                                        
-                                        <div class="sce-bill-examples" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
-                                            <div>
-                                                <p style="color: #1e3a8a; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.5rem; text-align: center;">
-                                                    Without Solar/Battery System
-                                                </p>
-                                                <img src="assets/images/sce_bill_no_system.png" alt="SCE bill without solar system" style="width: 100%; border-radius: 8px; border: 1px solid #cbd5e1; cursor: pointer;" onclick="window.open(this.src, '_blank')">
-                                                <p style="color: #64748b; font-size: 0.75rem; margin-top: 0.25rem; text-align: center;">
-                                                    Look for "Total electricity you used this month"
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <p style="color: #1e3a8a; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.5rem; text-align: center;">
-                                                    With Solar/Battery System
-                                                </p>
-                                                <img src="assets/images/sce_bill_with_system.png" alt="SCE bill with solar system" style="width: 100%; border-radius: 8px; border: 1px solid #cbd5e1; cursor: pointer;" onclick="window.open(this.src, '_blank')">
-                                                <p style="color: #64748b; font-size: 0.75rem; margin-top: 0.25rem; text-align: center;">
-                                                    Look for the "Consumption" bars (black) in the chart
+
+                                        <!-- Without-solar variant -->
+                                        <div id="monthlyGuideNoSolar">
+                                            <p style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin-bottom: 0.75rem;">
+                                                If you have <strong>Southern California Edison (SCE)</strong>, open the <strong>"Your past and current electricity usage"</strong> section of your bill. At the top you'll see <strong>"Total electricity you used this month in kWh"</strong> — that's the total for the most recent billing period. Below it, the bar chart shows your <strong>daily average (kWh/day)</strong> for each of the last 12 months — read each bar's height and type it into the matching month field above.
+                                            </p>
+                                            <div style="margin-top: 0.5rem;">
+                                                <img src="assets/images/sce_bill_no_system_monthly_highlighted.png"
+                                                     alt="SCE bill (without solar) — Total electricity used this month highlighted"
+                                                     style="width: 100%; max-width: 520px; display: block; margin: 0 auto; border-radius: 8px; border: 1px solid #cbd5e1; cursor: pointer;"
+                                                     onclick="window.open(this.src, '_blank')">
+                                                <p style="color: #64748b; font-size: 0.75rem; margin-top: 0.4rem; text-align: center; font-style: italic;">
+                                                    In this example, the total for the month is <strong>699 kWh</strong>, and each bar in the chart below (~23 kWh/day for Aug '25) is what you enter for that month. 💡 Click the image to view full size.
                                                 </p>
                                             </div>
                                         </div>
-                                        
-                                        <p style="color: #475569; font-size: 0.75rem; margin-top: 0.75rem; font-style: italic; text-align: center;">
-                                            💡 Click on images to view full size
-                                        </p>
+
+                                        <!-- With-solar variant -->
+                                        <div id="monthlyGuideWithSolar" style="display: none;">
+                                            <p style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin-bottom: 0.75rem;">
+                                                If you have <strong>Southern California Edison (SCE)</strong> and your bill shows export generation, open <strong>"Your past and current electricity usage"</strong>. At the top you'll see two totals for this month: <strong>"Total electricity you used this month in kWh"</strong> (net consumption) and <strong>"Total electricity you exported this month in kWh"</strong>. Below, the bar chart shows your <strong>daily averages</strong> for each month — the darker "Consumption" bar and the lighter "Export Generation" bar. Read each bar's height and enter them in the matching month fields above.
+                                            </p>
+                                            <div style="margin-top: 0.5rem;">
+                                                <img src="assets/images/sce_bill_with_system_monthly_highlighted.png"
+                                                     alt="SCE bill (with solar) — Total used and Total exported this month highlighted"
+                                                     style="width: 100%; max-width: 520px; display: block; margin: 0 auto; border-radius: 8px; border: 1px solid #cbd5e1; cursor: pointer;"
+                                                     onclick="window.open(this.src, '_blank')">
+                                                <p style="color: #64748b; font-size: 0.75rem; margin-top: 0.4rem; text-align: center; font-style: italic;">
+                                                    In this example, <span style="color: #b91c1c;"><strong>used = 695 kWh</strong></span> and <span style="color: #047857;"><strong>exported = 365 kWh</strong></span> for the billing period. Read the darker bars for Consumption and the lighter bars for Export Generation. 💡 Click the image to view full size.
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                     
                                     <!-- Upload Usage Chart Screenshot -->
@@ -1245,6 +1281,20 @@
             if (withSolarHint) {
                 withSolarHint.style.display = isWithSolar ? 'block' : 'none';
             }
+            // Swap the "How to Find Your Daily Average Usage" SCE guide between
+            // the no-solar variant and the with-solar variant (which also highlights
+            // the Export Generation "This year:" line).
+            const guideNoSolar = document.getElementById('dailyAverageGuideNoSolar');
+            const guideWithSolar = document.getElementById('dailyAverageGuideWithSolar');
+            if (guideNoSolar) guideNoSolar.style.display = isWithSolar ? 'none' : 'block';
+            if (guideWithSolar) guideWithSolar.style.display = isWithSolar ? 'block' : 'none';
+
+            // Same swap for the "How to Find Your Monthly Usage" guide in the
+            // Monthly Daily Average tab.
+            const monthlyGuideNoSolar = document.getElementById('monthlyGuideNoSolar');
+            const monthlyGuideWithSolar = document.getElementById('monthlyGuideWithSolar');
+            if (monthlyGuideNoSolar) monthlyGuideNoSolar.style.display = isWithSolar ? 'none' : 'block';
+            if (monthlyGuideWithSolar) monthlyGuideWithSolar.style.display = isWithSolar ? 'block' : 'none';
             // Highlight the active preview + radio label
             const activeBorder = '#10B981';
             const inactiveBorder = '#e5e7eb';
