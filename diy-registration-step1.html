@@ -829,19 +829,23 @@
                                 
                                 <!-- File Upload Section -->
                                 <div id="uploadSection" class="usage-section" style="display: none;">
+                                    <div style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1rem;">
+                                        <p style="margin: 0; color: #1e3a8a; font-size: 0.875rem; line-height: 1.55;">
+                                            <strong>✅ One bill is enough.</strong> From a single recent bill we can read your <strong>daily average usage</strong> (and, if you have solar, <strong>export generation</strong>), and we run OCR on the bar chart to estimate your <strong>monthly daily averages</strong> for the last 12 months automatically.
+                                        </p>
+                                        <p style="margin: 0.5rem 0 0 0; color: #1e3a8a; font-size: 0.825rem; line-height: 1.55;">
+                                            <strong>💡 More is better.</strong> If convenient, upload additional bills (up to 12, one per month) — extra bills make our savings estimate more accurate.
+                                        </p>
+                                    </div>
                                     <div class="file-upload-container">
                                         <div class="file-upload-area" id="fileUploadArea" style="border: 2px dashed #d1d5db; border-radius: 8px; padding: 2rem; text-align: center; background: #ffffff; cursor: pointer; transition: all 0.3s ease;">
                                             <div class="upload-icon" style="font-size: 3rem; margin-bottom: 0.5rem;">📄</div>
                                             <p class="upload-text" style="font-weight: 600; color: #374151; margin-bottom: 0.25rem;">Click to upload or drag and drop</p>
-                                            <p class="upload-subtext" style="font-size: 0.875rem; color: #6b7280;">Upload up to 12 files (PDF or images) — more recent bills are better</p>
+                                            <p class="upload-subtext" style="font-size: 0.875rem; color: #6b7280;">Just 1 bill works. Upload up to 12 files (PDF or images) for a more accurate estimate — more recent bills are better.</p>
                                             <input type="file" id="electricityBills" name="electricityBills" accept=".pdf,.jpg,.jpeg,.png" multiple style="display: none;">
                                         </div>
                                         <div id="fileList" class="file-list" style="margin-top: 1rem;"></div>
                                     </div>
-                                    
-                                    <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">
-                                        <strong style="color: #059669;">Optional but helpful:</strong> Helps our AI estimate your savings faster.
-                                    </small>
                                 </div>
                                 
                                 <!-- Monthly Daily Average Section -->
@@ -901,19 +905,22 @@
                                         <h4 style="color: #059669; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
                                             <span>📸</span> Easier Option: Upload a Screenshot
                                         </h4>
-                                        <p style="color: #047857; font-size: 0.875rem; line-height: 1.6; margin-bottom: 1rem;">
-                                            <strong>Don't worry about reading the exact numbers from the chart!</strong> You can take a screenshot of the "Your past and current electricity usage" section from your bill, and we'll extract the numbers for you automatically.
+                                        <p style="color: #047857; font-size: 0.875rem; line-height: 1.6; margin-bottom: 0.75rem;">
+                                            <strong>Don't worry about reading the exact numbers from the chart!</strong> Take a screenshot of the "Your past and current electricity usage" section from your bill — we'll read your <strong>daily average usage</strong> (and <strong>export generation</strong> if you have solar) directly, and run OCR on the bar chart to pull out your <strong>monthly daily averages</strong> for all 12 months automatically.
                                         </p>
-                                        
+                                        <p style="color: #047857; font-size: 0.825rem; line-height: 1.55; margin-bottom: 1rem;">
+                                            <strong>✅ One screenshot is enough.</strong> If convenient, upload additional bill screenshots (up to 12) to improve accuracy.
+                                        </p>
+
                                         <div class="usage-chart-upload-area" id="usageChartUploadArea" style="border: 2px dashed #10B981; border-radius: 8px; padding: 1.5rem; text-align: center; background: #ffffff; cursor: pointer; transition: all 0.3s ease;">
                                             <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📊</div>
                                             <p style="font-weight: 600; color: #059669; margin-bottom: 0.25rem;">Click to upload usage chart screenshot</p>
-                                            <p style="font-size: 0.875rem; color: #6b7280;">PNG, JPG, or PDF accepted</p>
-                                            <input type="file" id="usageChartScreenshot" name="usageChartScreenshot" accept=".pdf,.jpg,.jpeg,.png" style="display: none;">
+                                            <p style="font-size: 0.875rem; color: #6b7280;">PNG, JPG, or PDF accepted — 1 is enough, up to 12 for best accuracy</p>
+                                            <input type="file" id="usageChartScreenshot" name="usageChartScreenshot" accept=".pdf,.jpg,.jpeg,.png" multiple style="display: none;">
                                         </div>
-                                        
+
                                         <div id="usageChartFileDisplay" style="margin-top: 1rem;"></div>
-                                        
+
                                         <small style="color: #047857; font-size: 0.875rem; margin-top: 0.75rem; display: block;">
                                             <strong style="color: #059669;">💡 Recommended:</strong> This is more accurate than manual entry and faster than typing! Our AI will extract the numbers automatically.
                                         </small>
@@ -1319,8 +1326,9 @@
         // FILE UPLOAD HANDLING
         // ============================================
         let uploadedFiles = [];
-        let usageChartFile = null;
+        let usageChartFiles = [];
         const MAX_FILES = 12;
+        const MAX_USAGE_CHART_FILES = 12;
         const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB per file
 
         const fileUploadArea = document.getElementById('fileUploadArea');
@@ -1454,7 +1462,7 @@
         // Handle usage chart screenshot selection
         if (usageChartInput) {
             usageChartInput.addEventListener('change', (e) => {
-                handleUsageChartFile(e.target.files[0]);
+                handleUsageChartFiles(Array.from(e.target.files));
             });
         }
 
@@ -1472,54 +1480,69 @@
             usageChartUploadArea.addEventListener('drop', (e) => {
                 e.preventDefault();
                 usageChartUploadArea.classList.remove('drag-over');
-                handleUsageChartFile(e.dataTransfer.files[0]);
+                handleUsageChartFiles(Array.from(e.dataTransfer.files));
             });
         }
 
-        function handleUsageChartFile(file) {
-            if (!file) return;
-            
-            if (file.size > MAX_FILE_SIZE) {
-                alert(`File "${file.name}" is too large. Maximum size is 10MB.`);
-                return;
-            }
+        function handleUsageChartFiles(files) {
+            if (!files || files.length === 0) return;
 
             const validTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
-            if (!validTypes.includes(file.type)) {
-                alert(`File "${file.name}" has an invalid type. Please upload PDF or image files.`);
+            for (const file of files) {
+                if (usageChartFiles.length >= MAX_USAGE_CHART_FILES) {
+                    alert(`You can upload up to ${MAX_USAGE_CHART_FILES} screenshots. Remove one to add another.`);
+                    break;
+                }
+                if (file.size > MAX_FILE_SIZE) {
+                    alert(`File "${file.name}" is too large. Maximum size is 10MB.`);
+                    continue;
+                }
+                if (!validTypes.includes(file.type)) {
+                    alert(`File "${file.name}" has an invalid type. Please upload PDF or image files.`);
+                    continue;
+                }
+                usageChartFiles.push(file);
+            }
+
+            displayUsageChartFiles();
+            if (usageChartInput) usageChartInput.value = '';
+        }
+
+        function displayUsageChartFiles() {
+            if (!usageChartFileDisplay) return;
+            if (!usageChartFiles || usageChartFiles.length === 0) {
+                usageChartFileDisplay.innerHTML = '';
                 return;
             }
 
-            usageChartFile = file;
-            displayUsageChartFile();
-            usageChartInput.value = '';
-        }
-
-        function displayUsageChartFile() {
-            if (!usageChartFileDisplay || !usageChartFile) return;
-            
-            const fileIcon = getFileIcon(usageChartFile.type);
-            const fileSize = formatFileSize(usageChartFile.size);
-            
-            usageChartFileDisplay.innerHTML = `
-                <div class="file-item">
-                    <div class="file-info">
-                        <span class="file-icon">${fileIcon}</span>
-                        <div class="file-details">
-                            <span class="file-name">${usageChartFile.name}</span>
-                            <span class="file-size">${fileSize}</span>
+            const items = usageChartFiles.map((file, idx) => {
+                const fileIcon = getFileIcon(file.type);
+                const fileSize = formatFileSize(file.size);
+                return `
+                    <div class="file-item">
+                        <div class="file-info">
+                            <span class="file-icon">${fileIcon}</span>
+                            <div class="file-details">
+                                <span class="file-name">${file.name}</span>
+                                <span class="file-size">${fileSize}</span>
+                            </div>
                         </div>
+                        <button type="button" class="file-remove" onclick="removeUsageChartFile(${idx})">×</button>
                     </div>
-                    <button type="button" class="file-remove" onclick="removeUsageChartFile()">×</button>
-                </div>
-            `;
+                `;
+            }).join('');
+
+            const counter = `<p style="color: #059669; font-size: 0.8rem; margin: 0 0 0.5rem 0;"><strong>${usageChartFiles.length}</strong> of ${MAX_USAGE_CHART_FILES} screenshots uploaded</p>`;
+            usageChartFileDisplay.innerHTML = counter + items;
         }
 
-        function removeUsageChartFile() {
-            usageChartFile = null;
-            if (usageChartFileDisplay) {
-                usageChartFileDisplay.innerHTML = '';
+        function removeUsageChartFile(index) {
+            if (typeof index === 'number') {
+                usageChartFiles.splice(index, 1);
+            } else {
+                usageChartFiles = [];
             }
+            displayUsageChartFiles();
         }
 
         // ============================================
@@ -1838,11 +1861,17 @@
                     monthly_kwh: hasMonthlyData ? monthlyKwh : null,
                     daily_average_kwh_provided: hasDailyAverage,
                     daily_average_kwh: hasDailyAverage ? parseFloat(dailyAverageKwh) : null,
-                    usage_chart_screenshot: usageChartFile ? {
-                        name: usageChartFile.name,
-                        size: usageChartFile.size,
-                        type: usageChartFile.type
-                    } : null
+                    usage_chart_screenshot: (usageChartFiles && usageChartFiles.length > 0) ? {
+                        name: usageChartFiles[0].name,
+                        size: usageChartFiles[0].size,
+                        type: usageChartFiles[0].type
+                    } : null,
+                    usage_chart_screenshots: (usageChartFiles || []).map(f => ({
+                        name: f.name,
+                        size: f.size,
+                        type: f.type
+                    })),
+                    usage_chart_screenshots_count: (usageChartFiles || []).length
                 },
                 notes: formData.get('additionalNotes') || null
             };
@@ -2180,11 +2209,17 @@
                         monthly_kwh: hasMonthlyData ? monthlyKwh : null,
                         daily_average_kwh_provided: hasDailyAverage,
                         daily_average_kwh: hasDailyAverage ? parseFloat(dailyAverageKwh) : null,
-                        usage_chart_screenshot: usageChartFile ? {
-                            name: usageChartFile.name,
-                            size: usageChartFile.size,
-                            type: usageChartFile.type
-                        } : null
+                        usage_chart_screenshot: (usageChartFiles && usageChartFiles.length > 0) ? {
+                            name: usageChartFiles[0].name,
+                            size: usageChartFiles[0].size,
+                            type: usageChartFiles[0].type
+                        } : null,
+                        usage_chart_screenshots: (usageChartFiles || []).map(f => ({
+                            name: f.name,
+                            size: f.size,
+                            type: f.type
+                        })),
+                        usage_chart_screenshots_count: (usageChartFiles || []).length
                     },
                     notes: formData.get('additionalNotes') || null
                 };
@@ -2329,10 +2364,10 @@
                 // Upload utility bills if any files were selected and not already uploaded in Step 1
                 let totalFilesUploaded = window.alreadyUploadedCount || 0;
                 
-                // Combine regular utility bills and usage chart screenshot
+                // Combine regular utility bills and usage chart screenshots
                 const allFilesToUpload = [...uploadedFiles];
-                if (usageChartFile && !window.filesAlreadyUploaded) {
-                    allFilesToUpload.push(usageChartFile);
+                if (usageChartFiles && usageChartFiles.length > 0 && !window.filesAlreadyUploaded) {
+                    allFilesToUpload.push(...usageChartFiles);
                 }
                 
                 if (allFilesToUpload.length > 0 && result.user_id && !window.filesAlreadyUploaded) {
@@ -2826,7 +2861,7 @@
             const hasUtilityBills = uploadedFiles.length > 0 || sessionStorage.getItem('filesUploadedInStep1') === 'true';
             
             // Check if usage chart screenshot was uploaded (either in this session or previously)
-            const hasUsageChart = usageChartFile !== null || sessionStorage.getItem('usageChartUploadedInStep1') === 'true';
+            const hasUsageChart = (usageChartFiles && usageChartFiles.length > 0) || sessionStorage.getItem('usageChartUploadedInStep1') === 'true';
             
             // Validate that at least one usage data option is provided
             if (!hasUtilityBills && !hasMonthlyData && !hasDailyAverage && !hasUsageChart) {
@@ -2900,7 +2935,7 @@
             
             // Separate utility bills from usage chart screenshot
             const utilityBills = [...uploadedFiles];
-            const screenshots = usageChartFile ? [usageChartFile] : [];
+            const screenshots = [...(usageChartFiles || [])];
             
             // Check if files were already uploaded in a previous session
             const filesAlreadyUploaded = sessionStorage.getItem('filesUploadedInStep1') === 'true';
