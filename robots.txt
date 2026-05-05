@@ -1,0 +1,29 @@
+# robots.txt for https://www.microvpp.com/
+# MicroVPP — Home Energy AI Optimization
+
+User-agent: *
+Allow: /
+
+# Block funnel / form pages (also marked noindex on-page)
+Disallow: /diy-registration-step1.html
+Disallow: /diy-registration-step2.html
+Disallow: /diy-registration-step3.html
+Disallow: /subscribe.html
+
+# Allow major AI crawlers (helps brand surfacing in answer engines)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+Sitemap: https://www.microvpp.com/sitemap.xml
