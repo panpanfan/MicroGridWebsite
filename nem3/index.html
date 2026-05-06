@@ -63,12 +63,56 @@
             padding: 12px 16px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            gap: 12px;
+            max-width: 1080px;
+            margin: 0 auto;
+            width: 100%;
         }
 
-        .lp-brand img {
+        .lp-brand-logo {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .lp-brand-logo img {
             height: 28px;
             width: auto;
+        }
+
+        .lp-back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 12px;
+            border: 1.5px solid rgba(16, 185, 129, 0.45);
+            border-radius: 999px;
+            color: var(--green-dark);
+            background: rgba(16, 185, 129, 0.06);
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 600;
+            line-height: 1;
+            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+        }
+
+        .lp-back-home::before {
+            content: '←';
+            font-size: 0.95rem;
+            line-height: 1;
+        }
+
+        .lp-back-home:hover,
+        .lp-back-home:focus-visible {
+            background: var(--green);
+            border-color: var(--green-dark);
+            color: #ffffff;
+            outline: none;
+        }
+
+        .lp-back-home:active {
+            transform: translateY(1px);
         }
 
         .lp-hero {
@@ -115,13 +159,14 @@
         .video-wrapper {
             position: relative;
             width: 100%;
-            max-width: 720px;
+            max-width: 380px;
+            margin: 0 auto;
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
             cursor: pointer;
             background: #000;
-            aspect-ratio: 16 / 9;
+            aspect-ratio: 9 / 16;
             outline: none;
         }
 
@@ -134,9 +179,56 @@
             display: block;
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;
             background: #000;
         }
+
+        /* Mute / unmute toggle in top-right corner of video */
+        .video-mute-toggle {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 3;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 12px;
+            background: rgba(0, 0, 0, 0.62);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 999px;
+            font-family: inherit;
+            font-size: 0.78rem;
+            font-weight: 600;
+            line-height: 1;
+            cursor: pointer;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            transition: background 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
+        }
+
+        .video-mute-toggle:hover,
+        .video-mute-toggle:focus-visible {
+            background: rgba(0, 0, 0, 0.85);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-1px);
+            outline: none;
+        }
+
+        .video-mute-toggle:active { transform: translateY(0); }
+
+        .video-mute-toggle .mute-icon {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            display: none;
+        }
+
+        .video-wrapper.is-muted .video-mute-toggle .mute-icon--muted   { display: block; }
+        .video-wrapper:not(.is-muted) .video-mute-toggle .mute-icon--unmuted { display: block; }
+
+        .video-mute-toggle .mute-label { display: none; }
+        .video-wrapper.is-muted .video-mute-toggle .mute-label { display: inline; }
 
         .video-play-overlay {
             position: absolute;
@@ -238,13 +330,14 @@
         @media (min-width: 720px) {
             .lp-brand {
                 padding: 18px 24px;
-                justify-content: flex-start;
-                max-width: 1080px;
-                margin: 0 auto;
-                width: 100%;
             }
 
-            .lp-brand img { height: 34px; }
+            .lp-brand-logo img { height: 34px; }
+
+            .lp-back-home {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
 
             .lp-hero { padding: 16px 24px 32px; }
 
@@ -266,12 +359,21 @@
                 font-size: 1.12rem;
             }
 
+            .video-wrapper { max-width: 360px; }
+
             .video-play-button { width: 92px; height: 92px; }
             .video-play-button::before {
                 border-left: 28px solid white;
                 border-top: 17px solid transparent;
                 border-bottom: 17px solid transparent;
                 margin-left: 8px;
+            }
+
+            .video-mute-toggle {
+                top: 14px;
+                right: 14px;
+                padding: 8px 14px;
+                font-size: 0.82rem;
             }
         }
 
@@ -283,9 +385,10 @@
 </head>
 <body>
     <header class="lp-brand">
-        <a href="../index.html" aria-label="MicroVPP home">
+        <a href="../index.html" class="lp-brand-logo" aria-label="MicroVPP home">
             <img src="../assets/images/microvpp_logo.png" alt="MicroVPP" />
         </a>
+        <a href="../index.html" class="lp-back-home" id="lpBackHome">Home</a>
     </header>
 
     <main class="lp-hero">
@@ -296,7 +399,7 @@
             <span class="accent">Watch this.</span>
         </h1>
 
-        <div class="video-wrapper" id="videoWrapper" role="button" tabindex="0" aria-label="Play or pause video">
+        <div class="video-wrapper is-muted" id="videoWrapper" role="button" tabindex="0" aria-label="Play or pause video">
             <video id="showcaseVideo" preload="metadata" playsinline muted>
                 <source src="../assets/videos/unlock_huge_savings_optimize_your_powerwalls_now.mp4" type="video/mp4">
                 Your browser does not support the video tag.
@@ -304,6 +407,15 @@
             <div class="video-play-overlay">
                 <div class="video-play-button" aria-hidden="true"></div>
             </div>
+            <button type="button" class="video-mute-toggle" id="videoMuteToggle" aria-label="Unmute video">
+                <svg class="mute-icon mute-icon--muted" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zM19 12c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.17v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+                </svg>
+                <svg class="mute-icon mute-icon--unmuted" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                </svg>
+                <span class="mute-label">Tap to unmute</span>
+            </button>
         </div>
 
         <div class="lp-cta-block">
@@ -355,8 +467,12 @@
                     }
                 }
 
-                wrapper.addEventListener('click', togglePlayback);
+                wrapper.addEventListener('click', function (e) {
+                    if (e.target.closest('.video-mute-toggle')) return;
+                    togglePlayback();
+                });
                 wrapper.addEventListener('keydown', function (e) {
+                    if (e.target.closest('.video-mute-toggle')) return;
                     if (e.key === ' ' || e.key === 'Enter') {
                         e.preventDefault();
                         togglePlayback();
@@ -375,11 +491,49 @@
                     wrapper.classList.remove('playing');
                     track('nem3_video_complete');
                 });
+
+                const muteToggle = document.getElementById('videoMuteToggle');
+                if (muteToggle) {
+                    function syncMuteState() {
+                        if (video.muted || video.volume === 0) {
+                            wrapper.classList.add('is-muted');
+                            muteToggle.setAttribute('aria-label', 'Unmute video');
+                        } else {
+                            wrapper.classList.remove('is-muted');
+                            muteToggle.setAttribute('aria-label', 'Mute video');
+                        }
+                    }
+
+                    muteToggle.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        const willUnmute = video.muted;
+                        video.muted = !video.muted;
+                        if (willUnmute) {
+                            video.volume = 1;
+                            if (video.paused) {
+                                const p = video.play();
+                                if (p && typeof p.catch === 'function') p.catch(function () {});
+                            }
+                        }
+                        syncMuteState();
+                        track('nem3_video_mute_toggle', { event_label: willUnmute ? 'unmute' : 'mute' });
+                    });
+
+                    video.addEventListener('volumechange', syncMuteState);
+                    syncMuteState();
+                }
             }
 
             if (cta) {
                 cta.addEventListener('click', function () {
                     track('nem3_cta_click', { event_label: 'calculate_my_savings' });
+                });
+            }
+
+            const backHome = document.getElementById('lpBackHome');
+            if (backHome) {
+                backHome.addEventListener('click', function () {
+                    track('nem3_back_home_click');
                 });
             }
         })();
