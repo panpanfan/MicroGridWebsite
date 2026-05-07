@@ -2317,5 +2317,92 @@
             }
         }
     </script>
+
+    <!-- Button Click Tracking (GA4) -->
+    <script>
+        (function () {
+            function getPageName() {
+                try {
+                    var path = (window.location.pathname || '').toLowerCase();
+                    if (path === '/' || path === '' || path.endsWith('/index.html')) return 'home';
+                    if (path.endsWith('/diy-registration-step1.html')) return 'diy_step1';
+                    if (path.endsWith('/diy-registration-step2.html')) return 'diy_step2';
+                    if (path.endsWith('/diy-registration-step3.html')) return 'diy_step3';
+                    var fname = path.split('/').pop() || 'unknown';
+                    return fname.replace(/\.html?$/, '') || 'unknown';
+                } catch (_) { return 'unknown'; }
+            }
+
+            var PAGE_NAME = getPageName();
+            var TRACKABLE_CLASSES = [
+                'cta-button', 'cta-button-outline',
+                'btn-primary', 'btn-secondary',
+                'option-btn', 'cta-bar-primary', 'cta-bar-secondary',
+                'submit-btn', 'back-btn', 'mobile-menu-btn',
+                'faq-question', 'dot',
+                'modal-btn-primary', 'modal-btn-secondary',
+                'tesla-open-auth-btn', 'file-remove'
+            ];
+
+            function hasTrackableClass(el) {
+                if (!el || !el.classList) return false;
+                for (var i = 0; i < TRACKABLE_CLASSES.length; i++) {
+                    if (el.classList.contains(TRACKABLE_CLASSES[i])) return true;
+                }
+                return false;
+            }
+
+            function findTrackable(el) {
+                var max = 5;
+                while (el && el.nodeType === 1 && max-- > 0) {
+                    var tag = (el.tagName || '').toLowerCase();
+                    if (tag === 'button') return el;
+                    if (tag === 'a' && (hasTrackableClass(el) || el.hasAttribute('data-track'))) return el;
+                    if (el.hasAttribute && (el.hasAttribute('onclick') || el.hasAttribute('data-track'))) return el;
+                    if (hasTrackableClass(el)) return el;
+                    el = el.parentElement;
+                }
+                return null;
+            }
+
+            function clean(s, n) {
+                return (s || '').replace(/\s+/g, ' ').trim().slice(0, n || 100);
+            }
+
+            function buttonLabel(el) {
+                var explicit = el.getAttribute('data-track') || el.getAttribute('aria-label') || '';
+                if (explicit) return clean(explicit, 100);
+                var txt = clean(el.innerText || el.textContent || '', 80);
+                if (el.id && txt) return clean('#' + el.id + ' ' + txt, 100);
+                if (el.id) return clean('#' + el.id, 100);
+                if (txt) return txt;
+                return (el.tagName || 'el').toLowerCase();
+            }
+
+            document.addEventListener('click', function (evt) {
+                try {
+                    var el = findTrackable(evt.target);
+                    if (!el) return;
+                    if (typeof gtag !== 'function') return;
+
+                    var tag = (el.tagName || '').toLowerCase();
+                    var classes = (typeof el.className === 'string')
+                        ? clean(el.className, 200) : '';
+                    var href = (tag === 'a') ? clean(el.getAttribute('href') || '', 200) : '';
+
+                    gtag('event', 'button_click', {
+                        event_category: 'engagement',
+                        event_label: buttonLabel(el),
+                        page: PAGE_NAME,
+                        button_id: el.id || '',
+                        button_classes: classes,
+                        button_tag: tag,
+                        button_href: href,
+                        button_text: clean(el.innerText || el.textContent || '', 100)
+                    });
+                } catch (_) { /* swallow */ }
+            }, true);
+        })();
+    </script>
 </body>
 </html>
