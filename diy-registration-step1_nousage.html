@@ -596,6 +596,325 @@
                 gap: 1.5rem;
             }
         }
+
+        /* ---------- Email + profile-selection modal ---------- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 1rem;
+            animation: modalFadeIn 0.2s ease-out;
+        }
+
+        .modal-overlay.is-open {
+            display: flex;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        .modal-content {
+            background: #ffffff;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 640px;
+            max-height: calc(100vh - 2rem);
+            overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+            position: relative;
+            animation: modalSlideUp 0.25s ease-out;
+        }
+
+        @keyframes modalSlideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to   { transform: translateY(0);    opacity: 1; }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: #f3f4f6;
+            color: #4b5563;
+            font-size: 1.25rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            background: #e5e7eb;
+            color: #111827;
+        }
+
+        .modal-header {
+            padding: 1.75rem 1.75rem 0.75rem 1.75rem;
+            text-align: center;
+        }
+
+        .modal-header h2 {
+            font-size: 1.4rem;
+            color: #111827;
+            margin: 0 0 0.5rem 0;
+            font-weight: 700;
+        }
+
+        .modal-header p {
+            color: #4b5563;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .modal-body {
+            padding: 1.25rem 1.75rem 1.75rem 1.75rem;
+        }
+
+        .modal-body label.field-label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.95rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .modal-body input[type="email"] {
+            width: 100%;
+            padding: 0.75rem 0.9rem;
+            font-size: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            transition: border-color 0.2s ease;
+        }
+
+        .modal-body input[type="email"]:focus {
+            outline: none;
+            border-color: #10B981;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .modal-actions button {
+            flex: 1;
+            padding: 0.85rem 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+
+        .modal-btn-primary {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: #ffffff;
+        }
+
+        .modal-btn-primary:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 16px -4px rgba(16, 185, 129, 0.35);
+        }
+
+        .modal-btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .modal-btn-secondary {
+            background: #ffffff;
+            color: #4b5563;
+            border-color: #e5e7eb;
+        }
+
+        .modal-btn-secondary:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+        .modal-privacy {
+            margin: 1rem 0 0 0;
+            font-size: 0.78rem;
+            color: #6b7280;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 480px) {
+            .modal-header { padding: 1.25rem 1.25rem 0.5rem 1.25rem; }
+            .modal-body   { padding: 1rem 1.25rem 1.5rem 1.25rem; }
+            .modal-header h2 { font-size: 1.2rem; }
+        }
+
+        /* Modal stages (email entry vs estimates results) */
+        .modal-stage { display: none; }
+        .modal-stage.is-active { display: block; }
+
+        /* ---------- Estimate result cards (stage 2) ---------- */
+        .estimate-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .estimate-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1rem 1.1rem;
+            background: #ffffff;
+            transition: border-color 0.2s ease, transform 0.15s ease;
+        }
+
+        .estimate-card:hover {
+            border-color: #10B981;
+            transform: translateY(-1px);
+        }
+
+        .estimate-card.is-base {
+            border-color: #10B981;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+            position: relative;
+        }
+
+        .estimate-card.is-base::before {
+            content: 'MOST COMMON';
+            position: absolute;
+            top: -10px;
+            right: 14px;
+            background: #10B981;
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            padding: 3px 8px;
+            border-radius: 999px;
+        }
+
+        .estimate-card-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+            flex-wrap: wrap;
+        }
+
+        .estimate-card-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .estimate-card-kwh {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #047857;
+            white-space: nowrap;
+        }
+
+        .estimate-card-desc {
+            font-size: 0.83rem;
+            color: #4b5563;
+            line-height: 1.45;
+            margin: 0 0 0.65rem 0;
+        }
+
+        .estimate-card-amounts {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 0.5rem;
+            padding-top: 0.6rem;
+            border-top: 1px dashed #d1d5db;
+            flex-wrap: wrap;
+        }
+
+        .estimate-card-yearly {
+            display: flex;
+            flex-direction: column;
+            gap: 0.1rem;
+        }
+
+        .estimate-card-yearly-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .estimate-card-yearly-value {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #047857;
+            line-height: 1.1;
+        }
+
+        .estimate-card-monthly {
+            font-size: 0.82rem;
+            color: #4b5563;
+            text-align: right;
+        }
+
+        .estimate-card-monthly strong {
+            color: #111827;
+        }
+
+        /* ---------- Personalized-estimate CTA (stage 2) ---------- */
+        .personalized-cta {
+            margin-top: 1.25rem;
+            padding: 1.1rem 1.15rem;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            border: 2px solid #10B981;
+        }
+
+        .personalized-cta h3 {
+            font-size: 1rem;
+            color: #065f46;
+            font-weight: 700;
+            margin: 0 0 0.4rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .personalized-cta p {
+            color: #047857;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .estimates-disclaimer {
+            margin: 0.85rem 0 0 0;
+            font-size: 0.78rem;
+            color: #6b7280;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        /* Inline loading state for the email submit button */
+        .modal-btn-primary.is-loading {
+            opacity: 0.85;
+            cursor: progress;
+        }
     </style>
 </head>
 <body>
@@ -711,6 +1030,65 @@
             </div>
         </div>
     </section>
+
+    <!-- Email capture + estimates results modal (shown when user clicks Continue) -->
+    <div class="modal-overlay" id="emailEstimateModal" role="dialog" aria-modal="true" aria-labelledby="emailEstimateTitle">
+        <div class="modal-content">
+            <button type="button" class="modal-close" id="emailEstimateClose" aria-label="Close">×</button>
+
+            <!-- Stage 1: Email entry -->
+            <div class="modal-stage is-active" id="emailStage">
+                <div class="modal-header">
+                    <h2 id="emailEstimateTitle">🔓 Unlock Your Earnings Estimates</h2>
+                    <p>Enter your email and we'll instantly show how your system would perform across the three standard <strong>SCE residential profiles</strong>.</p>
+                </div>
+
+                <form id="emailEstimateForm" class="modal-body" novalidate>
+                    <label class="field-label" for="estimateEmail">Email address <span style="color: #ef4444;">*</span></label>
+                    <input type="email" id="estimateEmail" name="estimateEmail" placeholder="you@example.com" autocomplete="email" required>
+
+                    <div class="modal-actions">
+                        <button type="button" class="modal-btn-secondary" id="emailEstimateCancel">Cancel</button>
+                        <button type="submit" class="modal-btn-primary" id="emailEstimateSubmit">Show My Estimates →</button>
+                    </div>
+
+                    <p class="modal-privacy">
+                        🔒 We use your email only to send your estimate and follow‑up updates. See our <a href="privacy.html" style="color: #059669;">Privacy Policy</a>.
+                    </p>
+                </form>
+            </div>
+
+            <!-- Stage 2: Estimates for all 3 SCE profiles -->
+            <div class="modal-stage" id="estimatesStage">
+                <div class="modal-header">
+                    <h2>🎉 Your Estimated Annual Earnings</h2>
+                    <p id="estimatesIntroText">Here's how your system would earn under the three standard SCE home profiles.</p>
+                </div>
+
+                <div class="modal-body">
+                    <div class="estimate-cards" id="estimateCardsContainer">
+                        <!-- Cards rendered by showEmailEstimateModal() -->
+                    </div>
+
+                    <div class="personalized-cta">
+                        <h3>💡 Want a personalized estimate?</h3>
+                        <p>
+                            These ranges are based on the <strong>standard SCE profiles</strong>. Continue to <strong>Step 2</strong> and tell us a bit more about your home (utility, address, EV, pool, etc.) — we'll email a tailored estimate based on your actual setup.
+                        </p>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="modal-btn-secondary" id="estimatesCloseBtn">Close</button>
+                        <button type="button" class="modal-btn-primary" id="estimatesContinueBtn">Continue to Step 2 →</button>
+                    </div>
+
+                    <p class="estimates-disclaimer">
+                        Preliminary estimate only. Your detailed simulation will run in ~48 hours and arrive in your inbox.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer>
@@ -1895,288 +2273,293 @@
         }
 
         // ============================================
-        // ESTIMATION CACHING
+        // SCE STANDARD USER PROFILES
         // ============================================
-        // 
-        // The quick estimation is cached based on a signature of:
-        //   - Battery capacity
-        //   - PV wattage
-        //   - Monthly kWh data
-        //   - Daily average kWh
-        //   - Whether utility bills were uploaded
-        //   - Whether usage chart was uploaded
-        //   - Number of files uploaded
-        //
-        // Benefits:
-        //   1. If user clicks cancel and then continue again, shows saved result instantly
-        //   2. If user doesn't change any data and resubmits, no API call is made
-        //   3. If user changes any input, cache is invalidated and new calculation occurs
-        //
-        // Cache is stored in sessionStorage and persists until:
-        //   - User closes the tab/browser
-        //   - User clears browser data
-        //   - User changes any Step 1 input data
+        // Three reference residential usage profiles in SCE territory. The
+        // user picks one in the email-capture modal and we feed its daily
+        // average kWh into the quick-estimation calculation.
+        const SCE_USER_PROFILES = {
+            low: {
+                key: 'low',
+                label: 'Low',
+                dailyKwh: 23.24,
+                description: '1-bed / 2-bath single-family home, no EV, gas appliances, light AC use.'
+            },
+            base: {
+                key: 'base',
+                label: 'Base',
+                dailyKwh: 46.74,
+                description: '2-3 bedroom single-family home with one EV, regular AC use, mix of gas and electric appliances.'
+            },
+            high: {
+                key: 'high',
+                label: 'High',
+                dailyKwh: 73.55,
+                description: 'Two-story home with a pool, one or more EVs, fully-electric appliances, heavy summer AC use.'
+            }
+        };
+
         // ============================================
-        
-        // Generate a signature/hash of the form data to detect changes
-        function generateDataSignature(systemData, uploadedFilesInfo) {
-            const dataString = JSON.stringify({
-                batteryCapacity: systemData.batteryCapacity,
-                pvWattage: systemData.pvWattage,
-                monthlyKwh: systemData.monthlyKwh,
-                dailyAverageKwh: systemData.dailyAverageKwh,
-                hasUtilityBills: systemData.hasUtilityBills,
-                hasUsageChart: systemData.hasUsageChart,
-                filesCount: uploadedFilesInfo.total,
-                filesUploaded: uploadedFilesInfo.uploaded
-            });
-            
-            // Simple hash function (for production, consider using a proper hash library)
-            let hash = 0;
-            for (let i = 0; i < dataString.length; i++) {
-                const char = dataString.charCodeAt(i);
-                hash = ((hash << 5) - hash) + char;
-                hash = hash & hash; // Convert to 32bit integer
-            }
-            return hash.toString();
-        }
-        
-        // Check if we have a cached estimation for the current data
-        function getCachedEstimation(systemData, uploadedFilesInfo) {
-            const currentSignature = generateDataSignature(systemData, uploadedFilesInfo);
-            const cachedData = sessionStorage.getItem('quickEstimationCache');
-            
-            if (!cachedData) {
-                return null;
-            }
-            
-            try {
-                const cache = JSON.parse(cachedData);
-                if (cache.signature === currentSignature) {
-                    console.log('Using cached estimation (data unchanged)');
-                    return {
-                        estimation: cache.estimation,
-                        filesUploaded: cache.filesUploaded,
-                        totalFiles: cache.totalFiles
-                    };
-                } else {
-                    console.log('Data changed, cache invalidated');
-                    return null;
+        // EMAIL + ALL-PROFILES ESTIMATES MODAL
+        // ============================================
+        // Two-stage modal:
+        //   Stage 1 — collect the user's email
+        //   Stage 2 — show one estimate card per SCE standard profile (low,
+        //             base, high) and offer "Continue to Step 2" for a
+        //             personalized estimate.
+        //
+        // The submitBtn is the page-level Continue button; it gets re-enabled
+        // and reset to its original label whenever the user closes the modal
+        // without proceeding to Step 2.
+        function showEmailEstimateModal(step1Data, submitBtn, originalButtonText) {
+            const modal           = document.getElementById('emailEstimateModal');
+            const form            = document.getElementById('emailEstimateForm');
+            const emailEl         = document.getElementById('estimateEmail');
+            const emailSubmitBtn  = document.getElementById('emailEstimateSubmit');
+            const closeBtn        = document.getElementById('emailEstimateClose');
+            const cancelBtn       = document.getElementById('emailEstimateCancel');
+            const emailStage      = document.getElementById('emailStage');
+            const estimatesStage  = document.getElementById('estimatesStage');
+            const cardsContainer  = document.getElementById('estimateCardsContainer');
+            const introTextEl     = document.getElementById('estimatesIntroText');
+            const continueBtn     = document.getElementById('estimatesContinueBtn');
+            const closeStage2Btn  = document.getElementById('estimatesCloseBtn');
+
+            if (!modal || !form) return;
+
+            // Fresh state every time the modal opens.
+            emailStage.classList.add('is-active');
+            estimatesStage.classList.remove('is-active');
+            cardsContainer.innerHTML = '';
+            emailSubmitBtn.disabled = false;
+            emailSubmitBtn.classList.remove('is-loading');
+            emailSubmitBtn.textContent = 'Show My Estimates →';
+            emailEl.style.borderColor = '#e5e7eb';
+
+            // Pre-fill email from a previous session for convenience.
+            const savedEmail = sessionStorage.getItem('estimateEmail');
+            if (savedEmail) emailEl.value = savedEmail;
+
+            function restorePageButton() {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalButtonText || 'Calculate Quick Estimate & Continue';
                 }
-            } catch (error) {
-                console.error('Error reading estimation cache:', error);
-                return null;
             }
+
+            function cleanup() {
+                modal.classList.remove('is-open');
+                document.body.style.overflow = '';
+                form.removeEventListener('submit', onEmailSubmit);
+                closeBtn.removeEventListener('click', onClose);
+                cancelBtn.removeEventListener('click', onClose);
+                continueBtn.removeEventListener('click', onContinueToStep2);
+                closeStage2Btn.removeEventListener('click', onClose);
+                document.removeEventListener('keydown', onKeyDown);
+            }
+
+            function onClose() {
+                cleanup();
+                restorePageButton();
+            }
+
+            function onKeyDown(e) {
+                if (e.key === 'Escape') onClose();
+            }
+
+            function onContinueToStep2() {
+                // The user already provided their email and saw all 3
+                // estimates. Persist any latest data and proceed.
+                sessionStorage.setItem('registrationStep1', JSON.stringify(step1Data));
+                cleanup();
+                window.location.href = 'diy-registration-step2_nousage.html';
+            }
+
+            // Build a single estimate card.
+            function renderEstimateCard(profile, est) {
+                const yearlyRange = `$${est.yearly_low.toLocaleString()}–$${est.yearly_high.toLocaleString()}`;
+                const monthlyAvg  = `$${est.monthly_average.toLocaleString()}`;
+                const isBase = profile.key === 'base';
+                const emoji  = profile.key === 'low'  ? '🏠'
+                             : profile.key === 'base' ? '🏡'
+                             : '🏘️';
+                return (
+                    `<div class="estimate-card${isBase ? ' is-base' : ''}" data-profile="${profile.key}">` +
+                        `<div class="estimate-card-header">` +
+                            `<span class="estimate-card-title">${emoji} ${profile.label}</span>` +
+                            `<span class="estimate-card-kwh">${profile.dailyKwh.toFixed(2)} kWh / day</span>` +
+                        `</div>` +
+                        `<p class="estimate-card-desc">${profile.description}</p>` +
+                        `<div class="estimate-card-amounts">` +
+                            `<div class="estimate-card-yearly">` +
+                                `<span class="estimate-card-yearly-label">Estimated annual earnings</span>` +
+                                `<span class="estimate-card-yearly-value">${yearlyRange}</span>` +
+                            `</div>` +
+                            `<div class="estimate-card-monthly">~ <strong>${monthlyAvg}</strong> / month</div>` +
+                        `</div>` +
+                    `</div>`
+                );
+            }
+
+            // Failure card (in case one of the parallel API calls errors out).
+            function renderErrorCard(profile) {
+                return (
+                    `<div class="estimate-card" data-profile="${profile.key}">` +
+                        `<div class="estimate-card-header">` +
+                            `<span class="estimate-card-title">${profile.label}</span>` +
+                            `<span class="estimate-card-kwh">${profile.dailyKwh.toFixed(2)} kWh / day</span>` +
+                        `</div>` +
+                        `<p class="estimate-card-desc" style="color: #b91c1c;">Estimate temporarily unavailable. Please continue to Step 2 — we'll email it to you.</p>` +
+                    `</div>`
+                );
+            }
+
+            async function onEmailSubmit(e) {
+                e.preventDefault();
+                const email = (emailEl.value || '').trim();
+                const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+                if (!emailValid) {
+                    emailEl.style.borderColor = '#ef4444';
+                    emailEl.focus();
+                    return;
+                }
+                emailEl.style.borderColor = '#e5e7eb';
+
+                // Persist email + write it onto the systemData payload.
+                step1Data.estimateEmail = email;
+                step1Data.usageSource   = 'sce_standard_profile_all';
+                sessionStorage.setItem('estimateEmail', email);
+                sessionStorage.setItem('registrationStep1', JSON.stringify(step1Data));
+
+                // Compute all 3 estimates (in parallel) with a loading state.
+                emailSubmitBtn.disabled = true;
+                emailSubmitBtn.classList.add('is-loading');
+                emailSubmitBtn.textContent = 'Computing your estimates…';
+
+                let results;
+                try {
+                    results = await computeAllProfileEstimates(step1Data);
+                } catch (err) {
+                    console.error('Failed to compute SCE-profile estimates:', err);
+                    emailSubmitBtn.disabled = false;
+                    emailSubmitBtn.classList.remove('is-loading');
+                    emailSubmitBtn.textContent = 'Show My Estimates →';
+                    alert('We had trouble computing your estimates. Please try again or continue to Step 2 to receive them by email.');
+                    return;
+                }
+
+                // Persist computed estimates so Step 2/3 can show them.
+                sessionStorage.setItem('quickEstimationByProfile', JSON.stringify(
+                    results.map(r => ({
+                        profile_key: r.profile.key,
+                        profile_label: r.profile.label,
+                        profile_daily_kwh: r.profile.dailyKwh,
+                        estimation: r.estimation || null,
+                        error: r.error ? String(r.error.message || r.error) : null
+                    }))
+                ));
+
+                // Render cards in low → base → high order.
+                cardsContainer.innerHTML = results.map(r =>
+                    r.estimation
+                        ? renderEstimateCard(r.profile, r.estimation)
+                        : renderErrorCard(r.profile)
+                ).join('');
+
+                // Personalize the intro line with the user's system specs.
+                const battery = parseFloat(step1Data.batteryCapacity);
+                const pv      = parseFloat(step1Data.pvWattage);
+                if (introTextEl && isFinite(battery) && isFinite(pv)) {
+                    introTextEl.innerHTML =
+                        `Based on your <strong>${battery} kWh battery</strong> + <strong>${pv} kW solar</strong>, ` +
+                        `here's how your system would earn under each standard SCE home profile:`;
+                }
+
+                // Switch to stage 2.
+                emailStage.classList.remove('is-active');
+                estimatesStage.classList.add('is-active');
+                estimatesStage.scrollTop = 0;
+                setTimeout(() => continueBtn.focus(), 50);
+            }
+
+            form.addEventListener('submit', onEmailSubmit);
+            closeBtn.addEventListener('click', onClose);
+            cancelBtn.addEventListener('click', onClose);
+            continueBtn.addEventListener('click', onContinueToStep2);
+            closeStage2Btn.addEventListener('click', onClose);
+            document.addEventListener('keydown', onKeyDown);
+
+            modal.classList.add('is-open');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => emailEl.focus(), 50);
         }
-        
-        // Save estimation to cache
-        function cacheEstimation(systemData, uploadedFilesInfo, estimation) {
-            const signature = generateDataSignature(systemData, uploadedFilesInfo);
-            const cache = {
-                signature: signature,
-                estimation: estimation,
-                filesUploaded: uploadedFilesInfo.uploaded,
-                totalFiles: uploadedFilesInfo.total,
-                timestamp: new Date().toISOString()
-            };
-            
-            sessionStorage.setItem('quickEstimationCache', JSON.stringify(cache));
-            console.log('Estimation cached with signature:', signature);
-        }
-        
+
         // ============================================
         // QUICK ESTIMATION API (MOCK - TO BE REPLACED)
         // ============================================
-        
-        async function calculateQuickEstimation(systemData) {
-            // TODO: Replace this mock function with actual backend REST API call
-            // Expected endpoint: POST /api/calculate-quick-estimate
-            
-            // Simulate API delay (500ms - 1500ms)
-            const delay = 500 + Math.random() * 1000;
+
+        // Compute a quick earnings estimate for a SINGLE SCE profile. The
+        // chosen profile's daily kWh drives a usage-scale factor that
+        // adjusts the mock formula based on system specs.
+        //
+        // TODO: Replace this mock with a backend REST API call:
+        //       POST /api/calculate-quick-estimate
+        //       body: { battery_capacity_kwh, pv_wattage_kw, daily_average_kwh,
+        //               profile_key, temp_user_id }
+        async function calculateQuickEstimation(systemData, profile) {
+            // Simulate API delay (300ms - 900ms) so the loading state is
+            // visible but the modal doesn't feel sluggish.
+            const delay = 300 + Math.random() * 600;
             await new Promise(resolve => setTimeout(resolve, delay));
-            
-            // Mock calculation based on system specs
+
             const batteryCapacity = parseFloat(systemData.batteryCapacity) || 10;
-            const pvWattage = parseFloat(systemData.pvWattage) || 8;
-            
-            // Check if usage data was provided for confidence level
-            const hasUsageData = systemData.hasUtilityBills || systemData.hasUsageChart || 
-                                 (systemData.monthlyKwh && Object.keys(systemData.monthlyKwh).length > 0) ||
-                                 (systemData.dailyAverageKwh && systemData.dailyAverageKwh.trim() !== '');
-            
-            // Simple mock formula: base on battery and solar capacity
-            // Actual API will use sophisticated algorithms with usage data
-            const baseEarnings = batteryCapacity * 50; // $50 per kWh of battery
-            const solarBonus = pvWattage * 30; // $30 per kW of solar
+            const pvWattage       = parseFloat(systemData.pvWattage) || 8;
+            const dailyKwh        = (profile && profile.dailyKwh) || 46.74;
+            const usageScale      = Math.max(0.4, Math.min(2.2, dailyKwh / 46.74));
+
+            // Mock formula — actual API will use a NEM 3.0 / dispatch model.
+            const baseEarnings    = batteryCapacity * 50; // $50 per kWh of battery
+            const solarBonus      = pvWattage * 30;       // $30 per kW of solar
             const randomVariation = (Math.random() * 0.3 - 0.15); // ±15% variation
-            
-            const estimatedYearlyEarnings = Math.round((baseEarnings + solarBonus) * (1 + randomVariation));
-            const lowEstimate = Math.round(estimatedYearlyEarnings * 0.7);
-            const highEstimate = Math.round(estimatedYearlyEarnings * 1.3);
-            
-            // Mock API response format
+
+            const yearlyAvg = Math.round(
+                (baseEarnings + solarBonus) * usageScale * (1 + randomVariation)
+            );
+
             return {
                 success: true,
                 estimation: {
-                    yearly_low: lowEstimate,
-                    yearly_high: highEstimate,
-                    yearly_average: estimatedYearlyEarnings,
-                    monthly_average: Math.round(estimatedYearlyEarnings / 12),
-                    confidence_level: hasUsageData ? 'medium' : 'low',
-                    message: 'Quick estimation calculated. More accurate estimates will be provided after detailed analysis.'
+                    yearly_low:        Math.round(yearlyAvg * 0.7),
+                    yearly_high:       Math.round(yearlyAvg * 1.3),
+                    yearly_average:    yearlyAvg,
+                    monthly_average:   Math.round(yearlyAvg / 12),
+                    confidence_level:  'low',
+                    profile_key:       profile ? profile.key       : null,
+                    profile_label:     profile ? profile.label     : null,
+                    profile_daily_kwh: dailyKwh
                 }
             };
-            
-            // Uncomment below when actual API is ready:
-            /*
-            // NOTE: This function is called AFTER files are uploaded
-            // The backend should use the uploaded files (utility bills, usage chart screenshot)
-            // along with the system specs to calculate the estimation
-            const response = await fetch(API_BASE_URL + '/api/calculate-quick-estimate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    battery_capacity_kwh: systemData.batteryCapacity,
-                    pv_wattage_kw: systemData.pvWattage,
-                    monthly_kwh: systemData.monthlyKwh,
-                    daily_average_kwh: systemData.dailyAverageKwh,
-                    has_utility_bills: systemData.hasUtilityBills,
-                    has_usage_chart: systemData.hasUsageChart,
-                    temp_user_id: systemData.tempUserId,
-                    // Backend should fetch the uploaded files using temp_user_id
-                    // Files are already uploaded to S3 at this point
-                })
-            });
-            
-            if (!response.ok) {
-                throw new Error('Quick estimation API failed');
-            }
-            
-            return await response.json();
-            */
-        }
-        
-        function showEstimationDialog(estimation, filesUploaded, totalFiles, isCached = false) {
-            const yearlyRange = `$${estimation.yearly_low.toLocaleString()}–$${estimation.yearly_high.toLocaleString()}`;
-            const monthlyAvg = `$${estimation.monthly_average.toLocaleString()}`;
-            
-            let confidenceText = '';
-            if (estimation.confidence_level === 'medium') {
-                confidenceText = 'This is a preliminary estimate based on your system specs and usage data.';
-            } else {
-                confidenceText = 'This is a preliminary estimate based on your system specs.';
-            }
-            
-            let uploadStatus = '';
-            if (totalFiles > 0) {
-                if (filesUploaded === totalFiles) {
-                    uploadStatus = `\n📁 All ${filesUploaded} file(s) uploaded successfully!\n`;
-                } else if (filesUploaded > 0) {
-                    uploadStatus = `\n⚠️ ${filesUploaded} of ${totalFiles} file(s) uploaded.\n`;
-                } else {
-                    uploadStatus = '\n⚠️ Files could not be uploaded.\n';
-                }
-            }
-            
-            const cacheNote = isCached ? '\n(Showing saved estimate - no changes detected)\n' : '';
-            
-            const message = 
-                '🎉 Your Quick Earnings Estimate\n' +
-                uploadStatus + cacheNote + '\n' +
-                `💰 Estimated Annual Earnings: ${yearlyRange}/year\n` +
-                `📊 Average Monthly: ${monthlyAvg}/month\n\n` +
-                `${confidenceText}\n\n` +
-                'We are running your simulation now (approximately 48 hours). Leave your email to receive the results.\n\n';
-            
-            return confirm(message);
-        }
-        
-        // Helper function to calculate estimation and handle navigation after files uploaded
-        async function calculateAndShowEstimation(systemData, submitBtn, filesUploaded, totalFiles) {
-            try {
-                const uploadedFilesInfo = {
-                    uploaded: filesUploaded,
-                    total: totalFiles
-                };
-                
-                // Check if we have a cached estimation for this exact data
-                const cachedResult = getCachedEstimation(systemData, uploadedFilesInfo);
-                
-                let estimation, resultFilesUploaded, resultTotalFiles;
-                
-                if (cachedResult) {
-                    // Use cached estimation (no API call needed)
-                    console.log('Using cached estimation result');
-                    estimation = cachedResult.estimation;
-                    resultFilesUploaded = cachedResult.filesUploaded;
-                    resultTotalFiles = cachedResult.totalFiles;
-                    
-                    // Store estimation in session storage for later use
-                    sessionStorage.setItem('quickEstimation', JSON.stringify(estimation));
-                } else {
-                    // Calculate new estimation
-                    submitBtn.textContent = 'Calculating your estimate...';
-                    
-                    console.log('Calculating quick estimation after file upload...');
-                    const estimationResult = await calculateQuickEstimation(systemData);
-                    
-                    if (!estimationResult.success) {
-                        console.warn('Quick estimation failed, asking user to continue anyway');
-                        if (confirm('Unable to calculate estimate, but your data has been saved. Continue to Step 2?')) {
-                            window.location.href = 'diy-registration-step2_nousage.html';
-                        } else {
-                            submitBtn.disabled = false;
-                            submitBtn.textContent = 'Calculate Quick Estimate & Continue';
-                        }
-                        return;
-                    }
-                    
-                    console.log('Quick estimation calculated:', estimationResult.estimation);
-                    estimation = estimationResult.estimation;
-                    resultFilesUploaded = filesUploaded;
-                    resultTotalFiles = totalFiles;
-                    
-                    // Cache the estimation result
-                    cacheEstimation(systemData, uploadedFilesInfo, estimation);
-                    
-                    // Store estimation in session storage for later use
-                    sessionStorage.setItem('quickEstimation', JSON.stringify(estimation));
-                }
-                
-                // Show estimation dialog with upload status
-                const userWantsToContinue = showEstimationDialog(
-                    estimation, 
-                    resultFilesUploaded, 
-                    resultTotalFiles,
-                    cachedResult !== null  // indicate if this is cached data
-                );
-                
-                if (userWantsToContinue) {
-                    // User confirmed, proceed to step 2
-                    window.location.href = 'diy-registration-step2_nousage.html';
-                } else {
-                    // User cancelled, restore button
-                    // Estimation is cached, so clicking again will show same result
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Calculate Quick Estimate & Continue';
-                }
-                
-            } catch (error) {
-                console.error('Error calculating quick estimation:', error);
-                // Ask user if they want to continue despite estimation error
-                if (confirm('Unable to calculate quick estimate at this time, but your data has been saved. Continue to Step 2?')) {
-                    window.location.href = 'diy-registration-step2_nousage.html';
-                } else {
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Calculate Quick Estimate & Continue';
-                }
-            }
         }
 
+        // Compute an estimate for each of the three SCE standard profiles in
+        // parallel. Returns an array of { profile, estimation } objects in
+        // low → base → high order. Failed calls produce { profile, error }.
+        async function computeAllProfileEstimates(systemData) {
+            const profiles = [
+                SCE_USER_PROFILES.low,
+                SCE_USER_PROFILES.base,
+                SCE_USER_PROFILES.high
+            ];
+            const results = await Promise.all(
+                profiles.map(p =>
+                    calculateQuickEstimation(systemData, p)
+                        .then(r => ({ profile: p, estimation: r.estimation, success: r.success }))
+                        .catch(err => ({ profile: p, error: err }))
+                )
+            );
+            return results;
+        }
+        
         // Form submit handler
         document.getElementById('diyForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -2349,22 +2732,22 @@
                     // Handle results
                     const totalFiles = utilityBills.length + screenshots.length;
                     
-                    // Calculate estimation after files are uploaded
-                    await calculateAndShowEstimation(step1SystemData, submitBtn, totalFilesUploaded, totalFiles);
+                    // Ask for email, then show all 3 SCE-profile estimates
+                    showEmailEstimateModal(step1SystemData, submitBtn, originalButtonText);
                     
                 } catch (error) {
                     console.error('Error uploading files:', error);
                     if (confirm('Error uploading files. Continue without files?')) {
-                        // Calculate estimation even if files failed
-                        await calculateAndShowEstimation(step1SystemData, submitBtn, 0, 0);
+                        // Ask for email, then show all 3 SCE-profile estimates
+                        showEmailEstimateModal(step1SystemData, submitBtn, originalButtonText);
                     } else {
                         submitBtn.textContent = originalButtonText;
                         submitBtn.disabled = false;
                     }
                 }
             } else {
-                // No files to upload, calculate estimation immediately
-                await calculateAndShowEstimation(step1SystemData, submitBtn, 0, 0);
+                // Go straight to email modal + 3-profile estimates
+                showEmailEstimateModal(step1SystemData, submitBtn, originalButtonText);
             }
         });
 
