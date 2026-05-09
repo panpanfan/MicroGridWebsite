@@ -421,40 +421,37 @@
             background: #e5e7eb;
         }
 
-        .tesla-token-panel {
-            display: none;
-            margin-top: 1rem;
-            padding: 1.25rem;
-            background: #f0fdf4;
-            border: 2px solid #10B981;
-            border-radius: 12px;
-        }
-
-        .tesla-token-panel.active {
-            display: block;
-        }
-
-        .tesla-token-panel .panel-actions {
-            margin-top: 0.75rem;
-        }
-
-        .tesla-open-auth-btn {
-            background: white;
-            color: #047857;
-            border: 2px solid #059669;
-            padding: 0.6rem 1.25rem;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        .tesla-open-auth-btn:hover {
-            background: #ecfdf5;
-        }
-
         .file-upload-container {
             margin-top: 0.5rem;
+        }
+
+        .usage-or-divider {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 0.25rem 0;
+            color: #6b7280;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+        }
+
+        .usage-or-divider::before,
+        .usage-or-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #d1d5db;
+        }
+
+        .usage-option-card.is-satisfied {
+            border-color: #10B981 !important;
+            background: #f0fdf4 !important;
+        }
+
+        #usageRequiredCard.has-error {
+            border-color: #f87171;
+            background: #fef2f2;
         }
 
         .file-upload-area {
@@ -879,31 +876,25 @@
                 </div>
 
                 <div class="section-header">
-                    <h2>Step 2 — Tell Us About Yourself</h2>
-                    <p>Help us provide personalized savings estimates</p>
+                    <h2>Step 2 — Unlock Your Personalized Report</h2>
+                    <p>Share a little about your home so we can swap the SCE standard profile for the real you. Contact details are optional — your usage is what powers the personalized numbers.</p>
                 </div>
 
                 <form id="step1Form" action="#" method="POST">
-                    
-                    <h2 style="font-size: 1.5rem; color: #059669; margin-bottom: 0.5rem;">Step 2 — Contact Information (Optional)</h2>
-                    <p style="color: #6b7280; margin-bottom: 2rem;">You can skip this step if you prefer. We'll save your info so you don't lose progress.</p>
-                    
+
+                    <p id="emailFromStep1Note" style="margin: 0 0 1.5rem 0; padding: 0.85rem 1rem; background: #ecfdf5; border: 1px solid #10B981; border-radius: 8px; color: #065f46; font-size: 0.9rem; line-height: 1.5;">
+                        📧 Your personalized report will arrive at <strong id="emailFromStep1Display">your email from Step&nbsp;1</strong>.
+                    </p>
+
                     <div class="form-group full-width">
                         <label for="fullName">Full Name or Preferred Name</label>
                         <input type="text" id="fullName" name="fullName" placeholder="Enter your full name or preferred name (optional)">
                     </div>
 
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" name="email" placeholder="you@example.com">
-                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">We'll send your simulation results and setup instructions.</small>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone Number</label>
-                            <input type="tel" id="phone" name="phone" placeholder="(800) 555-0100 or 8005550100 (optional)">
-                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">US phone numbers only. Enter 10 digits.</small>
-                        </div>
+                    <div class="form-group full-width">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="(800) 555-0100 or 8005550100 (optional)">
+                        <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">US phone numbers only. Enter 10 digits.</small>
                     </div>
 
                     <div class="form-group full-width">
@@ -913,9 +904,9 @@
 
                     <div class="form-grid">
                         <div class="form-group">
-                            <label for="city">City <span style="color: #059669; font-weight: 600;">*</span></label>
-                            <input type="text" id="city" name="city" placeholder="City">
-                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Optional, but when email is provided, either City or Utility Company should be provided.</small>
+                            <label for="city">City</label>
+                            <input type="text" id="city" name="city" placeholder="City (optional)">
+                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Helps us match local energy rates.</small>
                         </div>
                         <div class="form-group">
                             <label for="state">State</label>
@@ -927,9 +918,9 @@
                     </div>
 
                     <div class="form-group full-width">
-                        <label for="utilityCompany">Utility Company <span style="color: #059669; font-weight: 600;">*</span></label>
+                        <label for="utilityCompany">Utility Company</label>
                         <select id="utilityCompany" name="utilityCompany">
-                            <option value="">Select Utility Company</option>
+                            <option value="">Select Utility Company (optional)</option>
                             <option value="PG&E">Pacific Gas & Electric (PG&E)</option>
                             <option value="SCE">Southern California Edison (SCE)</option>
                             <option value="SDG&E">San Diego Gas & Electric (SDG&E)</option>
@@ -937,65 +928,125 @@
                             <option value="LADWP">Los Angeles Department of Water and Power (LADWP)</option>
                             <option value="Other">Other Utility</option>
                         </select>
-                        <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Optional, but when email is provided, either City or Utility Company should be provided.</small>
+                        <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Used for tariff and NEM 3.0 calculations.</small>
                     </div>
 
-                    <div class="form-group full-width">
-                        <label for="inverterBrand">Home battery / inverter brand (optional)</label>
-                        <select id="inverterBrand" name="inverterBrand">
-                            <option value="">Select if you know your brand</option>
-                            <option value="Tesla">Tesla (Powerwall / Tesla Energy)</option>
-                            <option value="Enphase">Enphase</option>
-                            <option value="SolarEdge">SolarEdge</option>
-                            <option value="Sol-Ark">Sol-Ark</option>
-                            <option value="EG4">EG4</option>
-                            <option value="Franklin">Franklin</option>
-                            <option value="Liniotech">Liniotech</option>
-                            <option value="Other">Other</option>
-                        </select>
-                        <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">If you choose Tesla, you’ll use Tesla’s sign-in to obtain a <strong>Tesla Owner API</strong> refresh token. We only store that token — never your password on this page.</small>
-                    </div>
+                    <!-- Provide Your Energy Usage — pick at least one option -->
+                    <div id="usageRequiredCard" style="background: #f9fafb; border: 2px solid #d1d5db; border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0;">
+                        <div style="display: flex; align-items: start; gap: 0.75rem;">
+                            <span style="font-size: 1.5rem;">💡</span>
+                            <div style="flex: 1;">
+                                <h3 style="font-size: 1.1rem; color: #374151; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                                    <span>Tell us about your energy usage <span style="color: #ef4444; font-weight: 700;">*</span></span>
+                                    <button type="button" id="usageHelpToggle" aria-expanded="false" aria-controls="usageHelpPanel" title="Where to find these numbers on your utility bill" style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; padding: 0; border-radius: 50%; border: 1.5px solid #10B981; background: #ffffff; color: #10B981; font-weight: 700; font-size: 0.85rem; line-height: 1; cursor: pointer; transition: all 0.2s ease;">?</button>
+                                </h3>
+                                <p style="color: #4b5563; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                                    Choose <strong>one</strong> of the options below — you can do both if you'd like, but either one is enough to unlock your personalized report.
+                                </p>
 
-                    <div class="form-group full-width" id="otherInverterBrandGroup" style="display: none;">
-                        <label for="otherInverterBrand">Other brand name</label>
-                        <input type="text" id="otherInverterBrand" name="otherInverterBrand" placeholder="Manufacturer name">
-                    </div>
+                                <div id="dailyAverageSection" class="usage-section">
+                                    <!-- Option A: type the numbers from the bill -->
+                                    <div class="usage-option-card" id="usageOptionTypeCard" style="background: #ffffff; border: 2px solid #e5e7eb; border-radius: 10px; padding: 1.25rem 1.5rem 1.5rem; margin-bottom: 0.75rem;">
+                                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.85rem; color: #047857; font-weight: 700;">
+                                            <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: #10B981; color: #ffffff; font-size: 0.78rem; font-weight: 800;">A</span>
+                                            <span>Type the numbers from your latest bill</span>
+                                        </div>
+                                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+                                            <div>
+                                                <label for="dailyAverageKwh" style="display: block; font-weight: 600; color: #374151; font-size: 1rem; margin-bottom: 0.5rem;">
+                                                    Annual Daily Average Net Usage (kWh)
+                                                </label>
+                                                <input type="number" id="dailyAverageKwh" name="dailyAverageKwh" placeholder="e.g., 24.10" step="0.01" min="0" style="width: 100%; padding: 0.75rem; font-size: 1rem; border: 2px solid #e5e7eb; border-radius: 8px;">
+                                                <small style="color: #6b7280; font-size: 0.875rem; display: block; margin-top: 0.5rem;">
+                                                    Look for <strong>"This year:"</strong> in the <strong>Electricity Usage</strong> section of your utility bill.
+                                                </small>
+                                            </div>
+                                            <div>
+                                                <label for="dailyAverageExportKwh" style="display: block; font-weight: 600; color: #374151; font-size: 1rem; margin-bottom: 0.5rem;">
+                                                    Annual Daily Average Export Generation (kWh)
+                                                </label>
+                                                <input type="number" id="dailyAverageExportKwh" name="dailyAverageExportKwh" placeholder="e.g., 12.17" step="0.01" min="0" style="width: 100%; padding: 0.75rem; font-size: 1rem; border: 2px solid #e5e7eb; border-radius: 8px;">
+                                                <small style="color: #6b7280; font-size: 0.875rem; display: block; margin-top: 0.5rem;">
+                                                    Optional — leave blank if your bill doesn't show export.
+                                                </small>
+                                            </div>
+                                        </div>
 
-                    <div id="teslaTokenPanel" class="tesla-token-panel" aria-live="polite">
-                        <p style="margin: 0 0 0.75rem 0; color: #065f46; font-weight: 600;">Tesla Owner API — get your refresh token (optional)</p>
-                        <p style="margin: 0 0 0.75rem 0; font-size: 0.9rem; color: #047857;">MicroVPP connects to your Powerwall via the <strong>Tesla Owner API</strong>. Choose one of the methods below to obtain your Owner API refresh token, or skip this step and add it later.</p>
+                                        <!-- Help Panel: where to find these numbers (toggled by the "?" next to the section heading) -->
+                                        <div id="usageHelpPanel" style="display: none; background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 1rem; margin-top: 1rem;">
+                                            <h4 style="color: #1e40af; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem;">📊 How to Find These Numbers (SCE Customers)</h4>
+                                            <p style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin-bottom: 0.75rem;">
+                                                Open the <strong>"Your past and current electricity usage"</strong> section of your utility bill and look at <strong>"Your daily average electricity usage (kWh)"</strong>. Copy each <strong>"This year:"</strong> value into the matching field above.
+                                            </p>
+                                            <ul style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin: 0 0 0.75rem 1.25rem; padding: 0;">
+                                                <li><strong>If you have rooftop solar</strong>: your bill shows <strong>two</strong> "This year:" values — one under <strong>Electricity Usage</strong> (net consumption) and one under <strong>Export Generation</strong>. Enter both.</li>
+                                                <li><strong>If you don't have rooftop solar</strong> (or just installed it): enter the single "This year:" value as <strong>Net Usage</strong> and leave Export Generation blank.</li>
+                                            </ul>
 
-                        <div style="margin-bottom: 1.25rem; padding: 1rem; background: white; border-radius: 10px; border: 1px solid #d1fae5;">
-                            <p style="margin: 0 0 0.5rem 0; font-weight: 700; color: #059669;">Method 1 — Authorize here</p>
-                            <p style="margin: 0 0 0.75rem 0; font-size: 0.875rem; color: #374151; line-height: 1.6;">Click the button to open Tesla’s official login in a new tab. Sign in with your Tesla email and password. After you authenticate, Tesla will redirect to a <strong>“Page Not Found”</strong> page. <strong>Copy the entire URL</strong> from that page’s address bar and paste it into the field below. We’ll extract the authorization code and exchange it for a refresh token automatically.</p>
-                            <button type="button" class="tesla-open-auth-btn" id="teslaStartOAuthBtn" style="margin-bottom: 0.75rem;">Sign in at Tesla</button>
-                            <p id="teslaOAuthError" style="margin: 0 0 0.75rem 0; font-size: 0.85rem; color: #dc2626; display: none;"></p>
-                            <div class="form-group full-width" style="margin-bottom: 0.5rem;">
-                                <label for="teslaCallbackUrl">Paste the “Page Not Found” URL here</label>
-                                <input type="text" id="teslaCallbackUrl" placeholder="https://auth.tesla.com/void/callback?code=…" style="font-size: 0.85rem;">
+                                            <div class="sce-bill-examples" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 1rem;">
+                                                <div style="border: 2px solid #e5e7eb; border-radius: 8px; padding: 0.5rem; background: #f9fafb;">
+                                                    <p style="color: #1e3a8a; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.35rem; text-align: center;">
+                                                        Without system (one "This year:" value)
+                                                    </p>
+                                                    <img src="assets/images/sce_bill_no_system_daily_highlighted.png"
+                                                         alt="SCE bill (without solar) — This year's daily average highlighted"
+                                                         style="width: 100%; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer;"
+                                                         onclick="window.open(this.src, '_blank')">
+                                                    <p style="color: #64748b; font-size: 0.7rem; margin-top: 0.4rem; text-align: center; font-style: italic;">
+                                                        Example: Net Usage <strong>24.10 kWh</strong>. Leave Export Generation blank.
+                                                    </p>
+                                                </div>
+                                                <div style="border: 2px solid #e5e7eb; border-radius: 8px; padding: 0.5rem; background: #f9fafb;">
+                                                    <p style="color: #1e3a8a; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.35rem; text-align: center;">
+                                                        With solar &amp; battery system (two "This year:" values)
+                                                    </p>
+                                                    <img src="assets/images/sce_bill_with_system_daily_highlighted.png"
+                                                         alt="SCE bill (with solar) — Electricity Usage and Export Generation daily averages highlighted"
+                                                         style="width: 100%; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer;"
+                                                         onclick="window.open(this.src, '_blank')">
+                                                    <p style="color: #64748b; font-size: 0.7rem; margin-top: 0.4rem; text-align: center; font-style: italic;">
+                                                        Example: <span style="color: #b91c1c;">Net Usage <strong>23.20</strong></span>, <span style="color: #047857;">Export <strong>12.17</strong></span> kWh.
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <p style="margin: 0.75rem 0 0 0; font-size: 0.78rem; color: #047857; line-height: 1.5;">
+                                                💡 Tip: tap a screenshot to open it full-size in a new tab.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <!-- OR divider -->
+                                    <div class="usage-or-divider" aria-hidden="true">
+                                        <span>OR</span>
+                                    </div>
+
+                                    <!-- Option B: upload latest utility bill -->
+                                    <div class="usage-option-card" id="usageOptionUploadCard" style="background: #ffffff; border: 2px solid #e5e7eb; border-radius: 10px; padding: 1.25rem 1.5rem 1.5rem;">
+                                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: #047857; font-weight: 700;">
+                                            <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: #10B981; color: #ffffff; font-size: 0.78rem; font-weight: 800;">B</span>
+                                            <span>Upload your latest utility bill</span>
+                                        </div>
+                                        <p style="color: #6b7280; font-size: 0.85rem; margin: 0 0 0.75rem 0; line-height: 1.5;">
+                                            PDF or image — we'll pull the daily-average kWh straight from the bill so you don't have to type anything.
+                                        </p>
+                                        <div class="file-upload-container">
+                                            <div class="file-upload-area" id="utilityBillUploadArea">
+                                                <div class="upload-icon">📄</div>
+                                                <div class="upload-text">Click to upload, or drag &amp; drop</div>
+                                                <div class="upload-subtext">PDF, JPG, PNG up to 10 MB &nbsp;•&nbsp; Up to 12 files</div>
+                                                <input type="file" id="utilityBillInput" accept=".pdf,.jpg,.jpeg,.png" multiple style="display: none;">
+                                            </div>
+                                            <div class="file-list" id="utilityBillFileList"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Inline error (shown when neither option is filled in) -->
+                                    <p id="usageInlineError" style="display: none; margin: 0.85rem 0 0 0; padding: 0.75rem 1rem; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; color: #b91c1c; font-size: 0.9rem; font-weight: 600;">
+                                        Please choose one of the options above so we can build your personalized report.
+                                    </p>
+                                </div>
                             </div>
-                            <button type="button" id="teslaExchangeBtn" class="tesla-open-auth-btn" style="background: linear-gradient(135deg, #059669 0%, #047857 100%); color: white; border: none;">Extract token from URL</button>
-                            <p id="teslaExchangeStatus" style="margin: 0.5rem 0 0 0; font-size: 0.85rem; color: #6b7280; display: none;"></p>
-                            <div id="teslaAuthTrouble" style="margin-top: 0.75rem; padding: 0.75rem; background: #fffbeb; border-radius: 8px; border: 1px solid #fde68a; display: none;">
-                                <p style="margin: 0 0 0.4rem 0; font-weight: 600; font-size: 0.85rem; color: #92400e;">Having trouble with Tesla sign-in?</p>
-                                <p style="margin: 0; font-size: 0.825rem; color: #78350f; line-height: 1.55;">Try using a 3rd-party app to generate your refresh token instead:<br>
-                                <strong>iOS:</strong> <a href="https://apps.apple.com/app/auth-app-for-tesla/id1552058613" target="_blank" rel="noopener" style="color: #059669; text-decoration: underline;">Auth app for Tesla</a> (App Store)<br>
-                                <strong>Android:</strong> Search for "Tesla Tokens" on Google Play<br>
-                                Then paste the refresh token into <strong>Method 2</strong> below. You can also skip this step entirely and add the token later.</p>
-                            </div>
-                        </div>
-
-                        <div style="padding: 1rem; background: white; border-radius: 10px; border: 1px solid #d1fae5;">
-                            <p style="margin: 0 0 0.5rem 0; font-weight: 700; color: #059669;">Method 2 — Paste a token from a 3rd-party app (recommended)</p>
-                            <p style="margin: 0 0 0.75rem 0; font-size: 0.875rem; color: #374151; line-height: 1.6;">Use a 3rd-party app to generate your Tesla Owner API refresh token, then paste it below. We recommend <a href="https://apps.apple.com/app/auth-app-for-tesla/id1552058613" target="_blank" rel="noopener" style="color: #059669; text-decoration: underline;"><strong>Auth app for Tesla</strong></a> (iOS App Store) or <strong>Tesla Tokens</strong> (Android).</p>
-                            <div class="form-group full-width" style="margin-bottom: 0;">
-                                <label for="teslaRefreshToken">Tesla Owner API refresh token</label>
-                                <textarea id="teslaRefreshToken" name="teslaRefreshToken" rows="3" placeholder="Paste Owner API refresh token here" style="width: 100%; min-height: 72px;"></textarea>
-                            </div>
-                        </div>
-
-                        <div style="margin-top: 1rem; padding: 0.75rem 1rem; background: #f0f9ff; border-radius: 8px; border: 1px solid #bae6fd;">
-                            <p style="margin: 0; font-size: 0.85rem; color: #0c4a6e; line-height: 1.55;"><strong>Don't have the token yet?</strong> No worries — you can finish your registration now and add the Tesla refresh token later. We'll send you instructions by email.</p>
                         </div>
                     </div>
 
@@ -1022,9 +1073,9 @@
                     </div>
 
                     <button type="button" class="back-btn" onclick="window.location.href='diy-registration-step1.html'">← Back to Step 1</button>
-                    <button type="submit" class="submit-btn" id="submitBtn">Continue to Step 3 →</button>
-                    
-                    <p style="text-align: center; margin-top: 1rem; color: #6b7280; font-size: 0.95rem;">💡 You can skip this step if you prefer. Your system setup is already saved.</p>
+                    <button type="submit" class="submit-btn" id="submitBtn">Get my personalized report and continue…</button>
+
+                    <p style="text-align: center; margin-top: 1rem; color: #6b7280; font-size: 0.95rem;">✨ Personalized to your home and your bill — delivered straight to your inbox.</p>
                 </form>
             </div>
         </div>
@@ -1055,20 +1106,6 @@
             </div>
         </div>
     </footer>
-
-    <div class="modal-overlay" id="teslaInfoModal" role="dialog" aria-modal="true" aria-labelledby="teslaModalTitle">
-        <div class="modal-dialog">
-            <h3 id="teslaModalTitle">Connect your Tesla account</h3>
-            <p>We’ll open <strong>Tesla’s official login</strong> in a new tab. Sign in with your Tesla email and password there — <strong>never enter your Tesla credentials on this page</strong>.</p>
-            <p>After you sign in, Tesla will redirect to a <strong>“Page Not Found”</strong> page. That’s expected! <strong>Copy the entire URL</strong> from the address bar and paste it back here. We’ll extract the authorization code and exchange it for a refresh token via our secure server.</p>
-            <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0;">MicroVPP never sees your Tesla password. The exchange uses PKCE (S256) so no secret is needed on the client side.</p>
-            <p style="font-size: 0.875rem; color: #6b7280; margin-top: 0.75rem; margin-bottom: 0;"><strong>Having trouble?</strong> You can also use a 3rd-party app like <a href="https://apps.apple.com/app/auth-app-for-tesla/id1552058613" target="_blank" rel="noopener" style="color: #059669;">Auth app for Tesla</a> (iOS) to generate your refresh token, or skip this step and add it later.</p>
-            <div class="modal-actions-row">
-                <button type="button" class="modal-btn-secondary" id="teslaModalDismiss">Skip for now</button>
-                <button type="button" class="modal-btn-primary" id="teslaModalOpenAuth">Sign in at Tesla</button>
-            </div>
-        </div>
-    </div>
 
     <!-- Sticky CTA Bar -->
     <div class="sticky-cta-bar">
@@ -1179,14 +1216,151 @@
         }
 
         // ============================================
-        // FILE UPLOAD HANDLING
+        // FILE UPLOAD HANDLING (latest utility bill)
         // ============================================
         let uploadedFiles = [];
         const MAX_FILES = 12;
         const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB per file
 
-        // Note: File upload UI removed from Step 2
-        // Files are now uploaded in Step 1 and transferred via sessionStorage
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+        }
+
+        function renderUtilityBillFiles() {
+            const list = document.getElementById('utilityBillFileList');
+            if (!list) return;
+            if (uploadedFiles.length === 0) {
+                list.innerHTML = '';
+            } else {
+                const items = uploadedFiles.map((file, idx) => `
+                    <div class="file-item">
+                        <div class="file-info">
+                            <span class="file-icon">📄</span>
+                            <div class="file-details">
+                                <span class="file-name">${file.name}</span>
+                                <span class="file-size">${formatFileSize(file.size)}</span>
+                            </div>
+                        </div>
+                        <button type="button" class="file-remove" aria-label="Remove file" onclick="removeUtilityBillFile(${idx})">×</button>
+                    </div>
+                `).join('');
+                const counter = `<p style="color: #059669; font-size: 0.8rem; margin: 0 0 0.5rem 0;"><strong>${uploadedFiles.length}</strong> of ${MAX_FILES} file(s) selected</p>`;
+                list.innerHTML = counter + items;
+            }
+            refreshUsageOptionState();
+        }
+
+        // Returns true iff at least one usage option (typed kWh OR uploaded file)
+        // has been provided. Also keeps the option cards / inline error styling
+        // in sync with the live state.
+        function refreshUsageOptionState() {
+            const dailyKwhInput = document.getElementById('dailyAverageKwh');
+            const typedRaw = dailyKwhInput ? (dailyKwhInput.value || '').toString().trim() : '';
+            const typedOk = typedRaw !== '' && !isNaN(parseFloat(typedRaw)) && parseFloat(typedRaw) > 0;
+            const uploadOk = uploadedFiles.length > 0;
+
+            const typeCard = document.getElementById('usageOptionTypeCard');
+            const uploadCard = document.getElementById('usageOptionUploadCard');
+            if (typeCard) typeCard.classList.toggle('is-satisfied', typedOk);
+            if (uploadCard) uploadCard.classList.toggle('is-satisfied', uploadOk);
+
+            const satisfied = typedOk || uploadOk;
+            const errorEl = document.getElementById('usageInlineError');
+            const wrapEl = document.getElementById('usageRequiredCard');
+            if (satisfied) {
+                if (errorEl) errorEl.style.display = 'none';
+                if (wrapEl) wrapEl.classList.remove('has-error');
+            }
+            return satisfied;
+        }
+
+        function addUtilityBillFiles(files) {
+            for (const file of files) {
+                if (uploadedFiles.length >= MAX_FILES) {
+                    alert(`You can only upload up to ${MAX_FILES} files.`);
+                    break;
+                }
+                if (file.size > MAX_FILE_SIZE) {
+                    alert(`"${file.name}" is larger than 10 MB and was skipped.`);
+                    continue;
+                }
+                uploadedFiles.push(file);
+            }
+            renderUtilityBillFiles();
+        }
+
+        // Exposed globally so the inline `onclick` on each file row can call it.
+        window.removeUtilityBillFile = function (index) {
+            if (index >= 0 && index < uploadedFiles.length) {
+                uploadedFiles.splice(index, 1);
+            } else {
+                uploadedFiles = [];
+            }
+            renderUtilityBillFiles();
+        };
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const dropArea = document.getElementById('utilityBillUploadArea');
+            const input = document.getElementById('utilityBillInput');
+            if (dropArea && input) {
+                dropArea.addEventListener('click', () => input.click());
+                input.addEventListener('change', (e) => {
+                    addUtilityBillFiles(Array.from(e.target.files));
+                    input.value = '';
+                });
+
+                ['dragover', 'dragenter'].forEach(evt => {
+                    dropArea.addEventListener(evt, (e) => {
+                        e.preventDefault();
+                        dropArea.classList.add('drag-over');
+                    });
+                });
+                ['dragleave', 'dragend', 'drop'].forEach(evt => {
+                    dropArea.addEventListener(evt, () => dropArea.classList.remove('drag-over'));
+                });
+                dropArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    if (e.dataTransfer && e.dataTransfer.files) {
+                        addUtilityBillFiles(Array.from(e.dataTransfer.files));
+                    }
+                });
+            }
+
+            // Live "is-satisfied" feedback as the user types Net Usage.
+            const dailyKwhInput = document.getElementById('dailyAverageKwh');
+            if (dailyKwhInput) {
+                dailyKwhInput.addEventListener('input', refreshUsageOptionState);
+            }
+            // Initial state (also covers any pre-filled values).
+            refreshUsageOptionState();
+        });
+
+        // ============================================
+        // ENERGY USAGE HELP PANEL TOGGLE
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggle = document.getElementById('usageHelpToggle');
+            const panel = document.getElementById('usageHelpPanel');
+            if (!toggle || !panel) return;
+            toggle.addEventListener('click', function () {
+                const isHidden = panel.style.display === 'none' || panel.style.display === '';
+                if (isHidden) {
+                    panel.style.display = 'block';
+                    toggle.setAttribute('aria-expanded', 'true');
+                    toggle.title = 'Hide help';
+                    toggle.style.background = '#10B981';
+                    toggle.style.color = '#ffffff';
+                } else {
+                    panel.style.display = 'none';
+                    toggle.setAttribute('aria-expanded', 'false');
+                    toggle.title = 'Where to find these numbers on your utility bill';
+                    toggle.style.background = '#ffffff';
+                    toggle.style.color = '#10B981';
+                }
+            });
+        });
 
         // ============================================
         // ATTACH ANALYTICS TO FORM FIELDS
@@ -1296,152 +1470,17 @@
         }
 
         // ============================================
-        // TESLA OWNER API - PKCE OAuth + code exchange
+        // EMAIL SOURCED FROM STEP 1 (no email field on this page)
         // ============================================
-
-        const TESLA_AUTH_URL      = 'https://auth.tesla.com/oauth2/v3/authorize';
-        const TESLA_VOID_REDIRECT = 'https://auth.tesla.com/void/callback';
-        const TESLA_OWNER_SCOPE   = 'openid email offline_access';
-
-        // PKCE helpers (S256)
-        function generateCodeVerifier() {
-            const arr = new Uint8Array(32);
-            crypto.getRandomValues(arr);
-            return btoa(String.fromCharCode.apply(null, arr))
-                .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-        }
-
-        async function deriveCodeChallenge(verifier) {
-            const data = new TextEncoder().encode(verifier);
-            const digest = await crypto.subtle.digest('SHA-256', data);
-            return btoa(String.fromCharCode.apply(null, new Uint8Array(digest)))
-                .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-        }
-
-        // Stored per-session so the exchange step can find the verifier
-        let _teslaCodeVerifier = sessionStorage.getItem('teslaCodeVerifier') || null;
-
-        async function showTeslaAuthTrouble(msg) {
-            const errEl = document.getElementById('teslaOAuthError');
-            const troubleEl = document.getElementById('teslaAuthTrouble');
-            if (errEl && msg) {
-                errEl.textContent = msg;
-                errEl.style.display = 'block';
-            }
-            if (troubleEl) troubleEl.style.display = 'block';
-        }
-
-        async function openTeslaOAuthFlow() {
+        // Step 1's email-capture modal stores the user's email under
+        // `estimateEmail`. Step 2 reads that value at submit time so we never
+        // ask the user for their email twice.
+        function getStoredEmail() {
             try {
-                const verifier = generateCodeVerifier();
-                _teslaCodeVerifier = verifier;
-                sessionStorage.setItem('teslaCodeVerifier', verifier);
-
-                const challenge = await deriveCodeChallenge(verifier);
-                const state = 'microvpp-' + Date.now();
-
-                const params = new URLSearchParams({
-                    client_id: 'ownerapi',
-                    redirect_uri: TESLA_VOID_REDIRECT,
-                    response_type: 'code',
-                    scope: TESLA_OWNER_SCOPE,
-                    state: state,
-                    code_challenge: challenge,
-                    code_challenge_method: 'S256',
-                    locale: 'en-US',
-                    prompt: 'login',
-                });
-                const authUrl = TESLA_AUTH_URL + '?' + params.toString();
-                const popup = window.open(authUrl, '_blank', 'noopener,noreferrer');
-
-                if (!popup || popup.closed) {
-                    showTeslaAuthTrouble(
-                        'Could not open the Tesla sign-in page. Your browser may have blocked the popup. ' +
-                        'Please allow popups for this site, or try Method 2 below using a 3rd-party app.'
-                    );
-                }
-            } catch (err) {
-                console.error('Tesla OAuth flow error:', err);
-                showTeslaAuthTrouble(
-                    'Something went wrong opening Tesla sign-in: ' + err.message +
-                    '. Please try Method 2 below instead.'
-                );
-            }
-        }
-
-        function extractCodeFromUrl(raw) {
-            try {
-                const url = new URL(raw);
-                return url.searchParams.get('code') || null;
+                const e = sessionStorage.getItem('estimateEmail');
+                return e && e.trim() ? e.trim() : null;
             } catch (_) {
-                const m = raw.match(/[?&]code=([^&]+)/);
-                return m ? decodeURIComponent(m[1]) : null;
-            }
-        }
-
-        async function exchangeCodeForToken(code) {
-            const verifier = _teslaCodeVerifier || sessionStorage.getItem('teslaCodeVerifier');
-            if (!verifier) throw new Error('Missing PKCE code_verifier. Please click "Sign in at Tesla" first to start the flow.');
-
-            const resp = await fetch(API_BASE_URL + '/tesla/exchange-code', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                body: JSON.stringify({
-                    code: code,
-                    code_verifier: verifier,
-                    redirect_uri: TESLA_VOID_REDIRECT,
-                }),
-            });
-            if (!resp.ok) {
-                const err = await resp.json().catch(() => ({}));
-                throw new Error(err.detail || ('Exchange failed: HTTP ' + resp.status));
-            }
-            return await resp.json();
-        }
-
-        function setTeslaExchangeStatus(msg, isError) {
-            const el = document.getElementById('teslaExchangeStatus');
-            if (!el) return;
-            el.textContent = msg;
-            el.style.display = msg ? 'block' : 'none';
-            el.style.color = isError ? '#dc2626' : '#059669';
-        }
-
-        function closeTeslaInfoModal() {
-            const modal = document.getElementById('teslaInfoModal');
-            if (modal) {
-                modal.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        }
-
-        function applyInverterBrandStep2Ui(manufacturer, opts) {
-            opts = opts || {};
-            const panel = document.getElementById('teslaTokenPanel');
-            const otherGroup = document.getElementById('otherInverterBrandGroup');
-            const modal = document.getElementById('teslaInfoModal');
-            if (!panel || !otherGroup) return;
-
-            const showTesla = manufacturer === 'Tesla';
-            const showOther = manufacturer === 'Other';
-            otherGroup.style.display = showOther ? 'block' : 'none';
-
-            if (showTesla) {
-                panel.classList.add('active');
-                if (opts.showModal && modal) {
-                    modal.classList.add('active');
-                    document.body.style.overflow = 'hidden';
-                }
-            } else {
-                panel.classList.remove('active');
-                if (modal) {
-                    modal.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
-                if (opts.clearToken) {
-                    const ta = document.getElementById('teslaRefreshToken');
-                    if (ta) ta.value = '';
-                }
+                return null;
             }
         }
 
@@ -1467,20 +1506,23 @@
                 
                 // Get or generate device ID for tracking
                 const deviceId = getDeviceId();
-                
-                // Get email or generate dummy email
-                const userEmail = step2Data.email && step2Data.email.trim() !== '' ? step2Data.email.trim() : null;
+
+                // Email is collected in Step 1 via the email-capture modal and
+                // stored under `estimateEmail`. Fall back to a stable dummy address
+                // (per-device) only if the user somehow reached Step 2 without it.
+                const userEmail = getStoredEmail();
                 const email = userEmail || generateDummyEmail();
-                
-                console.log('Email for signup:', userEmail ? userEmail : `(using dummy: ${email})`);
-                
+
+                console.log('Email for signup (from Step 1):', userEmail ? userEmail : `(using dummy: ${email})`);
+
                 // Build the info object combining Step 1 (system setup) and Step 2 (contact info)
                 const info = {
                     contact: {
                         name: step2Data.fullName || null,
-                        email: step2Data.email || null,
+                        email: userEmail,
                         phone: step2Data.phone || null,
-                        email_provided: !!userEmail
+                        email_provided: !!userEmail,
+                        email_source: userEmail ? 'step1_modal' : 'dummy_generated'
                     },
                     location: {
                         address: step2Data.address || null,
@@ -1622,16 +1664,22 @@
                 return;
             }
             
+            // Show the email captured in Step 1 so the user knows where the
+            // estimate will be sent.
+            const storedEmail = getStoredEmail();
+            const emailDisplay = document.getElementById('emailFromStep1Display');
+            if (emailDisplay) {
+                emailDisplay.textContent = storedEmail || 'the email you provided in Step 1';
+            }
+
             // Check if user is returning from a later step or has saved Step 2 (contact info) data
             const storedStep2Data = sessionStorage.getItem('registrationStep2');
             if (storedStep2Data) {
                 try {
                     const step2Data = JSON.parse(storedStep2Data);
                     console.log('Pre-filling Step 2 form with saved data:', step2Data);
-                    
-                    // Pre-fill form fields
+
                     if (step2Data.fullName) document.getElementById('fullName').value = step2Data.fullName;
-                    if (step2Data.email) document.getElementById('email').value = step2Data.email;
                     if (step2Data.phone) document.getElementById('phone').value = step2Data.phone;
                     if (step2Data.address) document.getElementById('address').value = step2Data.address;
                     if (step2Data.city) document.getElementById('city').value = step2Data.city;
@@ -1639,96 +1687,16 @@
                     if (step2Data.utilityCompany) document.getElementById('utilityCompany').value = step2Data.utilityCompany;
                     if (step2Data.termsAccepted) document.getElementById('termsAccepted').checked = step2Data.termsAccepted;
 
-                    const knownBrands = ['Tesla', 'Enphase', 'SolarEdge', 'Sol-Ark', 'EG4', 'Franklin', 'Liniotech'];
-                    const invSel = document.getElementById('inverterBrand');
-                    if (invSel && step2Data.inverterManufacturer) {
-                        const m = step2Data.inverterManufacturer;
-                        if (knownBrands.indexOf(m) >= 0) {
-                            invSel.value = m;
-                        } else {
-                            invSel.value = 'Other';
-                            const ob = document.getElementById('otherInverterBrand');
-                            if (ob) ob.value = m;
-                        }
-                        applyInverterBrandStep2Ui(invSel.value, { showModal: false, clearToken: false });
+                    // Pre-fill any usage values previously entered on this page.
+                    if (step2Data.dailyAverageKwh !== undefined && step2Data.dailyAverageKwh !== null && step2Data.dailyAverageKwh !== '') {
+                        document.getElementById('dailyAverageKwh').value = step2Data.dailyAverageKwh;
                     }
-                    if (step2Data.teslaRefreshToken) {
-                        const tt = document.getElementById('teslaRefreshToken');
-                        if (tt) tt.value = step2Data.teslaRefreshToken;
+                    if (step2Data.dailyAverageExportKwh !== undefined && step2Data.dailyAverageExportKwh !== null && step2Data.dailyAverageExportKwh !== '') {
+                        document.getElementById('dailyAverageExportKwh').value = step2Data.dailyAverageExportKwh;
                     }
                 } catch (error) {
                     console.error('Error pre-filling Step 2 form:', error);
                 }
-            }
-
-            const inverterBrandSelect = document.getElementById('inverterBrand');
-            if (inverterBrandSelect) {
-                inverterBrandSelect.addEventListener('change', function() {
-                    applyInverterBrandStep2Ui(this.value, {
-                        showModal: this.value === 'Tesla',
-                        clearToken: this.value !== 'Tesla'
-                    });
-                });
-            }
-            // Modal buttons
-            const teslaModalOpen = document.getElementById('teslaModalOpenAuth');
-            if (teslaModalOpen) {
-                teslaModalOpen.addEventListener('click', function() {
-                    openTeslaOAuthFlow();
-                    closeTeslaInfoModal();
-                });
-            }
-            const teslaModalDismiss = document.getElementById('teslaModalDismiss');
-            if (teslaModalDismiss) {
-                teslaModalDismiss.addEventListener('click', closeTeslaInfoModal);
-            }
-            const teslaModalOverlay = document.getElementById('teslaInfoModal');
-            if (teslaModalOverlay) {
-                teslaModalOverlay.addEventListener('click', function(e) {
-                    if (e.target === teslaModalOverlay) closeTeslaInfoModal();
-                });
-            }
-
-            // Panel buttons (Method 1)
-            const teslaStartBtn = document.getElementById('teslaStartOAuthBtn');
-            if (teslaStartBtn) {
-                teslaStartBtn.addEventListener('click', function() { openTeslaOAuthFlow(); });
-            }
-
-            const teslaExchangeBtn = document.getElementById('teslaExchangeBtn');
-            if (teslaExchangeBtn) {
-                teslaExchangeBtn.addEventListener('click', async function() {
-                    const urlInput = document.getElementById('teslaCallbackUrl');
-                    const raw = (urlInput ? urlInput.value : '').trim();
-                    if (!raw) {
-                        setTeslaExchangeStatus('Please paste the "Page Not Found" URL first.', true);
-                        return;
-                    }
-                    const code = extractCodeFromUrl(raw);
-                    if (!code) {
-                        setTeslaExchangeStatus('Could not find an authorization code in that URL. Make sure you copied the full address bar.', true);
-                        return;
-                    }
-                    setTeslaExchangeStatus('Exchanging code for refresh token\u2026', false);
-                    teslaExchangeBtn.disabled = true;
-                    try {
-                        const tokens = await exchangeCodeForToken(code);
-                        if (tokens.refresh_token) {
-                            const ta = document.getElementById('teslaRefreshToken');
-                            if (ta) ta.value = tokens.refresh_token;
-                            setTeslaExchangeStatus('\u2705 Refresh token obtained and filled in below!', false);
-                            sessionStorage.removeItem('teslaCodeVerifier');
-                        } else {
-                            setTeslaExchangeStatus('Exchange succeeded but no refresh_token was returned. Did the scope include offline_access?', true);
-                        }
-                    } catch (err) {
-                        console.error('Tesla code exchange error:', err);
-                        setTeslaExchangeStatus('Exchange failed: ' + err.message, true);
-                        showTeslaAuthTrouble(null);
-                    } finally {
-                        teslaExchangeBtn.disabled = false;
-                    }
-                });
             }
         });
         
@@ -1749,20 +1717,21 @@
                 
                 // Get or generate device ID for tracking
                 const deviceId = getDeviceId();
-                
-                // Get email or generate dummy email
-                const userEmail = step2Data.email && step2Data.email.trim() !== '' ? step2Data.email.trim() : null;
+
+                // Email is captured in Step 1 — read it from sessionStorage.
+                const userEmail = getStoredEmail();
                 const email = userEmail || generateDummyEmail();
-                
-                console.log('Email for profile update:', userEmail ? userEmail : `(using dummy: ${email})`);
-                
+
+                console.log('Email for profile update (from Step 1):', userEmail ? userEmail : `(using dummy: ${email})`);
+
                 // Build the info object combining Step 1 (system setup) and Step 2 (contact info)
                 const info = {
                     contact: {
                         name: step2Data.fullName || null,
-                        email: step2Data.email || null,
+                        email: userEmail,
                         phone: step2Data.phone || null,
-                        email_provided: !!userEmail
+                        email_provided: !!userEmail,
+                        email_source: userEmail ? 'step1_modal' : 'dummy_generated'
                     },
                     device: {
                         device_id: deviceId,
@@ -1832,13 +1801,9 @@
                     },
                     notes: step2Data.additionalNotes || null
                 };
-                
-                // Determine inverter manufacturer
-                const inverterManufacturer = step2Data.inverterManufacturer === 'Other' && step2Data.otherManufacturer 
-                    ? step2Data.otherManufacturer 
-                    : step2Data.inverterManufacturer;
-                
-                // Build the API payload for profile update
+
+                // Inverter brand + credentials are now collected in Step 3,
+                // so leave those fields null on the Step 2 profile update.
                 const payload = {
                     account_id: userId,
                     username: step2Data.fullName || null,
@@ -1851,17 +1816,17 @@
                     timezone: null,
                     locale: "en-US",
                     inverter_inverter_type: "hybrid_inverter",
-                    inverter_manufacturer: inverterManufacturer || null,
-                    inverter_serial_number: step2Data.serialNumber || null,
+                    inverter_manufacturer: null,
+                    inverter_serial_number: null,
                     inverter_monitoring_id: null,
                     inverter_monitoring_token: null,
                     inverter_monitoring_api_url: null,
-                    inverter_api_key: step2Data.username || null,
-                    inverter_api_secret: step2Data.password || null,
+                    inverter_api_key: null,
+                    inverter_api_secret: null,
                     info: JSON.stringify(info),
                     site_id: null,
                     site_type: "residential",
-                    installation_date: step2Data.installationDate || null,
+                    installation_date: null,
                 };
                 
                 console.log('Updating profile (Step 2) for user_id:', userId, payload);
@@ -2171,71 +2136,62 @@
                 return;
             }
             
-            // Check if email is provided - if so, require either city or utility company
-            const emailInput = document.getElementById('email');
-            const cityInput = document.getElementById('city');
-            const utilityCompanySelect = document.getElementById('utilityCompany');
-            const emailValue = emailInput.value.trim();
-            const cityValue = cityInput.value.trim();
-            const utilityValue = utilityCompanySelect.value;
-            
-            // Only enforce city/utility requirement if email is provided
-            if (emailValue && !cityValue && !utilityValue) {
-                alert(
-                    '⚠️ Location Information Required\n\n' +
-                    'Since you provided an email address, please also provide either your City or Utility Company.\n\n' +
-                    'This helps us calculate accurate energy rates and savings for your area.'
-                );
-                cityInput.focus();
-                cityInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                return;
-            }
-            
             const formData = new FormData(this);
 
-            const invBrand = formData.get('inverterBrand') || '';
-            const otherInv = (formData.get('otherInverterBrand') || '').trim();
-            const inverterManufacturer = invBrand === 'Other' && otherInv
-                ? otherInv
-                : (invBrand || null);
-            const teslaTokenRaw = (formData.get('teslaRefreshToken') || '').trim();
+            // Energy-usage values (entered on this page) — at least one of the
+            // two options is required, so we validate before persisting anything.
+            const dailyKwhRaw = (formData.get('dailyAverageKwh') || '').toString().trim();
+            const dailyExportRaw = (formData.get('dailyAverageExportKwh') || '').toString().trim();
+            const hasDailyKwh = dailyKwhRaw !== '' && !isNaN(parseFloat(dailyKwhRaw)) && parseFloat(dailyKwhRaw) > 0;
+            const hasDailyExport = dailyExportRaw !== '' && !isNaN(parseFloat(dailyExportRaw));
+            const hasUploadedBill = uploadedFiles.length > 0;
 
-            if (inverterManufacturer === 'Tesla' && !teslaTokenRaw) {
-                const ok = confirm(
-                    'You selected Tesla but have not added a refresh token yet.\n\n' +
-                    'That\'s OK! You can still complete your registration without it.\n\n' +
-                    'To get your token later, we recommend using a 3rd-party app:\n' +
-                    '  • iOS: "Auth app for Tesla" (App Store)\n' +
-                    '  • Android: "Tesla Tokens" (Google Play)\n\n' +
-                    'Click OK to continue without a token, or Cancel to go back and add one now.'
-                );
-                if (!ok) return;
+            if (!hasDailyKwh && !hasUploadedBill) {
+                const wrap = document.getElementById('usageRequiredCard');
+                const errorEl = document.getElementById('usageInlineError');
+                if (wrap) wrap.classList.add('has-error');
+                if (errorEl) errorEl.style.display = 'block';
+                if (wrap) wrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                const dailyKwhInput = document.getElementById('dailyAverageKwh');
+                if (dailyKwhInput) {
+                    setTimeout(() => dailyKwhInput.focus(), 250);
+                }
+                return;
             }
-            
-            // Prepare data to save (Step 2 - Contact Info + optional inverter / Tesla token)
+
+            // Snapshot of any utility-bill files the user attached on this page.
+            const utilityBillFilesInfo = uploadedFiles.map(f => ({
+                name: f.name,
+                size: f.size,
+                type: f.type
+            }));
+
+            // Prepare data to save (Step 2 - Contact Info + usage + bill upload)
             const step2Data = {
                 fullName: formData.get('fullName') || null,
-                email: formData.get('email') || null,
                 phone: formData.get('phone') || null,
                 address: formData.get('address') || null,
                 city: formData.get('city') || null,
                 state: formData.get('state') || null,
                 utilityCompany: formData.get('utilityCompany') || null,
+                dailyAverageKwh: hasDailyKwh ? dailyKwhRaw : '',
+                dailyAverageExportKwh: hasDailyExport ? dailyExportRaw : '',
+                hasDailyAverage: hasDailyKwh,
+                billType: hasDailyExport ? 'with_solar' : (hasDailyKwh ? 'no_solar' : 'no_solar'),
+                utilityBillFiles: utilityBillFilesInfo,
+                utilityBillUploadedCount: utilityBillFilesInfo.length,
                 termsAccepted: termsCheckbox.checked,
-                inverterManufacturer: inverterManufacturer,
-                otherManufacturer: invBrand === 'Other' ? (otherInv || null) : null,
-                teslaRefreshToken: teslaTokenRaw || null,
                 timestamp: new Date().toISOString()
             };
-            
+
             // Save to session storage
             sessionStorage.setItem('registrationStep2', JSON.stringify(step2Data));
-            
+
             // Track step 2 completion
             FormTracker.trackStep1Complete();
-            
-            console.log('Step 2 (Contact Info) data saved to session:', step2Data);
-            
+
+            console.log('Step 2 (Contact Info + optional usage) data saved to session:', step2Data);
+
             // Load Step 1 (System Setup) data
             const storedStep1Data = sessionStorage.getItem('registrationStep1');
             if (!storedStep1Data) {
@@ -2243,7 +2199,7 @@
                 window.location.href = 'diy-registration-step1.html';
                 return;
             }
-            
+
             let step1Data;
             try {
                 step1Data = JSON.parse(storedStep1Data);
@@ -2253,21 +2209,56 @@
                 window.location.href = 'diy-registration-step1.html';
                 return;
             }
-            
+
+            // Merge the (optional) usage values into the in-memory step1Data so
+            // the existing signup/update payload picks them up under the
+            // `electricity_bills` and `step1_inputs` keys without further changes.
+            if (hasDailyKwh) {
+                step1Data.dailyAverageKwh = dailyKwhRaw;       // gross-or-net depending on user input
+                step1Data.dailyAverageNetKwh = dailyKwhRaw;
+            }
+            if (hasDailyExport) {
+                step1Data.dailyAverageExportKwh = dailyExportRaw;
+            }
+            if (hasDailyKwh || hasDailyExport) {
+                step1Data.billType = step2Data.billType;
+                // Persist the merged version so downstream pages (Step 3) also
+                // see the freshly-entered usage values.
+                try { sessionStorage.setItem('registrationStep1', JSON.stringify(step1Data)); } catch (_) {}
+            }
+
+            // Upload the latest utility bill (if any) to S3 before signup so the
+            // backend can extract usage data.
+            const submitBtn = document.getElementById('submitBtn');
+            const tempUserId = step1Data.tempUserId || ('temp-' + Date.now());
+            if (uploadedFiles.length > 0) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = `Uploading bill (0/${uploadedFiles.length})...`;
+                try {
+                    const onProgress = (uploadedSoFar, totalFiles) => {
+                        submitBtn.textContent = `Uploading bill (${uploadedSoFar}/${totalFiles})...`;
+                    };
+                    const billUploadResult = await uploadUtilityBills(tempUserId, uploadedFiles, onProgress);
+                    console.log('Utility bill upload result:', billUploadResult);
+                } catch (err) {
+                    console.error('Utility bill upload failed:', err);
+                    // Non-blocking — proceed with signup even if upload fails.
+                }
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Get my personalized report and continue…';
+            }
+
             // Check if user already exists (returning from step 3)
             const existingUserId = sessionStorage.getItem('registrationUserId');
-            
+
             if (!existingUserId) {
-                // New user - create account
-                const submitBtn = document.getElementById('submitBtn');
                 submitBtn.disabled = true;
                 submitBtn.textContent = 'Creating your account...';
-                
+
                 console.log('No User ID found - creating new account');
                 const apiResult = await signupUser(step2Data, step1Data);
-                
+
                 if (!apiResult.success) {
-                    // Show error but allow user to continue (data is in sessionStorage)
                     alert(
                         '⚠️ Account Creation Issue\n\n' +
                         'We encountered an issue creating your account:\n' +
@@ -2275,16 +2266,15 @@
                         'You can continue to Step 3, and we\'ll try again. If this persists, please contact support@microvpp.com.'
                     );
                     submitBtn.disabled = false;
-                    submitBtn.textContent = 'Continue to Step 3 →';
-                    // Still allow navigation to step 3
+                    submitBtn.textContent = 'Get my personalized report and continue…';
                 } else {
                     console.log('Signup successful!');
                 }
             } else {
                 console.log('User already exists (ID: ' + existingUserId + '), skipping signup');
             }
-            
-            // Navigate to step 3
+
+            // Navigate to step 3 (inverter connection — optional)
             window.location.href = 'diy-registration-step3.html';
         });
 
@@ -2354,7 +2344,7 @@
                 'submit-btn', 'back-btn', 'mobile-menu-btn',
                 'faq-question', 'dot',
                 'modal-btn-primary', 'modal-btn-secondary',
-                'tesla-open-auth-btn', 'file-remove'
+                'file-remove'
             ];
 
             function hasTrackableClass(el) {

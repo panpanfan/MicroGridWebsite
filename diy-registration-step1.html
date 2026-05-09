@@ -596,6 +596,432 @@
                 gap: 1.5rem;
             }
         }
+
+        /* ---------- Email + profile-selection modal ---------- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 1rem;
+            animation: modalFadeIn 0.2s ease-out;
+        }
+
+        .modal-overlay.is-open {
+            display: flex;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        .modal-content {
+            background: #ffffff;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 640px;
+            max-height: calc(100vh - 2rem);
+            overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+            position: relative;
+            animation: modalSlideUp 0.25s ease-out;
+        }
+
+        @keyframes modalSlideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to   { transform: translateY(0);    opacity: 1; }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: #f3f4f6;
+            color: #4b5563;
+            font-size: 1.25rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            background: #e5e7eb;
+            color: #111827;
+        }
+
+        .modal-header {
+            padding: 1.75rem 1.75rem 0.75rem 1.75rem;
+            text-align: center;
+        }
+
+        .modal-header h2 {
+            font-size: 1.4rem;
+            color: #111827;
+            margin: 0 0 0.5rem 0;
+            font-weight: 700;
+        }
+
+        .modal-header p {
+            color: #4b5563;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .modal-body {
+            padding: 1.25rem 1.75rem 1.75rem 1.75rem;
+        }
+
+        .modal-body label.field-label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.95rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .modal-body input[type="email"] {
+            width: 100%;
+            padding: 0.75rem 0.9rem;
+            font-size: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            transition: border-color 0.2s ease;
+        }
+
+        .modal-body input[type="email"]:focus {
+            outline: none;
+            border-color: #10B981;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .modal-actions button {
+            flex: 1;
+            padding: 0.85rem 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+
+        .modal-btn-primary {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: #ffffff;
+        }
+
+        .modal-btn-primary:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 16px -4px rgba(16, 185, 129, 0.35);
+        }
+
+        .modal-btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .modal-btn-secondary {
+            background: #ffffff;
+            color: #4b5563;
+            border-color: #e5e7eb;
+        }
+
+        .modal-btn-secondary:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+        .modal-privacy {
+            margin: 1rem 0 0 0;
+            font-size: 0.78rem;
+            color: #6b7280;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 480px) {
+            .modal-header { padding: 1.25rem 1.25rem 0.5rem 1.25rem; }
+            .modal-body   { padding: 1rem 1.25rem 1.5rem 1.25rem; }
+            .modal-header h2 { font-size: 1.2rem; }
+        }
+
+        /* Modal stages (email entry vs estimates results) */
+        .modal-stage { display: none; }
+        .modal-stage.is-active { display: block; }
+
+        /* ---------- Estimate result cards (stage 2) ---------- */
+        .estimate-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .estimate-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1rem 1.1rem;
+            background: #ffffff;
+            transition: border-color 0.2s ease, transform 0.15s ease;
+        }
+
+        .estimate-card:hover {
+            border-color: #10B981;
+            transform: translateY(-1px);
+        }
+
+        .estimate-card.is-base {
+            border-color: #10B981;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+            position: relative;
+        }
+
+        .estimate-card.is-base::before {
+            content: 'MOST COMMON';
+            position: absolute;
+            top: -10px;
+            right: 14px;
+            background: #10B981;
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            padding: 3px 8px;
+            border-radius: 999px;
+        }
+
+        .estimate-card-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+            flex-wrap: wrap;
+        }
+
+        .estimate-card-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .estimate-card-kwh {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #047857;
+            white-space: nowrap;
+        }
+
+        .estimate-card-desc {
+            font-size: 0.83rem;
+            color: #4b5563;
+            line-height: 1.45;
+            margin: 0 0 0.65rem 0;
+        }
+
+        .estimate-card-amounts {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 0.5rem;
+            padding-top: 0.6rem;
+            border-top: 1px dashed #d1d5db;
+            flex-wrap: wrap;
+        }
+
+        .estimate-card-yearly {
+            display: flex;
+            flex-direction: column;
+            gap: 0.1rem;
+        }
+
+        .estimate-card-yearly-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .estimate-card-yearly-value {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #047857;
+            line-height: 1.1;
+        }
+
+        .estimate-card-monthly {
+            font-size: 0.82rem;
+            color: #4b5563;
+            text-align: right;
+        }
+
+        .estimate-card-monthly strong {
+            color: #111827;
+        }
+
+        /* ---------- Sneak-peek teaser (stage 1, SCE Base) ---------- */
+        .estimate-teaser {
+            position: relative;
+            margin: 0.4rem 0 1.4rem;
+            padding: 1.15rem 1.15rem 1rem;
+            border-radius: 14px;
+            border: 2px solid #10B981;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #d1fae5 100%);
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.10);
+        }
+
+        .estimate-teaser-badge {
+            position: absolute;
+            top: -10px;
+            left: 14px;
+            background: #10B981;
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            padding: 4px 9px;
+            border-radius: 999px;
+        }
+
+        .estimate-teaser-headline {
+            font-weight: 800;
+            color: #065f46;
+            font-size: 1rem;
+            margin: 0 0 0.2rem;
+        }
+
+        .estimate-teaser-desc {
+            font-size: 0.83rem;
+            color: #047857;
+            margin: 0 0 0.7rem;
+            line-height: 1.45;
+        }
+
+        .estimate-teaser-amounts {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 0.5rem;
+            padding-top: 0.55rem;
+            border-top: 1px dashed #6ee7b7;
+            flex-wrap: wrap;
+        }
+
+        .estimate-teaser-yearly {
+            display: flex;
+            flex-direction: column;
+            gap: 0.1rem;
+        }
+
+        .estimate-teaser-yearly-label {
+            font-size: 0.66rem;
+            color: #047857;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .estimate-teaser-yearly-value {
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: #065f46;
+            line-height: 1.05;
+        }
+
+        .estimate-teaser-monthly {
+            font-size: 0.85rem;
+            color: #047857;
+            text-align: right;
+        }
+
+        .estimate-teaser-monthly strong {
+            color: #065f46;
+            font-weight: 800;
+        }
+
+        .estimate-teaser-unlock {
+            margin: 0.85rem 0 0;
+            font-size: 0.82rem;
+            color: #065f46;
+            line-height: 1.45;
+            padding: 0.55rem 0.7rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px dashed #10B981;
+        }
+
+        .estimate-teaser.is-loading .estimate-teaser-yearly-value,
+        .estimate-teaser.is-loading .estimate-teaser-monthly strong {
+            color: #6b7280;
+            font-style: italic;
+            font-weight: 600;
+        }
+
+        .estimate-teaser.is-error {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+        .estimate-teaser.is-error .estimate-teaser-amounts {
+            display: none;
+        }
+
+        /* ---------- Personalized-estimate CTA (stage 2) ---------- */
+        .personalized-cta {
+            margin-top: 1.25rem;
+            padding: 1.1rem 1.15rem;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            border: 2px solid #10B981;
+        }
+
+        .personalized-cta h3 {
+            font-size: 1rem;
+            color: #065f46;
+            font-weight: 700;
+            margin: 0 0 0.4rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .personalized-cta p {
+            color: #047857;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .estimates-disclaimer {
+            margin: 0.85rem 0 0 0;
+            font-size: 0.78rem;
+            color: #6b7280;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        /* Inline loading state for the email submit button */
+        .modal-btn-primary.is-loading {
+            opacity: 0.85;
+            cursor: progress;
+        }
     </style>
 </head>
 <body>
@@ -647,8 +1073,8 @@
                 </div>
 
                 <div class="section-header">
-                    <h2>Step 1 — System Specifications & Usage Data</h2>
-                    <p>Tell us about your battery system and electricity usage</p>
+                    <h2>Step 1 — System Specifications</h2>
+                    <p>Tell us about your battery system</p>
                 </div>
 
                 <form id="diyForm" action="#" method="POST">
@@ -660,11 +1086,11 @@
                             <div style="flex: 1;">
                                 <h3 style="font-size: 1.1rem; color: #374151; font-weight: 700; margin-bottom: 0.5rem;">Quick Start: Tell Us Your System Specs</h3>
                                 <p style="color: #4b5563; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
-                                    Just provide your system specifications below, and we'll calculate your estimated earnings. You can complete registration now and connect your system later.
+                                    Just provide your system specifications below, and we'll calculate your estimated earnings.
                                 </p>
                                 
                                 <p style="color: #374151; font-size: 0.875rem; margin-bottom: 1rem; padding: 0.75rem; background: #e0f2fe; border-radius: 8px; border-left: 3px solid #0ea5e9;">
-                                    <strong>✅ This is enough to get started!</strong> Simply enter your battery and solar capacity below. We'll send you personalized estimates within 72 hours.
+                                    <strong>✅ This is enough to get started!</strong> Simply enter your battery and solar capacity below. We'll send you personalized estimates shortly.
                                 </p>
 
                                 <div class="form-grid">
@@ -687,103 +1113,10 @@
                         </div>
                     </div>
 
-                    <!-- Provide Your Energy Usage -->
-                    <div style="background: #f9fafb; border: 2px solid #d1d5db; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
-                        <div style="display: flex; align-items: start; gap: 0.75rem;">
-                            <span style="font-size: 1.5rem;">💡</span>
-                            <div style="flex: 1;">
-                                <h3 style="font-size: 1.1rem; color: #374151; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                                    <span>Provide Your Energy Usage</span>
-                                    <button type="button" id="usageHelpToggle" aria-expanded="false" aria-controls="usageHelpPanel" title="Where to find these numbers on your utility bill" style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; padding: 0; border-radius: 50%; border: 1.5px solid #10B981; background: #ffffff; color: #10B981; font-weight: 700; font-size: 0.85rem; line-height: 1; cursor: pointer; transition: all 0.2s ease;">?</button>
-                                </h3>
-                                <p style="color: #4b5563; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
-                                    Enter your <strong>annual daily average</strong> electricity usage from your most recent utility bill. <strong>Export Generation is optional</strong> — leave blank if you don't have rooftop solar, or if you newly installed your system and your bill doesn't show export yet. Click the <strong>?</strong> next to the heading to see where to find these numbers on a sample SCE bill.
-                                </p>
-
-                                <!-- Annual Daily Average Inputs (always visible) -->
-                                <div id="dailyAverageSection" class="usage-section">
-                                    <div style="background: #ffffff; border: 2px solid #e5e7eb; border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem;">
-                                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;" id="dailyAverageGrid">
-                                            <div>
-                                                <label for="dailyAverageKwh" style="display: block; font-weight: 600; color: #374151; font-size: 1rem; margin-bottom: 0.5rem;">
-                                                    Annual Daily Average Net Usage (kWh) <span style="color: #ef4444;">*</span>
-                                                </label>
-                                                <input type="number" id="dailyAverageKwh" name="dailyAverageKwh" placeholder="e.g., 24.10" step="0.01" min="0" required style="width: 100%; padding: 0.75rem; font-size: 1rem; border: 2px solid #e5e7eb; border-radius: 8px;">
-                                                <small style="color: #6b7280; font-size: 0.875rem; display: block; margin-top: 0.5rem;">
-                                                    Look for <strong>"This year:"</strong> in the <strong>Electricity Usage</strong> section of your utility bill.
-                                                </small>
-                                            </div>
-                                            <div id="dailyAverageExportWrapper">
-                                                <label for="dailyAverageExportKwh" style="display: block; font-weight: 600; color: #374151; font-size: 1rem; margin-bottom: 0.5rem;">
-                                                    Annual Daily Average Export Generation (kWh) <span style="color: #6b7280; font-weight: 500; font-size: 0.85rem;">(optional)</span>
-                                                </label>
-                                                <input type="number" id="dailyAverageExportKwh" name="dailyAverageExportKwh" placeholder="e.g., 12.17" step="0.01" min="0" style="width: 100%; padding: 0.75rem; font-size: 1rem; border: 2px solid #e5e7eb; border-radius: 8px;">
-                                                <small style="color: #6b7280; font-size: 0.875rem; display: block; margin-top: 0.5rem;">
-                                                    Look for <strong>"This year:"</strong> in the <strong>Export Generation</strong> section. Leave blank if your bill doesn't show export.
-                                                </small>
-                                            </div>
-                                        </div>
-                                        <div id="grossUsageEstimate" style="display: none; margin-top: 1rem; padding: 0.75rem 1rem; background: #ecfdf5; border: 1px solid #10B981; border-radius: 8px;">
-                                            <p style="margin: 0; font-size: 0.85rem; color: #065f46; line-height: 1.55;">
-                                                <strong>Estimated gross daily usage:</strong> <span id="grossUsageEstimateValue" style="font-weight: 700;">—</span> kWh/day
-                                                <br>
-                                                <span id="grossUsageEstimateBreakdown" style="font-size: 0.78rem; color: #047857;"></span>
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <!-- Help Panel: where to find these numbers (toggled by the "?" button next to the heading) -->
-                                    <div id="usageHelpPanel" style="display: none; background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 1rem; margin-top: 0.5rem;">
-                                        <h4 style="color: #1e40af; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem;">📊 How to Find These Numbers (SCE Customers)</h4>
-                                        <p style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin-bottom: 0.75rem;">
-                                            Open the <strong>"Your past and current electricity usage"</strong> section of your utility bill and look at <strong>"Your daily average electricity usage (kWh)"</strong>. Copy each <strong>"This year:"</strong> value into the matching field above.
-                                        </p>
-                                        <ul style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin: 0 0 0.75rem 1.25rem; padding: 0;">
-                                            <li><strong>If you have rooftop solar</strong> (with system): your bill shows <strong>two</strong> "This year:" values — one under <strong>Electricity Usage</strong> (net consumption) and one under <strong>Export Generation</strong> (exported solar). Enter both.</li>
-                                            <li><strong>If you don't have rooftop solar</strong> (without system) or you <strong>newly installed</strong> it and your bill doesn't show export yet: your bill shows only <strong>one</strong> "This year:" value — enter it as <strong>Net Usage</strong> and leave Export Generation blank.</li>
-                                        </ul>
-
-                                        <div class="sce-bill-examples" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 1rem;">
-                                            <div style="border: 2px solid #e5e7eb; border-radius: 8px; padding: 0.5rem; background: #f9fafb;">
-                                                <p style="color: #1e3a8a; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.35rem; text-align: center;">
-                                                    Without system (one "This year:" value)
-                                                </p>
-                                                <img src="assets/images/sce_bill_no_system_daily_highlighted.png"
-                                                     alt="SCE bill (without solar) — This year's daily average highlighted"
-                                                     style="width: 100%; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer;"
-                                                     onclick="window.open(this.src, '_blank')">
-                                                <p style="color: #64748b; font-size: 0.7rem; margin-top: 0.4rem; text-align: center; font-style: italic;">
-                                                    Example: Net Usage <strong>24.10 kWh</strong>. Leave Export Generation blank.
-                                                </p>
-                                            </div>
-                                            <div style="border: 2px solid #e5e7eb; border-radius: 8px; padding: 0.5rem; background: #f9fafb;">
-                                                <p style="color: #1e3a8a; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.35rem; text-align: center;">
-                                                    With solar &amp; battery system (two "This year:" values)
-                                                </p>
-                                                <img src="assets/images/sce_bill_with_system_daily_highlighted.png"
-                                                     alt="SCE bill (with solar) — Electricity Usage and Export Generation daily averages highlighted"
-                                                     style="width: 100%; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer;"
-                                                     onclick="window.open(this.src, '_blank')">
-                                                <p style="color: #64748b; font-size: 0.7rem; margin-top: 0.4rem; text-align: center; font-style: italic;">
-                                                    Example: <span style="color: #b91c1c;">Net Usage <strong>23.20</strong></span>, <span style="color: #047857;">Export <strong>12.17</strong></span> kWh.
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        <p style="margin: 0.75rem 0 0 0; font-size: 0.78rem; color: #047857; line-height: 1.5;">
-                                            💡 If you provide both Net Usage and Export Generation, we'll use your <strong>Solar Panel Capacity (kW)</strong> from above to estimate your gross home usage as: <code style="font-family: ui-monospace, Menlo, monospace;">gross = net + (estimated solar generation − exported solar)</code>.
-                                        </p>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
                     <p style="text-align: center; margin: 1.5rem 0 0.75rem 0; padding: 1rem; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border-radius: 12px; border: 2px solid #10B981;">
-                        <span style="display: block; color: #059669; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">🎁 UNLOCK YOUR EARNING POTENTIAL</span>
-                        <span style="display: block; color: #047857; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem;">Typical range for similar systems: $600–$2,400/year</span>
-                        <span style="display: block; color: #6b7280; font-size: 0.85rem;">Get your quick estimate ↓</span>
+                        <span style="display: block; color: #059669; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">🤖 EXTRA EARNINGS WITH MICROVPP AI</span>
+                        <span style="display: block; color: #047857; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem;">Typical bonus for similar systems: $600–$2,400/year on top of your inverter's default schedule</span>
+                        <span style="display: block; color: #6b7280; font-size: 0.85rem;">See your quick estimate ↓</span>
                     </p>
 
                     <button type="submit" class="submit-btn" id="submitBtn">Calculate Quick Estimate & Continue</button>
@@ -804,6 +1137,82 @@
             </div>
         </div>
     </section>
+
+    <!-- Email capture + estimates results modal (shown when user clicks Continue) -->
+    <div class="modal-overlay" id="emailEstimateModal" role="dialog" aria-modal="true" aria-labelledby="emailEstimateTitle">
+        <div class="modal-content">
+            <button type="button" class="modal-close" id="emailEstimateClose" aria-label="Close">×</button>
+
+            <!-- Stage 1: Email entry -->
+            <div class="modal-stage is-active" id="emailStage">
+                <div class="modal-header">
+                    <h2 id="emailEstimateTitle">🤖 Extra earnings unlocked by MicroVPP AI</h2>
+                    <p>This is the <strong>bonus</strong> MicroVPP's AI optimization adds <strong>on top of</strong> what your inverter already earns with its built-in schedule. Pop in your email to see how it stacks up across <strong>Low, Base, and High</strong> SCE homes and get the full report in your inbox.</p>
+                </div>
+
+                <form id="emailEstimateForm" class="modal-body" novalidate>
+                    <!-- Sneak-peek preview for the SCE Base profile -->
+                    <div class="estimate-teaser is-loading" id="emailStageTeaser" aria-live="polite">
+                        <div class="estimate-teaser-badge">🎁 SNEAK PEEK</div>
+                        <p class="estimate-teaser-headline" id="emailStageTeaserHeadline">Typical SCE home with your system</p>
+                        <p class="estimate-teaser-desc" id="emailStageTeaserDesc">Calculating the <strong>extra earnings</strong> MicroVPP AI would add for the <strong>Base</strong> profile (≈ 46.74 kWh/day)…</p>
+                        <div class="estimate-teaser-amounts">
+                            <div class="estimate-teaser-yearly">
+                                <span class="estimate-teaser-yearly-label">Extra earnings with MicroVPP AI</span>
+                                <span class="estimate-teaser-yearly-value" id="emailStageTeaserYearly">Calculating…</span>
+                            </div>
+                            <div class="estimate-teaser-monthly" id="emailStageTeaserMonthly">~ <strong>$—</strong> / month bonus</div>
+                        </div>
+                        <p class="estimate-teaser-unlock">
+                            🔓 <strong>Enter your email below</strong> to unlock the bonus across all three SCE profiles (Low / Base / High) and get the full report by email.
+                        </p>
+                    </div>
+
+                    <label class="field-label" for="estimateEmail">Email address <span style="color: #ef4444;">*</span></label>
+                    <input type="email" id="estimateEmail" name="estimateEmail" placeholder="you@example.com" autocomplete="email" required>
+
+                    <div class="modal-actions">
+                        <button type="button" class="modal-btn-secondary" id="emailEstimateCancel">Cancel</button>
+                        <button type="submit" class="modal-btn-primary" id="emailEstimateSubmit">Unlock all 3 estimates →</button>
+                    </div>
+
+                    <p class="modal-privacy">
+                        🔒 We use your email only to send your estimate and follow‑up updates. See our <a href="privacy.html" style="color: #059669;">Privacy Policy</a>.
+                    </p>
+                </form>
+            </div>
+
+            <!-- Stage 2: Estimates for all 3 SCE profiles -->
+            <div class="modal-stage" id="estimatesStage">
+                <div class="modal-header">
+                    <h2>🤖 Your Extra Earnings with MicroVPP AI</h2>
+                    <p id="estimatesIntroText">Here's the bonus MicroVPP AI optimization would add on top of your inverter's default schedule, across the three standard SCE home profiles.</p>
+                </div>
+
+                <div class="modal-body">
+                    <div class="estimate-cards" id="estimateCardsContainer">
+                        <!-- Cards rendered by showEmailEstimateModal() -->
+                    </div>
+
+                    <div class="personalized-cta">
+                        <h3>💡 Want a personalized bonus estimate?</h3>
+                        <p>
+                            These numbers come from the <strong>standard SCE profiles</strong>. Continue to <strong>Step 2</strong> and share a little about your actual usage — we'll email an extra-earnings estimate tuned to <em>your</em> home and your system's baseline.
+                        </p>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="modal-btn-secondary" id="estimatesCloseBtn">Close</button>
+                        <button type="button" class="modal-btn-primary" id="estimatesContinueBtn">Continue to Step 2 →</button>
+                    </div>
+
+                    <p class="estimates-disclaimer">
+                        Preliminary estimate only. All numbers shown are the <strong>extra</strong> earnings MicroVPP AI optimization adds on top of your inverter's built-in algorithm. Your detailed simulation will arrive in your inbox shortly.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer>
@@ -865,94 +1274,16 @@
         // ============================================
         // ENERGY USAGE INPUTS
         // ============================================
-        // The page now exposes a single usage-input UI: Annual Daily Average Net
-        // Usage (kWh, required) and Annual Daily Average Export Generation (kWh,
-        // optional). The legacy "Monthly Daily Average" + "Upload Bills" tabs and
-        // the "Without system / With solar & battery system" radio cards have
-        // been removed; bill type is inferred at submit time from whether
-        // Export Generation has been filled in.
+        // The Annual Daily Average Net Usage / Export Generation inputs (and
+        // their associated "?" help panel + gross-usage estimator) have been
+        // removed from this variant of Step 1. The constants below are still
+        // referenced by the persisted step1 payload for downstream pages.
 
         // Estimate: daily kWh generated per kW of installed solar.
         // ~4.5 kWh/day/kW is a reasonable annual average for California residential systems.
         const SOLAR_KWH_PER_DAY_PER_KW = 4.5;
         // 365 / 12 ≈ 30.42
         const DAYS_PER_MONTH = 30.42;
-
-        const grossUsageEstimateBox = document.getElementById('grossUsageEstimate');
-        const grossUsageEstimateValue = document.getElementById('grossUsageEstimateValue');
-        const grossUsageEstimateBreakdown = document.getElementById('grossUsageEstimateBreakdown');
-        const dailyAverageKwhInput = document.getElementById('dailyAverageKwh');
-        const dailyAverageExportKwhInput = document.getElementById('dailyAverageExportKwh');
-
-        // Bill type is inferred from whether Export Generation is filled in
-        // (used by the submit handler and sessionStorage payload).
-        function inferBillType() {
-            const expStr = dailyAverageExportKwhInput ? dailyAverageExportKwhInput.value : '';
-            return (expStr && expStr.trim() !== '') ? 'with_solar' : 'no_solar';
-        }
-
-        // Show the "Estimated gross daily usage" box only when the user has
-        // entered both a net daily average AND export generation, plus a valid
-        // PV capacity. Otherwise hide it (gross == net for no-solar bills).
-        function updateGrossUsageEstimate() {
-            if (!grossUsageEstimateBox) return;
-            const netStr = dailyAverageKwhInput ? dailyAverageKwhInput.value : '';
-            const expStr = dailyAverageExportKwhInput ? dailyAverageExportKwhInput.value : '';
-            const pvStr = document.getElementById('pvWattage') ? document.getElementById('pvWattage').value : '';
-            const hasExport = expStr && expStr.trim() !== '';
-            if (!hasExport) {
-                grossUsageEstimateBox.style.display = 'none';
-                return;
-            }
-            const net = parseFloat(netStr);
-            const exp = parseFloat(expStr);
-            const pv = parseFloat(pvStr);
-            if (isFinite(net) && isFinite(exp) && isFinite(pv) && pv > 0) {
-                const solarEst = pv * SOLAR_KWH_PER_DAY_PER_KW;
-                const gross = net + (solarEst - exp);
-                grossUsageEstimateValue.textContent = gross.toFixed(2);
-                grossUsageEstimateBreakdown.innerHTML =
-                    net.toFixed(2) + ' net + (' + solarEst.toFixed(2) + ' est. solar − ' + exp.toFixed(2) + ' exported)';
-                grossUsageEstimateBox.style.display = 'block';
-            } else {
-                grossUsageEstimateBox.style.display = 'none';
-            }
-        }
-
-        // Toggle the "How to find these numbers" help panel (with the two
-        // sample SCE bill screenshots) when the user clicks the "?" button
-        // next to the "Provide Your Energy Usage" heading.
-        const usageHelpToggle = document.getElementById('usageHelpToggle');
-        const usageHelpPanel = document.getElementById('usageHelpPanel');
-        if (usageHelpToggle && usageHelpPanel) {
-            usageHelpToggle.addEventListener('click', function () {
-                const isHidden = usageHelpPanel.style.display === 'none' || usageHelpPanel.style.display === '';
-                if (isHidden) {
-                    usageHelpPanel.style.display = 'block';
-                    usageHelpToggle.setAttribute('aria-expanded', 'true');
-                    usageHelpToggle.title = 'Hide help';
-                    usageHelpToggle.style.background = '#10B981';
-                    usageHelpToggle.style.color = '#ffffff';
-                } else {
-                    usageHelpPanel.style.display = 'none';
-                    usageHelpToggle.setAttribute('aria-expanded', 'false');
-                    usageHelpToggle.title = 'Where to find these numbers on your utility bill';
-                    usageHelpToggle.style.background = '#ffffff';
-                    usageHelpToggle.style.color = '#10B981';
-                }
-            });
-        }
-
-        // Recompute the gross usage estimate whenever any relevant input changes
-        ['pvWattage', 'dailyAverageKwh', 'dailyAverageExportKwh'].forEach(id => {
-            const el = document.getElementById(id);
-            if (el) {
-                el.addEventListener('input', updateGrossUsageEstimate);
-            }
-        });
-
-        // Initial sync once DOM is ready
-        updateGrossUsageEstimate();
 
         // Variables that no longer have a backing UI but are still referenced
         // by the legacy submit/upload code paths below. Keeping them as empty
@@ -963,7 +1294,7 @@
         const dailyAverageRadio = null;
         const uploadSection = null;
         const manualSection = null;
-        const dailyAverageSection = document.getElementById('dailyAverageSection');
+        const dailyAverageSection = null;
         const billTypeNoSolarRadio = null;
         const billTypeWithSolarRadio = null;
 
@@ -1230,26 +1561,11 @@
                     if (step1Data.batteryCapacity) document.getElementById('batteryCapacity').value = step1Data.batteryCapacity;
                     if (step1Data.pvWattage) document.getElementById('pvWattage').value = step1Data.pvWattage;
 
-                    // Pre-fill the Annual Daily Average inputs. We accept either the
-                    // newer dailyAverageNetKwh field (saved when an export value was
-                    // also provided) or the legacy dailyAverageKwh field (which for
-                    // no-solar bills was always equal to net == gross).
-                    const savedBillType = step1Data.billType || 'no_solar';
-                    const dailyNetSource = savedBillType === 'with_solar'
-                        ? (step1Data.dailyAverageNetKwh || step1Data.dailyAverageKwh)
-                        : step1Data.dailyAverageKwh;
-                    if (dailyNetSource) {
-                        document.getElementById('dailyAverageKwh').value = dailyNetSource;
-                    }
-                    if (step1Data.dailyAverageExportKwh) {
-                        const expEl = document.getElementById('dailyAverageExportKwh');
-                        if (expEl) expEl.value = step1Data.dailyAverageExportKwh;
-                    }
+                    // The Annual Daily Average usage inputs were removed from
+                    // Step 1 in this variant of the page, so there is nothing
+                    // to pre-fill for them — the saved values (if any) are
+                    // simply carried forward in sessionStorage untouched.
 
-                    // Refresh the gross-usage estimate based on pre-filled values
-                    updateGrossUsageEstimate();
-
-                    // Update field requirements after pre-filling
                     updateFieldRequirements();
                     
                     // Show a message if files were already uploaded
@@ -2081,288 +2397,394 @@
         }
 
         // ============================================
-        // ESTIMATION CACHING
+        // SCE STANDARD USER PROFILES
         // ============================================
-        // 
-        // The quick estimation is cached based on a signature of:
-        //   - Battery capacity
-        //   - PV wattage
-        //   - Monthly kWh data
-        //   - Daily average kWh
-        //   - Whether utility bills were uploaded
-        //   - Whether usage chart was uploaded
-        //   - Number of files uploaded
-        //
-        // Benefits:
-        //   1. If user clicks cancel and then continue again, shows saved result instantly
-        //   2. If user doesn't change any data and resubmits, no API call is made
-        //   3. If user changes any input, cache is invalidated and new calculation occurs
-        //
-        // Cache is stored in sessionStorage and persists until:
-        //   - User closes the tab/browser
-        //   - User clears browser data
-        //   - User changes any Step 1 input data
+        // Three reference residential usage profiles in SCE territory. The
+        // user picks one in the email-capture modal and we feed its daily
+        // average kWh into the quick-estimation calculation.
+        const SCE_USER_PROFILES = {
+            low: {
+                key: 'low',
+                label: 'Low',
+                dailyKwh: 23.24,
+                description: '1-bed / 2-bath single-family home, no EV, gas appliances, light AC use.'
+            },
+            base: {
+                key: 'base',
+                label: 'Base',
+                dailyKwh: 46.74,
+                description: '2-3 bedroom single-family home with one EV, regular AC use, mix of gas and electric appliances.'
+            },
+            high: {
+                key: 'high',
+                label: 'High',
+                dailyKwh: 73.55,
+                description: 'Two-story home with a pool, one or more EVs, fully-electric appliances, heavy summer AC use.'
+            }
+        };
+
         // ============================================
-        
-        // Generate a signature/hash of the form data to detect changes
-        function generateDataSignature(systemData, uploadedFilesInfo) {
-            const dataString = JSON.stringify({
-                batteryCapacity: systemData.batteryCapacity,
-                pvWattage: systemData.pvWattage,
-                monthlyKwh: systemData.monthlyKwh,
-                dailyAverageKwh: systemData.dailyAverageKwh,
-                hasUtilityBills: systemData.hasUtilityBills,
-                hasUsageChart: systemData.hasUsageChart,
-                filesCount: uploadedFilesInfo.total,
-                filesUploaded: uploadedFilesInfo.uploaded
-            });
-            
-            // Simple hash function (for production, consider using a proper hash library)
-            let hash = 0;
-            for (let i = 0; i < dataString.length; i++) {
-                const char = dataString.charCodeAt(i);
-                hash = ((hash << 5) - hash) + char;
-                hash = hash & hash; // Convert to 32bit integer
-            }
-            return hash.toString();
-        }
-        
-        // Check if we have a cached estimation for the current data
-        function getCachedEstimation(systemData, uploadedFilesInfo) {
-            const currentSignature = generateDataSignature(systemData, uploadedFilesInfo);
-            const cachedData = sessionStorage.getItem('quickEstimationCache');
-            
-            if (!cachedData) {
-                return null;
-            }
-            
-            try {
-                const cache = JSON.parse(cachedData);
-                if (cache.signature === currentSignature) {
-                    console.log('Using cached estimation (data unchanged)');
-                    return {
-                        estimation: cache.estimation,
-                        filesUploaded: cache.filesUploaded,
-                        totalFiles: cache.totalFiles
-                    };
-                } else {
-                    console.log('Data changed, cache invalidated');
-                    return null;
+        // EMAIL + ALL-PROFILES ESTIMATES MODAL
+        // ============================================
+        // Two-stage modal:
+        //   Stage 1 — collect the user's email
+        //   Stage 2 — show one estimate card per SCE standard profile (low,
+        //             base, high) and offer "Continue to Step 2" for a
+        //             personalized estimate.
+        //
+        // The submitBtn is the page-level Continue button; it gets re-enabled
+        // and reset to its original label whenever the user closes the modal
+        // without proceeding to Step 2.
+        function showEmailEstimateModal(step1Data, submitBtn, originalButtonText) {
+            const modal             = document.getElementById('emailEstimateModal');
+            const form              = document.getElementById('emailEstimateForm');
+            const emailEl           = document.getElementById('estimateEmail');
+            const emailSubmitBtn    = document.getElementById('emailEstimateSubmit');
+            const closeBtn          = document.getElementById('emailEstimateClose');
+            const cancelBtn         = document.getElementById('emailEstimateCancel');
+            const emailStage        = document.getElementById('emailStage');
+            const estimatesStage    = document.getElementById('estimatesStage');
+            const cardsContainer    = document.getElementById('estimateCardsContainer');
+            const introTextEl       = document.getElementById('estimatesIntroText');
+            const continueBtn       = document.getElementById('estimatesContinueBtn');
+            const closeStage2Btn    = document.getElementById('estimatesCloseBtn');
+
+            // Stage-1 sneak-peek teaser elements
+            const teaserEl          = document.getElementById('emailStageTeaser');
+            const teaserDescEl      = document.getElementById('emailStageTeaserDesc');
+            const teaserYearlyEl    = document.getElementById('emailStageTeaserYearly');
+            const teaserMonthlyEl   = document.getElementById('emailStageTeaserMonthly');
+
+            if (!modal || !form) return;
+
+            // Fresh state every time the modal opens.
+            emailStage.classList.add('is-active');
+            estimatesStage.classList.remove('is-active');
+            cardsContainer.innerHTML = '';
+            emailSubmitBtn.disabled = false;
+            emailSubmitBtn.classList.remove('is-loading');
+            emailSubmitBtn.textContent = 'Unlock all 3 estimates →';
+            emailEl.style.borderColor = '#e5e7eb';
+
+            // Pre-fill email from a previous session for convenience.
+            const savedEmail = sessionStorage.getItem('estimateEmail');
+            if (savedEmail) emailEl.value = savedEmail;
+
+            // Cache for the base-case estimate computed in the teaser, so the
+            // post-email full computation can reuse it instead of recalculating.
+            let cachedBaseEstimation = null;
+
+            // Kick off the SCE Base teaser estimate immediately. This is the
+            // "reward" that encourages the user to enter their email — they see
+            // a real number for the typical home and want to compare across
+            // all 3 profiles.
+            (function populateTeaser() {
+                if (!teaserEl) return;
+                teaserEl.classList.add('is-loading');
+                teaserEl.classList.remove('is-error');
+                if (teaserYearlyEl)  teaserYearlyEl.textContent = 'Calculating…';
+                if (teaserMonthlyEl) teaserMonthlyEl.innerHTML  = '~ <strong>$—</strong> / month';
+                if (teaserDescEl) {
+                    teaserDescEl.innerHTML =
+                        'Calculating earnings for the <strong>Base</strong> profile (≈ ' +
+                        SCE_USER_PROFILES.base.dailyKwh.toFixed(2) + ' kWh/day)…';
                 }
-            } catch (error) {
-                console.error('Error reading estimation cache:', error);
-                return null;
+
+                calculateQuickEstimation(step1Data, SCE_USER_PROFILES.base)
+                    .then(function (result) {
+                        if (!result || !result.estimation) throw new Error('No estimation returned');
+                        cachedBaseEstimation = result.estimation;
+                        const est = result.estimation;
+                        const yearlyRange = '$' + est.yearly_low.toLocaleString() +
+                                            '–$' + est.yearly_high.toLocaleString();
+                        const monthlyAvg  = '$' + est.monthly_average.toLocaleString();
+                        teaserEl.classList.remove('is-loading');
+                        if (teaserYearlyEl)  teaserYearlyEl.textContent = yearlyRange;
+                        if (teaserMonthlyEl) teaserMonthlyEl.innerHTML  = '~ <strong>' + monthlyAvg + '</strong> / month bonus';
+                        if (teaserDescEl) {
+                            teaserDescEl.innerHTML =
+                                'Bonus on top of your inverter\'s default schedule, for the <strong>SCE Base profile</strong> ' +
+                                '(2–3 bedroom single-family home with one EV, ≈ ' +
+                                SCE_USER_PROFILES.base.dailyKwh.toFixed(2) + ' kWh/day).';
+                        }
+                    })
+                    .catch(function (err) {
+                        console.error('Teaser estimate failed:', err);
+                        teaserEl.classList.remove('is-loading');
+                        teaserEl.classList.add('is-error');
+                        if (teaserDescEl) {
+                            teaserDescEl.innerHTML =
+                                'Preview is taking a moment — no worries, enter your email and we\'ll deliver the full breakdown.';
+                        }
+                    });
+            })();
+
+            function restorePageButton() {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalButtonText || 'Calculate Quick Estimate & Continue';
+                }
             }
+
+            function cleanup() {
+                modal.classList.remove('is-open');
+                document.body.style.overflow = '';
+                form.removeEventListener('submit', onEmailSubmit);
+                closeBtn.removeEventListener('click', onClose);
+                cancelBtn.removeEventListener('click', onClose);
+                continueBtn.removeEventListener('click', onContinueToStep2);
+                closeStage2Btn.removeEventListener('click', onClose);
+                document.removeEventListener('keydown', onKeyDown);
+            }
+
+            function onClose() {
+                cleanup();
+                restorePageButton();
+            }
+
+            function onKeyDown(e) {
+                if (e.key === 'Escape') onClose();
+            }
+
+            function onContinueToStep2() {
+                // The user already provided their email and saw all 3
+                // estimates. Persist any latest data and proceed.
+                sessionStorage.setItem('registrationStep1', JSON.stringify(step1Data));
+                cleanup();
+                window.location.href = 'diy-registration-step2.html';
+            }
+
+            // Build a single estimate card.
+            function renderEstimateCard(profile, est) {
+                const yearlyRange = `$${est.yearly_low.toLocaleString()}–$${est.yearly_high.toLocaleString()}`;
+                const monthlyAvg  = `$${est.monthly_average.toLocaleString()}`;
+                const isBase = profile.key === 'base';
+                const emoji  = profile.key === 'low'  ? '🏠'
+                             : profile.key === 'base' ? '🏡'
+                             : '🏘️';
+                return (
+                    `<div class="estimate-card${isBase ? ' is-base' : ''}" data-profile="${profile.key}">` +
+                        `<div class="estimate-card-header">` +
+                            `<span class="estimate-card-title">${emoji} ${profile.label}</span>` +
+                            `<span class="estimate-card-kwh">${profile.dailyKwh.toFixed(2)} kWh / day</span>` +
+                        `</div>` +
+                        `<p class="estimate-card-desc">${profile.description}</p>` +
+                        `<div class="estimate-card-amounts">` +
+                            `<div class="estimate-card-yearly">` +
+                                `<span class="estimate-card-yearly-label">Extra earnings with MicroVPP AI</span>` +
+                                `<span class="estimate-card-yearly-value">${yearlyRange}</span>` +
+                            `</div>` +
+                            `<div class="estimate-card-monthly">~ <strong>${monthlyAvg}</strong> / month bonus</div>` +
+                        `</div>` +
+                    `</div>`
+                );
+            }
+
+            // Failure card (in case one of the parallel API calls errors out).
+            function renderErrorCard(profile) {
+                return (
+                    `<div class="estimate-card" data-profile="${profile.key}">` +
+                        `<div class="estimate-card-header">` +
+                            `<span class="estimate-card-title">${profile.label}</span>` +
+                            `<span class="estimate-card-kwh">${profile.dailyKwh.toFixed(2)} kWh / day</span>` +
+                        `</div>` +
+                        `<p class="estimate-card-desc" style="color: #b91c1c;">Bonus estimate temporarily unavailable. Please continue to Step 2 — we'll email it to you.</p>` +
+                    `</div>`
+                );
+            }
+
+            async function onEmailSubmit(e) {
+                e.preventDefault();
+                const email = (emailEl.value || '').trim();
+                const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+                if (!emailValid) {
+                    emailEl.style.borderColor = '#ef4444';
+                    emailEl.focus();
+                    return;
+                }
+                emailEl.style.borderColor = '#e5e7eb';
+
+                // Persist email + write it onto the systemData payload.
+                step1Data.estimateEmail = email;
+                step1Data.usageSource   = 'sce_standard_profile_all';
+                sessionStorage.setItem('estimateEmail', email);
+                sessionStorage.setItem('registrationStep1', JSON.stringify(step1Data));
+
+                // Compute all 3 estimates (in parallel) with a loading state.
+                emailSubmitBtn.disabled = true;
+                emailSubmitBtn.classList.add('is-loading');
+                emailSubmitBtn.textContent = 'Computing your estimates…';
+
+                let results;
+                try {
+                    results = await computeAllProfileEstimates(step1Data);
+                } catch (err) {
+                    console.error('Failed to compute SCE-profile estimates:', err);
+                    emailSubmitBtn.disabled = false;
+                    emailSubmitBtn.classList.remove('is-loading');
+                    emailSubmitBtn.textContent = 'Unlock all 3 estimates →';
+                    alert('We had trouble computing your estimates. Please try again or continue to Step 2 to receive them by email.');
+                    return;
+                }
+
+                // Use the teaser's already-computed base estimate so the
+                // number the user sees in the unlocked view matches the
+                // sneak peek they were enticed by.
+                if (cachedBaseEstimation) {
+                    const baseIdx = results.findIndex(r => r.profile && r.profile.key === 'base');
+                    if (baseIdx >= 0) {
+                        results[baseIdx] = {
+                            profile: results[baseIdx].profile,
+                            estimation: cachedBaseEstimation
+                        };
+                    }
+                }
+
+                // Persist computed estimates so Step 2/3 can show them.
+                sessionStorage.setItem('quickEstimationByProfile', JSON.stringify(
+                    results.map(r => ({
+                        profile_key: r.profile.key,
+                        profile_label: r.profile.label,
+                        profile_daily_kwh: r.profile.dailyKwh,
+                        estimation: r.estimation || null,
+                        error: r.error ? String(r.error.message || r.error) : null
+                    }))
+                ));
+
+                // Render cards in low → base → high order.
+                cardsContainer.innerHTML = results.map(r =>
+                    r.estimation
+                        ? renderEstimateCard(r.profile, r.estimation)
+                        : renderErrorCard(r.profile)
+                ).join('');
+
+                // Personalize the intro line with the user's system specs.
+                const battery = parseFloat(step1Data.batteryCapacity);
+                const pv      = parseFloat(step1Data.pvWattage);
+                if (introTextEl && isFinite(battery) && isFinite(pv)) {
+                    introTextEl.innerHTML =
+                        `For your <strong>${battery} kWh battery</strong> + <strong>${pv} kW solar</strong>, ` +
+                        `here's the bonus MicroVPP AI optimization would add <strong>on top of</strong> your inverter's default schedule, under each standard SCE home profile:`;
+                }
+
+                // Switch to stage 2.
+                emailStage.classList.remove('is-active');
+                estimatesStage.classList.add('is-active');
+                estimatesStage.scrollTop = 0;
+                setTimeout(() => continueBtn.focus(), 50);
+            }
+
+            form.addEventListener('submit', onEmailSubmit);
+            closeBtn.addEventListener('click', onClose);
+            cancelBtn.addEventListener('click', onClose);
+            continueBtn.addEventListener('click', onContinueToStep2);
+            closeStage2Btn.addEventListener('click', onClose);
+            document.addEventListener('keydown', onKeyDown);
+
+            modal.classList.add('is-open');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => emailEl.focus(), 50);
         }
-        
-        // Save estimation to cache
-        function cacheEstimation(systemData, uploadedFilesInfo, estimation) {
-            const signature = generateDataSignature(systemData, uploadedFilesInfo);
-            const cache = {
-                signature: signature,
-                estimation: estimation,
-                filesUploaded: uploadedFilesInfo.uploaded,
-                totalFiles: uploadedFilesInfo.total,
-                timestamp: new Date().toISOString()
-            };
-            
-            sessionStorage.setItem('quickEstimationCache', JSON.stringify(cache));
-            console.log('Estimation cached with signature:', signature);
-        }
-        
+
         // ============================================
         // QUICK ESTIMATION API (MOCK - TO BE REPLACED)
         // ============================================
-        
-        async function calculateQuickEstimation(systemData) {
-            // TODO: Replace this mock function with actual backend REST API call
-            // Expected endpoint: POST /api/calculate-quick-estimate
-            
-            // Simulate API delay (500ms - 1500ms)
-            const delay = 500 + Math.random() * 1000;
+
+        // Compute a quick earnings estimate for a SINGLE SCE profile.
+        //
+        // Earnings model (intuition):
+        //   • The BATTERY is the dominant earner — every kWh of capacity can be
+        //     cycled roughly once per day for arbitrage / VPP dispatch, netting
+        //     a few hundred dollars per kWh per year on TOU + capacity payments.
+        //   • SOLAR is a smaller, secondary contributor — it earns from export
+        //     under NEM 3.0 and from charging the battery, but the export rate
+        //     is far lower than the discharge value of the battery.
+        //   • Across the three SCE residential profiles (Low / Base / High),
+        //     earnings are SIMILAR. In fact, a LOW-usage household earns
+        //     slightly MORE than a high-usage one because more of the battery's
+        //     capacity stays free to participate in grid services, instead of
+        //     being drained to cover the home's own load.
+        //
+        // TODO: Replace this mock with a backend REST API call:
+        //       POST /api/calculate-quick-estimate
+        //       body: { battery_capacity_kwh, pv_wattage_kw, daily_average_kwh,
+        //               profile_key, temp_user_id }
+        async function calculateQuickEstimation(systemData, profile) {
+            // Simulate API delay (300ms - 900ms) so the loading state is
+            // visible but the modal doesn't feel sluggish.
+            const delay = 300 + Math.random() * 600;
             await new Promise(resolve => setTimeout(resolve, delay));
-            
-            // Mock calculation based on system specs
+
             const batteryCapacity = parseFloat(systemData.batteryCapacity) || 10;
-            const pvWattage = parseFloat(systemData.pvWattage) || 8;
-            
-            // Check if usage data was provided for confidence level
-            const hasUsageData = systemData.hasUtilityBills || systemData.hasUsageChart || 
-                                 (systemData.monthlyKwh && Object.keys(systemData.monthlyKwh).length > 0) ||
-                                 (systemData.dailyAverageKwh && systemData.dailyAverageKwh.trim() !== '');
-            
-            // Simple mock formula: base on battery and solar capacity
-            // Actual API will use sophisticated algorithms with usage data
-            const baseEarnings = batteryCapacity * 50; // $50 per kWh of battery
-            const solarBonus = pvWattage * 30; // $30 per kW of solar
-            const randomVariation = (Math.random() * 0.3 - 0.15); // ±15% variation
-            
-            const estimatedYearlyEarnings = Math.round((baseEarnings + solarBonus) * (1 + randomVariation));
-            const lowEstimate = Math.round(estimatedYearlyEarnings * 0.7);
-            const highEstimate = Math.round(estimatedYearlyEarnings * 1.3);
-            
-            // Mock API response format
+            const pvWattage       = parseFloat(systemData.pvWattage) || 8;
+            const baseDailyKwh    = 46.74;
+            const dailyKwh        = (profile && profile.dailyKwh) || baseDailyKwh;
+
+            // Battery dominates earnings. ~$70 / kWh / year is a realistic
+            // residential blend of TOU arbitrage savings (~$30–40/kWh) plus
+            // VPP capacity / event payments (~$30–40/kWh) net of round-trip
+            // efficiency losses and battery degradation set-aside.
+            const batteryEarnings = batteryCapacity * 70;
+
+            // Solar is a secondary contributor under NEM 3.0 — export rates
+            // are far below retail, and most of solar's economic value flows
+            // through battery cycling rather than direct export.
+            const solarBonus      = pvWattage * 20;
+
+            const baseAnnual      = batteryEarnings + solarBonus;
+
+            // Usage headroom: lower household consumption leaves more battery
+            // capacity free for grid services, so Low earns a touch more than
+            // Base, and Base a touch more than High. Small effect (~±6%),
+            // clamped so even very high or low loads stay close to baseline.
+            const usageRatio        = dailyKwh / baseDailyKwh;
+            const headroomMultiplier = Math.max(
+                0.88,
+                Math.min(1.12, 1 + 0.10 * (1 - usageRatio))
+            );
+
+            // Modest random variation (±5%) so the three cards look distinct
+            // without exaggerating the spread between profiles.
+            const randomVariation = (Math.random() * 0.10 - 0.05);
+
+            const yearlyAvg = Math.round(
+                baseAnnual * headroomMultiplier * (1 + randomVariation)
+            );
+
             return {
                 success: true,
                 estimation: {
-                    yearly_low: lowEstimate,
-                    yearly_high: highEstimate,
-                    yearly_average: estimatedYearlyEarnings,
-                    monthly_average: Math.round(estimatedYearlyEarnings / 12),
-                    confidence_level: hasUsageData ? 'medium' : 'low',
-                    message: 'Quick estimation calculated. More accurate estimates will be provided after detailed analysis.'
+                    yearly_low:        Math.round(yearlyAvg * 0.75),
+                    yearly_high:       Math.round(yearlyAvg * 1.25),
+                    yearly_average:    yearlyAvg,
+                    monthly_average:   Math.round(yearlyAvg / 12),
+                    confidence_level:  'low',
+                    profile_key:       profile ? profile.key       : null,
+                    profile_label:     profile ? profile.label     : null,
+                    profile_daily_kwh: dailyKwh
                 }
             };
-            
-            // Uncomment below when actual API is ready:
-            /*
-            // NOTE: This function is called AFTER files are uploaded
-            // The backend should use the uploaded files (utility bills, usage chart screenshot)
-            // along with the system specs to calculate the estimation
-            const response = await fetch(API_BASE_URL + '/api/calculate-quick-estimate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    battery_capacity_kwh: systemData.batteryCapacity,
-                    pv_wattage_kw: systemData.pvWattage,
-                    monthly_kwh: systemData.monthlyKwh,
-                    daily_average_kwh: systemData.dailyAverageKwh,
-                    has_utility_bills: systemData.hasUtilityBills,
-                    has_usage_chart: systemData.hasUsageChart,
-                    temp_user_id: systemData.tempUserId,
-                    // Backend should fetch the uploaded files using temp_user_id
-                    // Files are already uploaded to S3 at this point
-                })
-            });
-            
-            if (!response.ok) {
-                throw new Error('Quick estimation API failed');
-            }
-            
-            return await response.json();
-            */
-        }
-        
-        function showEstimationDialog(estimation, filesUploaded, totalFiles, isCached = false) {
-            const yearlyRange = `$${estimation.yearly_low.toLocaleString()}–$${estimation.yearly_high.toLocaleString()}`;
-            const monthlyAvg = `$${estimation.monthly_average.toLocaleString()}`;
-            
-            let confidenceText = '';
-            if (estimation.confidence_level === 'medium') {
-                confidenceText = 'This is a preliminary estimate based on your system specs and usage data.';
-            } else {
-                confidenceText = 'This is a preliminary estimate based on your system specs.';
-            }
-            
-            let uploadStatus = '';
-            if (totalFiles > 0) {
-                if (filesUploaded === totalFiles) {
-                    uploadStatus = `\n📁 All ${filesUploaded} file(s) uploaded successfully!\n`;
-                } else if (filesUploaded > 0) {
-                    uploadStatus = `\n⚠️ ${filesUploaded} of ${totalFiles} file(s) uploaded.\n`;
-                } else {
-                    uploadStatus = '\n⚠️ Files could not be uploaded.\n';
-                }
-            }
-            
-            const cacheNote = isCached ? '\n(Showing saved estimate - no changes detected)\n' : '';
-            
-            const message = 
-                '🎉 Your Quick Earnings Estimate\n' +
-                uploadStatus + cacheNote + '\n' +
-                `💰 Estimated Annual Earnings: ${yearlyRange}/year\n` +
-                `📊 Average Monthly: ${monthlyAvg}/month\n\n` +
-                `${confidenceText}\n\n` +
-                'We are running your simulation now (approximately 48 hours). Leave your email to receive the results.\n\n';
-            
-            return confirm(message);
-        }
-        
-        // Helper function to calculate estimation and handle navigation after files uploaded
-        async function calculateAndShowEstimation(systemData, submitBtn, filesUploaded, totalFiles) {
-            try {
-                const uploadedFilesInfo = {
-                    uploaded: filesUploaded,
-                    total: totalFiles
-                };
-                
-                // Check if we have a cached estimation for this exact data
-                const cachedResult = getCachedEstimation(systemData, uploadedFilesInfo);
-                
-                let estimation, resultFilesUploaded, resultTotalFiles;
-                
-                if (cachedResult) {
-                    // Use cached estimation (no API call needed)
-                    console.log('Using cached estimation result');
-                    estimation = cachedResult.estimation;
-                    resultFilesUploaded = cachedResult.filesUploaded;
-                    resultTotalFiles = cachedResult.totalFiles;
-                    
-                    // Store estimation in session storage for later use
-                    sessionStorage.setItem('quickEstimation', JSON.stringify(estimation));
-                } else {
-                    // Calculate new estimation
-                    submitBtn.textContent = 'Calculating your estimate...';
-                    
-                    console.log('Calculating quick estimation after file upload...');
-                    const estimationResult = await calculateQuickEstimation(systemData);
-                    
-                    if (!estimationResult.success) {
-                        console.warn('Quick estimation failed, asking user to continue anyway');
-                        if (confirm('Unable to calculate estimate, but your data has been saved. Continue to Step 2?')) {
-                            window.location.href = 'diy-registration-step2.html';
-                        } else {
-                            submitBtn.disabled = false;
-                            submitBtn.textContent = 'Calculate Quick Estimate & Continue';
-                        }
-                        return;
-                    }
-                    
-                    console.log('Quick estimation calculated:', estimationResult.estimation);
-                    estimation = estimationResult.estimation;
-                    resultFilesUploaded = filesUploaded;
-                    resultTotalFiles = totalFiles;
-                    
-                    // Cache the estimation result
-                    cacheEstimation(systemData, uploadedFilesInfo, estimation);
-                    
-                    // Store estimation in session storage for later use
-                    sessionStorage.setItem('quickEstimation', JSON.stringify(estimation));
-                }
-                
-                // Show estimation dialog with upload status
-                const userWantsToContinue = showEstimationDialog(
-                    estimation, 
-                    resultFilesUploaded, 
-                    resultTotalFiles,
-                    cachedResult !== null  // indicate if this is cached data
-                );
-                
-                if (userWantsToContinue) {
-                    // User confirmed, proceed to step 2
-                    window.location.href = 'diy-registration-step2.html';
-                } else {
-                    // User cancelled, restore button
-                    // Estimation is cached, so clicking again will show same result
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Calculate Quick Estimate & Continue';
-                }
-                
-            } catch (error) {
-                console.error('Error calculating quick estimation:', error);
-                // Ask user if they want to continue despite estimation error
-                if (confirm('Unable to calculate quick estimate at this time, but your data has been saved. Continue to Step 2?')) {
-                    window.location.href = 'diy-registration-step2.html';
-                } else {
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Calculate Quick Estimate & Continue';
-                }
-            }
         }
 
+        // Compute an estimate for each of the three SCE standard profiles in
+        // parallel. Returns an array of { profile, estimation } objects in
+        // low → base → high order. Failed calls produce { profile, error }.
+        async function computeAllProfileEstimates(systemData) {
+            const profiles = [
+                SCE_USER_PROFILES.low,
+                SCE_USER_PROFILES.base,
+                SCE_USER_PROFILES.high
+            ];
+            const results = await Promise.all(
+                profiles.map(p =>
+                    calculateQuickEstimation(systemData, p)
+                        .then(r => ({ profile: p, estimation: r.estimation, success: r.success }))
+                        .catch(err => ({ profile: p, error: err }))
+                )
+            );
+            return results;
+        }
+        
         // Form submit handler
         document.getElementById('diyForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -2388,49 +2810,15 @@
                 document.getElementById('pvWattage').style.borderColor = '#e5e7eb';
             }
             
-            const pvKwForEstimate = pvWattage ? parseFloat(pvWattage) : 0;
-
-            // Read the Annual Daily Average inputs (the only usage-input UI on
-            // the page now). Net usage is required; export generation is
-            // optional and, when provided, is what makes this a "with solar"
-            // bill (used to compute gross usage from net usage).
-            const dailyAverageKwh = formData.get('dailyAverageKwh');
-            const dailyAverageExportKwh = formData.get('dailyAverageExportKwh');
-            const hasDailyAverage = dailyAverageKwh && dailyAverageKwh.trim() !== '';
-            const hasExport = dailyAverageExportKwh && dailyAverageExportKwh.trim() !== '';
-            const billType = hasExport ? 'with_solar' : 'no_solar';
-            const isWithSolarBill = hasExport;
-
-            // Compute gross daily average. For no-solar (or newly-installed
-            // solar where the bill doesn't yet show export) we treat net == gross.
-            // When export is provided, we estimate gross as:
-            //   gross = net + (estimated_solar_generation − exported)
-            let dailyAverageGrossKwh = hasDailyAverage ? dailyAverageKwh : '';
-            if (isWithSolarBill && hasDailyAverage && pvKwForEstimate > 0) {
-                const netDaily = parseFloat(dailyAverageKwh);
-                const exportDaily = parseFloat(dailyAverageExportKwh);
-                const estimatedSolarDaily = pvKwForEstimate * SOLAR_KWH_PER_DAY_PER_KW;
-                if (isFinite(netDaily)) {
-                    const gross = netDaily + (estimatedSolarDaily - (isFinite(exportDaily) ? exportDaily : 0));
-                    dailyAverageGrossKwh = gross.toFixed(2);
-                }
-            }
-
-            // Require PV kW when the user has supplied an Export Generation
-            // value, because we need it to estimate gross usage from net usage.
-            if (isWithSolarBill && hasDailyAverage && !(pvKwForEstimate > 0)) {
-                errors.push('- Solar Panel Capacity (kW) is required when Export Generation is provided so we can estimate your gross usage');
-                document.getElementById('pvWattage').style.borderColor = '#ef4444';
-            }
-
-            // The simplified UI requires the user to enter Net Usage. Surface a
-            // friendlier error than the browser default.
-            if (!hasDailyAverage) {
-                errors.push('- Annual Daily Average Net Usage (kWh) is required');
-                if (dailyAverageKwhInput) dailyAverageKwhInput.style.borderColor = '#ef4444';
-            } else if (dailyAverageKwhInput) {
-                dailyAverageKwhInput.style.borderColor = '#e5e7eb';
-            }
+            // Energy-usage inputs have been removed from Step 1 in this
+            // variant of the page. Keep the variables so downstream code that
+            // reads them keeps working, but treat them as empty / no-solar.
+            const dailyAverageKwh = '';
+            const dailyAverageExportKwh = '';
+            const hasDailyAverage = false;
+            const hasExport = false;
+            const billType = 'no_solar';
+            const dailyAverageGrossKwh = '';
 
             // Bills/screenshots/monthly entry have been removed from the UI;
             // the legacy upload code paths still exist but are inert without
@@ -2442,20 +2830,9 @@
             const monthlyKwhData = {};
             const hasMonthlyData = false;
 
-            // Show validation errors
             if (errors.length > 0) {
                 let errorMessage = '⚠️ Missing Required Information:\n\n' + errors.join('\n');
                 errorMessage += '\n\nPlease provide the required information to continue.';
-
-                if (!hasDailyAverage) {
-                    setTimeout(() => {
-                        if (dailyAverageKwhInput) {
-                            dailyAverageKwhInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            dailyAverageKwhInput.focus();
-                        }
-                    }, 500);
-                }
-
                 alert(errorMessage);
                 return;
             }
@@ -2580,22 +2957,22 @@
                     // Handle results
                     const totalFiles = utilityBills.length + screenshots.length;
                     
-                    // Calculate estimation after files are uploaded
-                    await calculateAndShowEstimation(step1SystemData, submitBtn, totalFilesUploaded, totalFiles);
+                    // Ask for email, then show all 3 SCE-profile estimates
+                    showEmailEstimateModal(step1SystemData, submitBtn, originalButtonText);
                     
                 } catch (error) {
                     console.error('Error uploading files:', error);
                     if (confirm('Error uploading files. Continue without files?')) {
-                        // Calculate estimation even if files failed
-                        await calculateAndShowEstimation(step1SystemData, submitBtn, 0, 0);
+                        // Ask for email, then show all 3 SCE-profile estimates
+                        showEmailEstimateModal(step1SystemData, submitBtn, originalButtonText);
                     } else {
                         submitBtn.textContent = originalButtonText;
                         submitBtn.disabled = false;
                     }
                 }
             } else {
-                // No files to upload, calculate estimation immediately
-                await calculateAndShowEstimation(step1SystemData, submitBtn, 0, 0);
+                // Go straight to email modal + 3-profile estimates
+                showEmailEstimateModal(step1SystemData, submitBtn, originalButtonText);
             }
         });
 
