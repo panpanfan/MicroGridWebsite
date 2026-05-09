@@ -1114,9 +1114,9 @@
                     </div>
 
                     <p style="text-align: center; margin: 1.5rem 0 0.75rem 0; padding: 1rem; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border-radius: 12px; border: 2px solid #10B981;">
-                        <span style="display: block; color: #059669; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">🎁 UNLOCK YOUR EARNING POTENTIAL</span>
-                        <span style="display: block; color: #047857; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem;">Typical range for similar systems: $600–$2,400/year</span>
-                        <span style="display: block; color: #6b7280; font-size: 0.85rem;">Get your quick estimate ↓</span>
+                        <span style="display: block; color: #059669; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">🤖 EXTRA EARNINGS WITH MICROVPP AI</span>
+                        <span style="display: block; color: #047857; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem;">Typical bonus for similar systems: $600–$2,400/year on top of your inverter's default schedule</span>
+                        <span style="display: block; color: #6b7280; font-size: 0.85rem;">See your quick estimate ↓</span>
                     </p>
 
                     <button type="submit" class="submit-btn" id="submitBtn">Calculate Quick Estimate & Continue</button>
@@ -1146,8 +1146,8 @@
             <!-- Stage 1: Email entry -->
             <div class="modal-stage is-active" id="emailStage">
                 <div class="modal-header">
-                    <h2 id="emailEstimateTitle">🎉 Look how much your system could earn</h2>
-                    <p>Here's a quick preview based on the typical SCE home. Pop in your email to see <strong>Low, Base, and High</strong> homes side by side and get the full report in your inbox.</p>
+                    <h2 id="emailEstimateTitle">🤖 Extra earnings unlocked by MicroVPP AI</h2>
+                    <p>This is the <strong>bonus</strong> MicroVPP's AI optimization adds <strong>on top of</strong> what your inverter already earns with its built-in schedule. Pop in your email to see how it stacks up across <strong>Low, Base, and High</strong> SCE homes and get the full report in your inbox.</p>
                 </div>
 
                 <form id="emailEstimateForm" class="modal-body" novalidate>
@@ -1155,16 +1155,16 @@
                     <div class="estimate-teaser is-loading" id="emailStageTeaser" aria-live="polite">
                         <div class="estimate-teaser-badge">🎁 SNEAK PEEK</div>
                         <p class="estimate-teaser-headline" id="emailStageTeaserHeadline">Typical SCE home with your system</p>
-                        <p class="estimate-teaser-desc" id="emailStageTeaserDesc">Calculating earnings for the <strong>Base</strong> profile (≈ 46.74 kWh/day)…</p>
+                        <p class="estimate-teaser-desc" id="emailStageTeaserDesc">Calculating the <strong>extra earnings</strong> MicroVPP AI would add for the <strong>Base</strong> profile (≈ 46.74 kWh/day)…</p>
                         <div class="estimate-teaser-amounts">
                             <div class="estimate-teaser-yearly">
-                                <span class="estimate-teaser-yearly-label">Estimated annual earnings</span>
+                                <span class="estimate-teaser-yearly-label">Extra earnings with MicroVPP AI</span>
                                 <span class="estimate-teaser-yearly-value" id="emailStageTeaserYearly">Calculating…</span>
                             </div>
-                            <div class="estimate-teaser-monthly" id="emailStageTeaserMonthly">~ <strong>$—</strong> / month</div>
+                            <div class="estimate-teaser-monthly" id="emailStageTeaserMonthly">~ <strong>$—</strong> / month bonus</div>
                         </div>
                         <p class="estimate-teaser-unlock">
-                            🔓 <strong>Enter your email below</strong> to unlock estimates for all three SCE profiles (Low / Base / High) and get the full report by email.
+                            🔓 <strong>Enter your email below</strong> to unlock the bonus across all three SCE profiles (Low / Base / High) and get the full report by email.
                         </p>
                     </div>
 
@@ -1185,8 +1185,8 @@
             <!-- Stage 2: Estimates for all 3 SCE profiles -->
             <div class="modal-stage" id="estimatesStage">
                 <div class="modal-header">
-                    <h2>🎉 Your Estimated Annual Earnings</h2>
-                    <p id="estimatesIntroText">Here's how your system would earn under the three standard SCE home profiles.</p>
+                    <h2>🤖 Your Extra Earnings with MicroVPP AI</h2>
+                    <p id="estimatesIntroText">Here's the bonus MicroVPP AI optimization would add on top of your inverter's default schedule, across the three standard SCE home profiles.</p>
                 </div>
 
                 <div class="modal-body">
@@ -1195,9 +1195,9 @@
                     </div>
 
                     <div class="personalized-cta">
-                        <h3>💡 Want a personalized estimate?</h3>
+                        <h3>💡 Want a personalized bonus estimate?</h3>
                         <p>
-                            These ranges are based on the <strong>standard SCE profiles</strong>. Continue to <strong>Step 2</strong> and tell us a bit more about your usage — we'll email a tailored estimate based on your actual setup.
+                            These numbers come from the <strong>standard SCE profiles</strong>. Continue to <strong>Step 2</strong> and share a little about your actual usage — we'll email an extra-earnings estimate tuned to <em>your</em> home and your system's baseline.
                         </p>
                     </div>
 
@@ -1207,7 +1207,7 @@
                     </div>
 
                     <p class="estimates-disclaimer">
-                        Preliminary estimate only. Your detailed simulation will arrive in your inbox shortly.
+                        Preliminary estimate only. All numbers shown are the <strong>extra</strong> earnings MicroVPP AI optimization adds on top of your inverter's built-in algorithm. Your detailed simulation will arrive in your inbox shortly.
                     </p>
                 </div>
             </div>
@@ -2500,11 +2500,12 @@
                         const monthlyAvg  = '$' + est.monthly_average.toLocaleString();
                         teaserEl.classList.remove('is-loading');
                         if (teaserYearlyEl)  teaserYearlyEl.textContent = yearlyRange;
-                        if (teaserMonthlyEl) teaserMonthlyEl.innerHTML  = '~ <strong>' + monthlyAvg + '</strong> / month';
+                        if (teaserMonthlyEl) teaserMonthlyEl.innerHTML  = '~ <strong>' + monthlyAvg + '</strong> / month bonus';
                         if (teaserDescEl) {
                             teaserDescEl.innerHTML =
-                                'Based on the <strong>SCE Base profile</strong> — a 2–3 bedroom single-family ' +
-                                'home with one EV (≈ ' + SCE_USER_PROFILES.base.dailyKwh.toFixed(2) + ' kWh/day).';
+                                'Bonus on top of your inverter\'s default schedule, for the <strong>SCE Base profile</strong> ' +
+                                '(2–3 bedroom single-family home with one EV, ≈ ' +
+                                SCE_USER_PROFILES.base.dailyKwh.toFixed(2) + ' kWh/day).';
                         }
                     })
                     .catch(function (err) {
@@ -2570,10 +2571,10 @@
                         `<p class="estimate-card-desc">${profile.description}</p>` +
                         `<div class="estimate-card-amounts">` +
                             `<div class="estimate-card-yearly">` +
-                                `<span class="estimate-card-yearly-label">Estimated annual earnings</span>` +
+                                `<span class="estimate-card-yearly-label">Extra earnings with MicroVPP AI</span>` +
                                 `<span class="estimate-card-yearly-value">${yearlyRange}</span>` +
                             `</div>` +
-                            `<div class="estimate-card-monthly">~ <strong>${monthlyAvg}</strong> / month</div>` +
+                            `<div class="estimate-card-monthly">~ <strong>${monthlyAvg}</strong> / month bonus</div>` +
                         `</div>` +
                     `</div>`
                 );
@@ -2587,7 +2588,7 @@
                             `<span class="estimate-card-title">${profile.label}</span>` +
                             `<span class="estimate-card-kwh">${profile.dailyKwh.toFixed(2)} kWh / day</span>` +
                         `</div>` +
-                        `<p class="estimate-card-desc" style="color: #b91c1c;">Estimate temporarily unavailable. Please continue to Step 2 — we'll email it to you.</p>` +
+                        `<p class="estimate-card-desc" style="color: #b91c1c;">Bonus estimate temporarily unavailable. Please continue to Step 2 — we'll email it to you.</p>` +
                     `</div>`
                 );
             }
@@ -2662,8 +2663,8 @@
                 const pv      = parseFloat(step1Data.pvWattage);
                 if (introTextEl && isFinite(battery) && isFinite(pv)) {
                     introTextEl.innerHTML =
-                        `Based on your <strong>${battery} kWh battery</strong> + <strong>${pv} kW solar</strong>, ` +
-                        `here's how your system would earn under each standard SCE home profile:`;
+                        `For your <strong>${battery} kWh battery</strong> + <strong>${pv} kW solar</strong>, ` +
+                        `here's the bonus MicroVPP AI optimization would add <strong>on top of</strong> your inverter's default schedule, under each standard SCE home profile:`;
                 }
 
                 // Switch to stage 2.
@@ -2689,9 +2690,20 @@
         // QUICK ESTIMATION API (MOCK - TO BE REPLACED)
         // ============================================
 
-        // Compute a quick earnings estimate for a SINGLE SCE profile. The
-        // chosen profile's daily kWh drives a usage-scale factor that
-        // adjusts the mock formula based on system specs.
+        // Compute a quick earnings estimate for a SINGLE SCE profile.
+        //
+        // Earnings model (intuition):
+        //   • The BATTERY is the dominant earner — every kWh of capacity can be
+        //     cycled roughly once per day for arbitrage / VPP dispatch, netting
+        //     a few hundred dollars per kWh per year on TOU + capacity payments.
+        //   • SOLAR is a smaller, secondary contributor — it earns from export
+        //     under NEM 3.0 and from charging the battery, but the export rate
+        //     is far lower than the discharge value of the battery.
+        //   • Across the three SCE residential profiles (Low / Base / High),
+        //     earnings are SIMILAR. In fact, a LOW-usage household earns
+        //     slightly MORE than a high-usage one because more of the battery's
+        //     capacity stays free to participate in grid services, instead of
+        //     being drained to cover the home's own load.
         //
         // TODO: Replace this mock with a backend REST API call:
         //       POST /api/calculate-quick-estimate
@@ -2705,23 +2717,45 @@
 
             const batteryCapacity = parseFloat(systemData.batteryCapacity) || 10;
             const pvWattage       = parseFloat(systemData.pvWattage) || 8;
-            const dailyKwh        = (profile && profile.dailyKwh) || 46.74;
-            const usageScale      = Math.max(0.4, Math.min(2.2, dailyKwh / 46.74));
+            const baseDailyKwh    = 46.74;
+            const dailyKwh        = (profile && profile.dailyKwh) || baseDailyKwh;
 
-            // Mock formula — actual API will use a NEM 3.0 / dispatch model.
-            const baseEarnings    = batteryCapacity * 50; // $50 per kWh of battery
-            const solarBonus      = pvWattage * 30;       // $30 per kW of solar
-            const randomVariation = (Math.random() * 0.3 - 0.15); // ±15% variation
+            // Battery dominates earnings. ~$70 / kWh / year is a realistic
+            // residential blend of TOU arbitrage savings (~$30–40/kWh) plus
+            // VPP capacity / event payments (~$30–40/kWh) net of round-trip
+            // efficiency losses and battery degradation set-aside.
+            const batteryEarnings = batteryCapacity * 70;
+
+            // Solar is a secondary contributor under NEM 3.0 — export rates
+            // are far below retail, and most of solar's economic value flows
+            // through battery cycling rather than direct export.
+            const solarBonus      = pvWattage * 20;
+
+            const baseAnnual      = batteryEarnings + solarBonus;
+
+            // Usage headroom: lower household consumption leaves more battery
+            // capacity free for grid services, so Low earns a touch more than
+            // Base, and Base a touch more than High. Small effect (~±6%),
+            // clamped so even very high or low loads stay close to baseline.
+            const usageRatio        = dailyKwh / baseDailyKwh;
+            const headroomMultiplier = Math.max(
+                0.88,
+                Math.min(1.12, 1 + 0.10 * (1 - usageRatio))
+            );
+
+            // Modest random variation (±5%) so the three cards look distinct
+            // without exaggerating the spread between profiles.
+            const randomVariation = (Math.random() * 0.10 - 0.05);
 
             const yearlyAvg = Math.round(
-                (baseEarnings + solarBonus) * usageScale * (1 + randomVariation)
+                baseAnnual * headroomMultiplier * (1 + randomVariation)
             );
 
             return {
                 success: true,
                 estimation: {
-                    yearly_low:        Math.round(yearlyAvg * 0.7),
-                    yearly_high:       Math.round(yearlyAvg * 1.3),
+                    yearly_low:        Math.round(yearlyAvg * 0.75),
+                    yearly_high:       Math.round(yearlyAvg * 1.25),
                     yearly_average:    yearlyAvg,
                     monthly_average:   Math.round(yearlyAvg / 12),
                     confidence_level:  'low',
