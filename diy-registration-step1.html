@@ -1068,7 +1068,7 @@
                     </div>
                     <div class="progress-step">
                         <div class="progress-step-circle">3</div>
-                        <div class="progress-step-label">Inverter Connection</div>
+                        <div class="progress-step-label">System Connection</div>
                     </div>
                 </div>
 
@@ -1115,7 +1115,7 @@
 
                     <p style="text-align: center; margin: 1.5rem 0 0.75rem 0; padding: 1rem; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border-radius: 12px; border: 2px solid #10B981;">
                         <span style="display: block; color: #059669; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">🤖 EXTRA EARNINGS WITH MICROVPP AI</span>
-                        <span style="display: block; color: #047857; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem;">Typical bonus for similar systems: $600–$2,400/year on top of your inverter's default schedule</span>
+                        <span style="display: block; color: #047857; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem;">Typical bonus for similar systems: $600–$2,400/year on top of your system's default savings</span>
                         <span style="display: block; color: #6b7280; font-size: 0.85rem;">See your quick estimate ↓</span>
                     </p>
 
@@ -1147,14 +1147,14 @@
             <div class="modal-stage is-active" id="emailStage">
                 <div class="modal-header">
                     <h2 id="emailEstimateTitle">🤖 Extra earnings unlocked by MicroVPP AI</h2>
-                    <p>This is the <strong>bonus</strong> MicroVPP's AI optimization adds <strong>on top of</strong> what your inverter already earns with its built-in schedule. Pop in your email to see how it stacks up across <strong>Low, Base, and High</strong> SCE homes and get the full report in your inbox.</p>
+                    <p>This is the <strong>bonus</strong> MicroVPP's AI optimization adds <strong>on top of</strong> your system default savings.</p>
                 </div>
 
                 <form id="emailEstimateForm" class="modal-body" novalidate>
-                    <!-- Sneak-peek preview for the SCE Base profile -->
+                    <!-- Sneak-peek preview for the Base profile -->
                     <div class="estimate-teaser is-loading" id="emailStageTeaser" aria-live="polite">
-                        <div class="estimate-teaser-badge">🎁 SNEAK PEEK</div>
-                        <p class="estimate-teaser-headline" id="emailStageTeaserHeadline">Typical SCE home with your system</p>
+                        <div class="estimate-teaser-badge">🎁 Quick Estimate</div>
+                        <p class="estimate-teaser-headline" id="emailStageTeaserHeadline">Typical home with your system</p>
                         <p class="estimate-teaser-desc" id="emailStageTeaserDesc">Calculating the <strong>extra earnings</strong> MicroVPP AI would add for the <strong>Base</strong> profile (≈ 46.74 kWh/day)…</p>
                         <div class="estimate-teaser-amounts">
                             <div class="estimate-teaser-yearly">
@@ -1164,7 +1164,7 @@
                             <div class="estimate-teaser-monthly" id="emailStageTeaserMonthly">~ <strong>$—</strong> / month bonus</div>
                         </div>
                         <p class="estimate-teaser-unlock">
-                            🔓 <strong>Enter your email below</strong> to unlock the bonus across all three SCE profiles (Low / Base / High) and get the full report by email.
+                            🔓 <strong>Enter your email below</strong> to receive personalized simulation.
                         </p>
                     </div>
 
@@ -1186,7 +1186,7 @@
             <div class="modal-stage" id="estimatesStage">
                 <div class="modal-header">
                     <h2>🤖 Your Extra Earnings with MicroVPP AI</h2>
-                    <p id="estimatesIntroText">Here's the bonus MicroVPP AI optimization would add on top of your inverter's default schedule, across the three standard SCE home profiles.</p>
+                    <p id="estimatesIntroText">Here's the bonus MicroVPP AI optimization would add on top of your system's default savings, across the three standard SCE home profiles.</p>
                 </div>
 
                 <div class="modal-body">
@@ -1207,7 +1207,7 @@
                     </div>
 
                     <p class="estimates-disclaimer">
-                        Preliminary estimate only. All numbers shown are the <strong>extra</strong> earnings MicroVPP AI optimization adds on top of your inverter's built-in algorithm. Your detailed simulation will arrive in your inbox shortly.
+                        Preliminary estimate only. All numbers shown are the <strong>extra</strong> earnings MicroVPP AI optimization adds on top of your system's built-in algorithm. Your detailed simulation will arrive in your inbox shortly.
                     </p>
                 </div>
             </div>
@@ -2503,9 +2503,7 @@
                         if (teaserMonthlyEl) teaserMonthlyEl.innerHTML  = '~ <strong>' + monthlyAvg + '</strong> / month bonus';
                         if (teaserDescEl) {
                             teaserDescEl.innerHTML =
-                                'Bonus on top of your inverter\'s default schedule, for the <strong>SCE Base profile</strong> ' +
-                                '(2–3 bedroom single-family home with one EV, ≈ ' +
-                                SCE_USER_PROFILES.base.dailyKwh.toFixed(2) + ' kWh/day).';
+                                'Bonus on top of your system\'s default savings, for a typical usage profile.';
                         }
                     })
                     .catch(function (err) {
@@ -2664,7 +2662,7 @@
                 if (introTextEl && isFinite(battery) && isFinite(pv)) {
                     introTextEl.innerHTML =
                         `For your <strong>${battery} kWh battery</strong> + <strong>${pv} kW solar</strong>, ` +
-                        `here's the bonus MicroVPP AI optimization would add <strong>on top of</strong> your inverter's default schedule, under each standard SCE home profile:`;
+                        `here's the bonus MicroVPP AI optimization would add <strong>on top of</strong> your system's default savings, under each standard SCE home profile:`;
                 }
 
                 // Switch to stage 2.
