@@ -687,114 +687,39 @@
                         </div>
                     </div>
 
-                    <!-- Upload Recent Electricity Bills or Enter Monthly Usage -->
+                    <!-- Provide Your Energy Usage -->
                     <div style="background: #f9fafb; border: 2px solid #d1d5db; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
                         <div style="display: flex; align-items: start; gap: 0.75rem;">
                             <span style="font-size: 1.5rem;">💡</span>
                             <div style="flex: 1;">
-                                <h3 style="font-size: 1.1rem; color: #374151; font-weight: 700; margin-bottom: 0.5rem;">Provide Your Energy Usage</h3>
+                                <h3 style="font-size: 1.1rem; color: #374151; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                                    <span>Provide Your Energy Usage</span>
+                                    <button type="button" id="usageHelpToggle" aria-expanded="false" aria-controls="usageHelpPanel" title="Where to find these numbers on your utility bill" style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; padding: 0; border-radius: 50%; border: 1.5px solid #10B981; background: #ffffff; color: #10B981; font-weight: 700; font-size: 0.85rem; line-height: 1; cursor: pointer; transition: all 0.2s ease;">?</button>
+                                </h3>
                                 <p style="color: #4b5563; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
-                                    <strong>Help us estimate your savings faster!</strong> Either upload your recent utility bills or manually enter your annual or monthly daily average kWh usage.
+                                    Enter your <strong>annual daily average</strong> electricity usage from your most recent utility bill. <strong>Export Generation is optional</strong> — leave blank if you don't have rooftop solar, or if you newly installed your system and your bill doesn't show export yet. Click the <strong>?</strong> next to the heading to see where to find these numbers on a sample SCE bill.
                                 </p>
 
-                                <!-- Bill Type Selector -->
-                                <div style="background: #ffffff; border: 2px solid #10B981; border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1.5rem;">
-                                    <p style="color: #065f46; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                                        <span>🏠 Which type of utility bill do you have?</span>
-                                        <button type="button" id="billTypeHelpToggle" aria-expanded="false" aria-controls="billPreviewsContainer" title="Show example bills" style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; padding: 0; border-radius: 50%; border: 1.5px solid #10B981; background: #ffffff; color: #10B981; font-weight: 700; font-size: 0.85rem; line-height: 1; cursor: pointer; transition: all 0.2s ease;">?</button>
-                                    </p>
-                                    <p style="color: #4b5563; font-size: 0.85rem; line-height: 1.55; margin-bottom: 0.75rem;">
-                                        Select the one that matches your bill. If you already have rooftop solar, your bill shows <strong>both</strong> consumption and export generation — we'll use your solar panel size to estimate your <em>gross</em> home usage.
-                                    </p>
-
-                                    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                                        <label style="display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer; flex: 1; min-width: 250px; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; background: #f9fafb; transition: all 0.2s ease;" id="billTypeNoSolarLabel">
-                                            <input type="radio" name="billType" id="billTypeNoSolar" value="no_solar" checked style="margin-top: 3px; width: 18px; height: 18px; cursor: pointer; accent-color: #10B981;">
-                                            <span style="flex: 1;">
-                                                <span style="display: block; font-weight: 600; color: #374151; font-size: 0.95rem;">Without system</span>
-                                                <span style="display: block; font-size: 0.8rem; color: #6b7280; margin-top: 0.15rem;">One bar per month. Only shows "Total electricity you used this month".</span>
-                                            </span>
-                                        </label>
-                                        <label style="display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer; flex: 1; min-width: 250px; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; background: #f9fafb; transition: all 0.2s ease;" id="billTypeWithSolarLabel">
-                                            <input type="radio" name="billType" id="billTypeWithSolar" value="with_solar" style="margin-top: 3px; width: 18px; height: 18px; cursor: pointer; accent-color: #10B981;">
-                                            <span style="flex: 1;">
-                                                <span style="display: block; font-weight: 600; color: #374151; font-size: 0.95rem;">With solar & battery system</span>
-                                                <span style="display: block; font-size: 0.8rem; color: #6b7280; margin-top: 0.15rem;">Two bars per month (consumption + export). Shows both usage <em>and</em> export generation.</span>
-                                            </span>
-                                        </label>
-                                    </div>
-
-                                    <!-- Bill previews (hidden by default — toggled via the "?" help button next to the heading) -->
-                                    <div id="billPreviewsContainer" class="sce-bill-examples" style="display: none; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 1rem;">
-                                        <div id="billPreviewNoSolar" style="border: 2px solid #e5e7eb; border-radius: 8px; padding: 0.5rem; background: #f9fafb; transition: all 0.2s ease;">
-                                            <p style="color: #1e3a8a; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.35rem; text-align: center;">
-                                                Without solar (one bar)
-                                            </p>
-                                            <img src="assets/images/sce_bill_no_system.png" alt="SCE bill without solar system" style="width: 100%; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer;" onclick="window.open(this.src, '_blank')">
-                                        </div>
-                                        <div id="billPreviewWithSolar" style="border: 2px solid #e5e7eb; border-radius: 8px; padding: 0.5rem; background: #f9fafb; transition: all 0.2s ease;">
-                                            <p style="color: #1e3a8a; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.35rem; text-align: center;">
-                                                With solar (two bars)
-                                            </p>
-                                            <img src="assets/images/sce_bill_with_system.png" alt="SCE bill with solar system" style="width: 100%; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer;" onclick="window.open(this.src, '_blank')">
-                                        </div>
-                                    </div>
-
-                                    <!-- Hint about the formula we'll apply -->
-                                    <div id="withSolarHint" style="display: none; margin-top: 0.75rem; padding: 0.75rem; background: #f0fdf4; border-radius: 8px; border: 1px solid #bbf7d0;">
-                                        <p style="margin: 0; font-size: 0.82rem; color: #065f46; line-height: 1.55;">
-                                            <strong>How we'll calculate your gross usage:</strong> Since your bill's "electricity you used" is <em>net</em> of what your solar system powered directly, we'll estimate your gross home usage as:
-                                        </p>
-                                        <p style="margin: 0.4rem 0 0 0; font-size: 0.82rem; color: #065f46; text-align: center; font-family: ui-monospace, Menlo, monospace;">
-                                            gross usage = net usage + (estimated solar generation − exported solar)
-                                        </p>
-                                        <p id="solarEstimateLine" style="margin: 0.4rem 0 0 0; font-size: 0.78rem; color: #047857; line-height: 1.5;">
-                                            We'll estimate your solar generation from the <strong>Solar Panel Capacity (kW)</strong> you entered above. Please ensure that field is filled in.
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <!-- Toggle between Usage Input Methods -->
-                                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; padding: 1rem; background: #f9fafb; border-radius: 8px; flex-wrap: wrap;">
-                                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; flex: 1; min-width: 250px;">
-                                        <input type="radio" name="usageInputMethod" id="dailyAverageRadio" value="dailyAverage" checked style="width: 18px; height: 18px; cursor: pointer; accent-color: #10B981;">
-                                        <span style="font-weight: 600; color: #374151; font-size: 1rem;">📊 Annual Daily Average kWh</span>
-                                    </label>
-                                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; flex: 1; min-width: 250px;">
-                                        <input type="radio" name="usageInputMethod" id="manualRadio" value="manual" style="width: 18px; height: 18px; cursor: pointer; accent-color: #10B981;">
-                                        <span style="font-weight: 600; color: #374151; font-size: 1rem;">⌨️ Monthly Daily Average kWh</span>
-                                    </label>
-                                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; flex: 1; min-width: 250px;">
-                                        <input type="radio" name="usageInputMethod" id="uploadRadio" value="upload" style="width: 18px; height: 18px; cursor: pointer; accent-color: #10B981;">
-                                        <span style="font-weight: 600; color: #374151; font-size: 1rem;">📄 Upload Bills</span>
-                                    </label>
-                                </div>
-                                
-                                <!-- Annual Daily Average Section -->
+                                <!-- Annual Daily Average Inputs (always visible) -->
                                 <div id="dailyAverageSection" class="usage-section">
-                                    <p style="color: #4b5563; font-size: 0.9rem; margin-bottom: 1rem;">
-                                        Provide your annual daily average electricity usage (kWh). This is the quickest option.
-                                    </p>
-                                    
-                                    <!-- Daily Average Input -->
-                                    <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem;">
-                                        <div style="display: grid; grid-template-columns: 1fr; gap: 1rem;" id="dailyAverageGrid">
+                                    <div style="background: #ffffff; border: 2px solid #e5e7eb; border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem;">
+                                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;" id="dailyAverageGrid">
                                             <div>
                                                 <label for="dailyAverageKwh" style="display: block; font-weight: 600; color: #374151; font-size: 1rem; margin-bottom: 0.5rem;">
-                                                    <span class="daily-average-usage-label">Annual Daily Average (kWh)</span>
+                                                    Annual Daily Average Net Usage (kWh) <span style="color: #ef4444;">*</span>
                                                 </label>
-                                                <input type="number" id="dailyAverageKwh" name="dailyAverageKwh" placeholder="e.g., 24.10" step="0.01" min="0" style="width: 100%; padding: 0.75rem; font-size: 1rem; border: 2px solid #e5e7eb; border-radius: 8px;">
+                                                <input type="number" id="dailyAverageKwh" name="dailyAverageKwh" placeholder="e.g., 24.10" step="0.01" min="0" required style="width: 100%; padding: 0.75rem; font-size: 1rem; border: 2px solid #e5e7eb; border-radius: 8px;">
                                                 <small style="color: #6b7280; font-size: 0.875rem; display: block; margin-top: 0.5rem;">
-                                                    <span class="daily-average-usage-hint">Look for "This year:" in the daily average section of your utility bill</span>
+                                                    Look for <strong>"This year:"</strong> in the <strong>Electricity Usage</strong> section of your utility bill.
                                                 </small>
                                             </div>
-                                            <div id="dailyAverageExportWrapper" style="display: none;">
+                                            <div id="dailyAverageExportWrapper">
                                                 <label for="dailyAverageExportKwh" style="display: block; font-weight: 600; color: #374151; font-size: 1rem; margin-bottom: 0.5rem;">
-                                                    Annual Daily Average Export Generation (kWh)
+                                                    Annual Daily Average Export Generation (kWh) <span style="color: #6b7280; font-weight: 500; font-size: 0.85rem;">(optional)</span>
                                                 </label>
                                                 <input type="number" id="dailyAverageExportKwh" name="dailyAverageExportKwh" placeholder="e.g., 12.17" step="0.01" min="0" style="width: 100%; padding: 0.75rem; font-size: 1rem; border: 2px solid #e5e7eb; border-radius: 8px;">
                                                 <small style="color: #6b7280; font-size: 0.875rem; display: block; margin-top: 0.5rem;">
-                                                    Look for "This year:" in the <strong>Export Generation</strong> section of your utility bill
+                                                    Look for <strong>"This year:"</strong> in the <strong>Export Generation</strong> section. Leave blank if your bill doesn't show export.
                                                 </small>
                                             </div>
                                         </div>
@@ -806,227 +731,51 @@
                                             </p>
                                         </div>
                                     </div>
-                                    
-                                    <!-- SCE Daily Average Helper Guide (varies with bill type) -->
-                                    <div style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 1rem; margin-top: 1rem;">
-                                        <h4 style="color: #1e40af; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                                            <span>📊 How to Find Your Daily Average Usage (SCE Customers)</span>
-                                            <button type="button" id="dailyAverageHelpToggle" aria-expanded="false" aria-controls="dailyAverageImageNoSolar dailyAverageImageWithSolar" title="Show example bill image" style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; padding: 0; border-radius: 50%; border: 1.5px solid #3b82f6; background: #ffffff; color: #3b82f6; font-weight: 700; font-size: 0.85rem; line-height: 1; cursor: pointer; transition: all 0.2s ease;">?</button>
-                                        </h4>
 
-                                        <!-- Without-solar guide -->
-                                        <div id="dailyAverageGuideNoSolar">
-                                            <p style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin-bottom: 0.75rem;">
-                                                If you have <strong>Southern California Edison (SCE)</strong>, open the <strong>"Your past and current electricity usage"</strong> section of your bill and look at <strong>"Your daily average electricity usage (kWh)"</strong>. Copy the number next to <strong>"This year:"</strong> into the field above.
-                                            </p>
-                                            <div id="dailyAverageImageNoSolar" style="display: none; margin-top: 0.5rem;">
+                                    <!-- Help Panel: where to find these numbers (toggled by the "?" button next to the heading) -->
+                                    <div id="usageHelpPanel" style="display: none; background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 1rem; margin-top: 0.5rem;">
+                                        <h4 style="color: #1e40af; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem;">📊 How to Find These Numbers (SCE Customers)</h4>
+                                        <p style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin-bottom: 0.75rem;">
+                                            Open the <strong>"Your past and current electricity usage"</strong> section of your utility bill and look at <strong>"Your daily average electricity usage (kWh)"</strong>. Copy each <strong>"This year:"</strong> value into the matching field above.
+                                        </p>
+                                        <ul style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin: 0 0 0.75rem 1.25rem; padding: 0;">
+                                            <li><strong>If you have rooftop solar</strong> (with system): your bill shows <strong>two</strong> "This year:" values — one under <strong>Electricity Usage</strong> (net consumption) and one under <strong>Export Generation</strong> (exported solar). Enter both.</li>
+                                            <li><strong>If you don't have rooftop solar</strong> (without system) or you <strong>newly installed</strong> it and your bill doesn't show export yet: your bill shows only <strong>one</strong> "This year:" value — enter it as <strong>Net Usage</strong> and leave Export Generation blank.</li>
+                                        </ul>
+
+                                        <div class="sce-bill-examples" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 1rem;">
+                                            <div style="border: 2px solid #e5e7eb; border-radius: 8px; padding: 0.5rem; background: #f9fafb;">
+                                                <p style="color: #1e3a8a; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.35rem; text-align: center;">
+                                                    Without system (one "This year:" value)
+                                                </p>
                                                 <img src="assets/images/sce_bill_no_system_daily_highlighted.png"
                                                      alt="SCE bill (without solar) — This year's daily average highlighted"
-                                                     style="width: 100%; max-width: 520px; display: block; margin: 0 auto; border-radius: 8px; border: 1px solid #cbd5e1; cursor: pointer;"
+                                                     style="width: 100%; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer;"
                                                      onclick="window.open(this.src, '_blank')">
-                                                <p style="color: #64748b; font-size: 0.75rem; margin-top: 0.4rem; text-align: center; font-style: italic;">
-                                                    In this example, the annual daily average is <strong>24.10 kWh</strong>. 💡 Click the image to view full size.
+                                                <p style="color: #64748b; font-size: 0.7rem; margin-top: 0.4rem; text-align: center; font-style: italic;">
+                                                    Example: Net Usage <strong>24.10 kWh</strong>. Leave Export Generation blank.
                                                 </p>
                                             </div>
-                                        </div>
-
-                                        <!-- With-solar guide -->
-                                        <div id="dailyAverageGuideWithSolar" style="display: none;">
-                                            <p style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin-bottom: 0.75rem;">
-                                                If you have <strong>Southern California Edison (SCE)</strong> and your bill shows export generation, open <strong>"Your past and current electricity usage"</strong> → <strong>"Your daily average electricity usage (kWh)"</strong>. You'll find <strong>two</strong> "This year:" values — one under <strong>Electricity Usage</strong> (your net consumption) and one under <strong>Export Generation</strong> (exported solar). Copy each into the matching field above.
-                                            </p>
-                                            <div id="dailyAverageImageWithSolar" style="display: none; margin-top: 0.5rem;">
+                                            <div style="border: 2px solid #e5e7eb; border-radius: 8px; padding: 0.5rem; background: #f9fafb;">
+                                                <p style="color: #1e3a8a; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.35rem; text-align: center;">
+                                                    With solar &amp; battery system (two "This year:" values)
+                                                </p>
                                                 <img src="assets/images/sce_bill_with_system_daily_highlighted.png"
                                                      alt="SCE bill (with solar) — Electricity Usage and Export Generation daily averages highlighted"
-                                                     style="width: 100%; max-width: 520px; display: block; margin: 0 auto; border-radius: 8px; border: 1px solid #cbd5e1; cursor: pointer;"
+                                                     style="width: 100%; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer;"
                                                      onclick="window.open(this.src, '_blank')">
-                                                <p style="color: #64748b; font-size: 0.75rem; margin-top: 0.4rem; text-align: center; font-style: italic;">
-                                                    In this example, <span style="color: #b91c1c;"><strong>Electricity Usage</strong> "This year: 23.20"</span> and <span style="color: #047857;"><strong>Export Generation</strong> "This year: 12.17"</span>. 💡 Click the image to view full size.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- File Upload Section -->
-                                <div id="uploadSection" class="usage-section" style="display: none;">
-                                    <div style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1rem;">
-                                        <p style="margin: 0; color: #1e3a8a; font-size: 0.875rem; line-height: 1.55;">
-                                            <strong>✅ One bill is enough.</strong> From a single recent bill we can read your <strong>daily average usage</strong> (and, if you have solar, <strong>export generation</strong>), and we run OCR on the bar chart to estimate your <strong>monthly daily averages</strong> for the last 12 months automatically.
-                                        </p>
-                                        <p style="margin: 0.5rem 0 0 0; color: #1e3a8a; font-size: 0.825rem; line-height: 1.55;">
-                                            <strong>💡 More is better.</strong> If convenient, upload additional bills (up to 12, one per month) — extra bills make our savings estimate more accurate.
-                                        </p>
-                                    </div>
-                                    <div class="file-upload-container">
-                                        <div class="file-upload-area" id="fileUploadArea" style="border: 2px dashed #d1d5db; border-radius: 8px; padding: 2rem; text-align: center; background: #ffffff; cursor: pointer; transition: all 0.3s ease;">
-                                            <div class="upload-icon" style="font-size: 3rem; margin-bottom: 0.5rem;">📄</div>
-                                            <p class="upload-text" style="font-weight: 600; color: #374151; margin-bottom: 0.25rem;">Click to upload or drag and drop</p>
-                                            <p class="upload-subtext" style="font-size: 0.875rem; color: #6b7280;">Just 1 bill works. Upload up to 12 files (PDF or images) for a more accurate estimate — more recent bills are better.</p>
-                                            <input type="file" id="electricityBills" name="electricityBills" accept=".pdf,.jpg,.jpeg,.png" multiple style="display: none;">
-                                        </div>
-                                        <div id="fileList" class="file-list" style="margin-top: 1rem;"></div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Monthly Daily Average Section -->
-                                <div id="manualSection" class="usage-section" style="display: none;">
-                                    <p style="color: #4b5563; font-size: 0.9rem; margin-bottom: 1rem;">
-                                        Enter your monthly daily average electricity usage (kWh) for each of the last 12 months. You can start from any month.
-                                    </p>
-                                    
-                                    <!-- Important Note -->
-                                    <div style="background: #fef3c7; border: 2px solid #f59e0b; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
-                                        <p style="color: #92400e; font-size: 0.875rem; line-height: 1.6; margin: 0;">
-                                            <strong>⚠️ Note on Accuracy:</strong> Manual entry from charts (and OCR from a single bill chart) is for <strong>estimation purposes only</strong>, since reading precise values from chart bars can be challenging. If you upload <strong>multiple bills</strong> (ideally the past 12 months), we extract monthly usage from bill text instead of charts, which is typically as accurate as entering the values yourself.
-                                        </p>
-                                    </div>
-                                    
-                                    <!-- SCE Bill Instructions (varies with bill type) -->
-                                    <div style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
-                                        <h4 style="color: #1e40af; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                                            <span>📊 How to Find Your Monthly Usage (SCE Customers)</span>
-                                            <button type="button" id="monthlyHelpToggle" aria-expanded="false" aria-controls="monthlyImageNoSolar monthlyImageWithSolar" title="Show example bill image" style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; padding: 0; border-radius: 50%; border: 1.5px solid #3b82f6; background: #ffffff; color: #3b82f6; font-weight: 700; font-size: 0.85rem; line-height: 1; cursor: pointer; transition: all 0.2s ease;">?</button>
-                                        </h4>
-
-                                        <!-- Without-solar variant -->
-                                        <div id="monthlyGuideNoSolar">
-                                            <p style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin-bottom: 0.75rem;">
-                                                If you have <strong>Southern California Edison (SCE)</strong>, open the <strong>"Your past and current electricity usage"</strong> section of your bill. At the top you'll see <strong>"Total electricity you used this month in kWh"</strong> — that's the total for the most recent billing period. Below it, the bar chart shows your <strong>daily average (kWh/day)</strong> for each of the last 12 months — read each bar's height and type it into the matching month field above.
-                                            </p>
-                                            <div id="monthlyImageNoSolar" style="display: none; margin-top: 0.5rem;">
-                                                <img src="assets/images/sce_bill_no_system_monthly_highlighted.png"
-                                                     alt="SCE bill (without solar) — Total electricity used this month highlighted"
-                                                     style="width: 100%; max-width: 520px; display: block; margin: 0 auto; border-radius: 8px; border: 1px solid #cbd5e1; cursor: pointer;"
-                                                     onclick="window.open(this.src, '_blank')">
-                                                <p style="color: #64748b; font-size: 0.75rem; margin-top: 0.4rem; text-align: center; font-style: italic;">
-                                                    In this example, the total for the month is <strong>699 kWh</strong>, and each bar in the chart below (~23 kWh/day for Aug '25) is what you enter for that month. 💡 Click the image to view full size.
+                                                <p style="color: #64748b; font-size: 0.7rem; margin-top: 0.4rem; text-align: center; font-style: italic;">
+                                                    Example: <span style="color: #b91c1c;">Net Usage <strong>23.20</strong></span>, <span style="color: #047857;">Export <strong>12.17</strong></span> kWh.
                                                 </p>
                                             </div>
                                         </div>
 
-                                        <!-- With-solar variant -->
-                                        <div id="monthlyGuideWithSolar" style="display: none;">
-                                            <p style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin-bottom: 0.75rem;">
-                                                If you have <strong>Southern California Edison (SCE)</strong> and your bill shows export generation, open <strong>"Your past and current electricity usage"</strong>. At the top you'll see two totals for this month: <strong>"Total electricity you used this month in kWh"</strong> (net consumption) and <strong>"Total electricity you exported this month in kWh"</strong>. Below, the bar chart shows your <strong>daily averages</strong> for each month — the darker "Consumption" bar and the lighter "Export Generation" bar. Read each bar's height and enter them in the matching month fields above.
-                                            </p>
-                                            <div id="monthlyImageWithSolar" style="display: none; margin-top: 0.5rem;">
-                                                <img src="assets/images/sce_bill_with_system_monthly_highlighted.png"
-                                                     alt="SCE bill (with solar) — Total used and Total exported this month highlighted"
-                                                     style="width: 100%; max-width: 520px; display: block; margin: 0 auto; border-radius: 8px; border: 1px solid #cbd5e1; cursor: pointer;"
-                                                     onclick="window.open(this.src, '_blank')">
-                                                <p style="color: #64748b; font-size: 0.75rem; margin-top: 0.4rem; text-align: center; font-style: italic;">
-                                                    In this example, <span style="color: #b91c1c;"><strong>used = 695 kWh</strong></span> and <span style="color: #047857;"><strong>exported = 365 kWh</strong></span> for the billing period. Read the darker bars for Consumption and the lighter bars for Export Generation. 💡 Click the image to view full size.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Upload Usage Chart Screenshot -->
-                                    <div style="background: #f0fdf4; border: 2px solid #10B981; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
-                                        <h4 style="color: #059669; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-                                            <span>📸</span> Easier Option: Upload a Screenshot
-                                        </h4>
-                                        <p style="color: #047857; font-size: 0.875rem; line-height: 1.6; margin-bottom: 0.75rem;">
-                                            <strong>Don't worry about reading the exact numbers from the chart!</strong> Take a screenshot of the "Your past and current electricity usage" section from your bill — we'll read your <strong>daily average usage</strong> (and <strong>export generation</strong> if you have solar) directly, and run OCR on the bar chart to pull out your <strong>monthly daily averages</strong> for all 12 months automatically.
+                                        <p style="margin: 0.75rem 0 0 0; font-size: 0.78rem; color: #047857; line-height: 1.5;">
+                                            💡 If you provide both Net Usage and Export Generation, we'll use your <strong>Solar Panel Capacity (kW)</strong> from above to estimate your gross home usage as: <code style="font-family: ui-monospace, Menlo, monospace;">gross = net + (estimated solar generation − exported solar)</code>.
                                         </p>
-                                        <p style="color: #047857; font-size: 0.825rem; line-height: 1.55; margin-bottom: 1rem;">
-                                            <strong>✅ One screenshot is enough.</strong> If convenient, upload additional bill screenshots (up to 12) to improve accuracy.
-                                        </p>
-
-                                        <div class="usage-chart-upload-area" id="usageChartUploadArea" style="border: 2px dashed #10B981; border-radius: 8px; padding: 1.5rem; text-align: center; background: #ffffff; cursor: pointer; transition: all 0.3s ease;">
-                                            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📊</div>
-                                            <p style="font-weight: 600; color: #059669; margin-bottom: 0.25rem;">Click to upload usage chart screenshot</p>
-                                            <p style="font-size: 0.875rem; color: #6b7280;">PNG, JPG, or PDF accepted — 1 is enough, up to 12 for best accuracy</p>
-                                            <input type="file" id="usageChartScreenshot" name="usageChartScreenshot" accept=".pdf,.jpg,.jpeg,.png" multiple style="display: none;">
-                                        </div>
-
-                                        <div id="usageChartFileDisplay" style="margin-top: 1rem;"></div>
-
-                                        <small style="color: #047857; font-size: 0.875rem; margin-top: 0.75rem; display: block;">
-                                            <strong style="color: #059669;">💡 Recommended:</strong> This is more accurate than manual entry and faster than typing! Our AI will extract the numbers automatically.
-                                        </small>
                                     </div>
-                                    
-                                    <div style="text-align: center; margin-bottom: 1rem;">
-                                        <p style="color: #6b7280; font-size: 0.875rem; font-weight: 600;">- OR -</p>
-                                        <p style="color: #6b7280; font-size: 0.875rem;">Manually enter your monthly usage below:</p>
-                                    </div>
-
-                                    <h5 class="monthly-usage-heading" style="color: #374151; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem;">
-                                        Monthly Daily Average <span class="monthly-usage-scope">Electricity Usage</span> (kWh)
-                                    </h5>
-                                    <p id="monthlyCombinedHint" style="display: none; color: #6b7280; font-size: 0.825rem; margin-bottom: 0.75rem;">
-                                        For each month, enter the <strong>net usage</strong> (darker "Consumption" bar, top) and the <strong>export generation</strong> (lighter bar, bottom). Leave blank for months where no value was shown.
-                                    </p>
-
-                                    <div id="monthlyInputGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
-                                        <div class="form-group month-cell" style="margin-bottom: 0;">
-                                            <label for="monthJanuary" style="font-size: 0.875rem;">January</label>
-                                            <input type="number" id="monthJanuary" name="monthJanuary" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                            <input type="number" id="monthExportJanuary" name="monthExportJanuary" placeholder="Export kWh" step="0.1" min="0" class="month-export-input" style="display: none; padding: 0.5rem; font-size: 0.9rem; margin-top: 0.35rem; background: #f0fdf4; border-color: #bbf7d0;">
-                                        </div>
-                                        <div class="form-group month-cell" style="margin-bottom: 0;">
-                                            <label for="monthFebruary" style="font-size: 0.875rem;">February</label>
-                                            <input type="number" id="monthFebruary" name="monthFebruary" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                            <input type="number" id="monthExportFebruary" name="monthExportFebruary" placeholder="Export kWh" step="0.1" min="0" class="month-export-input" style="display: none; padding: 0.5rem; font-size: 0.9rem; margin-top: 0.35rem; background: #f0fdf4; border-color: #bbf7d0;">
-                                        </div>
-                                        <div class="form-group month-cell" style="margin-bottom: 0;">
-                                            <label for="monthMarch" style="font-size: 0.875rem;">March</label>
-                                            <input type="number" id="monthMarch" name="monthMarch" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                            <input type="number" id="monthExportMarch" name="monthExportMarch" placeholder="Export kWh" step="0.1" min="0" class="month-export-input" style="display: none; padding: 0.5rem; font-size: 0.9rem; margin-top: 0.35rem; background: #f0fdf4; border-color: #bbf7d0;">
-                                        </div>
-                                        <div class="form-group month-cell" style="margin-bottom: 0;">
-                                            <label for="monthApril" style="font-size: 0.875rem;">April</label>
-                                            <input type="number" id="monthApril" name="monthApril" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                            <input type="number" id="monthExportApril" name="monthExportApril" placeholder="Export kWh" step="0.1" min="0" class="month-export-input" style="display: none; padding: 0.5rem; font-size: 0.9rem; margin-top: 0.35rem; background: #f0fdf4; border-color: #bbf7d0;">
-                                        </div>
-                                        <div class="form-group month-cell" style="margin-bottom: 0;">
-                                            <label for="monthMay" style="font-size: 0.875rem;">May</label>
-                                            <input type="number" id="monthMay" name="monthMay" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                            <input type="number" id="monthExportMay" name="monthExportMay" placeholder="Export kWh" step="0.1" min="0" class="month-export-input" style="display: none; padding: 0.5rem; font-size: 0.9rem; margin-top: 0.35rem; background: #f0fdf4; border-color: #bbf7d0;">
-                                        </div>
-                                        <div class="form-group month-cell" style="margin-bottom: 0;">
-                                            <label for="monthJune" style="font-size: 0.875rem;">June</label>
-                                            <input type="number" id="monthJune" name="monthJune" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                            <input type="number" id="monthExportJune" name="monthExportJune" placeholder="Export kWh" step="0.1" min="0" class="month-export-input" style="display: none; padding: 0.5rem; font-size: 0.9rem; margin-top: 0.35rem; background: #f0fdf4; border-color: #bbf7d0;">
-                                        </div>
-                                        <div class="form-group month-cell" style="margin-bottom: 0;">
-                                            <label for="monthJuly" style="font-size: 0.875rem;">July</label>
-                                            <input type="number" id="monthJuly" name="monthJuly" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                            <input type="number" id="monthExportJuly" name="monthExportJuly" placeholder="Export kWh" step="0.1" min="0" class="month-export-input" style="display: none; padding: 0.5rem; font-size: 0.9rem; margin-top: 0.35rem; background: #f0fdf4; border-color: #bbf7d0;">
-                                        </div>
-                                        <div class="form-group month-cell" style="margin-bottom: 0;">
-                                            <label for="monthAugust" style="font-size: 0.875rem;">August</label>
-                                            <input type="number" id="monthAugust" name="monthAugust" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                            <input type="number" id="monthExportAugust" name="monthExportAugust" placeholder="Export kWh" step="0.1" min="0" class="month-export-input" style="display: none; padding: 0.5rem; font-size: 0.9rem; margin-top: 0.35rem; background: #f0fdf4; border-color: #bbf7d0;">
-                                        </div>
-                                        <div class="form-group month-cell" style="margin-bottom: 0;">
-                                            <label for="monthSeptember" style="font-size: 0.875rem;">September</label>
-                                            <input type="number" id="monthSeptember" name="monthSeptember" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                            <input type="number" id="monthExportSeptember" name="monthExportSeptember" placeholder="Export kWh" step="0.1" min="0" class="month-export-input" style="display: none; padding: 0.5rem; font-size: 0.9rem; margin-top: 0.35rem; background: #f0fdf4; border-color: #bbf7d0;">
-                                        </div>
-                                        <div class="form-group month-cell" style="margin-bottom: 0;">
-                                            <label for="monthOctober" style="font-size: 0.875rem;">October</label>
-                                            <input type="number" id="monthOctober" name="monthOctober" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                            <input type="number" id="monthExportOctober" name="monthExportOctober" placeholder="Export kWh" step="0.1" min="0" class="month-export-input" style="display: none; padding: 0.5rem; font-size: 0.9rem; margin-top: 0.35rem; background: #f0fdf4; border-color: #bbf7d0;">
-                                        </div>
-                                        <div class="form-group month-cell" style="margin-bottom: 0;">
-                                            <label for="monthNovember" style="font-size: 0.875rem;">November</label>
-                                            <input type="number" id="monthNovember" name="monthNovember" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                            <input type="number" id="monthExportNovember" name="monthExportNovember" placeholder="Export kWh" step="0.1" min="0" class="month-export-input" style="display: none; padding: 0.5rem; font-size: 0.9rem; margin-top: 0.35rem; background: #f0fdf4; border-color: #bbf7d0;">
-                                        </div>
-                                        <div class="form-group month-cell" style="margin-bottom: 0;">
-                                            <label for="monthDecember" style="font-size: 0.875rem;">December</label>
-                                            <input type="number" id="monthDecember" name="monthDecember" placeholder="kWh" step="0.1" min="0" style="padding: 0.5rem; font-size: 0.9rem;">
-                                            <input type="number" id="monthExportDecember" name="monthExportDecember" placeholder="Export kWh" step="0.1" min="0" class="month-export-input" style="display: none; padding: 0.5rem; font-size: 0.9rem; margin-top: 0.35rem; background: #f0fdf4; border-color: #bbf7d0;">
-                                        </div>
-                                    </div>
-
-                                    <small style="color: #6b7280; font-size: 0.875rem; margin-top: 1rem; display: block;">
-                                        <strong style="color: #059669;">💡 Tip:</strong> You can find your kWh usage on your utility bills. Don't worry if you don't have all 12 months—fill in what you have!
-                                    </small>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -1114,128 +863,50 @@
         }
 
         // ============================================
-        // USAGE INPUT TAB SWITCHING
+        // ENERGY USAGE INPUTS
         // ============================================
-        const uploadRadio = document.getElementById('uploadRadio');
-        const manualRadio = document.getElementById('manualRadio');
-        const dailyAverageRadio = document.getElementById('dailyAverageRadio');
-        const uploadSection = document.getElementById('uploadSection');
-        const manualSection = document.getElementById('manualSection');
-        const dailyAverageSection = document.getElementById('dailyAverageSection');
+        // The page now exposes a single usage-input UI: Annual Daily Average Net
+        // Usage (kWh, required) and Annual Daily Average Export Generation (kWh,
+        // optional). The legacy "Monthly Daily Average" + "Upload Bills" tabs and
+        // the "Without system / With solar & battery system" radio cards have
+        // been removed; bill type is inferred at submit time from whether
+        // Export Generation has been filled in.
 
-        if (uploadRadio && manualRadio && dailyAverageRadio) {
-            uploadRadio.addEventListener('change', function() {
-                if (this.checked) {
-                    uploadSection.style.display = 'block';
-                    manualSection.style.display = 'none';
-                    dailyAverageSection.style.display = 'none';
-                }
-            });
-
-            manualRadio.addEventListener('change', function() {
-                if (this.checked) {
-                    manualSection.style.display = 'block';
-                    uploadSection.style.display = 'none';
-                    dailyAverageSection.style.display = 'none';
-                }
-            });
-
-            dailyAverageRadio.addEventListener('change', function() {
-                if (this.checked) {
-                    dailyAverageSection.style.display = 'block';
-                    uploadSection.style.display = 'none';
-                    manualSection.style.display = 'none';
-                }
-            });
-        }
-
-        // ============================================
-        // BILL TYPE (with solar vs without solar)
-        // ============================================
         // Estimate: daily kWh generated per kW of installed solar.
         // ~4.5 kWh/day/kW is a reasonable annual average for California residential systems.
         const SOLAR_KWH_PER_DAY_PER_KW = 4.5;
         // 365 / 12 ≈ 30.42
         const DAYS_PER_MONTH = 30.42;
 
-        const billTypeNoSolarRadio = document.getElementById('billTypeNoSolar');
-        const billTypeWithSolarRadio = document.getElementById('billTypeWithSolar');
-        const billTypeNoSolarLabel = document.getElementById('billTypeNoSolarLabel');
-        const billTypeWithSolarLabel = document.getElementById('billTypeWithSolarLabel');
-        const billPreviewNoSolar = document.getElementById('billPreviewNoSolar');
-        const billPreviewWithSolar = document.getElementById('billPreviewWithSolar');
-        const withSolarHint = document.getElementById('withSolarHint');
-        const solarEstimateLine = document.getElementById('solarEstimateLine');
-        const dailyAverageExportWrapper = document.getElementById('dailyAverageExportWrapper');
-        const dailyAverageGrid = document.getElementById('dailyAverageGrid');
-        const monthlyCombinedHint = document.getElementById('monthlyCombinedHint');
         const grossUsageEstimateBox = document.getElementById('grossUsageEstimate');
         const grossUsageEstimateValue = document.getElementById('grossUsageEstimateValue');
         const grossUsageEstimateBreakdown = document.getElementById('grossUsageEstimateBreakdown');
         const dailyAverageKwhInput = document.getElementById('dailyAverageKwh');
         const dailyAverageExportKwhInput = document.getElementById('dailyAverageExportKwh');
 
-        const EXPORT_MONTH_IDS = [
-            'monthExportJanuary', 'monthExportFebruary', 'monthExportMarch', 'monthExportApril',
-            'monthExportMay', 'monthExportJune', 'monthExportJuly', 'monthExportAugust',
-            'monthExportSeptember', 'monthExportOctober', 'monthExportNovember', 'monthExportDecember'
-        ];
-
-        function getSelectedBillType() {
-            if (billTypeWithSolarRadio && billTypeWithSolarRadio.checked) return 'with_solar';
-            return 'no_solar';
+        // Bill type is inferred from whether Export Generation is filled in
+        // (used by the submit handler and sessionStorage payload).
+        function inferBillType() {
+            const expStr = dailyAverageExportKwhInput ? dailyAverageExportKwhInput.value : '';
+            return (expStr && expStr.trim() !== '') ? 'with_solar' : 'no_solar';
         }
 
-        function updateUsageLabelsForBillType() {
-            const isWithSolar = getSelectedBillType() === 'with_solar';
-
-            // Daily-average label + hint
-            document.querySelectorAll('.daily-average-usage-label').forEach(el => {
-                el.textContent = isWithSolar
-                    ? 'Annual Daily Average Net Usage (kWh)'
-                    : 'Annual Daily Average (kWh)';
-            });
-            document.querySelectorAll('.daily-average-usage-hint').forEach(el => {
-                el.innerHTML = isWithSolar
-                    ? 'Look for "This year:" in the <strong>Electricity Usage</strong> section of your utility bill'
-                    : 'Look for "This year:" in the daily average section of your utility bill';
-            });
-            // Monthly heading scope
-            document.querySelectorAll('.monthly-usage-scope').forEach(el => {
-                el.textContent = isWithSolar ? 'Net Electricity Usage' : 'Electricity Usage';
-            });
-        }
-
-        function updateSolarEstimateHint() {
-            if (!solarEstimateLine) return;
-            const pvKwStr = document.getElementById('pvWattage') ? document.getElementById('pvWattage').value : '';
-            const pvKw = pvKwStr ? parseFloat(pvKwStr) : 0;
-            if (pvKw > 0) {
-                const dailyEst = pvKw * SOLAR_KWH_PER_DAY_PER_KW;
-                solarEstimateLine.innerHTML =
-                    'Based on your <strong>' + pvKw + ' kW</strong> solar panel capacity, we estimate your system ' +
-                    'generates about <strong>' + dailyEst.toFixed(1) + ' kWh/day</strong> on average ' +
-                    '(~' + (SOLAR_KWH_PER_DAY_PER_KW) + ' kWh/day per kW for California).';
-            } else {
-                solarEstimateLine.innerHTML =
-                    'We\'ll estimate your solar generation from the <strong>Solar Panel Capacity (kW)</strong> you entered above. ' +
-                    'Please ensure that field is filled in.';
-            }
-        }
-
+        // Show the "Estimated gross daily usage" box only when the user has
+        // entered both a net daily average AND export generation, plus a valid
+        // PV capacity. Otherwise hide it (gross == net for no-solar bills).
         function updateGrossUsageEstimate() {
             if (!grossUsageEstimateBox) return;
-            const isWithSolar = getSelectedBillType() === 'with_solar';
-            if (!isWithSolar) {
-                grossUsageEstimateBox.style.display = 'none';
-                return;
-            }
             const netStr = dailyAverageKwhInput ? dailyAverageKwhInput.value : '';
             const expStr = dailyAverageExportKwhInput ? dailyAverageExportKwhInput.value : '';
             const pvStr = document.getElementById('pvWattage') ? document.getElementById('pvWattage').value : '';
-            const net = netStr ? parseFloat(netStr) : NaN;
-            const exp = expStr ? parseFloat(expStr) : NaN;
-            const pv = pvStr ? parseFloat(pvStr) : NaN;
+            const hasExport = expStr && expStr.trim() !== '';
+            if (!hasExport) {
+                grossUsageEstimateBox.style.display = 'none';
+                return;
+            }
+            const net = parseFloat(netStr);
+            const exp = parseFloat(expStr);
+            const pv = parseFloat(pvStr);
             if (isFinite(net) && isFinite(exp) && isFinite(pv) && pv > 0) {
                 const solarEst = pv * SOLAR_KWH_PER_DAY_PER_KW;
                 const gross = net + (solarEst - exp);
@@ -1248,176 +919,53 @@
             }
         }
 
-        function applyBillTypeUi() {
-            const isWithSolar = getSelectedBillType() === 'with_solar';
-
-            if (dailyAverageExportWrapper) {
-                dailyAverageExportWrapper.style.display = isWithSolar ? 'block' : 'none';
-            }
-            if (dailyAverageGrid) {
-                dailyAverageGrid.style.gridTemplateColumns = isWithSolar
-                    ? 'repeat(auto-fit, minmax(260px, 1fr))'
-                    : '1fr';
-            }
-            // Show/hide the per-month export inputs that live inside each month cell
-            document.querySelectorAll('.month-export-input').forEach(el => {
-                el.style.display = isWithSolar ? 'block' : 'none';
-            });
-            if (monthlyCombinedHint) {
-                monthlyCombinedHint.style.display = isWithSolar ? 'block' : 'none';
-            }
-            // Usage input placeholders change to "Net usage kWh" when in with-solar mode
-            // so the two stacked inputs per cell are visually distinct. A light-red
-            // background is applied to match the red highlight used for "Electricity
-            // Usage" in the SCE bill guides (export inputs use light green to match
-            // "Export Generation").
-            const usagePlaceholder = isWithSolar ? 'Net usage kWh' : 'kWh';
-            [
-                'monthJanuary', 'monthFebruary', 'monthMarch', 'monthApril',
-                'monthMay', 'monthJune', 'monthJuly', 'monthAugust',
-                'monthSeptember', 'monthOctober', 'monthNovember', 'monthDecember'
-            ].forEach(id => {
-                const el = document.getElementById(id);
-                if (!el) return;
-                el.placeholder = usagePlaceholder;
-                if (isWithSolar) {
-                    el.style.background = '#fef2f2';
-                    el.style.borderColor = '#fecaca';
-                } else {
-                    el.style.background = '';
-                    el.style.borderColor = '';
-                }
-            });
-            if (withSolarHint) {
-                withSolarHint.style.display = isWithSolar ? 'block' : 'none';
-            }
-            // Swap the "How to Find Your Daily Average Usage" SCE guide between
-            // the no-solar variant and the with-solar variant (which also highlights
-            // the Export Generation "This year:" line).
-            const guideNoSolar = document.getElementById('dailyAverageGuideNoSolar');
-            const guideWithSolar = document.getElementById('dailyAverageGuideWithSolar');
-            if (guideNoSolar) guideNoSolar.style.display = isWithSolar ? 'none' : 'block';
-            if (guideWithSolar) guideWithSolar.style.display = isWithSolar ? 'block' : 'none';
-
-            // Same swap for the "How to Find Your Monthly Usage" guide in the
-            // Monthly Daily Average tab.
-            const monthlyGuideNoSolar = document.getElementById('monthlyGuideNoSolar');
-            const monthlyGuideWithSolar = document.getElementById('monthlyGuideWithSolar');
-            if (monthlyGuideNoSolar) monthlyGuideNoSolar.style.display = isWithSolar ? 'none' : 'block';
-            if (monthlyGuideWithSolar) monthlyGuideWithSolar.style.display = isWithSolar ? 'block' : 'none';
-            // Highlight the active preview + radio label
-            const activeBorder = '#10B981';
-            const inactiveBorder = '#e5e7eb';
-            if (billPreviewNoSolar) billPreviewNoSolar.style.borderColor = isWithSolar ? inactiveBorder : activeBorder;
-            if (billPreviewWithSolar) billPreviewWithSolar.style.borderColor = isWithSolar ? activeBorder : inactiveBorder;
-            if (billTypeNoSolarLabel) billTypeNoSolarLabel.style.borderColor = isWithSolar ? inactiveBorder : activeBorder;
-            if (billTypeWithSolarLabel) billTypeWithSolarLabel.style.borderColor = isWithSolar ? activeBorder : inactiveBorder;
-
-            // If switching away from with-solar, clear any export inputs so they don't leak into payload
-            if (!isWithSolar) {
-                if (dailyAverageExportKwhInput) dailyAverageExportKwhInput.value = '';
-                EXPORT_MONTH_IDS.forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el) el.value = '';
-                });
-            }
-
-            updateUsageLabelsForBillType();
-            updateSolarEstimateHint();
-            updateGrossUsageEstimate();
-        }
-
-        if (billTypeNoSolarRadio) billTypeNoSolarRadio.addEventListener('change', applyBillTypeUi);
-        if (billTypeWithSolarRadio) billTypeWithSolarRadio.addEventListener('change', applyBillTypeUi);
-
-        // Toggle the example bill screenshots open/closed when the user clicks the "?"
-        // help button next to "Which type of utility bill do you have?". The previews
-        // are hidden by default to keep this section visually less busy.
-        const billTypeHelpToggle = document.getElementById('billTypeHelpToggle');
-        const billPreviewsContainer = document.getElementById('billPreviewsContainer');
-        if (billTypeHelpToggle && billPreviewsContainer) {
-            billTypeHelpToggle.addEventListener('click', function () {
-                const isHidden = billPreviewsContainer.style.display === 'none' || billPreviewsContainer.style.display === '';
+        // Toggle the "How to find these numbers" help panel (with the two
+        // sample SCE bill screenshots) when the user clicks the "?" button
+        // next to the "Provide Your Energy Usage" heading.
+        const usageHelpToggle = document.getElementById('usageHelpToggle');
+        const usageHelpPanel = document.getElementById('usageHelpPanel');
+        if (usageHelpToggle && usageHelpPanel) {
+            usageHelpToggle.addEventListener('click', function () {
+                const isHidden = usageHelpPanel.style.display === 'none' || usageHelpPanel.style.display === '';
                 if (isHidden) {
-                    billPreviewsContainer.style.display = 'grid';
-                    billTypeHelpToggle.setAttribute('aria-expanded', 'true');
-                    billTypeHelpToggle.title = 'Hide example bills';
-                    billTypeHelpToggle.style.background = '#10B981';
-                    billTypeHelpToggle.style.color = '#ffffff';
+                    usageHelpPanel.style.display = 'block';
+                    usageHelpToggle.setAttribute('aria-expanded', 'true');
+                    usageHelpToggle.title = 'Hide help';
+                    usageHelpToggle.style.background = '#10B981';
+                    usageHelpToggle.style.color = '#ffffff';
                 } else {
-                    billPreviewsContainer.style.display = 'none';
-                    billTypeHelpToggle.setAttribute('aria-expanded', 'false');
-                    billTypeHelpToggle.title = 'Show example bills';
-                    billTypeHelpToggle.style.background = '#ffffff';
-                    billTypeHelpToggle.style.color = '#10B981';
+                    usageHelpPanel.style.display = 'none';
+                    usageHelpToggle.setAttribute('aria-expanded', 'false');
+                    usageHelpToggle.title = 'Where to find these numbers on your utility bill';
+                    usageHelpToggle.style.background = '#ffffff';
+                    usageHelpToggle.style.color = '#10B981';
                 }
             });
         }
 
-        // Toggle the SCE daily-average example screenshot open/closed. Only one of the
-        // two image wrappers (no-solar vs with-solar) is shown at a time, matching the
-        // currently selected bill type — applyBillTypeUi() handles which guide is
-        // visible. We keep an internal `expanded` flag so the toggle state is preserved
-        // when the user switches bill type.
-        const dailyAverageHelpToggle = document.getElementById('dailyAverageHelpToggle');
-        const dailyAverageImageNoSolar = document.getElementById('dailyAverageImageNoSolar');
-        const dailyAverageImageWithSolar = document.getElementById('dailyAverageImageWithSolar');
-        let dailyAverageImagesExpanded = false;
-        function applyDailyAverageImageVisibility() {
-            const display = dailyAverageImagesExpanded ? 'block' : 'none';
-            if (dailyAverageImageNoSolar) dailyAverageImageNoSolar.style.display = display;
-            if (dailyAverageImageWithSolar) dailyAverageImageWithSolar.style.display = display;
-            if (dailyAverageHelpToggle) {
-                dailyAverageHelpToggle.setAttribute('aria-expanded', dailyAverageImagesExpanded ? 'true' : 'false');
-                dailyAverageHelpToggle.title = dailyAverageImagesExpanded ? 'Hide example bill image' : 'Show example bill image';
-                dailyAverageHelpToggle.style.background = dailyAverageImagesExpanded ? '#3b82f6' : '#ffffff';
-                dailyAverageHelpToggle.style.color = dailyAverageImagesExpanded ? '#ffffff' : '#3b82f6';
-            }
-        }
-        if (dailyAverageHelpToggle) {
-            dailyAverageHelpToggle.addEventListener('click', function () {
-                dailyAverageImagesExpanded = !dailyAverageImagesExpanded;
-                applyDailyAverageImageVisibility();
-            });
-        }
-
-        // Toggle the SCE monthly-usage example screenshot open/closed (Monthly Daily
-        // Average kWh tab). Same pattern as the daily-average toggle above.
-        const monthlyHelpToggle = document.getElementById('monthlyHelpToggle');
-        const monthlyImageNoSolar = document.getElementById('monthlyImageNoSolar');
-        const monthlyImageWithSolar = document.getElementById('monthlyImageWithSolar');
-        let monthlyImagesExpanded = false;
-        function applyMonthlyImageVisibility() {
-            const display = monthlyImagesExpanded ? 'block' : 'none';
-            if (monthlyImageNoSolar) monthlyImageNoSolar.style.display = display;
-            if (monthlyImageWithSolar) monthlyImageWithSolar.style.display = display;
-            if (monthlyHelpToggle) {
-                monthlyHelpToggle.setAttribute('aria-expanded', monthlyImagesExpanded ? 'true' : 'false');
-                monthlyHelpToggle.title = monthlyImagesExpanded ? 'Hide example bill image' : 'Show example bill image';
-                monthlyHelpToggle.style.background = monthlyImagesExpanded ? '#3b82f6' : '#ffffff';
-                monthlyHelpToggle.style.color = monthlyImagesExpanded ? '#ffffff' : '#3b82f6';
-            }
-        }
-        if (monthlyHelpToggle) {
-            monthlyHelpToggle.addEventListener('click', function () {
-                monthlyImagesExpanded = !monthlyImagesExpanded;
-                applyMonthlyImageVisibility();
-            });
-        }
-
-        // Recompute the estimate whenever inputs change
+        // Recompute the gross usage estimate whenever any relevant input changes
         ['pvWattage', 'dailyAverageKwh', 'dailyAverageExportKwh'].forEach(id => {
             const el = document.getElementById(id);
             if (el) {
-                el.addEventListener('input', function () {
-                    updateSolarEstimateHint();
-                    updateGrossUsageEstimate();
-                });
+                el.addEventListener('input', updateGrossUsageEstimate);
             }
         });
 
         // Initial sync once DOM is ready
-        applyBillTypeUi();
+        updateGrossUsageEstimate();
+
+        // Variables that no longer have a backing UI but are still referenced
+        // by the legacy submit/upload code paths below. Keeping them as empty
+        // / null-safe stand-ins lets the rest of the script run unchanged
+        // while the upload + monthly-entry features are disabled.
+        const uploadRadio = null;
+        const manualRadio = null;
+        const dailyAverageRadio = null;
+        const uploadSection = null;
+        const manualSection = null;
+        const dailyAverageSection = document.getElementById('dailyAverageSection');
+        const billTypeNoSolarRadio = null;
+        const billTypeWithSolarRadio = null;
 
         // ============================================
         // FILE UPLOAD HANDLING
@@ -1682,66 +1230,24 @@
                     if (step1Data.batteryCapacity) document.getElementById('batteryCapacity').value = step1Data.batteryCapacity;
                     if (step1Data.pvWattage) document.getElementById('pvWattage').value = step1Data.pvWattage;
 
-                    // Pre-fill bill type (default to no_solar for backwards compatibility)
+                    // Pre-fill the Annual Daily Average inputs. We accept either the
+                    // newer dailyAverageNetKwh field (saved when an export value was
+                    // also provided) or the legacy dailyAverageKwh field (which for
+                    // no-solar bills was always equal to net == gross).
                     const savedBillType = step1Data.billType || 'no_solar';
-                    if (savedBillType === 'with_solar' && billTypeWithSolarRadio) {
-                        billTypeWithSolarRadio.checked = true;
-                    } else if (billTypeNoSolarRadio) {
-                        billTypeNoSolarRadio.checked = true;
-                    }
-
-                    // Pre-fill monthly kWh data if available.
-                    // For with-solar bills we restore the raw NET and EXPORT inputs; for
-                    // no-solar bills we restore from monthlyKwh (which equals gross == net).
-                    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-                                       'July', 'August', 'September', 'October', 'November', 'December'];
-                    const monthlySource = savedBillType === 'with_solar'
-                        ? (step1Data.monthlyNetKwh || {})
-                        : (step1Data.monthlyKwh || {});
-                    const monthlyExportSource = step1Data.monthlyExportKwh || {};
-                    let hasMonthlyData = false;
-                    for (const monthName of monthNames) {
-                        const netVal = monthlySource[`month${monthName}`];
-                        if (netVal) {
-                            const netEl = document.getElementById(`month${monthName}`);
-                            if (netEl) {
-                                netEl.value = netVal;
-                                hasMonthlyData = true;
-                            }
-                        }
-                        if (savedBillType === 'with_solar') {
-                            const exportVal = monthlyExportSource[`month${monthName}`];
-                            if (exportVal) {
-                                const exportEl = document.getElementById(`monthExport${monthName}`);
-                                if (exportEl) exportEl.value = exportVal;
-                            }
-                        }
-                    }
-                    // If monthly data was provided, switch to manual tab
-                    if (hasMonthlyData && manualRadio) {
-                        manualRadio.checked = true;
-                        manualRadio.dispatchEvent(new Event('change'));
-                    }
-
-                    // Pre-fill daily average kWh if available. For with-solar bills we
-                    // restore raw net/export inputs; for no-solar bills we use dailyAverageKwh.
                     const dailyNetSource = savedBillType === 'with_solar'
-                        ? step1Data.dailyAverageNetKwh
+                        ? (step1Data.dailyAverageNetKwh || step1Data.dailyAverageKwh)
                         : step1Data.dailyAverageKwh;
                     if (dailyNetSource) {
                         document.getElementById('dailyAverageKwh').value = dailyNetSource;
-                        if (dailyAverageRadio) {
-                            dailyAverageRadio.checked = true;
-                            dailyAverageRadio.dispatchEvent(new Event('change'));
-                        }
                     }
-                    if (savedBillType === 'with_solar' && step1Data.dailyAverageExportKwh) {
+                    if (step1Data.dailyAverageExportKwh) {
                         const expEl = document.getElementById('dailyAverageExportKwh');
                         if (expEl) expEl.value = step1Data.dailyAverageExportKwh;
                     }
 
-                    // Apply the bill-type UI (show/hide export fields, labels, estimate) after pre-fill
-                    applyBillTypeUi();
+                    // Refresh the gross-usage estimate based on pre-filled values
+                    updateGrossUsageEstimate();
 
                     // Update field requirements after pre-filling
                     updateFieldRequirements();
@@ -2882,64 +2388,27 @@
                 document.getElementById('pvWattage').style.borderColor = '#e5e7eb';
             }
             
-            // Determine bill type (with / without solar)
-            const billType = formData.get('billType') || 'no_solar';
-            const isWithSolarBill = billType === 'with_solar';
             const pvKwForEstimate = pvWattage ? parseFloat(pvWattage) : 0;
 
-            // Check usage data - at least one of three options is required
-            // Collect monthly kWh data first to check if any was provided.
-            // For "with solar" bills these values are NET (as printed on the bill);
-            // for "without solar" they are already gross.
-            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-                               'July', 'August', 'September', 'October', 'November', 'December'];
-            const monthlyNetKwhData = {};
-            const monthlyExportKwhData = {};
-            const monthlyKwhData = {}; // gross (used downstream as "usage")
-            let hasMonthlyData = false;
-            for (const monthName of monthNames) {
-                const monthValue = formData.get(`month${monthName}`);
-                if (monthValue && monthValue.trim() !== '') {
-                    monthlyNetKwhData[`month${monthName}`] = monthValue;
-                    hasMonthlyData = true;
-                }
-                if (isWithSolarBill) {
-                    const exportValue = formData.get(`monthExport${monthName}`);
-                    if (exportValue && exportValue.trim() !== '') {
-                        monthlyExportKwhData[`month${monthName}`] = exportValue;
-                    }
-                }
-            }
-            // Compute gross = net + (estimated_solar_generation − exported)
-            // estimated_solar_generation (monthly, kWh) ≈ pvKw * 4.5 kWh/day/kW * ~30.42 days/month
-            for (const monthName of monthNames) {
-                const netStr = monthlyNetKwhData[`month${monthName}`];
-                if (!netStr) continue;
-                const net = parseFloat(netStr);
-                if (!isFinite(net)) continue;
-
-                if (isWithSolarBill && pvKwForEstimate > 0) {
-                    const exportStr = monthlyExportKwhData[`month${monthName}`];
-                    const exportVal = exportStr ? parseFloat(exportStr) : 0;
-                    const estimatedSolarDaily = pvKwForEstimate * SOLAR_KWH_PER_DAY_PER_KW;
-                    const gross = net + (estimatedSolarDaily - (isFinite(exportVal) ? exportVal : 0));
-                    monthlyKwhData[`month${monthName}`] = gross.toFixed(2);
-                } else {
-                    monthlyKwhData[`month${monthName}`] = netStr;
-                }
-            }
-
-            // Check daily average (for with-solar bills, this is the NET daily average from the bill)
+            // Read the Annual Daily Average inputs (the only usage-input UI on
+            // the page now). Net usage is required; export generation is
+            // optional and, when provided, is what makes this a "with solar"
+            // bill (used to compute gross usage from net usage).
             const dailyAverageKwh = formData.get('dailyAverageKwh');
             const dailyAverageExportKwh = formData.get('dailyAverageExportKwh');
             const hasDailyAverage = dailyAverageKwh && dailyAverageKwh.trim() !== '';
+            const hasExport = dailyAverageExportKwh && dailyAverageExportKwh.trim() !== '';
+            const billType = hasExport ? 'with_solar' : 'no_solar';
+            const isWithSolarBill = hasExport;
 
-            // Compute gross daily average when "with solar" is selected
+            // Compute gross daily average. For no-solar (or newly-installed
+            // solar where the bill doesn't yet show export) we treat net == gross.
+            // When export is provided, we estimate gross as:
+            //   gross = net + (estimated_solar_generation − exported)
             let dailyAverageGrossKwh = hasDailyAverage ? dailyAverageKwh : '';
             if (isWithSolarBill && hasDailyAverage && pvKwForEstimate > 0) {
                 const netDaily = parseFloat(dailyAverageKwh);
-                const exportDaily = dailyAverageExportKwh && dailyAverageExportKwh.trim() !== ''
-                    ? parseFloat(dailyAverageExportKwh) : 0;
+                const exportDaily = parseFloat(dailyAverageExportKwh);
                 const estimatedSolarDaily = pvKwForEstimate * SOLAR_KWH_PER_DAY_PER_KW;
                 if (isFinite(netDaily)) {
                     const gross = netDaily + (estimatedSolarDaily - (isFinite(exportDaily) ? exportDaily : 0));
@@ -2947,52 +2416,50 @@
                 }
             }
 
-            // Require PV kW when user selected "with solar" bill and is manually entering usage
-            const needsGrossMath = isWithSolarBill && (hasDailyAverage || hasMonthlyData);
-            if (needsGrossMath && !(pvKwForEstimate > 0)) {
-                errors.push('- Solar Panel Capacity (kW) is required to estimate gross usage from a with-solar bill');
+            // Require PV kW when the user has supplied an Export Generation
+            // value, because we need it to estimate gross usage from net usage.
+            if (isWithSolarBill && hasDailyAverage && !(pvKwForEstimate > 0)) {
+                errors.push('- Solar Panel Capacity (kW) is required when Export Generation is provided so we can estimate your gross usage');
                 document.getElementById('pvWattage').style.borderColor = '#ef4444';
             }
-            
-            // Check if utility bills were uploaded (either in this session or previously)
-            const hasUtilityBills = uploadedFiles.length > 0 || sessionStorage.getItem('filesUploadedInStep1') === 'true';
-            
-            // Check if usage chart screenshot was uploaded (either in this session or previously)
-            const hasUsageChart = (usageChartFiles && usageChartFiles.length > 0) || sessionStorage.getItem('usageChartUploadedInStep1') === 'true';
-            
-            // Validate that at least one usage data option is provided
-            if (!hasUtilityBills && !hasMonthlyData && !hasDailyAverage && !hasUsageChart) {
-                errors.push('- Usage data is required');
+
+            // The simplified UI requires the user to enter Net Usage. Surface a
+            // friendlier error than the browser default.
+            if (!hasDailyAverage) {
+                errors.push('- Annual Daily Average Net Usage (kWh) is required');
+                if (dailyAverageKwhInput) dailyAverageKwhInput.style.borderColor = '#ef4444';
+            } else if (dailyAverageKwhInput) {
+                dailyAverageKwhInput.style.borderColor = '#e5e7eb';
             }
-            
+
+            // Bills/screenshots/monthly entry have been removed from the UI;
+            // the legacy upload code paths still exist but are inert without
+            // their backing inputs, so these arrays will always be empty here.
+            const hasUtilityBills = uploadedFiles.length > 0 || sessionStorage.getItem('filesUploadedInStep1') === 'true';
+            const hasUsageChart = (usageChartFiles && usageChartFiles.length > 0) || sessionStorage.getItem('usageChartUploadedInStep1') === 'true';
+            const monthlyNetKwhData = {};
+            const monthlyExportKwhData = {};
+            const monthlyKwhData = {};
+            const hasMonthlyData = false;
+
             // Show validation errors
             if (errors.length > 0) {
                 let errorMessage = '⚠️ Missing Required Information:\n\n' + errors.join('\n');
-                
-                // Add helpful hint if usage data is missing
-                if (!hasUtilityBills && !hasMonthlyData && !hasDailyAverage && !hasUsageChart) {
-                    errorMessage += '\n\n💡 You must provide at least ONE of the following:\n';
-                    errorMessage += '   • Upload utility bills (PDF or images)\n';
-                    errorMessage += '   • Upload a screenshot of your usage chart\n';
-                    errorMessage += '   • Enter monthly kWh usage for at least one month\n';
-                    errorMessage += '   • Enter your daily average kWh usage\n';
-                    errorMessage += '\nScroll down to the "Usage Data" section to provide this information.';
-                    
-                    // Scroll to the usage data section
+                errorMessage += '\n\nPlease provide the required information to continue.';
+
+                if (!hasDailyAverage) {
                     setTimeout(() => {
-                        const usageSection = document.querySelector('.tab-content');
-                        if (usageSection) {
-                            usageSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        if (dailyAverageKwhInput) {
+                            dailyAverageKwhInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            dailyAverageKwhInput.focus();
                         }
                     }, 500);
-                } else {
-                    errorMessage += '\n\nPlease provide the required information to continue.';
                 }
-                
+
                 alert(errorMessage);
                 return;
             }
-            
+
             // Generate or retrieve temporary UUID for this session
             let tempUserId = sessionStorage.getItem('tempUserId');
             if (!tempUserId) {
@@ -3000,11 +2467,13 @@
                 sessionStorage.setItem('tempUserId', tempUserId);
                 console.log('Generated temporary user ID:', tempUserId);
             }
-            
+
             // Prepare system data
-            // `monthlyKwh` and `dailyAverageKwh` always hold the GROSS home usage
-            // (raw meter reading for no-solar bills, computed gross for with-solar bills).
-            // We also persist the raw net + export values and bill type for transparency.
+            // `dailyAverageKwh` always holds the GROSS home usage (raw meter
+            // reading when only Net Usage is supplied, computed gross when
+            // both Net Usage and Export Generation are supplied). The raw net
+            // and export values plus the inferred bill type are also persisted
+            // for transparency.
             const step1SystemData = {
                 batteryCapacity: formData.get('batteryCapacity'),
                 pvWattage: formData.get('pvWattage'),
