@@ -876,6 +876,113 @@
             color: #111827;
         }
 
+        /* ---------- Sneak-peek teaser (stage 1, SCE Base) ---------- */
+        .estimate-teaser {
+            position: relative;
+            margin: 0.4rem 0 1.4rem;
+            padding: 1.15rem 1.15rem 1rem;
+            border-radius: 14px;
+            border: 2px solid #10B981;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #d1fae5 100%);
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.10);
+        }
+
+        .estimate-teaser-badge {
+            position: absolute;
+            top: -10px;
+            left: 14px;
+            background: #10B981;
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            padding: 4px 9px;
+            border-radius: 999px;
+        }
+
+        .estimate-teaser-headline {
+            font-weight: 800;
+            color: #065f46;
+            font-size: 1rem;
+            margin: 0 0 0.2rem;
+        }
+
+        .estimate-teaser-desc {
+            font-size: 0.83rem;
+            color: #047857;
+            margin: 0 0 0.7rem;
+            line-height: 1.45;
+        }
+
+        .estimate-teaser-amounts {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 0.5rem;
+            padding-top: 0.55rem;
+            border-top: 1px dashed #6ee7b7;
+            flex-wrap: wrap;
+        }
+
+        .estimate-teaser-yearly {
+            display: flex;
+            flex-direction: column;
+            gap: 0.1rem;
+        }
+
+        .estimate-teaser-yearly-label {
+            font-size: 0.66rem;
+            color: #047857;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .estimate-teaser-yearly-value {
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: #065f46;
+            line-height: 1.05;
+        }
+
+        .estimate-teaser-monthly {
+            font-size: 0.85rem;
+            color: #047857;
+            text-align: right;
+        }
+
+        .estimate-teaser-monthly strong {
+            color: #065f46;
+            font-weight: 800;
+        }
+
+        .estimate-teaser-unlock {
+            margin: 0.85rem 0 0;
+            font-size: 0.82rem;
+            color: #065f46;
+            line-height: 1.45;
+            padding: 0.55rem 0.7rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px dashed #10B981;
+        }
+
+        .estimate-teaser.is-loading .estimate-teaser-yearly-value,
+        .estimate-teaser.is-loading .estimate-teaser-monthly strong {
+            color: #6b7280;
+            font-style: italic;
+            font-weight: 600;
+        }
+
+        .estimate-teaser.is-error {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+        .estimate-teaser.is-error .estimate-teaser-amounts {
+            display: none;
+        }
+
         /* ---------- Personalized-estimate CTA (stage 2) ---------- */
         .personalized-cta {
             margin-top: 1.25rem;
@@ -979,11 +1086,11 @@
                             <div style="flex: 1;">
                                 <h3 style="font-size: 1.1rem; color: #374151; font-weight: 700; margin-bottom: 0.5rem;">Quick Start: Tell Us Your System Specs</h3>
                                 <p style="color: #4b5563; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
-                                    Just provide your system specifications below, and we'll calculate your estimated earnings. You can complete registration now and connect your system later.
+                                    Just provide your system specifications below, and we'll calculate your estimated earnings.
                                 </p>
                                 
                                 <p style="color: #374151; font-size: 0.875rem; margin-bottom: 1rem; padding: 0.75rem; background: #e0f2fe; border-radius: 8px; border-left: 3px solid #0ea5e9;">
-                                    <strong>✅ This is enough to get started!</strong> Simply enter your battery and solar capacity below. We'll send you personalized estimates within 72 hours.
+                                    <strong>✅ This is enough to get started!</strong> Simply enter your battery and solar capacity below. We'll send you personalized estimates shortly.
                                 </p>
 
                                 <div class="form-grid">
@@ -1039,17 +1146,34 @@
             <!-- Stage 1: Email entry -->
             <div class="modal-stage is-active" id="emailStage">
                 <div class="modal-header">
-                    <h2 id="emailEstimateTitle">🔓 Unlock Your Earnings Estimates</h2>
-                    <p>Enter your email and we'll instantly show how your system would perform across the three standard <strong>SCE residential profiles</strong>.</p>
+                    <h2 id="emailEstimateTitle">🎉 Look how much your system could earn</h2>
+                    <p>Here's a quick preview based on the typical SCE home. Pop in your email to see <strong>Low, Base, and High</strong> homes side by side and get the full report in your inbox.</p>
                 </div>
 
                 <form id="emailEstimateForm" class="modal-body" novalidate>
+                    <!-- Sneak-peek preview for the SCE Base profile -->
+                    <div class="estimate-teaser is-loading" id="emailStageTeaser" aria-live="polite">
+                        <div class="estimate-teaser-badge">🎁 SNEAK PEEK</div>
+                        <p class="estimate-teaser-headline" id="emailStageTeaserHeadline">Typical SCE home with your system</p>
+                        <p class="estimate-teaser-desc" id="emailStageTeaserDesc">Calculating earnings for the <strong>Base</strong> profile (≈ 46.74 kWh/day)…</p>
+                        <div class="estimate-teaser-amounts">
+                            <div class="estimate-teaser-yearly">
+                                <span class="estimate-teaser-yearly-label">Estimated annual earnings</span>
+                                <span class="estimate-teaser-yearly-value" id="emailStageTeaserYearly">Calculating…</span>
+                            </div>
+                            <div class="estimate-teaser-monthly" id="emailStageTeaserMonthly">~ <strong>$—</strong> / month</div>
+                        </div>
+                        <p class="estimate-teaser-unlock">
+                            🔓 <strong>Enter your email below</strong> to unlock estimates for all three SCE profiles (Low / Base / High) and get the full report by email.
+                        </p>
+                    </div>
+
                     <label class="field-label" for="estimateEmail">Email address <span style="color: #ef4444;">*</span></label>
                     <input type="email" id="estimateEmail" name="estimateEmail" placeholder="you@example.com" autocomplete="email" required>
 
                     <div class="modal-actions">
                         <button type="button" class="modal-btn-secondary" id="emailEstimateCancel">Cancel</button>
-                        <button type="submit" class="modal-btn-primary" id="emailEstimateSubmit">Show My Estimates →</button>
+                        <button type="submit" class="modal-btn-primary" id="emailEstimateSubmit">Unlock all 3 estimates →</button>
                     </div>
 
                     <p class="modal-privacy">
@@ -1073,7 +1197,7 @@
                     <div class="personalized-cta">
                         <h3>💡 Want a personalized estimate?</h3>
                         <p>
-                            These ranges are based on the <strong>standard SCE profiles</strong>. Continue to <strong>Step 2</strong> and tell us a bit more about your home (utility, address, EV, pool, etc.) — we'll email a tailored estimate based on your actual setup.
+                            These ranges are based on the <strong>standard SCE profiles</strong>. Continue to <strong>Step 2</strong> and tell us a bit more about your usage — we'll email a tailored estimate based on your actual setup.
                         </p>
                     </div>
 
@@ -1083,7 +1207,7 @@
                     </div>
 
                     <p class="estimates-disclaimer">
-                        Preliminary estimate only. Your detailed simulation will run in ~48 hours and arrive in your inbox.
+                        Preliminary estimate only. Your detailed simulation will arrive in your inbox shortly.
                     </p>
                 </div>
             </div>
@@ -2312,18 +2436,24 @@
         // and reset to its original label whenever the user closes the modal
         // without proceeding to Step 2.
         function showEmailEstimateModal(step1Data, submitBtn, originalButtonText) {
-            const modal           = document.getElementById('emailEstimateModal');
-            const form            = document.getElementById('emailEstimateForm');
-            const emailEl         = document.getElementById('estimateEmail');
-            const emailSubmitBtn  = document.getElementById('emailEstimateSubmit');
-            const closeBtn        = document.getElementById('emailEstimateClose');
-            const cancelBtn       = document.getElementById('emailEstimateCancel');
-            const emailStage      = document.getElementById('emailStage');
-            const estimatesStage  = document.getElementById('estimatesStage');
-            const cardsContainer  = document.getElementById('estimateCardsContainer');
-            const introTextEl     = document.getElementById('estimatesIntroText');
-            const continueBtn     = document.getElementById('estimatesContinueBtn');
-            const closeStage2Btn  = document.getElementById('estimatesCloseBtn');
+            const modal             = document.getElementById('emailEstimateModal');
+            const form              = document.getElementById('emailEstimateForm');
+            const emailEl           = document.getElementById('estimateEmail');
+            const emailSubmitBtn    = document.getElementById('emailEstimateSubmit');
+            const closeBtn          = document.getElementById('emailEstimateClose');
+            const cancelBtn         = document.getElementById('emailEstimateCancel');
+            const emailStage        = document.getElementById('emailStage');
+            const estimatesStage    = document.getElementById('estimatesStage');
+            const cardsContainer    = document.getElementById('estimateCardsContainer');
+            const introTextEl       = document.getElementById('estimatesIntroText');
+            const continueBtn       = document.getElementById('estimatesContinueBtn');
+            const closeStage2Btn    = document.getElementById('estimatesCloseBtn');
+
+            // Stage-1 sneak-peek teaser elements
+            const teaserEl          = document.getElementById('emailStageTeaser');
+            const teaserDescEl      = document.getElementById('emailStageTeaserDesc');
+            const teaserYearlyEl    = document.getElementById('emailStageTeaserYearly');
+            const teaserMonthlyEl   = document.getElementById('emailStageTeaserMonthly');
 
             if (!modal || !form) return;
 
@@ -2333,12 +2463,60 @@
             cardsContainer.innerHTML = '';
             emailSubmitBtn.disabled = false;
             emailSubmitBtn.classList.remove('is-loading');
-            emailSubmitBtn.textContent = 'Show My Estimates →';
+            emailSubmitBtn.textContent = 'Unlock all 3 estimates →';
             emailEl.style.borderColor = '#e5e7eb';
 
             // Pre-fill email from a previous session for convenience.
             const savedEmail = sessionStorage.getItem('estimateEmail');
             if (savedEmail) emailEl.value = savedEmail;
+
+            // Cache for the base-case estimate computed in the teaser, so the
+            // post-email full computation can reuse it instead of recalculating.
+            let cachedBaseEstimation = null;
+
+            // Kick off the SCE Base teaser estimate immediately. This is the
+            // "reward" that encourages the user to enter their email — they see
+            // a real number for the typical home and want to compare across
+            // all 3 profiles.
+            (function populateTeaser() {
+                if (!teaserEl) return;
+                teaserEl.classList.add('is-loading');
+                teaserEl.classList.remove('is-error');
+                if (teaserYearlyEl)  teaserYearlyEl.textContent = 'Calculating…';
+                if (teaserMonthlyEl) teaserMonthlyEl.innerHTML  = '~ <strong>$—</strong> / month';
+                if (teaserDescEl) {
+                    teaserDescEl.innerHTML =
+                        'Calculating earnings for the <strong>Base</strong> profile (≈ ' +
+                        SCE_USER_PROFILES.base.dailyKwh.toFixed(2) + ' kWh/day)…';
+                }
+
+                calculateQuickEstimation(step1Data, SCE_USER_PROFILES.base)
+                    .then(function (result) {
+                        if (!result || !result.estimation) throw new Error('No estimation returned');
+                        cachedBaseEstimation = result.estimation;
+                        const est = result.estimation;
+                        const yearlyRange = '$' + est.yearly_low.toLocaleString() +
+                                            '–$' + est.yearly_high.toLocaleString();
+                        const monthlyAvg  = '$' + est.monthly_average.toLocaleString();
+                        teaserEl.classList.remove('is-loading');
+                        if (teaserYearlyEl)  teaserYearlyEl.textContent = yearlyRange;
+                        if (teaserMonthlyEl) teaserMonthlyEl.innerHTML  = '~ <strong>' + monthlyAvg + '</strong> / month';
+                        if (teaserDescEl) {
+                            teaserDescEl.innerHTML =
+                                'Based on the <strong>SCE Base profile</strong> — a 2–3 bedroom single-family ' +
+                                'home with one EV (≈ ' + SCE_USER_PROFILES.base.dailyKwh.toFixed(2) + ' kWh/day).';
+                        }
+                    })
+                    .catch(function (err) {
+                        console.error('Teaser estimate failed:', err);
+                        teaserEl.classList.remove('is-loading');
+                        teaserEl.classList.add('is-error');
+                        if (teaserDescEl) {
+                            teaserDescEl.innerHTML =
+                                'Preview is taking a moment — no worries, enter your email and we\'ll deliver the full breakdown.';
+                        }
+                    });
+            })();
 
             function restorePageButton() {
                 if (submitBtn) {
@@ -2443,9 +2621,22 @@
                     console.error('Failed to compute SCE-profile estimates:', err);
                     emailSubmitBtn.disabled = false;
                     emailSubmitBtn.classList.remove('is-loading');
-                    emailSubmitBtn.textContent = 'Show My Estimates →';
+                    emailSubmitBtn.textContent = 'Unlock all 3 estimates →';
                     alert('We had trouble computing your estimates. Please try again or continue to Step 2 to receive them by email.');
                     return;
+                }
+
+                // Use the teaser's already-computed base estimate so the
+                // number the user sees in the unlocked view matches the
+                // sneak peek they were enticed by.
+                if (cachedBaseEstimation) {
+                    const baseIdx = results.findIndex(r => r.profile && r.profile.key === 'base');
+                    if (baseIdx >= 0) {
+                        results[baseIdx] = {
+                            profile: results[baseIdx].profile,
+                            estimation: cachedBaseEstimation
+                        };
+                    }
                 }
 
                 // Persist computed estimates so Step 2/3 can show them.
