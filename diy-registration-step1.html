@@ -762,121 +762,11 @@
             .modal-header h2 { font-size: 1.2rem; }
         }
 
-        /* Modal stages (email entry vs estimates results) */
+        /* Modal stage wrapper (kept as a single-stage container for clarity) */
         .modal-stage { display: none; }
         .modal-stage.is-active { display: block; }
 
-        /* ---------- Estimate result cards (stage 2) ---------- */
-        .estimate-cards {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .estimate-card {
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 1rem 1.1rem;
-            background: #ffffff;
-            transition: border-color 0.2s ease, transform 0.15s ease;
-        }
-
-        .estimate-card:hover {
-            border-color: #10B981;
-            transform: translateY(-1px);
-        }
-
-        .estimate-card.is-base {
-            border-color: #10B981;
-            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
-            position: relative;
-        }
-
-        .estimate-card.is-base::before {
-            content: 'MOST COMMON';
-            position: absolute;
-            top: -10px;
-            right: 14px;
-            background: #10B981;
-            color: #fff;
-            font-size: 0.65rem;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            padding: 3px 8px;
-            border-radius: 999px;
-        }
-
-        .estimate-card-header {
-            display: flex;
-            align-items: baseline;
-            justify-content: space-between;
-            gap: 0.5rem;
-            margin-bottom: 0.25rem;
-            flex-wrap: wrap;
-        }
-
-        .estimate-card-title {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: #111827;
-        }
-
-        .estimate-card-kwh {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #047857;
-            white-space: nowrap;
-        }
-
-        .estimate-card-desc {
-            font-size: 0.83rem;
-            color: #4b5563;
-            line-height: 1.45;
-            margin: 0 0 0.65rem 0;
-        }
-
-        .estimate-card-amounts {
-            display: flex;
-            align-items: baseline;
-            justify-content: space-between;
-            gap: 0.5rem;
-            padding-top: 0.6rem;
-            border-top: 1px dashed #d1d5db;
-            flex-wrap: wrap;
-        }
-
-        .estimate-card-yearly {
-            display: flex;
-            flex-direction: column;
-            gap: 0.1rem;
-        }
-
-        .estimate-card-yearly-label {
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: #6b7280;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .estimate-card-yearly-value {
-            font-size: 1.15rem;
-            font-weight: 800;
-            color: #047857;
-            line-height: 1.1;
-        }
-
-        .estimate-card-monthly {
-            font-size: 0.82rem;
-            color: #4b5563;
-            text-align: right;
-        }
-
-        .estimate-card-monthly strong {
-            color: #111827;
-        }
-
-        /* ---------- Sneak-peek teaser (stage 1, SCE Base) ---------- */
+        /* ---------- Sneak-peek teaser (SCE Base) ---------- */
         .estimate-teaser {
             position: relative;
             margin: 0.4rem 0 1.4rem;
@@ -983,40 +873,6 @@
             display: none;
         }
 
-        /* ---------- Personalized-estimate CTA (stage 2) ---------- */
-        .personalized-cta {
-            margin-top: 1.25rem;
-            padding: 1.1rem 1.15rem;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-            border: 2px solid #10B981;
-        }
-
-        .personalized-cta h3 {
-            font-size: 1rem;
-            color: #065f46;
-            font-weight: 700;
-            margin: 0 0 0.4rem 0;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .personalized-cta p {
-            color: #047857;
-            font-size: 0.88rem;
-            line-height: 1.5;
-            margin: 0;
-        }
-
-        .estimates-disclaimer {
-            margin: 0.85rem 0 0 0;
-            font-size: 0.78rem;
-            color: #6b7280;
-            line-height: 1.5;
-            text-align: center;
-        }
-
         /* Inline loading state for the email submit button */
         .modal-btn-primary.is-loading {
             opacity: 0.85;
@@ -1114,7 +970,7 @@
                     </div>
 
                     <p style="text-align: center; margin: 1.5rem 0 0.75rem 0; padding: 1rem; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border-radius: 12px; border: 2px solid #10B981;">
-                        <span style="display: block; color: #059669; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">🤖 EXTRA EARNINGS WITH MICROVPP AI</span>
+                        <span style="display: block; color: #059669; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">🍾 EXTRA EARNINGS WITH MICROVPP AI</span>
                         <span style="display: block; color: #047857; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem;">Typical bonus for similar systems: $600–$2,400/year on top of your system's default savings</span>
                         <span style="display: block; color: #6b7280; font-size: 0.85rem;">See your quick estimate ↓</span>
                     </p>
@@ -1146,7 +1002,7 @@
             <!-- Stage 1: Email entry -->
             <div class="modal-stage is-active" id="emailStage">
                 <div class="modal-header">
-                    <h2 id="emailEstimateTitle">🤖 Extra earnings unlocked by MicroVPP AI</h2>
+                    <h2 id="emailEstimateTitle">🍾 Extra earnings unlocked by MicroVPP AI</h2>
                     <p>This is the <strong>bonus</strong> MicroVPP's AI optimization adds <strong>on top of</strong> your system default savings.</p>
                 </div>
 
@@ -1173,7 +1029,7 @@
 
                     <div class="modal-actions">
                         <button type="button" class="modal-btn-secondary" id="emailEstimateCancel">Cancel</button>
-                        <button type="submit" class="modal-btn-primary" id="emailEstimateSubmit">Unlock all 3 estimates →</button>
+                        <button type="submit" class="modal-btn-primary" id="emailEstimateSubmit">Continue to step 2 →</button>
                     </div>
 
                     <p class="modal-privacy">
@@ -1182,35 +1038,6 @@
                 </form>
             </div>
 
-            <!-- Stage 2: Estimates for all 3 SCE profiles -->
-            <div class="modal-stage" id="estimatesStage">
-                <div class="modal-header">
-                    <h2>🤖 Your Extra Earnings with MicroVPP AI</h2>
-                    <p id="estimatesIntroText">Here's the bonus MicroVPP AI optimization would add on top of your system's default savings, across the three standard SCE home profiles.</p>
-                </div>
-
-                <div class="modal-body">
-                    <div class="estimate-cards" id="estimateCardsContainer">
-                        <!-- Cards rendered by showEmailEstimateModal() -->
-                    </div>
-
-                    <div class="personalized-cta">
-                        <h3>💡 Want a personalized bonus estimate?</h3>
-                        <p>
-                            These numbers come from the <strong>standard SCE profiles</strong>. Continue to <strong>Step 2</strong> and share a little about your actual usage — we'll email an extra-earnings estimate tuned to <em>your</em> home and your system's baseline.
-                        </p>
-                    </div>
-
-                    <div class="modal-actions">
-                        <button type="button" class="modal-btn-secondary" id="estimatesCloseBtn">Close</button>
-                        <button type="button" class="modal-btn-primary" id="estimatesContinueBtn">Continue to Step 2 →</button>
-                    </div>
-
-                    <p class="estimates-disclaimer">
-                        Preliminary estimate only. All numbers shown are the <strong>extra</strong> earnings MicroVPP AI optimization adds on top of your system's built-in algorithm. Your detailed simulation will arrive in your inbox shortly.
-                    </p>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -2424,60 +2251,44 @@
         };
 
         // ============================================
-        // EMAIL + ALL-PROFILES ESTIMATES MODAL
+        // EMAIL CAPTURE MODAL
         // ============================================
-        // Two-stage modal:
-        //   Stage 1 — collect the user's email
-        //   Stage 2 — show one estimate card per SCE standard profile (low,
-        //             base, high) and offer "Continue to Step 2" for a
-        //             personalized estimate.
+        // Single-stage modal: collect the user's email (with a live SCE Base
+        // teaser estimate to incentivize entry), then navigate straight to
+        // Step 2. The full multi-profile estimate is delivered by email
+        // rather than shown inline.
         //
         // The submitBtn is the page-level Continue button; it gets re-enabled
         // and reset to its original label whenever the user closes the modal
         // without proceeding to Step 2.
         function showEmailEstimateModal(step1Data, submitBtn, originalButtonText) {
-            const modal             = document.getElementById('emailEstimateModal');
-            const form              = document.getElementById('emailEstimateForm');
-            const emailEl           = document.getElementById('estimateEmail');
-            const emailSubmitBtn    = document.getElementById('emailEstimateSubmit');
-            const closeBtn          = document.getElementById('emailEstimateClose');
-            const cancelBtn         = document.getElementById('emailEstimateCancel');
-            const emailStage        = document.getElementById('emailStage');
-            const estimatesStage    = document.getElementById('estimatesStage');
-            const cardsContainer    = document.getElementById('estimateCardsContainer');
-            const introTextEl       = document.getElementById('estimatesIntroText');
-            const continueBtn       = document.getElementById('estimatesContinueBtn');
-            const closeStage2Btn    = document.getElementById('estimatesCloseBtn');
+            const modal            = document.getElementById('emailEstimateModal');
+            const form             = document.getElementById('emailEstimateForm');
+            const emailEl          = document.getElementById('estimateEmail');
+            const emailSubmitBtn   = document.getElementById('emailEstimateSubmit');
+            const closeBtn         = document.getElementById('emailEstimateClose');
+            const cancelBtn        = document.getElementById('emailEstimateCancel');
+            const emailStage       = document.getElementById('emailStage');
 
-            // Stage-1 sneak-peek teaser elements
-            const teaserEl          = document.getElementById('emailStageTeaser');
-            const teaserDescEl      = document.getElementById('emailStageTeaserDesc');
-            const teaserYearlyEl    = document.getElementById('emailStageTeaserYearly');
-            const teaserMonthlyEl   = document.getElementById('emailStageTeaserMonthly');
+            const teaserEl         = document.getElementById('emailStageTeaser');
+            const teaserDescEl     = document.getElementById('emailStageTeaserDesc');
+            const teaserYearlyEl   = document.getElementById('emailStageTeaserYearly');
+            const teaserMonthlyEl  = document.getElementById('emailStageTeaserMonthly');
 
             if (!modal || !form) return;
 
-            // Fresh state every time the modal opens.
             emailStage.classList.add('is-active');
-            estimatesStage.classList.remove('is-active');
-            cardsContainer.innerHTML = '';
             emailSubmitBtn.disabled = false;
             emailSubmitBtn.classList.remove('is-loading');
-            emailSubmitBtn.textContent = 'Unlock all 3 estimates →';
+            emailSubmitBtn.textContent = 'Continue to step 2 →';
             emailEl.style.borderColor = '#e5e7eb';
 
-            // Pre-fill email from a previous session for convenience.
             const savedEmail = sessionStorage.getItem('estimateEmail');
             if (savedEmail) emailEl.value = savedEmail;
 
-            // Cache for the base-case estimate computed in the teaser, so the
-            // post-email full computation can reuse it instead of recalculating.
-            let cachedBaseEstimation = null;
-
             // Kick off the SCE Base teaser estimate immediately. This is the
-            // "reward" that encourages the user to enter their email — they see
-            // a real number for the typical home and want to compare across
-            // all 3 profiles.
+            // "reward" that encourages the user to enter their email — they
+            // see a real number for the typical home before continuing.
             (function populateTeaser() {
                 if (!teaserEl) return;
                 teaserEl.classList.add('is-loading');
@@ -2493,7 +2304,6 @@
                 calculateQuickEstimation(step1Data, SCE_USER_PROFILES.base)
                     .then(function (result) {
                         if (!result || !result.estimation) throw new Error('No estimation returned');
-                        cachedBaseEstimation = result.estimation;
                         const est = result.estimation;
                         const yearlyRange = '$' + est.yearly_low.toLocaleString() +
                                             '–$' + est.yearly_high.toLocaleString();
@@ -2530,8 +2340,6 @@
                 form.removeEventListener('submit', onEmailSubmit);
                 closeBtn.removeEventListener('click', onClose);
                 cancelBtn.removeEventListener('click', onClose);
-                continueBtn.removeEventListener('click', onContinueToStep2);
-                closeStage2Btn.removeEventListener('click', onClose);
                 document.removeEventListener('keydown', onKeyDown);
             }
 
@@ -2544,54 +2352,7 @@
                 if (e.key === 'Escape') onClose();
             }
 
-            function onContinueToStep2() {
-                // The user already provided their email and saw all 3
-                // estimates. Persist any latest data and proceed.
-                sessionStorage.setItem('registrationStep1', JSON.stringify(step1Data));
-                cleanup();
-                window.location.href = 'diy-registration-step2.html';
-            }
-
-            // Build a single estimate card.
-            function renderEstimateCard(profile, est) {
-                const yearlyRange = `$${est.yearly_low.toLocaleString()}–$${est.yearly_high.toLocaleString()}`;
-                const monthlyAvg  = `$${est.monthly_average.toLocaleString()}`;
-                const isBase = profile.key === 'base';
-                const emoji  = profile.key === 'low'  ? '🏠'
-                             : profile.key === 'base' ? '🏡'
-                             : '🏘️';
-                return (
-                    `<div class="estimate-card${isBase ? ' is-base' : ''}" data-profile="${profile.key}">` +
-                        `<div class="estimate-card-header">` +
-                            `<span class="estimate-card-title">${emoji} ${profile.label}</span>` +
-                            `<span class="estimate-card-kwh">${profile.dailyKwh.toFixed(2)} kWh / day</span>` +
-                        `</div>` +
-                        `<p class="estimate-card-desc">${profile.description}</p>` +
-                        `<div class="estimate-card-amounts">` +
-                            `<div class="estimate-card-yearly">` +
-                                `<span class="estimate-card-yearly-label">Extra earnings with MicroVPP AI</span>` +
-                                `<span class="estimate-card-yearly-value">${yearlyRange}</span>` +
-                            `</div>` +
-                            `<div class="estimate-card-monthly">~ <strong>${monthlyAvg}</strong> / month bonus</div>` +
-                        `</div>` +
-                    `</div>`
-                );
-            }
-
-            // Failure card (in case one of the parallel API calls errors out).
-            function renderErrorCard(profile) {
-                return (
-                    `<div class="estimate-card" data-profile="${profile.key}">` +
-                        `<div class="estimate-card-header">` +
-                            `<span class="estimate-card-title">${profile.label}</span>` +
-                            `<span class="estimate-card-kwh">${profile.dailyKwh.toFixed(2)} kWh / day</span>` +
-                        `</div>` +
-                        `<p class="estimate-card-desc" style="color: #b91c1c;">Bonus estimate temporarily unavailable. Please continue to Step 2 — we'll email it to you.</p>` +
-                    `</div>`
-                );
-            }
-
-            async function onEmailSubmit(e) {
+            function onEmailSubmit(e) {
                 e.preventDefault();
                 const email = (emailEl.value || '').trim();
                 const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -2602,81 +2363,18 @@
                 }
                 emailEl.style.borderColor = '#e5e7eb';
 
-                // Persist email + write it onto the systemData payload.
                 step1Data.estimateEmail = email;
                 step1Data.usageSource   = 'sce_standard_profile_all';
                 sessionStorage.setItem('estimateEmail', email);
                 sessionStorage.setItem('registrationStep1', JSON.stringify(step1Data));
 
-                // Compute all 3 estimates (in parallel) with a loading state.
-                emailSubmitBtn.disabled = true;
-                emailSubmitBtn.classList.add('is-loading');
-                emailSubmitBtn.textContent = 'Computing your estimates…';
-
-                let results;
-                try {
-                    results = await computeAllProfileEstimates(step1Data);
-                } catch (err) {
-                    console.error('Failed to compute SCE-profile estimates:', err);
-                    emailSubmitBtn.disabled = false;
-                    emailSubmitBtn.classList.remove('is-loading');
-                    emailSubmitBtn.textContent = 'Unlock all 3 estimates →';
-                    alert('We had trouble computing your estimates. Please try again or continue to Step 2 to receive them by email.');
-                    return;
-                }
-
-                // Use the teaser's already-computed base estimate so the
-                // number the user sees in the unlocked view matches the
-                // sneak peek they were enticed by.
-                if (cachedBaseEstimation) {
-                    const baseIdx = results.findIndex(r => r.profile && r.profile.key === 'base');
-                    if (baseIdx >= 0) {
-                        results[baseIdx] = {
-                            profile: results[baseIdx].profile,
-                            estimation: cachedBaseEstimation
-                        };
-                    }
-                }
-
-                // Persist computed estimates so Step 2/3 can show them.
-                sessionStorage.setItem('quickEstimationByProfile', JSON.stringify(
-                    results.map(r => ({
-                        profile_key: r.profile.key,
-                        profile_label: r.profile.label,
-                        profile_daily_kwh: r.profile.dailyKwh,
-                        estimation: r.estimation || null,
-                        error: r.error ? String(r.error.message || r.error) : null
-                    }))
-                ));
-
-                // Render cards in low → base → high order.
-                cardsContainer.innerHTML = results.map(r =>
-                    r.estimation
-                        ? renderEstimateCard(r.profile, r.estimation)
-                        : renderErrorCard(r.profile)
-                ).join('');
-
-                // Personalize the intro line with the user's system specs.
-                const battery = parseFloat(step1Data.batteryCapacity);
-                const pv      = parseFloat(step1Data.pvWattage);
-                if (introTextEl && isFinite(battery) && isFinite(pv)) {
-                    introTextEl.innerHTML =
-                        `For your <strong>${battery} kWh battery</strong> + <strong>${pv} kW solar</strong>, ` +
-                        `here's the bonus MicroVPP AI optimization would add <strong>on top of</strong> your system's default savings, under each standard SCE home profile:`;
-                }
-
-                // Switch to stage 2.
-                emailStage.classList.remove('is-active');
-                estimatesStage.classList.add('is-active');
-                estimatesStage.scrollTop = 0;
-                setTimeout(() => continueBtn.focus(), 50);
+                cleanup();
+                window.location.href = 'diy-registration-step2.html';
             }
 
             form.addEventListener('submit', onEmailSubmit);
             closeBtn.addEventListener('click', onClose);
             cancelBtn.addEventListener('click', onClose);
-            continueBtn.addEventListener('click', onContinueToStep2);
-            closeStage2Btn.addEventListener('click', onClose);
             document.addEventListener('keydown', onKeyDown);
 
             modal.classList.add('is-open');
@@ -2764,25 +2462,6 @@
             };
         }
 
-        // Compute an estimate for each of the three SCE standard profiles in
-        // parallel. Returns an array of { profile, estimation } objects in
-        // low → base → high order. Failed calls produce { profile, error }.
-        async function computeAllProfileEstimates(systemData) {
-            const profiles = [
-                SCE_USER_PROFILES.low,
-                SCE_USER_PROFILES.base,
-                SCE_USER_PROFILES.high
-            ];
-            const results = await Promise.all(
-                profiles.map(p =>
-                    calculateQuickEstimation(systemData, p)
-                        .then(r => ({ profile: p, estimation: r.estimation, success: r.success }))
-                        .catch(err => ({ profile: p, error: err }))
-                )
-            );
-            return results;
-        }
-        
         // Form submit handler
         document.getElementById('diyForm').addEventListener('submit', async function(e) {
             e.preventDefault();
