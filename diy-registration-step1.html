@@ -699,8 +699,9 @@
 
                                 <!-- Bill Type Selector -->
                                 <div style="background: #ffffff; border: 2px solid #10B981; border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1.5rem;">
-                                    <p style="color: #065f46; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem;">
-                                        🏠 Which type of utility bill do you have?
+                                    <p style="color: #065f46; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                                        <span>🏠 Which type of utility bill do you have?</span>
+                                        <button type="button" id="billTypeHelpToggle" aria-expanded="false" aria-controls="billPreviewsContainer" title="Show example bills" style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; padding: 0; border-radius: 50%; border: 1.5px solid #10B981; background: #ffffff; color: #10B981; font-weight: 700; font-size: 0.85rem; line-height: 1; cursor: pointer; transition: all 0.2s ease;">?</button>
                                     </p>
                                     <p style="color: #4b5563; font-size: 0.85rem; line-height: 1.55; margin-bottom: 0.75rem;">
                                         Select the one that matches your bill. If you already have rooftop solar, your bill shows <strong>both</strong> consumption and export generation — we'll use your solar panel size to estimate your <em>gross</em> home usage.
@@ -723,8 +724,8 @@
                                         </label>
                                     </div>
 
-                                    <!-- Bill previews -->
-                                    <div class="sce-bill-examples" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 1rem;">
+                                    <!-- Bill previews (hidden by default — toggled via the "?" help button next to the heading) -->
+                                    <div id="billPreviewsContainer" class="sce-bill-examples" style="display: none; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 1rem;">
                                         <div id="billPreviewNoSolar" style="border: 2px solid #e5e7eb; border-radius: 8px; padding: 0.5rem; background: #f9fafb; transition: all 0.2s ease;">
                                             <p style="color: #1e3a8a; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.35rem; text-align: center;">
                                                 Without solar (one bar)
@@ -808,8 +809,9 @@
                                     
                                     <!-- SCE Daily Average Helper Guide (varies with bill type) -->
                                     <div style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 1rem; margin-top: 1rem;">
-                                        <h4 style="color: #1e40af; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-                                            <span>📊</span> How to Find Your Daily Average Usage (SCE Customers)
+                                        <h4 style="color: #1e40af; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                                            <span>📊 How to Find Your Daily Average Usage (SCE Customers)</span>
+                                            <button type="button" id="dailyAverageHelpToggle" aria-expanded="false" aria-controls="dailyAverageImageNoSolar dailyAverageImageWithSolar" title="Show example bill image" style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; padding: 0; border-radius: 50%; border: 1.5px solid #3b82f6; background: #ffffff; color: #3b82f6; font-weight: 700; font-size: 0.85rem; line-height: 1; cursor: pointer; transition: all 0.2s ease;">?</button>
                                         </h4>
 
                                         <!-- Without-solar guide -->
@@ -817,7 +819,7 @@
                                             <p style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin-bottom: 0.75rem;">
                                                 If you have <strong>Southern California Edison (SCE)</strong>, open the <strong>"Your past and current electricity usage"</strong> section of your bill and look at <strong>"Your daily average electricity usage (kWh)"</strong>. Copy the number next to <strong>"This year:"</strong> into the field above.
                                             </p>
-                                            <div style="margin-top: 0.5rem;">
+                                            <div id="dailyAverageImageNoSolar" style="display: none; margin-top: 0.5rem;">
                                                 <img src="assets/images/sce_bill_no_system_daily_highlighted.png"
                                                      alt="SCE bill (without solar) — This year's daily average highlighted"
                                                      style="width: 100%; max-width: 520px; display: block; margin: 0 auto; border-radius: 8px; border: 1px solid #cbd5e1; cursor: pointer;"
@@ -833,7 +835,7 @@
                                             <p style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin-bottom: 0.75rem;">
                                                 If you have <strong>Southern California Edison (SCE)</strong> and your bill shows export generation, open <strong>"Your past and current electricity usage"</strong> → <strong>"Your daily average electricity usage (kWh)"</strong>. You'll find <strong>two</strong> "This year:" values — one under <strong>Electricity Usage</strong> (your net consumption) and one under <strong>Export Generation</strong> (exported solar). Copy each into the matching field above.
                                             </p>
-                                            <div style="margin-top: 0.5rem;">
+                                            <div id="dailyAverageImageWithSolar" style="display: none; margin-top: 0.5rem;">
                                                 <img src="assets/images/sce_bill_with_system_daily_highlighted.png"
                                                      alt="SCE bill (with solar) — Electricity Usage and Export Generation daily averages highlighted"
                                                      style="width: 100%; max-width: 520px; display: block; margin: 0 auto; border-radius: 8px; border: 1px solid #cbd5e1; cursor: pointer;"
@@ -882,8 +884,9 @@
                                     
                                     <!-- SCE Bill Instructions (varies with bill type) -->
                                     <div style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
-                                        <h4 style="color: #1e40af; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-                                            <span>📊</span> How to Find Your Monthly Usage (SCE Customers)
+                                        <h4 style="color: #1e40af; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                                            <span>📊 How to Find Your Monthly Usage (SCE Customers)</span>
+                                            <button type="button" id="monthlyHelpToggle" aria-expanded="false" aria-controls="monthlyImageNoSolar monthlyImageWithSolar" title="Show example bill image" style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; padding: 0; border-radius: 50%; border: 1.5px solid #3b82f6; background: #ffffff; color: #3b82f6; font-weight: 700; font-size: 0.85rem; line-height: 1; cursor: pointer; transition: all 0.2s ease;">?</button>
                                         </h4>
 
                                         <!-- Without-solar variant -->
@@ -891,7 +894,7 @@
                                             <p style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin-bottom: 0.75rem;">
                                                 If you have <strong>Southern California Edison (SCE)</strong>, open the <strong>"Your past and current electricity usage"</strong> section of your bill. At the top you'll see <strong>"Total electricity you used this month in kWh"</strong> — that's the total for the most recent billing period. Below it, the bar chart shows your <strong>daily average (kWh/day)</strong> for each of the last 12 months — read each bar's height and type it into the matching month field above.
                                             </p>
-                                            <div style="margin-top: 0.5rem;">
+                                            <div id="monthlyImageNoSolar" style="display: none; margin-top: 0.5rem;">
                                                 <img src="assets/images/sce_bill_no_system_monthly_highlighted.png"
                                                      alt="SCE bill (without solar) — Total electricity used this month highlighted"
                                                      style="width: 100%; max-width: 520px; display: block; margin: 0 auto; border-radius: 8px; border: 1px solid #cbd5e1; cursor: pointer;"
@@ -907,7 +910,7 @@
                                             <p style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin-bottom: 0.75rem;">
                                                 If you have <strong>Southern California Edison (SCE)</strong> and your bill shows export generation, open <strong>"Your past and current electricity usage"</strong>. At the top you'll see two totals for this month: <strong>"Total electricity you used this month in kWh"</strong> (net consumption) and <strong>"Total electricity you exported this month in kWh"</strong>. Below, the bar chart shows your <strong>daily averages</strong> for each month — the darker "Consumption" bar and the lighter "Export Generation" bar. Read each bar's height and enter them in the matching month fields above.
                                             </p>
-                                            <div style="margin-top: 0.5rem;">
+                                            <div id="monthlyImageWithSolar" style="display: none; margin-top: 0.5rem;">
                                                 <img src="assets/images/sce_bill_with_system_monthly_highlighted.png"
                                                      alt="SCE bill (with solar) — Total used and Total exported this month highlighted"
                                                      style="width: 100%; max-width: 520px; display: block; margin: 0 auto; border-radius: 8px; border: 1px solid #cbd5e1; cursor: pointer;"
@@ -1326,6 +1329,81 @@
 
         if (billTypeNoSolarRadio) billTypeNoSolarRadio.addEventListener('change', applyBillTypeUi);
         if (billTypeWithSolarRadio) billTypeWithSolarRadio.addEventListener('change', applyBillTypeUi);
+
+        // Toggle the example bill screenshots open/closed when the user clicks the "?"
+        // help button next to "Which type of utility bill do you have?". The previews
+        // are hidden by default to keep this section visually less busy.
+        const billTypeHelpToggle = document.getElementById('billTypeHelpToggle');
+        const billPreviewsContainer = document.getElementById('billPreviewsContainer');
+        if (billTypeHelpToggle && billPreviewsContainer) {
+            billTypeHelpToggle.addEventListener('click', function () {
+                const isHidden = billPreviewsContainer.style.display === 'none' || billPreviewsContainer.style.display === '';
+                if (isHidden) {
+                    billPreviewsContainer.style.display = 'grid';
+                    billTypeHelpToggle.setAttribute('aria-expanded', 'true');
+                    billTypeHelpToggle.title = 'Hide example bills';
+                    billTypeHelpToggle.style.background = '#10B981';
+                    billTypeHelpToggle.style.color = '#ffffff';
+                } else {
+                    billPreviewsContainer.style.display = 'none';
+                    billTypeHelpToggle.setAttribute('aria-expanded', 'false');
+                    billTypeHelpToggle.title = 'Show example bills';
+                    billTypeHelpToggle.style.background = '#ffffff';
+                    billTypeHelpToggle.style.color = '#10B981';
+                }
+            });
+        }
+
+        // Toggle the SCE daily-average example screenshot open/closed. Only one of the
+        // two image wrappers (no-solar vs with-solar) is shown at a time, matching the
+        // currently selected bill type — applyBillTypeUi() handles which guide is
+        // visible. We keep an internal `expanded` flag so the toggle state is preserved
+        // when the user switches bill type.
+        const dailyAverageHelpToggle = document.getElementById('dailyAverageHelpToggle');
+        const dailyAverageImageNoSolar = document.getElementById('dailyAverageImageNoSolar');
+        const dailyAverageImageWithSolar = document.getElementById('dailyAverageImageWithSolar');
+        let dailyAverageImagesExpanded = false;
+        function applyDailyAverageImageVisibility() {
+            const display = dailyAverageImagesExpanded ? 'block' : 'none';
+            if (dailyAverageImageNoSolar) dailyAverageImageNoSolar.style.display = display;
+            if (dailyAverageImageWithSolar) dailyAverageImageWithSolar.style.display = display;
+            if (dailyAverageHelpToggle) {
+                dailyAverageHelpToggle.setAttribute('aria-expanded', dailyAverageImagesExpanded ? 'true' : 'false');
+                dailyAverageHelpToggle.title = dailyAverageImagesExpanded ? 'Hide example bill image' : 'Show example bill image';
+                dailyAverageHelpToggle.style.background = dailyAverageImagesExpanded ? '#3b82f6' : '#ffffff';
+                dailyAverageHelpToggle.style.color = dailyAverageImagesExpanded ? '#ffffff' : '#3b82f6';
+            }
+        }
+        if (dailyAverageHelpToggle) {
+            dailyAverageHelpToggle.addEventListener('click', function () {
+                dailyAverageImagesExpanded = !dailyAverageImagesExpanded;
+                applyDailyAverageImageVisibility();
+            });
+        }
+
+        // Toggle the SCE monthly-usage example screenshot open/closed (Monthly Daily
+        // Average kWh tab). Same pattern as the daily-average toggle above.
+        const monthlyHelpToggle = document.getElementById('monthlyHelpToggle');
+        const monthlyImageNoSolar = document.getElementById('monthlyImageNoSolar');
+        const monthlyImageWithSolar = document.getElementById('monthlyImageWithSolar');
+        let monthlyImagesExpanded = false;
+        function applyMonthlyImageVisibility() {
+            const display = monthlyImagesExpanded ? 'block' : 'none';
+            if (monthlyImageNoSolar) monthlyImageNoSolar.style.display = display;
+            if (monthlyImageWithSolar) monthlyImageWithSolar.style.display = display;
+            if (monthlyHelpToggle) {
+                monthlyHelpToggle.setAttribute('aria-expanded', monthlyImagesExpanded ? 'true' : 'false');
+                monthlyHelpToggle.title = monthlyImagesExpanded ? 'Hide example bill image' : 'Show example bill image';
+                monthlyHelpToggle.style.background = monthlyImagesExpanded ? '#3b82f6' : '#ffffff';
+                monthlyHelpToggle.style.color = monthlyImagesExpanded ? '#ffffff' : '#3b82f6';
+            }
+        }
+        if (monthlyHelpToggle) {
+            monthlyHelpToggle.addEventListener('click', function () {
+                monthlyImagesExpanded = !monthlyImagesExpanded;
+                applyMonthlyImageVisibility();
+            });
+        }
 
         // Recompute the estimate whenever inputs change
         ['pvWattage', 'dailyAverageKwh', 'dailyAverageExportKwh'].forEach(id => {
