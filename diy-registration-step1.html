@@ -2365,6 +2365,12 @@
                 sessionStorage.setItem('estimateEmail', email);
                 sessionStorage.setItem('registrationStep1', JSON.stringify(step1Data));
 
+                if (typeof rdt === 'function') {
+                    rdt('track', 'Lead', {
+                        email: email
+                    });
+                }
+
                 cleanup();
                 window.location.href = 'diy-registration-step2.html';
             }
