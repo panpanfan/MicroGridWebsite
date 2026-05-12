@@ -749,15 +749,15 @@
                         <div class="lp-builder-ticks" id="batteryTicks"></div>
                         <div class="lp-builder-handle" id="batteryHandle" role="slider"
                              tabindex="0" aria-label="Battery capacity in kilowatt-hours"
-                             aria-valuemin="0" aria-valuemax="40.5" aria-valuenow="13.5"></div>
+                             aria-valuemin="5" aria-valuemax="40.5" aria-valuenow="13.5"></div>
                     </div>
                     <div class="lp-builder-label" id="batteryLabel">
                         <div class="lp-builder-value">13.5 kWh</div>
                         <div class="lp-builder-preset">1× Tesla Powerwall</div>
                     </div>
                     <div class="lp-builder-input-row">
-                        <label for="batteryCapacity">Or type exact kWh</label>
-                        <input type="number" id="batteryCapacity" name="batteryCapacity" placeholder="e.g., 13.5" step="0.1" min="0" inputmode="decimal">
+                        <label for="batteryCapacity">Or type exact kWh (min 5)</label>
+                        <input type="number" id="batteryCapacity" name="batteryCapacity" placeholder="e.g., 13.5" step="0.1" min="5" inputmode="decimal">
                     </div>
                 </div>
 
@@ -808,15 +808,15 @@
                         <div class="lp-builder-ticks" id="pvTicks"></div>
                         <div class="lp-builder-handle" id="pvHandle" role="slider"
                              tabindex="0" aria-label="Solar panel capacity in kilowatts"
-                             aria-valuemin="0" aria-valuemax="16" aria-valuenow="8"></div>
+                             aria-valuemin="1.2" aria-valuemax="16" aria-valuenow="8"></div>
                     </div>
                     <div class="lp-builder-label" id="pvLabel">
                         <div class="lp-builder-value">8.0 kW</div>
                         <div class="lp-builder-preset">20 × 400W panels</div>
                     </div>
                     <div class="lp-builder-input-row">
-                        <label for="pvWattage">Or type exact kW</label>
-                        <input type="number" id="pvWattage" name="pvWattage" placeholder="e.g., 8.0" step="0.1" min="0" inputmode="decimal">
+                        <label for="pvWattage">Or type exact kW (min 1.2)</label>
+                        <input type="number" id="pvWattage" name="pvWattage" placeholder="e.g., 8.0" step="0.1" min="1.2" inputmode="decimal">
                     </div>
                 </div>
             </div>
@@ -966,8 +966,10 @@
             initSystemSizer();
 
             function initSystemSizer() {
+                // Popular real-world battery sizes. The drag handle snaps to
+                // these values; manual typed input can also accept anything
+                // above BATTERY_MIN.
                 const BATTERY_PRESETS = [
-                    { kwh: 0,    label: 'No battery' },
                     { kwh: 9.6,  label: '1\u00D7 LG RESU 9.6' },
                     { kwh: 13.5, label: '1\u00D7 Tesla Powerwall' },
                     { kwh: 14.4, label: '1\u00D7 LG RESU 14.4' },
@@ -978,12 +980,14 @@
                     { kwh: 32,   label: '2\u00D7 LG RESU 16' },
                     { kwh: 40.5, label: '3\u00D7 Tesla Powerwalls' }
                 ];
+                const BATTERY_MIN     = 5;          // hard floor on input/handle
                 const BATTERY_MAX     = 40.5;
                 const BATTERY_DEFAULT = 13.5;
 
                 const PV_STEP         = 0.4;        // 400 W per panel
                 const PV_COLS         = 5;
                 const PV_ROWS         = 8;
+                const PV_MIN          = 1.2;        // hard floor (3 panels)
                 const PV_MAX          = PV_COLS * PV_ROWS * PV_STEP;  // 16 kW
                 const PV_DEFAULT      = 8.0;
 
@@ -1027,20 +1031,25 @@
                     return (Math.round(v * 10) / 10).toFixed(1);
                 }
 
-                function valueToTopPx(value, max) {
-                    const frac = Math.max(0, Math.min(1, value / max));
+                // Map a value in [min, max] to a top-px offset on the
+                // vertical track (top of track = max, bottom = min).
+                function valueToTopPx(value, max, min) {
+                    if (typeof min !== 'number') min = 0;
+                    const range = max - min;
+                    if (range <= 0) return TRACK_TOP_INSET;
+                    const frac = Math.max(0, Math.min(1, (value - min) / range));
                     return TRACK_TOP_INSET + (1 - frac) * TRACK_USABLE_H;
                 }
 
                 function buildBatteryTicks() {
                     BATTERY_PRESETS.forEach(function (p) {
-                        if (p.kwh === 0) return;
+                        if (p.kwh < BATTERY_MIN) return;
                         const tick = document.createElement('div');
                         tick.className = 'lp-builder-tick';
                         if (p.kwh === 13.5 || p.kwh === 27 || p.kwh === 40.5) {
                             tick.classList.add('major');
                         }
-                        tick.style.top = valueToTopPx(p.kwh, BATTERY_MAX) + 'px';
+                        tick.style.top = valueToTopPx(p.kwh, BATTERY_MAX, BATTERY_MIN) + 'px';
                         batteryTicks.appendChild(tick);
                     });
                 }
@@ -1050,7 +1059,7 @@
                         const tick = document.createElement('div');
                         tick.className = 'lp-builder-tick';
                         if (kw % 4 === 0) tick.classList.add('major');
-                        tick.style.top = valueToTopPx(kw, PV_MAX) + 'px';
+                        tick.style.top = valueToTopPx(kw, PV_MAX, PV_MIN) + 'px';
                         pvTicks.appendChild(tick);
                     }
                 }
@@ -1117,36 +1126,34 @@
 
                 function setBattery(value, opts) {
                     opts = opts || {};
-                    const clamped = Math.max(0, Math.min(BATTERY_MAX, value));
-                    currentBattery = clamped;
+                    // Hard floor at BATTERY_MIN. Visual upper bound is
+                    // BATTERY_MAX; manual input can exceed it though.
+                    const clamped = Math.max(BATTERY_MIN, Math.min(BATTERY_MAX, value));
+                    currentBattery = Math.max(BATTERY_MIN, value);
 
-                    batteryHandle.style.top = valueToTopPx(clamped, BATTERY_MAX) + 'px';
-                    batteryHandle.setAttribute('aria-valuenow', fmt1(clamped));
+                    batteryHandle.style.top = valueToTopPx(clamped, BATTERY_MAX, BATTERY_MIN) + 'px';
+                    batteryHandle.setAttribute('aria-valuenow', fmt1(currentBattery));
 
                     const fillH = (clamped / BATTERY_MAX) * BATTERY_INNER_H;
                     batteryFill.setAttribute('height', fillH.toFixed(2));
                     batteryFill.setAttribute('y', (BATTERY_INNER_BOTTOM - fillH).toFixed(2));
 
-                    batteryLabelV.textContent = fmt1(clamped) + ' kWh';
-                    if (clamped <= 0.05) {
-                        batteryLabelP.textContent = 'No battery';
+                    batteryLabelV.textContent = fmt1(currentBattery) + ' kWh';
+                    const exact = BATTERY_PRESETS.find(function (p) {
+                        return Math.abs(p.kwh - currentBattery) < 0.05;
+                    });
+                    if (exact) {
+                        batteryLabelP.textContent = exact.label;
                     } else {
-                        const exact = BATTERY_PRESETS.find(function (p) {
-                            return Math.abs(p.kwh - clamped) < 0.05;
-                        });
-                        if (exact) {
-                            batteryLabelP.textContent = exact.label;
-                        } else {
-                            const nearest = BATTERY_PRESETS.reduce(function (best, p) {
-                                return Math.abs(p.kwh - clamped) < Math.abs(best.kwh - clamped) ? p : best;
-                            }, BATTERY_PRESETS[1]);
-                            batteryLabelP.textContent = 'Custom \u2014 closest: ' + nearest.label;
-                        }
+                        const nearest = BATTERY_PRESETS.reduce(function (best, p) {
+                            return Math.abs(p.kwh - currentBattery) < Math.abs(best.kwh - currentBattery) ? p : best;
+                        }, BATTERY_PRESETS[0]);
+                        batteryLabelP.textContent = 'Custom \u2014 closest: ' + nearest.label;
                     }
 
                     if (!opts.skipInput) {
                         syncingFromCode = true;
-                        batteryInput.value = clamped <= 0.05 ? '' : fmt1(clamped);
+                        batteryInput.value = fmt1(currentBattery);
                         syncingFromCode = false;
                     }
                     updateSavings();
@@ -1155,10 +1162,13 @@
 
                 function setPv(value, opts) {
                     opts = opts || {};
-                    const visualClamped = Math.max(0, Math.min(PV_MAX, value));
-                    currentPv = value < 0 ? 0 : value;
+                    // Hard floor at PV_MIN. Visual caps at PV_MAX; manual
+                    // input can exceed it, in which case the handle pins
+                    // at the top of the track.
+                    const visualClamped = Math.max(PV_MIN, Math.min(PV_MAX, value));
+                    currentPv = Math.max(PV_MIN, value);
 
-                    pvHandle.style.top = valueToTopPx(visualClamped, PV_MAX) + 'px';
+                    pvHandle.style.top = valueToTopPx(visualClamped, PV_MAX, PV_MIN) + 'px';
                     pvHandle.setAttribute('aria-valuenow', fmt1(currentPv));
 
                     const activeCount = Math.round(visualClamped / PV_STEP);
@@ -1169,16 +1179,12 @@
                     });
 
                     pvLabelV.textContent = fmt1(currentPv) + ' kW';
-                    if (currentPv <= 0.05) {
-                        pvLabelP.textContent = 'No solar';
-                    } else {
-                        const panels = Math.round(currentPv / PV_STEP);
-                        pvLabelP.textContent = panels + ' \u00D7 400W panel' + (panels === 1 ? '' : 's');
-                    }
+                    const panels = Math.round(currentPv / PV_STEP);
+                    pvLabelP.textContent = panels + ' \u00D7 400W panel' + (panels === 1 ? '' : 's');
 
                     if (!opts.skipInput) {
                         syncingFromCode = true;
-                        pvInput.value = currentPv <= 0.05 ? '' : fmt1(currentPv);
+                        pvInput.value = fmt1(currentPv);
                         syncingFromCode = false;
                     }
                     updateSavings();
@@ -1186,14 +1192,16 @@
                 }
 
                 function snapBattery(value) {
+                    const clamped = Math.max(BATTERY_MIN, Math.min(BATTERY_MAX, value));
                     return BATTERY_PRESETS.reduce(function (best, p) {
-                        return Math.abs(p.kwh - value) < Math.abs(best.kwh - value) ? p : best;
+                        return Math.abs(p.kwh - clamped) < Math.abs(best.kwh - clamped) ? p : best;
                     }, BATTERY_PRESETS[0]).kwh;
                 }
 
                 function snapPv(value) {
-                    const clamped = Math.max(0, Math.min(PV_MAX, value));
-                    return Math.round(clamped / PV_STEP) * PV_STEP;
+                    const clamped = Math.max(PV_MIN, Math.min(PV_MAX, value));
+                    const snapped = Math.round(clamped / PV_STEP) * PV_STEP;
+                    return Math.max(PV_MIN, snapped);
                 }
 
                 // Live earnings teaser. Same intuition as the registration
@@ -1202,14 +1210,10 @@
                 // ($~20/kW/yr under NEM 3.0 export rates).
                 function updateSavings() {
                     const yearAvg = currentBattery * 70 + currentPv * 20;
-                    const low  = Math.max(0, Math.round(yearAvg * 0.75 / 50) * 50);
-                    const high = Math.max(0, Math.round(yearAvg * 1.25 / 50) * 50);
-                    if (yearAvg <= 0) {
-                        savingsAmount.textContent = '$0 / yr';
-                    } else {
-                        savingsAmount.textContent =
-                            '$' + low.toLocaleString() + ' \u2013 $' + high.toLocaleString() + ' / yr';
-                    }
+                    const low  = Math.round(yearAvg * 0.75 / 50) * 50;
+                    const high = Math.round(yearAvg * 1.25 / 50) * 50;
+                    savingsAmount.textContent =
+                        '$' + low.toLocaleString() + ' \u2013 $' + high.toLocaleString() + ' / yr';
                 }
 
                 // Persist into the same sessionStorage key the registration
@@ -1221,8 +1225,8 @@
                             const raw = sessionStorage.getItem('registrationStep1');
                             if (raw) prev = JSON.parse(raw) || {};
                         } catch (_) { /* malformed JSON: start fresh */ }
-                        prev.batteryCapacity = currentBattery > 0.05 ? fmt1(currentBattery) : '';
-                        prev.pvWattage       = currentPv      > 0.05 ? fmt1(currentPv)      : '';
+                        prev.batteryCapacity = fmt1(currentBattery);
+                        prev.pvWattage       = fmt1(currentPv);
                         sessionStorage.setItem('registrationStep1', JSON.stringify(prev));
                     } catch (_) { /* sessionStorage disabled — silently skip */ }
                 }
@@ -1233,7 +1237,7 @@
                     track('nem3_sizer_interact');
                 }
 
-                function attachDrag(visualEl, handleEl, max, setter, snapFn, getCurrent, presetList) {
+                function attachDrag(visualEl, handleEl, min, max, setter, snapFn, getCurrent, presetList) {
                     let dragging = false;
                     let activePointerId = null;
 
@@ -1242,10 +1246,10 @@
                         const topEdge    = rect.top    + (TRACK_TOP_INSET    * rect.height / VISUAL_H);
                         const bottomEdge = rect.bottom - (TRACK_BOTTOM_INSET * rect.height / VISUAL_H);
                         const usable     = bottomEdge - topEdge;
-                        if (usable <= 0) return 0;
+                        if (usable <= 0) return min;
                         const clampedY = Math.max(topEdge, Math.min(bottomEdge, clientY));
                         const frac     = 1 - (clampedY - topEdge) / usable;
-                        return frac * max;
+                        return min + frac * (max - min);
                     }
 
                     handleEl.addEventListener('pointerdown', function (e) {
@@ -1282,16 +1286,18 @@
                         trackFirstInteraction();
                         let next;
                         if (presetList) {
-                            const sorted = presetList.map(function (p) { return p.kwh; });
+                            const sorted = presetList
+                                .map(function (p) { return p.kwh; })
+                                .filter(function (v) { return v >= min - 0.001; });
                             if (up) {
                                 next = sorted.find(function (v) { return v > cur + 0.05; });
                                 if (next === undefined) next = sorted[sorted.length - 1];
                             } else {
                                 const below = sorted.filter(function (v) { return v < cur - 0.05; });
-                                next = below.length ? below[below.length - 1] : 0;
+                                next = below.length ? below[below.length - 1] : sorted[0];
                             }
                         } else {
-                            next = up ? Math.min(max, cur + PV_STEP) : Math.max(0, cur - PV_STEP);
+                            next = up ? Math.min(max, cur + PV_STEP) : Math.max(min, cur - PV_STEP);
                         }
                         setter(next);
                     });
@@ -1317,17 +1323,21 @@
                 setBattery(isNaN(savedBattery) ? BATTERY_DEFAULT : savedBattery);
                 setPv(     isNaN(savedPv)      ? PV_DEFAULT      : savedPv);
 
-                attachDrag(batteryVisual, batteryHandle, BATTERY_MAX,
+                attachDrag(batteryVisual, batteryHandle, BATTERY_MIN, BATTERY_MAX,
                     setBattery, snapBattery, function () { return currentBattery; }, BATTERY_PRESETS);
-                attachDrag(pvVisual, pvHandle, PV_MAX,
+                attachDrag(pvVisual, pvHandle, PV_MIN, PV_MAX,
                     setPv, snapPv, function () { return currentPv; }, null);
 
-                // Two-way sync: manual input -> visual
+                // Two-way sync: manual input -> visual. While the user is
+                // actively typing we DON'T overwrite their text (skipInput
+                // = true), but the visual + label always reflect the
+                // floored value so they see immediately that anything
+                // below the minimum is treated as the minimum.
                 batteryInput.addEventListener('input', function () {
                     if (syncingFromCode) return;
                     trackFirstInteraction();
                     const raw = batteryInput.value.trim();
-                    if (raw === '') { setBattery(0, { skipInput: true }); return; }
+                    if (raw === '') { setBattery(BATTERY_MIN, { skipInput: true }); return; }
                     const v = parseFloat(raw);
                     if (isNaN(v)) return;
                     setBattery(v, { skipInput: true });
@@ -1336,10 +1346,24 @@
                     if (syncingFromCode) return;
                     trackFirstInteraction();
                     const raw = pvInput.value.trim();
-                    if (raw === '') { setPv(0, { skipInput: true }); return; }
+                    if (raw === '') { setPv(PV_MIN, { skipInput: true }); return; }
                     const v = parseFloat(raw);
                     if (isNaN(v)) return;
                     setPv(v, { skipInput: true });
+                });
+
+                // On blur (or Enter), hard-enforce the minimum by overwriting
+                // the input text itself. Anything below the minimum, blank,
+                // or non-numeric becomes the minimum value.
+                batteryInput.addEventListener('change', function () {
+                    if (syncingFromCode) return;
+                    const v = parseFloat(batteryInput.value);
+                    setBattery(isNaN(v) ? BATTERY_MIN : v);
+                });
+                pvInput.addEventListener('change', function () {
+                    if (syncingFromCode) return;
+                    const v = parseFloat(pvInput.value);
+                    setPv(isNaN(v) ? PV_MIN : v);
                 });
 
                 // Final safety: make sure the latest values are in
