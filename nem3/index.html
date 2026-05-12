@@ -646,6 +646,105 @@
             margin-top: 2px;
         }
 
+        .lp-builder-savings .savings-disclaimer {
+            font-size: 0.7rem;
+            opacity: 0.85;
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px solid rgba(255, 255, 255, 0.18);
+            font-style: italic;
+        }
+
+        /* Email capture + personalized CTA inside the sizer card */
+        .lp-sizer-cta {
+            margin-top: 14px;
+            text-align: center;
+        }
+
+        .lp-sizer-cta-msg {
+            font-size: 0.92rem;
+            color: var(--ink);
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .lp-sizer-cta-msg strong {
+            color: var(--green-dark);
+            font-weight: 700;
+        }
+
+        .lp-email-row {
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .lp-email-input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #d1fae5;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            background: #ffffff;
+            color: var(--ink);
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .lp-email-input:focus {
+            outline: none;
+            border-color: var(--green-dark);
+            box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.15);
+        }
+
+        .lp-email-input.is-invalid {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .lp-email-input.is-invalid:focus {
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.18);
+        }
+
+        .lp-email-error {
+            display: none;
+            font-size: 0.78rem;
+            color: #b91c1c;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        .lp-email-error.is-shown {
+            display: block;
+        }
+
+        /* Loading state on the primary CTA while we create the account */
+        .lp-btn-primary:disabled {
+            opacity: 0.78;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.25);
+        }
+
+        .lp-btn-primary.is-loading {
+            pointer-events: none;
+        }
+
+        .lp-btn-spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: lp-spin 0.7s linear infinite;
+            margin-right: 8px;
+            vertical-align: -2px;
+        }
+
+        @keyframes lp-spin {
+            to { transform: rotate(360deg); }
+        }
+
         /* Animated battery fill and panel state */
         .cb-fill {
             transition: y 0.25s ease, height 0.25s ease;
@@ -708,7 +807,7 @@
         <!-- Gamified system sizer -->
         <section class="lp-sizer" id="lpSizer" aria-label="Estimate your system size">
             <header class="lp-sizer-intro">
-                <span class="lp-sizer-eyebrow">🎮 Try it now</span>
+                <span class="lp-sizer-eyebrow">🎮 Calculate your bonus savings now</span>
                 <h2>Size your system. See your bonus.</h2>
                 <p>Drag the handles to snap to popular battery and solar sizes. Or type your own.</p>
             </header>
@@ -749,11 +848,11 @@
                         <div class="lp-builder-ticks" id="batteryTicks"></div>
                         <div class="lp-builder-handle" id="batteryHandle" role="slider"
                              tabindex="0" aria-label="Battery capacity in kilowatt-hours"
-                             aria-valuemin="5" aria-valuemax="40.5" aria-valuenow="13.5"></div>
+                             aria-valuemin="5" aria-valuemax="40.5" aria-valuenow="27"></div>
                     </div>
                     <div class="lp-builder-label" id="batteryLabel">
-                        <div class="lp-builder-value">13.5 kWh</div>
-                        <div class="lp-builder-preset">1× Tesla Powerwall</div>
+                        <div class="lp-builder-value">27.0 kWh</div>
+                        <div class="lp-builder-preset">2× Tesla Powerwalls</div>
                     </div>
                     <div class="lp-builder-input-row">
                         <label for="batteryCapacity">Or type exact kWh (min 5)</label>
@@ -808,11 +907,11 @@
                         <div class="lp-builder-ticks" id="pvTicks"></div>
                         <div class="lp-builder-handle" id="pvHandle" role="slider"
                              tabindex="0" aria-label="Solar panel capacity in kilowatts"
-                             aria-valuemin="1.2" aria-valuemax="16" aria-valuenow="8"></div>
+                             aria-valuemin="1.2" aria-valuemax="16" aria-valuenow="10"></div>
                     </div>
                     <div class="lp-builder-label" id="pvLabel">
-                        <div class="lp-builder-value">8.0 kW</div>
-                        <div class="lp-builder-preset">20 × 400W panels</div>
+                        <div class="lp-builder-value">10.0 kW</div>
+                        <div class="lp-builder-preset">25 × 400W panels</div>
                     </div>
                     <div class="lp-builder-input-row">
                         <label for="pvWattage">Or type exact kW (min 1.2)</label>
@@ -824,19 +923,37 @@
             <!-- Live savings teaser -->
             <div class="lp-builder-savings" id="builderSavings" aria-live="polite">
                 <div class="savings-label">Estimated extra earnings with MicroVPP</div>
-                <div class="savings-amount" id="savingsAmount">$1,000 – $1,650 / yr</div>
+                <div class="savings-amount" id="savingsAmount">$1,550 – $2,600 / yr</div>
                 <div class="savings-sub">On top of your default NEM 3.0 solar savings</div>
+                <div class="savings-disclaimer">
+                    Based on a <strong>standard California household</strong> usage profile.
+                </div>
+            </div>
+
+            <!-- Email capture -> personalized estimate -->
+            <div class="lp-sizer-cta">
+                <p class="lp-sizer-cta-msg">
+                    <strong>Want a number tailored to YOUR home?</strong><br>
+                    Leave your email and we'll send a personalized estimate based on your actual usage.
+                </p>
+                <div class="lp-email-row">
+                    <input type="email" id="lpEmailInput" class="lp-email-input"
+                           placeholder="you@example.com" autocomplete="email"
+                           inputmode="email" spellcheck="false"
+                           aria-label="Your email address"
+                           aria-describedby="lpEmailError" />
+                    <div class="lp-email-error" id="lpEmailError" role="alert">
+                        Please enter a valid email address.
+                    </div>
+                </div>
+                <button type="button" class="lp-btn-primary" id="lpCta">
+                    Get Personalized Estimate →
+                </button>
+                <p class="lp-trust">
+                    <strong>Free</strong> · ~2 minutes · We never share your email
+                </p>
             </div>
         </section>
-
-        <div class="lp-cta-block">
-            <a href="../diy-registration-step1.html" class="lp-btn-primary" id="lpCta">
-                Calculate My Savings — Free
-            </a>
-            <p class="lp-trust">
-                <strong>Free</strong> · Takes ~2 minutes · Built for California NEM 3.0
-            </p>
-        </div>
     </main>
 
     <footer class="lp-footer">
@@ -935,9 +1052,298 @@
                 }
             }
 
+            // ============================================
+            // Email capture, backend signup, and navigation to Step 2
+            // ----------------------------------------------
+            // When the user clicks the CTA we:
+            //   1. Validate the email.
+            //   2. Show a loading state on the button.
+            //   3. POST to /auth/signup with email + battery + PV (the
+            //      same endpoint Step 2 hits — same payload shape, just
+            //      with most contact fields null since we don't have them
+            //      yet). This creates the account up-front so the lead is
+            //      captured even if the user never finishes Step 2.
+            //   4. Stash the returned user_id under `registrationUserId`,
+            //      which Step 2's submit handler checks for and skips its
+            //      own signup when present.
+            //   5. Navigate to /diy-registration-step2.html.
+            //
+            // If the API call fails for any reason we still navigate, and
+            // Step 2 will try the signup again on its own — best-effort,
+            // never block the user.
+            // ============================================
+            const API_BASE_URL    = 'https://api.microvpp.com';
+            const SIGNUP_ENDPOINT = '/auth/signup';
+            const SOLAR_KWH_PER_DAY_PER_KW = 4.5;  // CA residential annual avg
+
+            const emailInput  = document.getElementById('lpEmailInput');
+            const emailError  = document.getElementById('lpEmailError');
+            const EMAIL_RE    = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+            const STEP2_URL   = '../diy-registration-step2.html';
+
+            // --- Helper: UUID v4 (used for tempUserId) ---
+            function generateUUID() {
+                return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                    const r = Math.random() * 16 | 0;
+                    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+            }
+
+            // --- Helper: unique synthetic inverter ID (matches Step 2's format) ---
+            function generateInverterId() {
+                return 'INV-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+            }
+
+            // --- Helper: persistent device ID (localStorage-backed) ---
+            function getDeviceId() {
+                const KEY = 'microvpp_device_id';
+                let id = null;
+                try { id = localStorage.getItem(KEY); } catch (_) {}
+                if (id) return id;
+                id = generateUUID();
+                try { localStorage.setItem(KEY, id); } catch (_) {}
+                return id;
+            }
+
+            // --- Helper: get or create the per-session temp user id ---
+            function getOrCreateTempUserId() {
+                let id = null;
+                try { id = sessionStorage.getItem('tempUserId'); } catch (_) {}
+                if (id) return id;
+                id = generateUUID();
+                try { sessionStorage.setItem('tempUserId', id); } catch (_) {}
+                return id;
+            }
+
+            // Build the signup payload (same shape as Step 2's signupUser)
+            // and POST it. Returns { success, user_id } on the happy path,
+            // or { success: false, error } on failure.
+            async function createAccountForLead(email, batteryKwh, pvKw, tempUserId) {
+                const deviceId = getDeviceId();
+                const info = {
+                    contact: {
+                        name: null,
+                        email: email,
+                        phone: null,
+                        email_provided: true,
+                        email_source: 'nem3_landing'
+                    },
+                    location: {
+                        address: null,
+                        city: null,
+                        state: null
+                    },
+                    system: {
+                        battery_capacity_kwh: batteryKwh,
+                        pv_wattage_kw: pvKw,
+                        utility_company: null
+                    },
+                    registration: {
+                        mode: 'simulation',
+                        status: 'nem3_landing_lead',
+                        registration_date: new Date().toISOString(),
+                        registration_source: 'nem3-landing-page',
+                        temp_user_id: tempUserId,
+                        terms_accepted: false,
+                        terms_accepted_date: null
+                    },
+                    device: {
+                        device_id: deviceId,
+                        user_agent: navigator.userAgent,
+                        platform: navigator.platform,
+                        language: navigator.language
+                    },
+                    step1_inputs: {
+                        battery_capacity: String(batteryKwh),
+                        pv_wattage: String(pvKw),
+                        temp_user_id: tempUserId,
+                        usage_source: 'sce_standard_profile_all',
+                        estimated_solar_kwh_per_day_per_kw: SOLAR_KWH_PER_DAY_PER_KW
+                    }
+                };
+
+                const payload = {
+                    username: null,
+                    email: email,
+                    phone_number: null,
+                    full_address: null,
+                    city: null,
+                    state: null,
+                    zip: null,
+                    timezone: null,
+                    locale: 'en-US',
+                    inverter_inverter_id: generateInverterId(),
+                    inverter_inverter_type: 'hybrid_inverter',
+                    inverter_manufacturer: null,
+                    inverter_serial_number: null,
+                    inverter_monitoring_id: null,
+                    inverter_monitoring_token: null,
+                    inverter_monitoring_api_url: null,
+                    inverter_api_key: null,
+                    inverter_api_secret: null,
+                    info: JSON.stringify(info),
+                    site_id: null,
+                    site_type: 'residential',
+                    installation_date: null
+                };
+
+                try {
+                    const response = await fetch(API_BASE_URL + SIGNUP_ENDPOINT, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept':       'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(function () { return null; });
+                        const detail = (errorData && errorData.detail) || ('HTTP ' + response.status);
+                        return { success: false, error: detail };
+                    }
+
+                    const result = await response.json();
+                    const userId = result.user_id || result.account_id || null;
+                    return { success: true, user_id: userId, result: result };
+                } catch (err) {
+                    return { success: false, error: (err && err.message) || String(err) };
+                }
+            }
+
+            // Prefill the email input if the user already typed one in a
+            // previous visit on this device.
+            try {
+                const savedEmail = sessionStorage.getItem('estimateEmail');
+                if (savedEmail && emailInput) emailInput.value = savedEmail;
+            } catch (_) { /* sessionStorage disabled — skip */ }
+
+            function clearEmailError() {
+                if (!emailInput || !emailError) return;
+                emailInput.classList.remove('is-invalid');
+                emailError.classList.remove('is-shown');
+                emailInput.removeAttribute('aria-invalid');
+            }
+
+            function showEmailError(message) {
+                if (!emailInput || !emailError) return;
+                emailInput.classList.add('is-invalid');
+                emailError.textContent = message;
+                emailError.classList.add('is-shown');
+                emailInput.setAttribute('aria-invalid', 'true');
+                try { emailInput.focus({ preventScroll: false }); } catch (_) { emailInput.focus(); }
+            }
+
+            const CTA_DEFAULT_LABEL = 'Get Personalized Estimate \u2192';
+            function setCtaLoading(loading, label) {
+                if (!cta) return;
+                if (loading) {
+                    cta.disabled = true;
+                    cta.classList.add('is-loading');
+                    cta.setAttribute('aria-busy', 'true');
+                    cta.innerHTML =
+                        '<span class="lp-btn-spinner" aria-hidden="true"></span>' +
+                        (label || 'Creating your account\u2026');
+                } else {
+                    cta.disabled = false;
+                    cta.classList.remove('is-loading');
+                    cta.removeAttribute('aria-busy');
+                    cta.textContent = CTA_DEFAULT_LABEL;
+                }
+            }
+
+            if (emailInput) {
+                emailInput.addEventListener('input', clearEmailError);
+                emailInput.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        if (cta && !cta.disabled) cta.click();
+                    }
+                });
+            }
+
             if (cta) {
-                cta.addEventListener('click', function () {
-                    track('nem3_cta_click', { event_label: 'calculate_my_savings' });
+                cta.addEventListener('click', async function (e) {
+                    if (cta.disabled) return; // guard against double-clicks
+                    e.preventDefault();
+
+                    const raw   = (emailInput && emailInput.value || '').trim();
+                    const email = raw.toLowerCase();
+
+                    if (!email) {
+                        showEmailError('Please enter your email so we can send your personalized estimate.');
+                        track('nem3_personalized_cta_blocked', { event_label: 'email_empty' });
+                        return;
+                    }
+                    if (!EMAIL_RE.test(email)) {
+                        showEmailError('That doesn\u2019t look like a valid email \u2014 please check and try again.');
+                        track('nem3_personalized_cta_blocked', { event_label: 'email_invalid' });
+                        return;
+                    }
+                    clearEmailError();
+
+                    // Pull the latest values straight off the inputs (the
+                    // sizer keeps them in sync; we re-parse so this code
+                    // is independent of the closure inside initSystemSizer).
+                    const batteryInput = document.getElementById('batteryCapacity');
+                    const pvInput      = document.getElementById('pvWattage');
+                    const batteryKwh = parseFloat(batteryInput && batteryInput.value) || 0;
+                    const pvKw       = parseFloat(pvInput      && pvInput.value)      || 0;
+
+                    const tempUserId = getOrCreateTempUserId();
+
+                    // Persist everything Step 2 expects, merging into the
+                    // same `registrationStep1` blob the registration flow
+                    // already uses.
+                    try {
+                        sessionStorage.setItem('estimateEmail', email);
+                        let prev = {};
+                        try {
+                            const rawPrev = sessionStorage.getItem('registrationStep1');
+                            if (rawPrev) prev = JSON.parse(rawPrev) || {};
+                        } catch (_) {}
+                        prev.batteryCapacity              = String(batteryKwh);
+                        prev.pvWattage                    = String(pvKw);
+                        prev.tempUserId                   = tempUserId;
+                        prev.estimateEmail                = email;
+                        prev.usageSource                  = 'sce_standard_profile_all';
+                        prev.estimatedSolarKwhPerDayPerKw = SOLAR_KWH_PER_DAY_PER_KW;
+                        prev.registrationSource           = 'nem3-landing-page';
+                        sessionStorage.setItem('registrationStep1', JSON.stringify(prev));
+                    } catch (_) { /* sessionStorage disabled — push through */ }
+
+                    track('nem3_personalized_estimate_click', { event_label: 'cta_to_step2' });
+
+                    // Show loading state and create the account in the
+                    // background. If signup succeeds, store the user_id so
+                    // Step 2 skips its own signup; if it fails, log a
+                    // warning and let Step 2 retry on its own.
+                    setCtaLoading(true);
+                    let signupResult;
+                    try {
+                        signupResult = await createAccountForLead(email, batteryKwh, pvKw, tempUserId);
+                    } catch (err) {
+                        signupResult = { success: false, error: (err && err.message) || String(err) };
+                    }
+
+                    if (signupResult && signupResult.success && signupResult.user_id) {
+                        try {
+                            sessionStorage.setItem('registrationUserId', signupResult.user_id);
+                        } catch (_) {}
+                        track('nem3_account_created', { event_label: 'signup_ok' });
+                        console.log('[nem3] Account created. user_id =', signupResult.user_id);
+                    } else {
+                        track('nem3_account_create_failed', {
+                            event_label: (signupResult && signupResult.error) || 'unknown_error'
+                        });
+                        console.warn('[nem3] Account creation failed — continuing to Step 2.',
+                                     signupResult && signupResult.error);
+                    }
+
+                    // Navigate regardless: Step 2 will detect whether an
+                    // account already exists and skip its own signup.
+                    window.location.assign(STEP2_URL);
                 });
             }
 
@@ -954,9 +1360,11 @@
             // Two cartoon images (battery + roof of solar panels)
             // with vertical draggable handles. Handles snap to
             // popular real-world sizes:
-            //   • Battery: Powerwall 2/3 (13.5 kWh) and LG RESU
-            //              (9.6 / 14.4 / 16 kWh) combos, up to
-            //              3× Powerwall = 40.5 kWh.
+            //   • Battery: Tesla Powerwall 2/3 (13.5 kWh), LG RESU
+            //              (9.6 / 14.4 / 16 kWh), FranklinWH aPower
+            //              2 / aPower S (15 kWh), Panasonic EverVolt
+            //              2.0 (17.5 kWh) and Enphase IQ Battery 5P
+            //              (5 kWh) combos, up to 3× Powerwall = 40.5 kWh.
             //   • PV:      0.4 kW steps (400 W per panel), up to
             //              16 kW (40 panels) on the visual.
             // A live earnings teaser updates as the handles move,
@@ -970,26 +1378,35 @@
                 // these values; manual typed input can also accept anything
                 // above BATTERY_MIN.
                 const BATTERY_PRESETS = [
+                    { kwh: 5,    label: '1\u00D7 Enphase IQ Battery 5P' },
                     { kwh: 9.6,  label: '1\u00D7 LG RESU 9.6' },
+                    { kwh: 10,   label: '2\u00D7 Enphase IQ Battery 5P' },
                     { kwh: 13.5, label: '1\u00D7 Tesla Powerwall' },
                     { kwh: 14.4, label: '1\u00D7 LG RESU 14.4' },
+                    { kwh: 15,   label: '1\u00D7 FranklinWH aPower' },
                     { kwh: 16,   label: '1\u00D7 LG RESU 16' },
+                    { kwh: 17.5, label: '1\u00D7 Panasonic EverVolt 2.0' },
                     { kwh: 19.2, label: '2\u00D7 LG RESU 9.6' },
+                    { kwh: 20,   label: '4\u00D7 Enphase IQ Battery 5P' },
+                    { kwh: 25,   label: '5\u00D7 Enphase IQ Battery 5P' },
                     { kwh: 27,   label: '2\u00D7 Tesla Powerwalls' },
                     { kwh: 28.8, label: '2\u00D7 LG RESU 14.4' },
+                    { kwh: 30,   label: '2\u00D7 FranklinWH aPower' },
                     { kwh: 32,   label: '2\u00D7 LG RESU 16' },
+                    { kwh: 35,   label: '2\u00D7 Panasonic EverVolt 2.0' },
+                    { kwh: 40,   label: '8\u00D7 Enphase IQ Battery 5P' },
                     { kwh: 40.5, label: '3\u00D7 Tesla Powerwalls' }
                 ];
                 const BATTERY_MIN     = 5;          // hard floor on input/handle
                 const BATTERY_MAX     = 40.5;
-                const BATTERY_DEFAULT = 13.5;
+                const BATTERY_DEFAULT = 27;         // 2× Tesla Powerwall
 
                 const PV_STEP         = 0.4;        // 400 W per panel
                 const PV_COLS         = 5;
                 const PV_ROWS         = 8;
                 const PV_MIN          = 1.2;        // hard floor (3 panels)
                 const PV_MAX          = PV_COLS * PV_ROWS * PV_STEP;  // 16 kW
-                const PV_DEFAULT      = 8.0;
+                const PV_DEFAULT      = 10.0;       // 25 × 400 W panels
 
                 // SVG viewBox y-coords for the inside of the battery
                 const BATTERY_INNER_TOP    = 30;
@@ -1042,13 +1459,32 @@
                 }
 
                 function buildBatteryTicks() {
+                    // The preset list is dense (some entries are < 1 kWh apart)
+                    // so rendering every one would crowd the rail. We always
+                    // show the Powerwall reference points as "major" ticks and
+                    // add other presets only if they're at least MIN_SPACING_KWH
+                    // away from anything already on screen.
+                    const MIN_SPACING_KWH = 3.0;
+                    const MAJOR_KWH = [13.5, 27, 40.5];
+                    const shown = MAJOR_KWH.slice();
+
+                    MAJOR_KWH.forEach(function (kwh) {
+                        const tick = document.createElement('div');
+                        tick.className = 'lp-builder-tick major';
+                        tick.style.top = valueToTopPx(kwh, BATTERY_MAX, BATTERY_MIN) + 'px';
+                        batteryTicks.appendChild(tick);
+                    });
+
                     BATTERY_PRESETS.forEach(function (p) {
                         if (p.kwh < BATTERY_MIN) return;
+                        if (MAJOR_KWH.indexOf(p.kwh) >= 0) return;
+                        const tooClose = shown.some(function (v) {
+                            return Math.abs(v - p.kwh) < MIN_SPACING_KWH;
+                        });
+                        if (tooClose) return;
+                        shown.push(p.kwh);
                         const tick = document.createElement('div');
                         tick.className = 'lp-builder-tick';
-                        if (p.kwh === 13.5 || p.kwh === 27 || p.kwh === 40.5) {
-                            tick.classList.add('major');
-                        }
                         tick.style.top = valueToTopPx(p.kwh, BATTERY_MAX, BATTERY_MIN) + 'px';
                         batteryTicks.appendChild(tick);
                     });
