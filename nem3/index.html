@@ -384,6 +384,285 @@
             .lp-hero h1 { font-size: 1.25rem; }
             .lp-btn-primary { padding: 14px 18px; font-size: 1rem; }
         }
+
+        /* ============================================
+           Gamified System Sizer (cartoon battery + PV)
+           ============================================ */
+        .lp-sizer {
+            width: 100%;
+            max-width: 540px;
+            margin: 22px auto 0;
+            padding: 18px 16px 20px;
+            background: linear-gradient(135deg, #fefce8 0%, #ecfdf5 100%);
+            border: 2px solid #d1fae5;
+            border-radius: 16px;
+            box-shadow: 0 10px 28px rgba(16, 185, 129, 0.10);
+        }
+
+        .lp-sizer-intro {
+            text-align: center;
+            margin-bottom: 14px;
+        }
+
+        .lp-sizer-eyebrow {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--green-dark);
+            background: rgba(16, 185, 129, 0.12);
+            padding: 4px 10px;
+            border-radius: 999px;
+            margin-bottom: 8px;
+        }
+
+        .lp-sizer-intro h2 {
+            font-size: 1.08rem;
+            font-weight: 800;
+            color: var(--green-deep);
+            line-height: 1.25;
+            margin-bottom: 4px;
+        }
+
+        .lp-sizer-intro p {
+            color: var(--ink-soft);
+            font-size: 0.82rem;
+            line-height: 1.45;
+        }
+
+        .lp-builder-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        @media (max-width: 540px) {
+            .lp-builder-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+        }
+
+        .lp-builder-item {
+            background: #ffffff;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 10px 8px 12px;
+            text-align: center;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .lp-builder-item:hover {
+            border-color: var(--green);
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.15);
+        }
+
+        .lp-builder-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--green-deep);
+            margin-bottom: 6px;
+        }
+
+        .lp-builder-visual {
+            position: relative;
+            width: 200px;
+            height: 300px;
+            margin: 0 auto;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .lp-builder-visual svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            pointer-events: none;
+        }
+
+        .lp-builder-track {
+            position: absolute;
+            top: 22px;
+            bottom: 22px;
+            right: 10px;
+            width: 6px;
+            background: linear-gradient(to bottom, #a7f3d0, #d1fae5);
+            border-radius: 3px;
+            pointer-events: none;
+        }
+
+        .lp-builder-ticks {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .lp-builder-tick {
+            position: absolute;
+            right: 18px;
+            width: 12px;
+            height: 2px;
+            background: #6b7280;
+            transform: translateY(-50%);
+            border-radius: 1px;
+        }
+
+        .lp-builder-tick.major {
+            background: var(--green-darker);
+            width: 18px;
+            height: 3px;
+        }
+
+        .lp-builder-handle {
+            position: absolute;
+            right: -10px;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--green) 0%, var(--green-darker) 100%);
+            border: 3px solid #fff;
+            box-shadow: 0 3px 10px rgba(5, 150, 105, 0.4);
+            cursor: grab;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translateY(-50%);
+            z-index: 10;
+            transition: box-shadow 0.2s ease, background 0.2s ease;
+            touch-action: none;
+        }
+
+        .lp-builder-handle::before {
+            content: '';
+            width: 14px;
+            height: 14px;
+            background-image:
+                linear-gradient(to bottom, #fff 0, #fff 2px, transparent 2px, transparent 5px,
+                                          #fff 5px, #fff 7px, transparent 7px, transparent 10px,
+                                          #fff 10px, #fff 12px);
+            opacity: 0.95;
+        }
+
+        .lp-builder-handle:hover {
+            box-shadow: 0 4px 14px rgba(5, 150, 105, 0.55);
+        }
+
+        .lp-builder-handle:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.55), 0 4px 14px rgba(5, 150, 105, 0.55);
+        }
+
+        .lp-builder-handle.dragging {
+            cursor: grabbing;
+            box-shadow: 0 6px 18px rgba(5, 150, 105, 0.6);
+        }
+
+        .lp-builder-label {
+            margin-top: 8px;
+            padding: 6px 8px;
+            background: #f0fdf4;
+            border-radius: 8px;
+            border: 1px solid #d1fae5;
+            min-height: 50px;
+        }
+
+        .lp-builder-value {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--green-deep);
+            line-height: 1.1;
+        }
+
+        .lp-builder-preset {
+            font-size: 0.72rem;
+            color: var(--green-darker);
+            font-weight: 600;
+            margin-top: 2px;
+            line-height: 1.35;
+        }
+
+        .lp-builder-input-row {
+            margin-top: 8px;
+            text-align: left;
+        }
+
+        .lp-builder-input-row label {
+            display: block;
+            font-size: 0.74rem;
+            font-weight: 600;
+            color: var(--ink-soft);
+            margin-bottom: 3px;
+        }
+
+        .lp-builder-input-row input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            font-family: inherit;
+            background: #fff;
+            color: var(--ink);
+            transition: border-color 0.3s ease;
+        }
+
+        .lp-builder-input-row input:focus {
+            outline: none;
+            border-color: var(--green-dark);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+        }
+
+        .lp-builder-savings {
+            margin-top: 14px;
+            padding: 12px 14px;
+            background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-darker) 100%);
+            color: #ffffff;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(6, 95, 70, 0.25);
+        }
+
+        .lp-builder-savings .savings-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.10em;
+            text-transform: uppercase;
+            opacity: 0.92;
+        }
+
+        .lp-builder-savings .savings-amount {
+            font-size: 1.55rem;
+            font-weight: 800;
+            margin-top: 3px;
+            letter-spacing: -0.01em;
+        }
+
+        .lp-builder-savings .savings-sub {
+            font-size: 0.74rem;
+            opacity: 0.92;
+            margin-top: 2px;
+        }
+
+        /* Animated battery fill and panel state */
+        .cb-fill {
+            transition: y 0.25s ease, height 0.25s ease;
+        }
+
+        .pv-panel {
+            fill: #cbd5e1;
+            stroke: #94a3b8;
+            stroke-width: 0.5;
+            transition: fill 0.25s ease, stroke 0.25s ease;
+        }
+
+        .pv-panel.active {
+            fill: #1e3a8a;
+            stroke: #facc15;
+            stroke-width: 0.6;
+        }
     </style>
 </head>
 <body>
@@ -425,6 +704,130 @@
                 <span class="mute-label">Tap to unmute</span>
             </button>
         </div>
+
+        <!-- Gamified system sizer -->
+        <section class="lp-sizer" id="lpSizer" aria-label="Estimate your system size">
+            <header class="lp-sizer-intro">
+                <span class="lp-sizer-eyebrow">🎮 Try it now</span>
+                <h2>Size your system. See your bonus.</h2>
+                <p>Drag the handles to snap to popular battery and solar sizes. Or type your own.</p>
+            </header>
+
+            <div class="lp-builder-grid">
+                <!-- ===== BATTERY ===== -->
+                <div class="lp-builder-item" id="batteryBuilder">
+                    <div class="lp-builder-title">🔋 Battery</div>
+                    <div class="lp-builder-visual" id="batteryVisual">
+                        <svg viewBox="0 0 200 300" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                            <defs>
+                                <linearGradient id="batteryGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#34d399" />
+                                    <stop offset="100%" stop-color="#047857" />
+                                </linearGradient>
+                            </defs>
+                            <!-- terminal cap -->
+                            <rect x="70" y="6" width="60" height="16" rx="4" fill="#0d9488" />
+                            <!-- outer body -->
+                            <rect x="24" y="22" width="120" height="260" rx="14" fill="#ffffff" stroke="#10b981" stroke-width="3" />
+                            <!-- inner background -->
+                            <rect x="32" y="30" width="104" height="244" rx="8" fill="#ecfdf5" />
+                            <!-- animated fill -->
+                            <rect id="batteryFill" class="cb-fill" x="32" y="274" width="104" height="0" rx="6" fill="url(#batteryGrad)" />
+                            <!-- cell divider hints -->
+                            <line x1="32" y1="90"  x2="136" y2="90"  stroke="#a7f3d0" stroke-width="1.4" stroke-dasharray="3 3" />
+                            <line x1="32" y1="150" x2="136" y2="150" stroke="#a7f3d0" stroke-width="1.4" stroke-dasharray="3 3" />
+                            <line x1="32" y1="212" x2="136" y2="212" stroke="#a7f3d0" stroke-width="1.4" stroke-dasharray="3 3" />
+                            <!-- cartoon face -->
+                            <circle cx="62" cy="72" r="5" fill="#065f46" />
+                            <circle cx="106" cy="72" r="5" fill="#065f46" />
+                            <path d="M58 96 Q84 116 110 96" stroke="#065f46" stroke-width="3" fill="none" stroke-linecap="round" />
+                            <!-- lightning bolt -->
+                            <path d="M86 158 L74 196 L86 196 L76 232 L102 186 L90 186 L98 158 Z"
+                                  fill="#fbbf24" opacity="0.92" stroke="#92400e" stroke-width="1.2" stroke-linejoin="round" />
+                        </svg>
+                        <div class="lp-builder-track"></div>
+                        <div class="lp-builder-ticks" id="batteryTicks"></div>
+                        <div class="lp-builder-handle" id="batteryHandle" role="slider"
+                             tabindex="0" aria-label="Battery capacity in kilowatt-hours"
+                             aria-valuemin="0" aria-valuemax="40.5" aria-valuenow="13.5"></div>
+                    </div>
+                    <div class="lp-builder-label" id="batteryLabel">
+                        <div class="lp-builder-value">13.5 kWh</div>
+                        <div class="lp-builder-preset">1× Tesla Powerwall</div>
+                    </div>
+                    <div class="lp-builder-input-row">
+                        <label for="batteryCapacity">Or type exact kWh</label>
+                        <input type="number" id="batteryCapacity" name="batteryCapacity" placeholder="e.g., 13.5" step="0.1" min="0" inputmode="decimal">
+                    </div>
+                </div>
+
+                <!-- ===== SOLAR PANELS ===== -->
+                <div class="lp-builder-item" id="pvBuilder">
+                    <div class="lp-builder-title">☀️ Solar Panels</div>
+                    <div class="lp-builder-visual" id="pvVisual">
+                        <svg viewBox="0 0 200 300" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                            <defs>
+                                <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#dbeafe" />
+                                    <stop offset="100%" stop-color="#bfdbfe" />
+                                </linearGradient>
+                            </defs>
+                            <!-- sky -->
+                            <rect x="0" y="0" width="200" height="300" fill="url(#skyGrad)" rx="10" />
+                            <!-- sun -->
+                            <g transform="translate(36 38)">
+                                <circle r="14" fill="#fbbf24" />
+                                <g stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round">
+                                    <line x1="-22" y1="0" x2="-18" y2="0" />
+                                    <line x1="18" y1="0" x2="22" y2="0" />
+                                    <line x1="0" y1="-22" x2="0" y2="-18" />
+                                    <line x1="0" y1="18" x2="0" y2="22" />
+                                    <line x1="-15.5" y1="-15.5" x2="-13" y2="-13" />
+                                    <line x1="13" y1="13" x2="15.5" y2="15.5" />
+                                    <line x1="-15.5" y1="15.5" x2="-13" y2="13" />
+                                    <line x1="13" y1="-13" x2="15.5" y2="-15.5" />
+                                </g>
+                                <circle r="6" fill="#fef3c7" opacity="0.85" />
+                            </g>
+                            <!-- cloud -->
+                            <g fill="#ffffff" opacity="0.9">
+                                <ellipse cx="135" cy="36" rx="14" ry="8" />
+                                <ellipse cx="148" cy="32" rx="11" ry="9" />
+                                <ellipse cx="158" cy="38" rx="10" ry="7" />
+                            </g>
+                            <!-- chimney -->
+                            <rect x="120" y="50" width="14" height="30" fill="#9a3412" stroke="#7c2d12" stroke-width="2" />
+                            <rect x="118" y="46" width="18" height="6" fill="#7c2d12" />
+                            <!-- roof base -->
+                            <polygon points="14,282 154,282 144,76 24,76"
+                                     fill="#475569" stroke="#1e293b" stroke-width="2.5" stroke-linejoin="round" />
+                            <!-- panel grid (populated by JS) -->
+                            <g id="pvPanelGrid"></g>
+                        </svg>
+                        <div class="lp-builder-track"></div>
+                        <div class="lp-builder-ticks" id="pvTicks"></div>
+                        <div class="lp-builder-handle" id="pvHandle" role="slider"
+                             tabindex="0" aria-label="Solar panel capacity in kilowatts"
+                             aria-valuemin="0" aria-valuemax="16" aria-valuenow="8"></div>
+                    </div>
+                    <div class="lp-builder-label" id="pvLabel">
+                        <div class="lp-builder-value">8.0 kW</div>
+                        <div class="lp-builder-preset">20 × 400W panels</div>
+                    </div>
+                    <div class="lp-builder-input-row">
+                        <label for="pvWattage">Or type exact kW</label>
+                        <input type="number" id="pvWattage" name="pvWattage" placeholder="e.g., 8.0" step="0.1" min="0" inputmode="decimal">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live savings teaser -->
+            <div class="lp-builder-savings" id="builderSavings" aria-live="polite">
+                <div class="savings-label">Estimated extra earnings with MicroVPP</div>
+                <div class="savings-amount" id="savingsAmount">$1,000 – $1,650 / yr</div>
+                <div class="savings-sub">On top of your default NEM 3.0 solar savings</div>
+            </div>
+        </section>
 
         <div class="lp-cta-block">
             <a href="../diy-registration-step1.html" class="lp-btn-primary" id="lpCta">
@@ -543,6 +946,407 @@
                 backHome.addEventListener('click', function () {
                     track('nem3_back_home_click');
                 });
+            }
+
+            // ============================================
+            // GAMIFIED SYSTEM SIZER
+            // ----------------------------------------------
+            // Two cartoon images (battery + roof of solar panels)
+            // with vertical draggable handles. Handles snap to
+            // popular real-world sizes:
+            //   • Battery: Powerwall 2/3 (13.5 kWh) and LG RESU
+            //              (9.6 / 14.4 / 16 kWh) combos, up to
+            //              3× Powerwall = 40.5 kWh.
+            //   • PV:      0.4 kW steps (400 W per panel), up to
+            //              16 kW (40 panels) on the visual.
+            // A live earnings teaser updates as the handles move,
+            // and selections are persisted to sessionStorage so the
+            // /diy-registration-step1.html page auto-fills them.
+            // ============================================
+            initSystemSizer();
+
+            function initSystemSizer() {
+                const BATTERY_PRESETS = [
+                    { kwh: 0,    label: 'No battery' },
+                    { kwh: 9.6,  label: '1\u00D7 LG RESU 9.6' },
+                    { kwh: 13.5, label: '1\u00D7 Tesla Powerwall' },
+                    { kwh: 14.4, label: '1\u00D7 LG RESU 14.4' },
+                    { kwh: 16,   label: '1\u00D7 LG RESU 16' },
+                    { kwh: 19.2, label: '2\u00D7 LG RESU 9.6' },
+                    { kwh: 27,   label: '2\u00D7 Tesla Powerwalls' },
+                    { kwh: 28.8, label: '2\u00D7 LG RESU 14.4' },
+                    { kwh: 32,   label: '2\u00D7 LG RESU 16' },
+                    { kwh: 40.5, label: '3\u00D7 Tesla Powerwalls' }
+                ];
+                const BATTERY_MAX     = 40.5;
+                const BATTERY_DEFAULT = 13.5;
+
+                const PV_STEP         = 0.4;        // 400 W per panel
+                const PV_COLS         = 5;
+                const PV_ROWS         = 8;
+                const PV_MAX          = PV_COLS * PV_ROWS * PV_STEP;  // 16 kW
+                const PV_DEFAULT      = 8.0;
+
+                // SVG viewBox y-coords for the inside of the battery
+                const BATTERY_INNER_TOP    = 30;
+                const BATTERY_INNER_BOTTOM = 274;
+                const BATTERY_INNER_H      = BATTERY_INNER_BOTTOM - BATTERY_INNER_TOP;
+
+                // CSS px layout (matches .lp-builder-visual height: 300px)
+                const VISUAL_H           = 300;
+                const TRACK_TOP_INSET    = 22;
+                const TRACK_BOTTOM_INSET = 22;
+                const TRACK_USABLE_H     = VISUAL_H - TRACK_TOP_INSET - TRACK_BOTTOM_INSET;
+
+                const batteryVisual = document.getElementById('batteryVisual');
+                const batteryHandle = document.getElementById('batteryHandle');
+                const batteryTicks  = document.getElementById('batteryTicks');
+                const batteryFill   = document.getElementById('batteryFill');
+                const batteryLabelV = document.querySelector('#batteryLabel .lp-builder-value');
+                const batteryLabelP = document.querySelector('#batteryLabel .lp-builder-preset');
+                const batteryInput  = document.getElementById('batteryCapacity');
+
+                const pvVisual  = document.getElementById('pvVisual');
+                const pvHandle  = document.getElementById('pvHandle');
+                const pvTicks   = document.getElementById('pvTicks');
+                const pvGrid    = document.getElementById('pvPanelGrid');
+                const pvLabelV  = document.querySelector('#pvLabel .lp-builder-value');
+                const pvLabelP  = document.querySelector('#pvLabel .lp-builder-preset');
+                const pvInput   = document.getElementById('pvWattage');
+
+                const savingsAmount = document.getElementById('savingsAmount');
+
+                if (!batteryVisual || !pvVisual) return;
+
+                let currentBattery  = BATTERY_DEFAULT;
+                let currentPv       = PV_DEFAULT;
+                let syncingFromCode = false;
+                let trackedFirstInteraction = false;
+
+                function fmt1(v) {
+                    return (Math.round(v * 10) / 10).toFixed(1);
+                }
+
+                function valueToTopPx(value, max) {
+                    const frac = Math.max(0, Math.min(1, value / max));
+                    return TRACK_TOP_INSET + (1 - frac) * TRACK_USABLE_H;
+                }
+
+                function buildBatteryTicks() {
+                    BATTERY_PRESETS.forEach(function (p) {
+                        if (p.kwh === 0) return;
+                        const tick = document.createElement('div');
+                        tick.className = 'lp-builder-tick';
+                        if (p.kwh === 13.5 || p.kwh === 27 || p.kwh === 40.5) {
+                            tick.classList.add('major');
+                        }
+                        tick.style.top = valueToTopPx(p.kwh, BATTERY_MAX) + 'px';
+                        batteryTicks.appendChild(tick);
+                    });
+                }
+
+                function buildPvTicks() {
+                    for (let kw = 2; kw <= PV_MAX; kw += 2) {
+                        const tick = document.createElement('div');
+                        tick.className = 'lp-builder-tick';
+                        if (kw % 4 === 0) tick.classList.add('major');
+                        tick.style.top = valueToTopPx(kw, PV_MAX) + 'px';
+                        pvTicks.appendChild(tick);
+                    }
+                }
+
+                function buildPvPanelGrid() {
+                    const SVG_NS = 'http://www.w3.org/2000/svg';
+                    while (pvGrid.firstChild) pvGrid.removeChild(pvGrid.firstChild);
+
+                    // Roof trapezoid vertices (must match the polygon in markup):
+                    //   top:    (24, 76) -> (144, 76)
+                    //   bottom: (14,282) -> (154,282)
+                    const ROOF_TOP_Y = 76, ROOF_BOTTOM_Y = 282;
+                    const ROOF_TOP_L = 24, ROOF_TOP_R = 144;
+                    const ROOF_BOT_L = 14, ROOF_BOT_R = 154;
+                    const ROOF_H    = ROOF_BOTTOM_Y - ROOF_TOP_Y;
+
+                    const GRID_TOP    = 84;
+                    const GRID_BOTTOM = 278;
+                    const GRID_H      = GRID_BOTTOM - GRID_TOP;
+                    const rowH        = GRID_H / PV_ROWS;
+
+                    for (let r = 0; r < PV_ROWS; r++) {
+                        // r=0 is the BOTTOM row so panels fill bottom-up
+                        const yTop = GRID_BOTTOM - (r + 1) * rowH;
+                        const yMid = yTop + rowH / 2;
+                        const fracDown = (yMid - ROOF_TOP_Y) / ROOF_H;
+                        const rowWidth = (ROOF_TOP_R - ROOF_TOP_L)
+                                       + fracDown * ((ROOF_BOT_R - ROOF_BOT_L) - (ROOF_TOP_R - ROOF_TOP_L));
+                        const rowLeft  = ROOF_TOP_L + fracDown * (ROOF_BOT_L - ROOF_TOP_L);
+
+                        const xMargin = 5;
+                        const usableW = rowWidth - xMargin * 2;
+                        const cellW   = usableW / PV_COLS;
+                        const panelW  = cellW * 0.84;
+                        const panelH  = rowH  * 0.74;
+                        const dx      = (cellW - panelW) / 2;
+                        const dy      = (rowH - panelH) / 2;
+
+                        for (let c = 0; c < PV_COLS; c++) {
+                            const x = rowLeft + xMargin + c * cellW + dx;
+                            const y = yTop + dy;
+                            const panel = document.createElementNS(SVG_NS, 'rect');
+                            panel.setAttribute('class', 'pv-panel');
+                            panel.setAttribute('x',      x.toFixed(2));
+                            panel.setAttribute('y',      y.toFixed(2));
+                            panel.setAttribute('width',  panelW.toFixed(2));
+                            panel.setAttribute('height', panelH.toFixed(2));
+                            panel.setAttribute('rx', '1');
+                            panel.dataset.index = r * PV_COLS + c;
+                            pvGrid.appendChild(panel);
+
+                            // Subtle vertical line gives a "solar cell" feel
+                            const line = document.createElementNS(SVG_NS, 'line');
+                            line.setAttribute('x1', (x + panelW * 0.5).toFixed(2));
+                            line.setAttribute('y1', y.toFixed(2));
+                            line.setAttribute('x2', (x + panelW * 0.5).toFixed(2));
+                            line.setAttribute('y2', (y + panelH).toFixed(2));
+                            line.setAttribute('stroke', 'rgba(255,255,255,0.25)');
+                            line.setAttribute('stroke-width', '0.4');
+                            pvGrid.appendChild(line);
+                        }
+                    }
+                }
+
+                function setBattery(value, opts) {
+                    opts = opts || {};
+                    const clamped = Math.max(0, Math.min(BATTERY_MAX, value));
+                    currentBattery = clamped;
+
+                    batteryHandle.style.top = valueToTopPx(clamped, BATTERY_MAX) + 'px';
+                    batteryHandle.setAttribute('aria-valuenow', fmt1(clamped));
+
+                    const fillH = (clamped / BATTERY_MAX) * BATTERY_INNER_H;
+                    batteryFill.setAttribute('height', fillH.toFixed(2));
+                    batteryFill.setAttribute('y', (BATTERY_INNER_BOTTOM - fillH).toFixed(2));
+
+                    batteryLabelV.textContent = fmt1(clamped) + ' kWh';
+                    if (clamped <= 0.05) {
+                        batteryLabelP.textContent = 'No battery';
+                    } else {
+                        const exact = BATTERY_PRESETS.find(function (p) {
+                            return Math.abs(p.kwh - clamped) < 0.05;
+                        });
+                        if (exact) {
+                            batteryLabelP.textContent = exact.label;
+                        } else {
+                            const nearest = BATTERY_PRESETS.reduce(function (best, p) {
+                                return Math.abs(p.kwh - clamped) < Math.abs(best.kwh - clamped) ? p : best;
+                            }, BATTERY_PRESETS[1]);
+                            batteryLabelP.textContent = 'Custom \u2014 closest: ' + nearest.label;
+                        }
+                    }
+
+                    if (!opts.skipInput) {
+                        syncingFromCode = true;
+                        batteryInput.value = clamped <= 0.05 ? '' : fmt1(clamped);
+                        syncingFromCode = false;
+                    }
+                    updateSavings();
+                    persistToSession();
+                }
+
+                function setPv(value, opts) {
+                    opts = opts || {};
+                    const visualClamped = Math.max(0, Math.min(PV_MAX, value));
+                    currentPv = value < 0 ? 0 : value;
+
+                    pvHandle.style.top = valueToTopPx(visualClamped, PV_MAX) + 'px';
+                    pvHandle.setAttribute('aria-valuenow', fmt1(currentPv));
+
+                    const activeCount = Math.round(visualClamped / PV_STEP);
+                    pvGrid.querySelectorAll('.pv-panel').forEach(function (p) {
+                        const i = parseInt(p.dataset.index, 10);
+                        if (i < activeCount) p.classList.add('active');
+                        else p.classList.remove('active');
+                    });
+
+                    pvLabelV.textContent = fmt1(currentPv) + ' kW';
+                    if (currentPv <= 0.05) {
+                        pvLabelP.textContent = 'No solar';
+                    } else {
+                        const panels = Math.round(currentPv / PV_STEP);
+                        pvLabelP.textContent = panels + ' \u00D7 400W panel' + (panels === 1 ? '' : 's');
+                    }
+
+                    if (!opts.skipInput) {
+                        syncingFromCode = true;
+                        pvInput.value = currentPv <= 0.05 ? '' : fmt1(currentPv);
+                        syncingFromCode = false;
+                    }
+                    updateSavings();
+                    persistToSession();
+                }
+
+                function snapBattery(value) {
+                    return BATTERY_PRESETS.reduce(function (best, p) {
+                        return Math.abs(p.kwh - value) < Math.abs(best.kwh - value) ? p : best;
+                    }, BATTERY_PRESETS[0]).kwh;
+                }
+
+                function snapPv(value) {
+                    const clamped = Math.max(0, Math.min(PV_MAX, value));
+                    return Math.round(clamped / PV_STEP) * PV_STEP;
+                }
+
+                // Live earnings teaser. Same intuition as the registration
+                // page's quick-estimate: battery dominates ($~70/kWh/yr from
+                // TOU arbitrage + VPP capacity payments), solar is secondary
+                // ($~20/kW/yr under NEM 3.0 export rates).
+                function updateSavings() {
+                    const yearAvg = currentBattery * 70 + currentPv * 20;
+                    const low  = Math.max(0, Math.round(yearAvg * 0.75 / 50) * 50);
+                    const high = Math.max(0, Math.round(yearAvg * 1.25 / 50) * 50);
+                    if (yearAvg <= 0) {
+                        savingsAmount.textContent = '$0 / yr';
+                    } else {
+                        savingsAmount.textContent =
+                            '$' + low.toLocaleString() + ' \u2013 $' + high.toLocaleString() + ' / yr';
+                    }
+                }
+
+                // Persist into the same sessionStorage key the registration
+                // page reads from, MERGING with anything that's already there.
+                function persistToSession() {
+                    try {
+                        let prev = {};
+                        try {
+                            const raw = sessionStorage.getItem('registrationStep1');
+                            if (raw) prev = JSON.parse(raw) || {};
+                        } catch (_) { /* malformed JSON: start fresh */ }
+                        prev.batteryCapacity = currentBattery > 0.05 ? fmt1(currentBattery) : '';
+                        prev.pvWattage       = currentPv      > 0.05 ? fmt1(currentPv)      : '';
+                        sessionStorage.setItem('registrationStep1', JSON.stringify(prev));
+                    } catch (_) { /* sessionStorage disabled — silently skip */ }
+                }
+
+                function trackFirstInteraction() {
+                    if (trackedFirstInteraction) return;
+                    trackedFirstInteraction = true;
+                    track('nem3_sizer_interact');
+                }
+
+                function attachDrag(visualEl, handleEl, max, setter, snapFn, getCurrent, presetList) {
+                    let dragging = false;
+                    let activePointerId = null;
+
+                    function clientYToValue(clientY) {
+                        const rect = visualEl.getBoundingClientRect();
+                        const topEdge    = rect.top    + (TRACK_TOP_INSET    * rect.height / VISUAL_H);
+                        const bottomEdge = rect.bottom - (TRACK_BOTTOM_INSET * rect.height / VISUAL_H);
+                        const usable     = bottomEdge - topEdge;
+                        if (usable <= 0) return 0;
+                        const clampedY = Math.max(topEdge, Math.min(bottomEdge, clientY));
+                        const frac     = 1 - (clampedY - topEdge) / usable;
+                        return frac * max;
+                    }
+
+                    handleEl.addEventListener('pointerdown', function (e) {
+                        e.preventDefault();
+                        dragging = true;
+                        activePointerId = e.pointerId;
+                        try { handleEl.setPointerCapture(activePointerId); } catch (_) {}
+                        handleEl.classList.add('dragging');
+                        trackFirstInteraction();
+                    });
+
+                    handleEl.addEventListener('pointermove', function (e) {
+                        if (!dragging) return;
+                        e.preventDefault();
+                        setter(snapFn(clientYToValue(e.clientY)));
+                    });
+
+                    function endDrag() {
+                        if (!dragging) return;
+                        dragging = false;
+                        try { handleEl.releasePointerCapture(activePointerId); } catch (_) {}
+                        handleEl.classList.remove('dragging');
+                    }
+                    handleEl.addEventListener('pointerup',          endDrag);
+                    handleEl.addEventListener('pointercancel',      endDrag);
+                    handleEl.addEventListener('lostpointercapture', endDrag);
+
+                    handleEl.addEventListener('keydown', function (e) {
+                        const cur  = getCurrent();
+                        const up   = e.key === 'ArrowUp'   || e.key === 'ArrowRight' || e.key === 'PageUp';
+                        const down = e.key === 'ArrowDown' || e.key === 'ArrowLeft'  || e.key === 'PageDown';
+                        if (!up && !down) return;
+                        e.preventDefault();
+                        trackFirstInteraction();
+                        let next;
+                        if (presetList) {
+                            const sorted = presetList.map(function (p) { return p.kwh; });
+                            if (up) {
+                                next = sorted.find(function (v) { return v > cur + 0.05; });
+                                if (next === undefined) next = sorted[sorted.length - 1];
+                            } else {
+                                const below = sorted.filter(function (v) { return v < cur - 0.05; });
+                                next = below.length ? below[below.length - 1] : 0;
+                            }
+                        } else {
+                            next = up ? Math.min(max, cur + PV_STEP) : Math.max(0, cur - PV_STEP);
+                        }
+                        setter(next);
+                    });
+                }
+
+                // ---- init ----
+                buildBatteryTicks();
+                buildPvTicks();
+                buildPvPanelGrid();
+
+                // If the user already passed through registration, prefer
+                // their saved values; otherwise start at the defaults.
+                let savedBattery = NaN, savedPv = NaN;
+                try {
+                    const raw = sessionStorage.getItem('registrationStep1');
+                    if (raw) {
+                        const obj = JSON.parse(raw) || {};
+                        savedBattery = parseFloat(obj.batteryCapacity);
+                        savedPv      = parseFloat(obj.pvWattage);
+                    }
+                } catch (_) {}
+
+                setBattery(isNaN(savedBattery) ? BATTERY_DEFAULT : savedBattery);
+                setPv(     isNaN(savedPv)      ? PV_DEFAULT      : savedPv);
+
+                attachDrag(batteryVisual, batteryHandle, BATTERY_MAX,
+                    setBattery, snapBattery, function () { return currentBattery; }, BATTERY_PRESETS);
+                attachDrag(pvVisual, pvHandle, PV_MAX,
+                    setPv, snapPv, function () { return currentPv; }, null);
+
+                // Two-way sync: manual input -> visual
+                batteryInput.addEventListener('input', function () {
+                    if (syncingFromCode) return;
+                    trackFirstInteraction();
+                    const raw = batteryInput.value.trim();
+                    if (raw === '') { setBattery(0, { skipInput: true }); return; }
+                    const v = parseFloat(raw);
+                    if (isNaN(v)) return;
+                    setBattery(v, { skipInput: true });
+                });
+                pvInput.addEventListener('input', function () {
+                    if (syncingFromCode) return;
+                    trackFirstInteraction();
+                    const raw = pvInput.value.trim();
+                    if (raw === '') { setPv(0, { skipInput: true }); return; }
+                    const v = parseFloat(raw);
+                    if (isNaN(v)) return;
+                    setPv(v, { skipInput: true });
+                });
+
+                // Final safety: make sure the latest values are in
+                // sessionStorage when the user clicks the primary CTA.
+                if (cta) {
+                    cta.addEventListener('click', persistToSession);
+                }
             }
         })();
     </script>
