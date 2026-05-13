@@ -1056,18 +1056,15 @@
                         <label style="display: flex; align-items: flex-start; cursor: pointer; margin: 0;">
                             <input type="checkbox" id="termsAccepted" name="termsAccepted" required style="margin-right: 12px; margin-top: 4px; width: 18px; height: 18px; cursor: pointer;">
                             <span style="flex: 1; color: #374151; font-size: 0.95rem; line-height: 1.6;">
-                                <strong style="color: #059669;">I agree to the Terms of Service and Privacy Policy</strong>
-                                <span style="display: block; margin-top: 0.5rem; color: #6b7280; font-size: 0.875rem;">
-                                    By checking this box, you agree to our 
-                                    <a href="terms.html" target="_blank" style="color: #059669; text-decoration: underline;">Terms of Service</a> and 
-                                    <a href="privacy.html" target="_blank" style="color: #059669; text-decoration: underline;">Privacy Policy</a>.
-                                </span>
+                                <strong style="color: #059669;">
+                                    I agree to the <a href="terms.html" target="_blank" style="color: #059669; text-decoration: underline;">Terms of Service</a> and <a href="privacy.html" target="_blank" style="color: #059669; text-decoration: underline;">Privacy Policy</a>.
+                                </strong>
                             </span>
                         </label>
                     </div>
 
-                    <button type="button" class="back-btn" onclick="window.location.href='diy-registration-step1.html'">← Back to Step 1</button>
-                    <button type="submit" class="submit-btn" id="submitBtn">Get my personalized report and continue…</button>
+                    <button type="button" class="back-btn" onclick="goBackToStep1()">← Back to Step 1</button>
+                    <button type="submit" class="submit-btn" id="submitBtn">Run custom report and continue ...</button>
 
                     <p style="text-align: center; margin-top: 1rem; color: #6b7280; font-size: 0.95rem;">✨ Personalized to your home and your bill — delivered straight to your inbox.</p>
                 </form>
@@ -1644,6 +1641,47 @@
             }
         }
         
+        function getStep1BackUrl() {
+            const DIY_STEP1_URL = 'diy-registration-step1.html';
+            const NEM3_STEP1_URL = 'nem3/index.html';
+
+            try {
+                const params = new URLSearchParams(window.location.search || '');
+                const fromParam = (params.get('from') || params.get('source') || '').toLowerCase();
+                if (fromParam === 'nem3') {
+                    sessionStorage.setItem('step2BackTarget', NEM3_STEP1_URL);
+                    return NEM3_STEP1_URL;
+                }
+                if (fromParam === 'diy' || fromParam === 'step1') {
+                    sessionStorage.setItem('step2BackTarget', DIY_STEP1_URL);
+                    return DIY_STEP1_URL;
+                }
+
+                const storedTarget = sessionStorage.getItem('step2BackTarget');
+                if (storedTarget === NEM3_STEP1_URL || storedTarget === DIY_STEP1_URL) {
+                    return storedTarget;
+                }
+
+                const referrerPath = (document.referrer || '').toLowerCase();
+                if (referrerPath.includes('/nem3/index.html')) {
+                    sessionStorage.setItem('step2BackTarget', NEM3_STEP1_URL);
+                    return NEM3_STEP1_URL;
+                }
+                if (referrerPath.includes('/diy-registration-step1.html')) {
+                    sessionStorage.setItem('step2BackTarget', DIY_STEP1_URL);
+                    return DIY_STEP1_URL;
+                }
+            } catch (_) {
+                // Ignore and fall back to default route.
+            }
+
+            return DIY_STEP1_URL;
+        }
+
+        function goBackToStep1() {
+            window.location.href = getStep1BackUrl();
+        }
+
         // ============================================
         // PRE-FILL FORM FROM SESSION STORAGE
         // ============================================
@@ -1654,7 +1692,7 @@
             if (!storedStep1Data) {
                 // No Step 1 data - redirect to Step 1
                 console.log('No Step 1 data found, redirecting to Step 1');
-                window.location.href = 'diy-registration-step1.html';
+                goBackToStep1();
                 return;
             }
             
@@ -2190,7 +2228,7 @@
             const storedStep1Data = sessionStorage.getItem('registrationStep1');
             if (!storedStep1Data) {
                 alert('⚠️ No system setup data found. Please complete Step 1 first.');
-                window.location.href = 'diy-registration-step1.html';
+                goBackToStep1();
                 return;
             }
 
@@ -2200,7 +2238,7 @@
             } catch (error) {
                 console.error('Error loading Step 1 data:', error);
                 alert('⚠️ Error loading system setup data. Please start over.');
-                window.location.href = 'diy-registration-step1.html';
+                goBackToStep1();
                 return;
             }
 
@@ -2239,7 +2277,7 @@
                     // Non-blocking — proceed with signup even if upload fails.
                 }
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Get my personalized report and continue…';
+                submitBtn.textContent = 'Run custom report and continue ...';
             }
 
             // Check if user already exists (returning from step 3)
@@ -2260,7 +2298,7 @@
                         'You can continue to Step 3, and we\'ll try again. If this persists, please contact support@microvpp.com.'
                     );
                     submitBtn.disabled = false;
-                    submitBtn.textContent = 'Get my personalized report and continue…';
+                    submitBtn.textContent = 'Run custom report and continue ...';
                 } else {
                     console.log('Signup successful!');
                 }
@@ -2300,7 +2338,7 @@
                 
                 // Offer to go back to step 1
                 if (confirm('Would you like to start from Step 1?')) {
-                    window.location.href = 'diy-registration-step1.html';
+                    goBackToStep1();
                 }
             }
             
