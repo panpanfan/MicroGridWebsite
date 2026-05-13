@@ -856,6 +856,75 @@
             stroke: #facc15;
             stroke-width: 0.6;
         }
+
+        /* ============================================
+           Slider feedback: number pulse + confetti
+           ============================================ */
+        .lp-builder-value,
+        #savingsAmount {
+            display: inline-block;
+            transform-origin: center center;
+        }
+
+        .is-pulse {
+            animation: lp-value-pulse 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes lp-value-pulse {
+            0%   { transform: scale(1); }
+            40%  { transform: scale(1.18); }
+            100% { transform: scale(1); }
+        }
+
+        /* Anchor confetti pieces to the savings card */
+        .lp-builder-savings {
+            position: relative;
+            overflow: visible;
+        }
+
+        .lp-builder-savings.is-celebrate {
+            animation: lp-savings-glow 0.85s ease-out;
+        }
+
+        @keyframes lp-savings-glow {
+            0%   { box-shadow: 0 8px 20px rgba(6, 95, 70, 0.25); }
+            45%  { box-shadow: 0 12px 32px rgba(6, 95, 70, 0.55),
+                              0 0 0 4px rgba(251, 191, 36, 0.35); }
+            100% { box-shadow: 0 8px 20px rgba(6, 95, 70, 0.25); }
+        }
+
+        .lp-confetti-piece {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 8px;
+            height: 12px;
+            border-radius: 2px;
+            opacity: 0;
+            pointer-events: none;
+            will-change: transform, opacity;
+            z-index: 5;
+            animation: lp-confetti-burst 1s cubic-bezier(0.2, 0.65, 0.45, 1) forwards;
+        }
+
+        @keyframes lp-confetti-burst {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) rotate(0deg) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(calc(-50% + var(--tx, 0px)),
+                                     calc(-50% + var(--ty, 0px)))
+                           rotate(var(--rot, 0deg)) scale(0.4);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .is-pulse,
+            .lp-builder-savings.is-celebrate { animation: none; }
+            .lp-confetti-piece { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -1576,6 +1645,7 @@
                 const pvInput   = document.getElementById('pvWattage');
 
                 const savingsAmount = document.getElementById('savingsAmount');
+                const savingsCard   = document.getElementById('builderSavings');
 
                 if (!batteryVisual || !pvVisual) return;
 
@@ -1583,6 +1653,67 @@
                 let currentPv       = PV_DEFAULT;
                 let syncingFromCode = false;
                 let trackedFirstInteraction = false;
+
+                // --- Slider feedback: number pulse + confetti -----------
+                const CONFETTI_COLORS = [
+                    '#10B981', '#fbbf24', '#3b82f6', '#ec4899',
+                    '#a855f7', '#f97316', '#22c55e', '#facc15'
+                ];
+                const prefersReducedMotion = (window.matchMedia
+                    && window.matchMedia('(prefers-reduced-motion: reduce)').matches) || false;
+
+                // Previous-text trackers so we only pulse on a real change,
+                // not on every redundant setBattery/setPv call. Initialized
+                // empty so the very first paint never pulses.
+                let prevBatteryText = '';
+                let prevPvText      = '';
+                let prevSavingsText = '';
+
+                function pulse(el) {
+                    if (!el || prefersReducedMotion) return;
+                    el.classList.remove('is-pulse');
+                    // Force a reflow so the animation restarts even when the
+                    // class was added a fraction of a second ago.
+                    void el.offsetWidth;
+                    el.classList.add('is-pulse');
+                }
+
+                function spawnConfetti(originEl, count) {
+                    if (!originEl || prefersReducedMotion) return;
+                    count = count || 22;
+                    for (let i = 0; i < count; i++) {
+                        const piece = document.createElement('span');
+                        piece.className = 'lp-confetti-piece';
+                        const angle = Math.random() * Math.PI * 2;
+                        const dist  = 55 + Math.random() * 95;
+                        const tx    = Math.cos(angle) * dist;
+                        // Bias upward so it feels like a celebratory burst
+                        const ty    = Math.sin(angle) * dist - 25;
+                        const rot   = (Math.random() - 0.5) * 720;
+                        const size  = 6 + Math.random() * 6;
+                        piece.style.setProperty('--tx', tx.toFixed(1) + 'px');
+                        piece.style.setProperty('--ty', ty.toFixed(1) + 'px');
+                        piece.style.setProperty('--rot', rot.toFixed(0) + 'deg');
+                        piece.style.width  = size.toFixed(1) + 'px';
+                        piece.style.height = (size * 1.4).toFixed(1) + 'px';
+                        piece.style.background =
+                            CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)];
+                        piece.style.animationDelay = (Math.random() * 0.1).toFixed(2) + 's';
+                        piece.style.animationDuration = (0.85 + Math.random() * 0.55).toFixed(2) + 's';
+                        originEl.appendChild(piece);
+                        setTimeout(function () {
+                            if (piece.parentNode) piece.parentNode.removeChild(piece);
+                        }, 1700);
+                    }
+                }
+
+                function celebrateSavings() {
+                    if (prefersReducedMotion || !savingsCard) return;
+                    savingsCard.classList.remove('is-celebrate');
+                    void savingsCard.offsetWidth;
+                    savingsCard.classList.add('is-celebrate');
+                    spawnConfetti(savingsCard, 22);
+                }
 
                 function fmt1(v) {
                     return (Math.round(v * 10) / 10).toFixed(1);
@@ -1714,7 +1845,13 @@
                     batteryFill.setAttribute('height', fillH.toFixed(2));
                     batteryFill.setAttribute('y', (BATTERY_INNER_BOTTOM - fillH).toFixed(2));
 
-                    batteryLabelV.textContent = fmt1(currentBattery) + ' kWh';
+                    const batteryText = fmt1(currentBattery) + ' kWh';
+                    batteryLabelV.textContent = batteryText;
+                    if (prevBatteryText && batteryText !== prevBatteryText) {
+                        pulse(batteryLabelV);
+                    }
+                    prevBatteryText = batteryText;
+
                     const exact = BATTERY_PRESETS.find(function (p) {
                         return Math.abs(p.kwh - currentBattery) < 0.05;
                     });
@@ -1754,7 +1891,13 @@
                         else p.classList.remove('active');
                     });
 
-                    pvLabelV.textContent = fmt1(currentPv) + ' kW';
+                    const pvText = fmt1(currentPv) + ' kW';
+                    pvLabelV.textContent = pvText;
+                    if (prevPvText && pvText !== prevPvText) {
+                        pulse(pvLabelV);
+                    }
+                    prevPvText = pvText;
+
                     const panels = Math.round(currentPv / PV_STEP);
                     pvLabelP.textContent = panels + ' \u00D7 400W panel' + (panels === 1 ? '' : 's');
 
@@ -1788,8 +1931,19 @@
                     const yearAvg = currentBattery * 70 + currentPv * 20;
                     const low  = Math.round(yearAvg * 0.75 / 50) * 50;
                     const high = Math.round(yearAvg * 1.25 / 50) * 50;
-                    savingsAmount.textContent =
-                        '$' + low.toLocaleString() + ' \u2013 $' + high.toLocaleString() + ' / yr';
+                    const newText = '$' + low.toLocaleString()
+                                  + ' \u2013 $' + high.toLocaleString() + ' / yr';
+                    savingsAmount.textContent = newText;
+
+                    // Celebrate only when the displayed savings figure actually
+                    // changes AND the user has already interacted — otherwise
+                    // confetti would fire on every initial load.
+                    if (prevSavingsText && newText !== prevSavingsText
+                            && trackedFirstInteraction) {
+                        pulse(savingsAmount);
+                        celebrateSavings();
+                    }
+                    prevSavingsText = newText;
                 }
 
                 // Persist into the same sessionStorage key the registration
