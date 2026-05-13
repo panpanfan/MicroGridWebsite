@@ -655,6 +655,43 @@
             font-style: italic;
         }
 
+        /* Founder's note — direct message from the team at the top of the page */
+        .lp-founders-note {
+            width: 100%;
+            margin: 4px 0 16px;
+            padding: 14px 16px 14px 18px;
+            background: #fffbeb;
+            border-left: 4px solid var(--green-dark);
+            border-radius: 10px;
+            text-align: left;
+            font-size: 0.9rem;
+            line-height: 1.55;
+            color: var(--ink);
+            box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+        }
+
+        .lp-founders-note .lp-founders-headline {
+            display: block;
+            color: var(--green-deep);
+            font-weight: 800;
+            font-size: 0.95rem;
+            letter-spacing: 0.02em;
+            margin-bottom: 6px;
+        }
+
+        .lp-founders-note .lp-founders-body {
+            color: var(--ink-soft);
+            font-style: normal;
+        }
+
+        .lp-founders-note .lp-founders-sig {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.8rem;
+            color: var(--ink-soft);
+            font-weight: 600;
+        }
+
         /* Email capture + personalized CTA inside the sizer card */
         .lp-sizer-cta {
             margin-top: 14px;
@@ -714,6 +751,63 @@
         }
 
         .lp-email-error.is-shown {
+            display: block;
+        }
+
+        /* Required acknowledgement checkbox between email and CTA */
+        .lp-ack-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding: 10px 12px;
+            background: #ffffff;
+            border: 2px solid #d1fae5;
+            border-radius: 10px;
+            text-align: left;
+            transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+            cursor: pointer;
+        }
+
+        .lp-ack-row:hover {
+            border-color: var(--green);
+        }
+
+        .lp-ack-row.is-invalid {
+            border-color: #ef4444;
+            background: #fef2f2;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.12);
+        }
+
+        .lp-ack-checkbox {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            accent-color: var(--green-dark);
+            cursor: pointer;
+        }
+
+        .lp-ack-label {
+            flex: 1;
+            font-size: 0.86rem;
+            line-height: 1.45;
+            color: var(--ink);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .lp-ack-error {
+            display: none;
+            font-size: 0.78rem;
+            color: #b91c1c;
+            margin-top: -4px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .lp-ack-error.is-shown {
             display: block;
         }
 
@@ -778,6 +872,13 @@
     </header>
 
     <main class="lp-hero">
+        <!-- Founder's note: direct message from the team, sets the tone for the whole page -->
+        <blockquote class="lp-founders-note">
+            <span class="lp-founders-headline">NO SALES CALLS. WE DO NOT SELL PANELS OR BATTERIES.</span>
+            <span class="lp-founders-body">We're a team of AI and energy engineers passionate about using machine learning to make home energy work for people.</span>
+            <span class="lp-founders-sig">&mdash; The MicroVPP team</span>
+        </blockquote>
+
         <span class="lp-eyebrow">For California Solar Plus Battery Owners</span>
 
         <h1>
@@ -934,7 +1035,6 @@
             <div class="lp-sizer-cta">
                 <p class="lp-sizer-cta-msg">
                     <strong>Want a number tailored to YOUR home?</strong><br>
-                    Leave your email and we'll send a personalized estimate based on your actual usage.
                 </p>
                 <div class="lp-email-row">
                     <input type="email" id="lpEmailInput" class="lp-email-input"
@@ -946,8 +1046,18 @@
                         Please enter a valid email address.
                     </div>
                 </div>
+                <label class="lp-ack-row" id="lpAckRow" for="lpAckCheckbox">
+                    <input type="checkbox" id="lpAckCheckbox" class="lp-ack-checkbox"
+                           aria-describedby="lpAckError" required />
+                    <span class="lp-ack-label">
+                        I understand this is an engineering simulation tool, not an installation quote.
+                    </span>
+                </label>
+                <div class="lp-ack-error" id="lpAckError" role="alert">
+                    Please check the box to confirm you understand.
+                </div>
                 <button type="button" class="lp-btn-primary" id="lpCta">
-                    Get Personalized Estimate →
+                    Run Custom Simulation →
                 </button>
                 <p class="lp-trust">
                     <strong>Free</strong> · ~2 minutes · We never share your email
@@ -1078,6 +1188,9 @@
 
             const emailInput  = document.getElementById('lpEmailInput');
             const emailError  = document.getElementById('lpEmailError');
+            const ackCheckbox = document.getElementById('lpAckCheckbox');
+            const ackRow      = document.getElementById('lpAckRow');
+            const ackError    = document.getElementById('lpAckError');
             const EMAIL_RE    = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
             const STEP2_URL   = '../diy-registration-step2.html';
 
@@ -1235,6 +1348,23 @@
                 try { emailInput.focus({ preventScroll: false }); } catch (_) { emailInput.focus(); }
             }
 
+            function clearAckError() {
+                if (!ackRow || !ackError) return;
+                ackRow.classList.remove('is-invalid');
+                ackError.classList.remove('is-shown');
+                if (ackCheckbox) ackCheckbox.removeAttribute('aria-invalid');
+            }
+
+            function showAckError() {
+                if (!ackRow || !ackError) return;
+                ackRow.classList.add('is-invalid');
+                ackError.classList.add('is-shown');
+                if (ackCheckbox) {
+                    ackCheckbox.setAttribute('aria-invalid', 'true');
+                    try { ackCheckbox.focus({ preventScroll: false }); } catch (_) { ackCheckbox.focus(); }
+                }
+            }
+
             const CTA_DEFAULT_LABEL = 'Get Personalized Estimate \u2192';
             function setCtaLoading(loading, label) {
                 if (!cta) return;
@@ -1263,6 +1393,12 @@
                 });
             }
 
+            if (ackCheckbox) {
+                ackCheckbox.addEventListener('change', function () {
+                    if (ackCheckbox.checked) clearAckError();
+                });
+            }
+
             if (cta) {
                 cta.addEventListener('click', async function (e) {
                     if (cta.disabled) return; // guard against double-clicks
@@ -1272,7 +1408,7 @@
                     const email = raw.toLowerCase();
 
                     if (!email) {
-                        showEmailError('Please enter your email so we can send your personalized estimate.');
+                        showEmailError('Please enter your email so we can send your custom simulation results.');
                         track('nem3_personalized_cta_blocked', { event_label: 'email_empty' });
                         return;
                     }
@@ -1282,6 +1418,13 @@
                         return;
                     }
                     clearEmailError();
+
+                    if (ackCheckbox && !ackCheckbox.checked) {
+                        showAckError();
+                        track('nem3_personalized_cta_blocked', { event_label: 'ack_unchecked' });
+                        return;
+                    }
+                    clearAckError();
 
                     // Pull the latest values straight off the inputs (the
                     // sizer keeps them in sync; we re-parse so this code
