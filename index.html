@@ -1612,6 +1612,235 @@
                 100% { transform: translateX(calc(-150px * 7 - 70px)); }
             }
         }
+
+        /* =====================================================
+           State Selector (California / Texas)
+           ===================================================== */
+
+        /* Header state-toggle pill */
+        .state-toggle {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.22);
+            border-radius: 999px;
+            padding: 3px;
+            gap: 2px;
+        }
+
+        .state-toggle-btn {
+            background: transparent;
+            border: none;
+            color: #065f46;
+            font-weight: 600;
+            font-size: 0.8rem;
+            padding: 0.4rem 0.85rem;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .state-toggle-btn:hover {
+            color: #047857;
+        }
+
+        .state-toggle-btn.active {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.35);
+        }
+
+        .state-toggle-flag {
+            font-size: 0.95rem;
+            line-height: 1;
+        }
+
+        @media (max-width: 640px) {
+            .state-toggle-btn {
+                padding: 0.35rem 0.6rem;
+                font-size: 0.72rem;
+            }
+            .state-toggle-btn .state-toggle-label {
+                display: none;
+            }
+        }
+
+        /* Combined wrapper for the two state-aware sections */
+        .state-sections-wrapper {
+            position: relative;
+        }
+
+        /* Sliding container inside each state-aware section */
+        .state-slider {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .state-track {
+            display: flex;
+            width: 200%;
+            transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+            align-items: flex-start;
+        }
+
+        .state-panel {
+            flex: 0 0 50%;
+            width: 50%;
+            min-width: 0;
+        }
+
+        .state-sections-wrapper[data-state="texas"] .state-track {
+            transform: translateX(-50%);
+        }
+
+        /* Floating side arrows that switch state */
+        .state-arrow {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid rgba(16, 185, 129, 0.35);
+            color: #065f46;
+            font-size: 1.6rem;
+            font-weight: 700;
+            cursor: pointer;
+            z-index: 900;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, transform 0.3s ease,
+                        background 0.3s ease, color 0.3s ease,
+                        box-shadow 0.3s ease;
+            pointer-events: none;
+            font-family: inherit;
+        }
+
+        .state-arrow.visible {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .state-arrow:hover {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            transform: translateY(-50%) scale(1.08);
+            box-shadow: 0 12px 32px rgba(16, 185, 129, 0.4);
+        }
+
+        .state-arrow-left {
+            left: 24px;
+        }
+
+        .state-arrow-right {
+            right: 24px;
+        }
+
+        .state-arrow-tip {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #065f46;
+            background: rgba(255, 255, 255, 0.92);
+            padding: 3px 9px;
+            border-radius: 999px;
+            white-space: nowrap;
+            pointer-events: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        @media (max-width: 768px) {
+            .state-arrow {
+                width: 44px;
+                height: 44px;
+                font-size: 1.25rem;
+            }
+            .state-arrow-left {
+                left: 8px;
+            }
+            .state-arrow-right {
+                right: 8px;
+            }
+            .state-arrow-tip {
+                display: none;
+            }
+        }
+
+        /* State indicator bubble at bottom of each section */
+        .state-bubble-wrap {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .state-bubble {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.55rem 1.1rem 0.55rem 0.95rem;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #065f46;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .state-bubble:hover {
+            background: white;
+            border-color: rgba(16, 185, 129, 0.55);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+        }
+
+        .state-bubble-flag {
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        .state-bubble-switch {
+            color: #059669;
+            font-weight: 700;
+            padding-left: 0.55rem;
+            margin-left: 0.15rem;
+            border-left: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        /* Texas accent: warmer gold-tinged border on highlight cards */
+        .state-panel[data-state="texas"] .nem-highlight {
+            border-color: #fcd34d;
+            background: linear-gradient(180deg, #ffffff 0%, #fffbeb 100%);
+        }
+        .state-panel[data-state="texas"] .nem-highlight h4 {
+            color: #92400e;
+        }
+        .state-panel[data-state="texas"] .section-header h2 {
+            background: linear-gradient(135deg, #065f46 0%, #d97706 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
     </style>
 </head>
 <body>
@@ -1629,15 +1858,25 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="#join-movement">How it works</a></li>
-                <li><a href="#nem">California (NEM 3.0)</a></li>
+                <li><a href="#nem" id="navStateLink">California (NEM 3.0)</a></li>
                 <li><a href="#impact">Results</a></li>
                 <li><a href="#compat">Compatibility</a></li>
                 <li><a href="#faq">FAQ</a></li>
                 <li><a href="about.html">About</a></li>
             </ul>
             <div class="header-buttons">
+                <div class="state-toggle" role="tablist" aria-label="Select your state">
+                    <button type="button" class="state-toggle-btn active" data-state="california" role="tab" aria-selected="true">
+                        <span class="state-toggle-flag">🌴</span>
+                        <span class="state-toggle-label">California</span>
+                    </button>
+                    <button type="button" class="state-toggle-btn" data-state="texas" role="tab" aria-selected="false">
+                        <span class="state-toggle-flag">🤠</span>
+                        <span class="state-toggle-label">Texas</span>
+                    </button>
+                </div>
                 <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
-                <a href="diy-registration-step1.html" class="cta-button hide-mobile">Start Free</a>
+                <a href="diy-registration-step1.html" class="cta-button hide-mobile" id="headerCtaBtn">Start Free</a>
                 <a href="#" onclick="checkInvitationCode(event)" class="cta-button-outline">Download App</a>
             </div>
         </nav>
@@ -1650,7 +1889,7 @@
                 <h1>Your home battery could be earning more.</h1>
                 <p>You already invested in clean energy — now let AI make it pay off. MicroVPP™ uses smart optimization to cut your bills and generate up to $1–2K in new annual cash flow.</p>
                 <div class="hero-buttons">
-                    <a href="diy-registration-step1.html" class="btn-primary">
+                    <a href="diy-registration-step1.html" class="btn-primary" id="heroCtaBtn">
                         Start Free — California First
                     </a>
                     <a href="#" onclick="checkInvitationCode(event)" class="btn-secondary">Download App</a>
@@ -1731,179 +1970,359 @@
     </section>
 
 
-    <!-- NEM 3.0 California Section -->
-    <section id="nem" class="nem-section">
-        <div class="container">
-            <div class="section-header">
-                <h2>NEM 3.0 changed the rules. We help you win under the new ones.</h2>
-                <p style="color: #065f46; max-width: 800px; margin: 0 auto;">Under California's new NEM 3.0 policy, exported solar power earns less than before. To protect your ROI, your battery must charge and discharge at the right times. MicroVPP™'s AI predicts when rates spike and automatically schedules your battery to sell power back when it's most valuable. Instead of losing income, you gain it — turning policy change into profit.</p>
-            </div>
-            <div class="nem-highlights">
-                <div class="nem-highlight">
-                    <h4>📍 Now enrolling California homeowners</h4>
-                    <p style="color: #666; font-size: 0.95rem;">Join the growing network of smart battery owners maximizing their savings under NEM 3.0.</p>
-                </div>
-                <div class="nem-highlight">
-                    <h4>⚙️ Texas and other states coming soon</h4>
-                    <p style="color: #666; font-size: 0.95rem;">Pilots are under way with nationwide expansion planned for 2026.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- ==========================================================
+         State-Aware Sections (California / Texas)
+         The NEM/Market section and the Real Data section both
+         slide together. Switch state via:
+           - the header pill,
+           - the floating side arrows, or
+           - the bubble at the bottom of each section.
+         ========================================================== -->
+    <div class="state-sections-wrapper" id="stateSections" data-state="california">
 
-    
-    <!-- Why Choose MicroGrid Section -->
-    <section id="impact" class="why-choose-microgrid">
-        <div class="container">
-            <div class="section-header">
-                <h2>Real Data. Real Savings.</h2>
-                <p style="color: #065f46; max-width: 900px; margin: 1rem auto 0;">See how MicroVPP turns "dumb" batteries into income generators for California homeowners. Proven in live field pilots and projected through rigorous back testing, the difference between standard battery operation and intelligent optimization isn't incremental. It's transformative.</p>
-            </div>
-            
-            <!-- Sub-section 1: Live Pilot -->
-            <div class="case-studies-grid">
-                <!-- Case Study 1: Control Live Pilot -->
-                <div class="case-study-featured" style="background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
-                    <h3 style="font-size: 1.8rem; font-weight: 700; color: #065f46; margin-bottom: 0.25rem;">Case Study 1: The "Blind Spot" Fix</h3>
-                    <p style="color: #059669; font-weight: 700; margin-bottom: 0.5rem;">Live Pilot</p>
-                    <p style="color: #666; font-style: italic; margin-bottom: 2rem;">Perris, CA • SCE Territory • 25kW Solar + 27kWh Battery</p>
+        <!-- ============= Market / Policy Section ============= -->
+        <section id="nem" class="nem-section">
+            <div class="container">
+                <div class="state-slider">
+                    <div class="state-track">
 
-                    <!-- Before: Standard Mode -->
-                    <div style="background: #f5f5f5; border-radius: 15px; padding: 1.5rem; margin-bottom: 1.5rem;">
-                        <h4 style="font-size: 1.2rem; font-weight: 700; color: #333; margin-bottom: 1rem;">Standard Mode (Before)</h4>
-                        <p style="font-weight: 700; color: #333; margin-bottom: 0.5rem;">Strategy: Uncoordinated OEM Defaults</p>
-                        <p style="color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
-                            Two batteries ran on separate gateway logic and failed to coordinate during variable household loads, forcing expensive peak-time grid purchases while available storage remained underused.
-                        </p>
-                        <p style="font-weight: 700; color: #333; margin-bottom: 0.25rem;">Baseline</p>
-                        <p style="font-size: 1rem; font-weight: 700; color: #6b7280; margin-bottom: 0.25rem;">Idle Storage, Wasted Potential</p>
-                    </div>
-
-                    <!-- After: MicroVPP Mode -->
-                    <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 15px; padding: 1.5rem; margin-bottom: 1.5rem;">
-                        <h4 style="font-size: 1.2rem; font-weight: 700; color: #333; margin-bottom: 1rem;">MicroVPP Mode (After)</h4>
-                        <p style="font-weight: 700; color: #333; margin-bottom: 0.5rem;">Strategy: Unified Microgrid Orchestration</p>
-                        <p style="color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
-                            MicroVPP AI bridged the communication gap and orchestrated both batteries as one coordinated microgrid. With software only and no new hardware, the home saw a proven utility bill reduction during live winter operations.
-                        </p>
-                        <p style="font-weight: 700; color: #333; margin-bottom: 0.25rem;">Software-Automated Annual Savings</p>
-                        <p style="font-size: 1.5rem; font-weight: 700; color: #059669; margin-bottom: 0.25rem;">+$1,800 / yr*</p>
-                        <p style="color: #666; font-size: 0.9rem;">*Simulation validated by active Powerwall control and reduced winter bills.</p>
-                    </div>
-
-                    <!-- Future VPP Potential -->
-                    <div style="background: #e0f2fe; border-radius: 10px; padding: 1rem; display: flex; gap: 0.75rem; align-items: start;">
-                        <span style="font-size: 1.5rem;">💡</span>
-                        <div>
-                            <p style="font-weight: 700; color: #065f46; margin-bottom: 0.25rem;">Validated Performance & Future Upside:</p>
-                            <p style="color: #555; font-size: 0.9rem;">Future VPP grid services could add further upside.</p>
+                        <!-- ----- California panel ----- -->
+                        <div class="state-panel" data-state="california">
+                            <div class="section-header">
+                                <h2>NEM 3.0 changed the rules. We help you win under the new ones.</h2>
+                                <p style="color: #065f46; max-width: 800px; margin: 0 auto;">Under California's new NEM 3.0 policy, exported solar power earns less than before. To protect your ROI, your battery must charge and discharge at the right times. MicroVPP™'s AI predicts when rates spike and automatically schedules your battery to sell power back when it's most valuable. Instead of losing income, you gain it — turning policy change into profit.</p>
+                            </div>
+                            <div class="nem-highlights">
+                                <div class="nem-highlight">
+                                    <h4>📍 Now enrolling California homeowners</h4>
+                                    <p style="color: #666; font-size: 0.95rem;">Join the growing network of smart battery owners maximizing their savings under NEM 3.0 across PG&amp;E, SCE and SDG&amp;E territories.</p>
+                                </div>
+                                <div class="nem-highlight">
+                                    <h4>⚡ Three utilities, one optimization engine</h4>
+                                    <p style="color: #666; font-size: 0.95rem;">PG&amp;E, SCE and SDG&amp;E each publish their own NEM 3.0 export rates by hour. MicroVPP™ ingests them all and dispatches your battery accordingly.</p>
+                                </div>
+                            </div>
+                            <div class="state-bubble-wrap">
+                                <button type="button" class="state-bubble" data-switch-to="texas">
+                                    <span class="state-bubble-flag">🌴</span>
+                                    You're viewing California (NEM 3.0)
+                                    <span class="state-bubble-switch">Switch to Texas →</span>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Sub-section 2: Computational Estimates -->
-            <h3 style="text-align: center; font-size: 1.6rem; font-weight: 700; color: #065f46; margin: 3rem auto 0.5rem; max-width: 800px;">What Could Your System Earn? (Computational Estimates)</h3>
-            <p style="text-align: center; color: #666; font-size: 1rem; margin: 0 auto 3rem; max-width: 800px;">
-                These results are computed estimates based on each household's actual usage, solar generation, EV charging behavior and utility tariffs.
-            </p>
-
-            <div class="case-studies-grid">
-                <!-- Case Study 2: The Bill Eliminator -->
-                <div style="background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
-                    <h3 style="font-size: 1.8rem; font-weight: 700; color: #065f46; margin-bottom: 0.5rem;">Case Study 2: The Bill Eliminator</h3>
-                    <p style="color: #666; font-style: italic; margin-bottom: 2rem;">Walnut, CA • SCE Territory • 6.4kW Solar + 28.6kWh Battery</p>
-                    
-                    <!-- Before: Standard Mode -->
-                    <div style="background: #f5f5f5; border-radius: 15px; padding: 1.5rem; margin-bottom: 1.5rem;">
-                        <h4 style="font-size: 1.2rem; font-weight: 700; color: #333; margin-bottom: 1rem;">Standard Mode (Before)</h4>
-                        <p style="font-weight: 700; color: #333; margin-bottom: 0.5rem;">Strategy: Self-Consumption</p>
-                        <p style="color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
-                            The battery tried to cover home usage but couldn't reach 100% coverage. The homeowner still had to purchase power from the grid during peak hours, resulting in a net cost despite having solar and storage.
-                        </p>
-                        <p style="font-weight: 700; color: #333; margin-bottom: 0.25rem;">Annual Net Result</p>
-                        <p style="font-size: 1.5rem; font-weight: 700; color: #dc2626; margin-bottom: 0.25rem;">-$24 / yr</p>
-                        <p style="color: #666; font-size: 0.9rem;">(Net Cost)</p>
-                    </div>
-                    
-                    <!-- After: MicroVPP Mode -->
-                    <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 15px; padding: 1.5rem; margin-bottom: 1.5rem;">
-                        <h4 style="font-size: 1.2rem; font-weight: 700; color: #333; margin-bottom: 1rem;">MicroVPP Mode (After)</h4>
-                        <p style="font-weight: 700; color: #333; margin-bottom: 0.5rem;">Strategy: Bill Elimination</p>
-                        <p style="color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
-                            Our AI identified and targeted high-value export windows—when rates exceeded <strong>$1/kWh</strong>—to generate bill credits that completely eliminated the monthly utility bill and created positive cash flow.
-                        </p>
-                        <p style="font-weight: 700; color: #333; margin-bottom: 0.25rem;">Annual Net Result</p>
-                        <p style="font-size: 1.5rem; font-weight: 700; color: #059669; margin-bottom: 0.25rem;">+$1,008 / yr</p>
-                        <p style="color: #666; font-size: 0.9rem;">(Bill Credit Profit)</p>
-                    </div>
-                    
-                    <!-- Future VPP Potential -->
-                    <div style="background: #e0f2fe; border-radius: 10px; padding: 1rem; display: flex; gap: 0.75rem; align-items: start;">
-                        <span style="font-size: 1.5rem;">💡</span>
-                        <div>
-                            <p style="font-weight: 700; color: #065f46; margin-bottom: 0.25rem;">Future VPP Potential:</p>
-                            <p style="color: #555; font-size: 0.9rem;">Projected +$2,268/yr via grid services participation</p>
+                        <!-- ----- Texas panel ----- -->
+                        <div class="state-panel" data-state="texas">
+                            <div class="section-header">
+                                <h2>ERCOT lets you choose. We help you choose right.</h2>
+                                <p style="color: #065f46; max-width: 820px; margin: 0 auto;">In Texas's deregulated market, you can pick from dozens of REPs and rate plans — Free Nights, Free Weekends, Time-of-Use, indexed wholesale, flat rate. The right plan can save you thousands. The wrong one quietly costs you the same. MicroVPP™'s AI models your real usage and your battery's flexibility against every plan available in your ZIP code, then orchestrates your battery around the plan you pick — turning ERCOT's complexity into your advantage.</p>
+                            </div>
+                            <div class="nem-highlights">
+                                <div class="nem-highlight">
+                                    <h4>📍 Now enrolling Houston (CenterPoint)</h4>
+                                    <p style="color: #666; font-size: 0.95rem;">Starting in CenterPoint Energy territory, then expanding across Oncor, AEP and TNMP service areas.</p>
+                                </div>
+                                <div class="nem-highlight">
+                                    <h4>⚡ Works with the major Texas REPs</h4>
+                                    <p style="color: #666; font-size: 0.95rem;">TXU Energy, Reliant, Octopus Energy, Gexa, Green Mountain, Direct Energy, 4Change, Discount Power and more — just tell us who serves you.</p>
+                                </div>
+                                <div class="nem-highlight">
+                                    <h4>🎯 Plan choice + dispatch, jointly optimized</h4>
+                                    <p style="color: #666; font-size: 0.95rem;">We recommend the best REP plan for your actual load shape, then dispatch your battery to win on it. Two levers, one optimum.</p>
+                                </div>
+                            </div>
+                            <div class="state-bubble-wrap">
+                                <button type="button" class="state-bubble" data-switch-to="california">
+                                    <span class="state-bubble-flag">🤠</span>
+                                    You're viewing Texas (ERCOT)
+                                    <span class="state-bubble-switch">← Switch to California</span>
+                                </button>
+                            </div>
                         </div>
+
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <!-- Case Study 3: The EV Powerhouse -->
-                <div style="background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
-                    <h3 style="font-size: 1.8rem; font-weight: 700; color: #065f46; margin-bottom: 0.5rem;">Case Study 3: The EV Powerhouse</h3>
-                    <p style="color: #666; font-style: italic; margin-bottom: 2rem;">Irvine, CA • SCE Territory • 9.6kW Solar + 43kWh Battery • EV Owner</p>
-                    
-                    <!-- Before: Standard Mode -->
-                    <div style="background: #f5f5f5; border-radius: 15px; padding: 1.5rem; margin-bottom: 1.5rem;">
-                        <h4 style="font-size: 1.2rem; font-weight: 700; color: #333; margin-bottom: 1rem;">Standard Mode (Before)</h4>
-                        <p style="font-weight: 700; color: #333; margin-bottom: 0.5rem;">Strategy: Immediate Charging</p>
-                        <p style="color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
-                            The battery drained itself to charge the EV immediately upon plugin. While this saved on gasoline costs, the battery sat completely idle during the most profitable export hours when rates were highest.
-                        </p>
-                        <p style="font-weight: 700; color: #333; margin-bottom: 0.25rem;">Annual Net Result</p>
-                        <p style="font-size: 1.5rem; font-weight: 700; color: #059669; margin-bottom: 0.25rem;">+$70 / yr</p>
-                        <p style="color: #666; font-size: 0.9rem;">(Passive Savings)</p>
-                    </div>
-                    
-                    <!-- After: MicroVPP Mode -->
-                    <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 15px; padding: 1.5rem; margin-bottom: 1.5rem;">
-                        <h4 style="font-size: 1.2rem; font-weight: 700; color: #333; margin-bottom: 1rem;">MicroVPP Mode (After)</h4>
-                        <p style="font-weight: 700; color: #333; margin-bottom: 0.5rem;">Strategy: Smart Shift & Export</p>
-                        <p style="color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
-                            <strong>We do not drain your car.</strong> We shift EV charging to cheap off-peak hours (ensuring a full charge every morning) so the home battery remains available to export energy at peak rates.
-                        </p>
-                        <p style="font-weight: 700; color: #333; margin-bottom: 0.25rem;">Annual Net Result</p>
-                        <p style="font-size: 1.5rem; font-weight: 700; color: #059669; margin-bottom: 0.25rem;">+$1,400 / yr</p>
-                        <p style="color: #666; font-size: 0.9rem;">(Bill Credit Profit)</p>
-                    </div>
-                    
-                    <!-- Future VPP Potential -->
-                    <div style="background: #e0f2fe; border-radius: 10px; padding: 1rem; display: flex; gap: 0.75rem; align-items: start;">
-                        <span style="font-size: 1.5rem;">💡</span>
-                        <div>
-                            <p style="font-weight: 700; color: #065f46; margin-bottom: 0.25rem;">Future VPP Potential:</p>
-                            <p style="color: #555; font-size: 0.9rem;">Projected +$3,556/yr via grid services participation</p>
+
+        <!-- ============= Real Data Section ============= -->
+        <section id="impact" class="why-choose-microgrid">
+            <div class="container">
+                <div class="state-slider">
+                    <div class="state-track">
+
+                        <!-- ----- California panel ----- -->
+                        <div class="state-panel" data-state="california">
+                            <div class="section-header">
+                                <h2>Real Data. Real Savings.</h2>
+                                <p style="color: #065f46; max-width: 900px; margin: 1rem auto 0;">See how MicroVPP turns "dumb" batteries into income generators for California homeowners. Proven in live field pilots and projected through rigorous back testing, the difference between standard battery operation and intelligent optimization isn't incremental. It's transformative.</p>
+                            </div>
+
+                            <!-- Sub-section 1: Live Pilot -->
+                            <div class="case-studies-grid">
+                                <div class="case-study-featured" style="background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
+                                    <h3 style="font-size: 1.8rem; font-weight: 700; color: #065f46; margin-bottom: 0.25rem;">Case Study 1: The "Blind Spot" Fix</h3>
+                                    <p style="color: #059669; font-weight: 700; margin-bottom: 0.5rem;">Live Pilot</p>
+                                    <p style="color: #666; font-style: italic; margin-bottom: 2rem;">Perris, CA • SCE Territory • 25kW Solar + 27kWh Battery</p>
+
+                                    <div style="background: #f5f5f5; border-radius: 15px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                                        <h4 style="font-size: 1.2rem; font-weight: 700; color: #333; margin-bottom: 1rem;">Standard Mode (Before)</h4>
+                                        <p style="font-weight: 700; color: #333; margin-bottom: 0.5rem;">Strategy: Uncoordinated OEM Defaults</p>
+                                        <p style="color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                                            Two batteries ran on separate gateway logic and failed to coordinate during variable household loads, forcing expensive peak-time grid purchases while available storage remained underused.
+                                        </p>
+                                        <p style="font-weight: 700; color: #333; margin-bottom: 0.25rem;">Baseline</p>
+                                        <p style="font-size: 1rem; font-weight: 700; color: #6b7280; margin-bottom: 0.25rem;">Idle Storage, Wasted Potential</p>
+                                    </div>
+
+                                    <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 15px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                                        <h4 style="font-size: 1.2rem; font-weight: 700; color: #333; margin-bottom: 1rem;">MicroVPP Mode (After)</h4>
+                                        <p style="font-weight: 700; color: #333; margin-bottom: 0.5rem;">Strategy: Unified Microgrid Orchestration</p>
+                                        <p style="color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                                            MicroVPP AI bridged the communication gap and orchestrated both batteries as one coordinated microgrid. With software only and no new hardware, the home saw a proven utility bill reduction during live winter operations.
+                                        </p>
+                                        <p style="font-weight: 700; color: #333; margin-bottom: 0.25rem;">Software-Automated Annual Savings</p>
+                                        <p style="font-size: 1.5rem; font-weight: 700; color: #059669; margin-bottom: 0.25rem;">+$1,800 / yr*</p>
+                                        <p style="color: #666; font-size: 0.9rem;">*Simulation validated by active Powerwall control and reduced winter bills.</p>
+                                    </div>
+
+                                    <div style="background: #e0f2fe; border-radius: 10px; padding: 1rem; display: flex; gap: 0.75rem; align-items: start;">
+                                        <span style="font-size: 1.5rem;">💡</span>
+                                        <div>
+                                            <p style="font-weight: 700; color: #065f46; margin-bottom: 0.25rem;">Validated Performance &amp; Future Upside:</p>
+                                            <p style="color: #555; font-size: 0.9rem;">Future VPP grid services could add further upside.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sub-section 2: Computational Estimates -->
+                            <h3 style="text-align: center; font-size: 1.6rem; font-weight: 700; color: #065f46; margin: 3rem auto 0.5rem; max-width: 800px;">What Could Your System Earn? (Computational Estimates)</h3>
+                            <p style="text-align: center; color: #666; font-size: 1rem; margin: 0 auto 3rem; max-width: 800px;">
+                                These results are computed estimates based on each household's actual usage, solar generation, EV charging behavior and utility tariffs.
+                            </p>
+
+                            <div class="case-studies-grid">
+                                <div style="background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
+                                    <h3 style="font-size: 1.8rem; font-weight: 700; color: #065f46; margin-bottom: 0.5rem;">Case Study 2: The Bill Eliminator</h3>
+                                    <p style="color: #666; font-style: italic; margin-bottom: 2rem;">Walnut, CA • SCE Territory • 6.4kW Solar + 28.6kWh Battery</p>
+
+                                    <div style="background: #f5f5f5; border-radius: 15px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                                        <h4 style="font-size: 1.2rem; font-weight: 700; color: #333; margin-bottom: 1rem;">Standard Mode (Before)</h4>
+                                        <p style="font-weight: 700; color: #333; margin-bottom: 0.5rem;">Strategy: Self-Consumption</p>
+                                        <p style="color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                                            The battery tried to cover home usage but couldn't reach 100% coverage. The homeowner still had to purchase power from the grid during peak hours, resulting in a net cost despite having solar and storage.
+                                        </p>
+                                        <p style="font-weight: 700; color: #333; margin-bottom: 0.25rem;">Annual Net Result</p>
+                                        <p style="font-size: 1.5rem; font-weight: 700; color: #dc2626; margin-bottom: 0.25rem;">-$24 / yr</p>
+                                        <p style="color: #666; font-size: 0.9rem;">(Net Cost)</p>
+                                    </div>
+
+                                    <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 15px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                                        <h4 style="font-size: 1.2rem; font-weight: 700; color: #333; margin-bottom: 1rem;">MicroVPP Mode (After)</h4>
+                                        <p style="font-weight: 700; color: #333; margin-bottom: 0.5rem;">Strategy: Bill Elimination</p>
+                                        <p style="color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                                            Our AI identified and targeted high-value export windows—when rates exceeded <strong>$1/kWh</strong>—to generate bill credits that completely eliminated the monthly utility bill and created positive cash flow.
+                                        </p>
+                                        <p style="font-weight: 700; color: #333; margin-bottom: 0.25rem;">Annual Net Result</p>
+                                        <p style="font-size: 1.5rem; font-weight: 700; color: #059669; margin-bottom: 0.25rem;">+$1,008 / yr</p>
+                                        <p style="color: #666; font-size: 0.9rem;">(Bill Credit Profit)</p>
+                                    </div>
+
+                                    <div style="background: #e0f2fe; border-radius: 10px; padding: 1rem; display: flex; gap: 0.75rem; align-items: start;">
+                                        <span style="font-size: 1.5rem;">💡</span>
+                                        <div>
+                                            <p style="font-weight: 700; color: #065f46; margin-bottom: 0.25rem;">Future VPP Potential:</p>
+                                            <p style="color: #555; font-size: 0.9rem;">Projected +$2,268/yr via grid services participation</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
+                                    <h3 style="font-size: 1.8rem; font-weight: 700; color: #065f46; margin-bottom: 0.5rem;">Case Study 3: The EV Powerhouse</h3>
+                                    <p style="color: #666; font-style: italic; margin-bottom: 2rem;">Irvine, CA • SCE Territory • 9.6kW Solar + 43kWh Battery • EV Owner</p>
+
+                                    <div style="background: #f5f5f5; border-radius: 15px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                                        <h4 style="font-size: 1.2rem; font-weight: 700; color: #333; margin-bottom: 1rem;">Standard Mode (Before)</h4>
+                                        <p style="font-weight: 700; color: #333; margin-bottom: 0.5rem;">Strategy: Immediate Charging</p>
+                                        <p style="color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                                            The battery drained itself to charge the EV immediately upon plugin. While this saved on gasoline costs, the battery sat completely idle during the most profitable export hours when rates were highest.
+                                        </p>
+                                        <p style="font-weight: 700; color: #333; margin-bottom: 0.25rem;">Annual Net Result</p>
+                                        <p style="font-size: 1.5rem; font-weight: 700; color: #059669; margin-bottom: 0.25rem;">+$70 / yr</p>
+                                        <p style="color: #666; font-size: 0.9rem;">(Passive Savings)</p>
+                                    </div>
+
+                                    <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 15px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                                        <h4 style="font-size: 1.2rem; font-weight: 700; color: #333; margin-bottom: 1rem;">MicroVPP Mode (After)</h4>
+                                        <p style="font-weight: 700; color: #333; margin-bottom: 0.5rem;">Strategy: Smart Shift &amp; Export</p>
+                                        <p style="color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                                            <strong>We do not drain your car.</strong> We shift EV charging to cheap off-peak hours (ensuring a full charge every morning) so the home battery remains available to export energy at peak rates.
+                                        </p>
+                                        <p style="font-weight: 700; color: #333; margin-bottom: 0.25rem;">Annual Net Result</p>
+                                        <p style="font-size: 1.5rem; font-weight: 700; color: #059669; margin-bottom: 0.25rem;">+$1,400 / yr</p>
+                                        <p style="color: #666; font-size: 0.9rem;">(Bill Credit Profit)</p>
+                                    </div>
+
+                                    <div style="background: #e0f2fe; border-radius: 10px; padding: 1rem; display: flex; gap: 0.75rem; align-items: start;">
+                                        <span style="font-size: 1.5rem;">💡</span>
+                                        <div>
+                                            <p style="font-weight: 700; color: #065f46; margin-bottom: 0.25rem;">Future VPP Potential:</p>
+                                            <p style="color: #555; font-size: 0.9rem;">Projected +$3,556/yr via grid services participation</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 3rem; padding: 2rem; background: linear-gradient(135deg, #f0fdf4 0%, #d1fae5 100%); border-radius: 15px; border: 2px solid #6ee7b7;">
+                                <p style="color: #065f46; font-size: 1.1rem; line-height: 1.8; text-align: center; margin: 0;">
+                                    The math is undeniable. Standard battery operation leaves thousands of dollars on the table every year. MicroVPP's intelligent algorithms analyze real-time rate structures, weather patterns, household consumption, and grid demand to maximize your returns—automatically. No manual intervention. No guesswork. Just results.
+                                </p>
+                            </div>
+
+                            <div style="text-align: center; margin-top: 2rem;">
+                                <a href="diy-registration-step1.html" class="btn-primary">
+                                    Check Your Battery's Potential
+                                </a>
+                                <p style="color: #666; font-size: 0.95rem; margin-top: 1rem;">Free ROI analysis. No new hardware required. See what your system could be earning.</p>
+                            </div>
+
+                            <div class="state-bubble-wrap">
+                                <button type="button" class="state-bubble" data-switch-to="texas">
+                                    <span class="state-bubble-flag">🌴</span>
+                                    Showing California case studies
+                                    <span class="state-bubble-switch">Switch to Texas →</span>
+                                </button>
+                            </div>
                         </div>
+
+                        <!-- ----- Texas panel ----- -->
+                        <div class="state-panel" data-state="texas">
+                            <div class="section-header">
+                                <h2>Real Data. Real Savings.</h2>
+                                <p style="color: #065f46; max-width: 900px; margin: 1rem auto 0;">In Texas, the same battery on two different REP plans can swing your yearly outcome by thousands. The same plan with two different dispatch strategies can swing it by thousands more. Here's what intelligent optimization looks like for real Houston households on CenterPoint, working with the major REPs.</p>
+                            </div>
+
+                            <!-- Sub-section 1: First Houston Pilot (1 case) -->
+                            <div class="case-studies-grid">
+                                <div class="case-study-featured" style="background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
+                                    <h3 style="font-size: 1.8rem; font-weight: 700; color: #065f46; margin-bottom: 0.25rem;">Case Study 1: Wrong Plan, Right Battery</h3>
+                                    <p style="color: #059669; font-weight: 700; margin-bottom: 0.5rem;">First Houston Pilot</p>
+                                    <p style="color: #666; font-style: italic; margin-bottom: 2rem;">Katy, TX • CenterPoint Territory • 10.2kW Solar + 13.5kWh Powerwall • Family of 5 + EV + Pool</p>
+
+                                    <div style="background: #f5f5f5; border-radius: 15px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                                        <h4 style="font-size: 1.2rem; font-weight: 700; color: #333; margin-bottom: 1rem;">Standard Mode (Before)</h4>
+                                        <p style="font-weight: 700; color: #333; margin-bottom: 0.5rem;">Plan: TXU "Free Nights 12" &nbsp;•&nbsp; Battery: Self-Consumption defaults</p>
+                                        <p style="color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                                            "Free Nights" sounded perfect — until the bills came in. This family uses ~70% of energy during the day (kids home, AC, pool pump), where the plan charges around <strong>$0.17/kWh</strong>. The Powerwall sat on Self-Consumption and ran flat well before the worst summer afternoons, forcing daytime grid buys. Summer bills routinely hit <strong>$280/mo</strong>.
+                                        </p>
+                                        <p style="font-weight: 700; color: #333; margin-bottom: 0.25rem;">Annual Net Result</p>
+                                        <p style="font-size: 1.5rem; font-weight: 700; color: #dc2626; margin-bottom: 0.25rem;">-$1,860 / yr</p>
+                                        <p style="color: #666; font-size: 0.9rem;">(Net Cost — bad plan + idle battery)</p>
+                                    </div>
+
+                                    <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 15px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                                        <h4 style="font-size: 1.2rem; font-weight: 700; color: #333; margin-bottom: 1rem;">MicroVPP Mode (After)</h4>
+                                        <p style="font-weight: 700; color: #333; margin-bottom: 0.5rem;">Plan: Same TXU "Free Nights 12" &nbsp;•&nbsp; Battery: Load-Shift + Peak-Targeted Discharge</p>
+                                        <p style="color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                                            MicroVPP shifted EV charging and the pool pump entirely into the free overnight window, charged the Powerwall from solar by 11am, then discharged it hard from 4–9pm to cover the family's peak. <strong>Same REP, same plan, same battery</strong> — summer bills dropped from $280/mo to ~$95/mo through software alone.
+                                        </p>
+                                        <p style="font-weight: 700; color: #333; margin-bottom: 0.25rem;">Annual Net Result</p>
+                                        <p style="font-size: 1.5rem; font-weight: 700; color: #059669; margin-bottom: 0.25rem;">-$420 / yr</p>
+                                        <p style="color: #666; font-size: 0.9rem;">Software-Automated Savings: <strong style="color:#059669;">+$1,440 / yr</strong></p>
+                                    </div>
+
+                                    <div style="background: #e0f2fe; border-radius: 10px; padding: 1rem; display: flex; gap: 0.75rem; align-items: start;">
+                                        <span style="font-size: 1.5rem;">💡</span>
+                                        <div>
+                                            <p style="font-weight: 700; color: #065f46; margin-bottom: 0.25rem;">Even Bigger Upside Available:</p>
+                                            <p style="color: #555; font-size: 0.9rem;">Switching to a TOU plan that matches this load shape could layer on another ~$500/yr. See Case Study 2 →</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sub-section 2: Computational Estimates (1 case for TX) -->
+                            <h3 style="text-align: center; font-size: 1.6rem; font-weight: 700; color: #065f46; margin: 3rem auto 0.5rem; max-width: 800px;">What Could Your System Earn? (Computational Estimates)</h3>
+                            <p style="text-align: center; color: #666; font-size: 1rem; margin: 0 auto 3rem; max-width: 820px;">
+                                Computed against each household's actual usage and solar curves, then run against every REP plan available in their ZIP code. Texas's deregulated market is the second lever: picking the right plan for your load shape can match — or exceed — the gains from smart battery dispatch alone.
+                            </p>
+
+                            <div class="case-studies-grid">
+                                <div class="case-study-featured" style="background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
+                                    <h3 style="font-size: 1.8rem; font-weight: 700; color: #065f46; margin-bottom: 0.5rem;">Case Study 2: REP Match + Smart Dispatch</h3>
+                                    <p style="color: #666; font-style: italic; margin-bottom: 2rem;">Sugar Land, TX • CenterPoint Territory • 12kW Solar + 27kWh Powerwall (2x) • Heavy AC + Pool + Tesla</p>
+
+                                    <div style="background: #f5f5f5; border-radius: 15px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                                        <h4 style="font-size: 1.2rem; font-weight: 700; color: #333; margin-bottom: 1rem;">Standard Mode (Before)</h4>
+                                        <p style="font-weight: 700; color: #333; margin-bottom: 0.5rem;">Plan: Generic 14.5¢/kWh fixed rate &nbsp;•&nbsp; Battery: Self-Powered mode</p>
+                                        <p style="color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                                            A generic fixed-rate plan with the battery on "Self-Powered" — the default for many Texas installers. With heavy summer AC and pool loads, the home barely broke even: small positive months in spring and fall, deep negative months in July and August.
+                                        </p>
+                                        <p style="font-weight: 700; color: #333; margin-bottom: 0.25rem;">Annual Net Result</p>
+                                        <p style="font-size: 1.5rem; font-weight: 700; color: #6b7280; margin-bottom: 0.25rem;">+$120 / yr</p>
+                                        <p style="color: #666; font-size: 0.9rem;">(Near break-even)</p>
+                                    </div>
+
+                                    <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 15px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                                        <h4 style="font-size: 1.2rem; font-weight: 700; color: #333; margin-bottom: 1rem;">MicroVPP Mode (After)</h4>
+                                        <p style="font-weight: 700; color: #333; margin-bottom: 0.5rem;">Plan: Octopus Intelligent (TOU) &nbsp;•&nbsp; Battery: Plan-Aware Dispatch</p>
+                                        <p style="color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                                            Our AI compared <strong>40+ plans available at this ZIP code</strong> against the family's real load and solar curves. It recommended Octopus Energy's Intelligent plan, then dispatched both Powerwalls to charge during cheap overnight wind hours and discharge during 4–7pm scarcity events when ERCOT prices spike.
+                                        </p>
+                                        <p style="font-weight: 700; color: #333; margin-bottom: 0.25rem;">Annual Net Result</p>
+                                        <p style="font-size: 1.5rem; font-weight: 700; color: #059669; margin-bottom: 0.25rem;">+$1,920 / yr</p>
+                                        <p style="color: #666; font-size: 0.9rem;">(Bill Credit Profit — plan switch + smart dispatch)</p>
+                                    </div>
+
+                                    <div style="background: #e0f2fe; border-radius: 10px; padding: 1rem; display: flex; gap: 0.75rem; align-items: start;">
+                                        <span style="font-size: 1.5rem;">💡</span>
+                                        <div>
+                                            <p style="font-weight: 700; color: #065f46; margin-bottom: 0.25rem;">Future VPP Potential:</p>
+                                            <p style="color: #555; font-size: 0.9rem;">ERCOT ADER pilots and CenterPoint resilience programs could add an estimated +$800/yr in ancillary service payments.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 3rem; padding: 2rem; background: linear-gradient(135deg, #f0fdf4 0%, #fef3c7 100%); border-radius: 15px; border: 2px solid #fcd34d;">
+                                <p style="color: #065f46; font-size: 1.1rem; line-height: 1.8; text-align: center; margin: 0;">
+                                    In Texas, you have two levers: <strong>which REP plan you sign</strong> and <strong>how your battery runs against it</strong>. Pull both at once and the swing is thousands per year. MicroVPP's algorithms compare every plan in your ZIP code against your real usage, recommend the best fit, then dispatch your battery to win on it — automatically.
+                                </p>
+                            </div>
+
+                            <div style="text-align: center; margin-top: 2rem;">
+                                <a href="diy-registration-step1.html" class="btn-primary">
+                                    Check Your Battery's Potential
+                                </a>
+                                <p style="color: #666; font-size: 0.95rem; margin-top: 1rem;">Free analysis. Just tell us your REP and your ZIP — we'll handle the rest.</p>
+                            </div>
+
+                            <div class="state-bubble-wrap">
+                                <button type="button" class="state-bubble" data-switch-to="california">
+                                    <span class="state-bubble-flag">🤠</span>
+                                    Showing Texas case studies
+                                    <span class="state-bubble-switch">← Switch to California</span>
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- Bottom Summary -->
-            <div style="margin-top: 3rem; padding: 2rem; background: linear-gradient(135deg, #f0fdf4 0%, #d1fae5 100%); border-radius: 15px; border: 2px solid #6ee7b7;">
-                <p style="color: #065f46; font-size: 1.1rem; line-height: 1.8; text-align: center; margin: 0;">
-                    The math is undeniable. Standard battery operation leaves thousands of dollars on the table every year. MicroVPP's intelligent algorithms analyze real-time rate structures, weather patterns, household consumption, and grid demand to maximize your returns—automatically. No manual intervention. No guesswork. Just results.
-                </p>
-            </div>
-
-            <!-- CTA Button -->
-            <div style="text-align: center; margin-top: 2rem;">
-                <a href="diy-registration-step1.html" class="btn-primary">
-                    Check Your Battery's Potential
-                </a>
-                <p style="color: #666; font-size: 0.95rem; margin-top: 1rem;">Free ROI analysis. No new hardware required. See what your system could be earning.</p>
-            </div>
-        </div>
-    </section>
+        <!-- Floating side arrows — single set, controls both sliding sections -->
+        <button type="button" class="state-arrow state-arrow-left" id="stateArrowLeft" aria-label="Switch state">
+            ‹
+            <span class="state-arrow-tip" id="stateArrowLeftTip">California</span>
+        </button>
+        <button type="button" class="state-arrow state-arrow-right" id="stateArrowRight" aria-label="Switch state">
+            ›
+            <span class="state-arrow-tip" id="stateArrowRightTip">Texas</span>
+        </button>
+    </div>
 
 
 
@@ -2227,7 +2646,7 @@
     <div class="sticky-cta-bar">
         <div class="cta-bar-content" style="justify-content: flex-end;">
             <div class="cta-bar-buttons">
-                <a href="diy-registration-step1.html" class="cta-bar-primary">Start Free — California First</a>
+                <a href="diy-registration-step1.html" class="cta-bar-primary" id="stickyCtaBtn">Start Free — California First</a>
             </div>
         </div>
     </div>
@@ -2357,6 +2776,221 @@
                     });
                 } catch (_) { /* swallow */ }
             }, true);
+        })();
+    </script>
+
+    <!-- State Selector: California / Texas -->
+    <script>
+        (function () {
+            var STORAGE_KEY = 'microvpp_state';
+            var VALID_STATES = ['california', 'texas'];
+
+            // Copy that changes per state across the page
+            var STATE_COPY = {
+                california: {
+                    flag: '🌴',
+                    label: 'California',
+                    navLink: 'California (NEM 3.0)',
+                    heroCta: 'Start Free — California First',
+                    headerCta: 'Start Free',
+                    stickyCta: 'Start Free — California First'
+                },
+                texas: {
+                    flag: '🤠',
+                    label: 'Texas',
+                    navLink: 'Texas (ERCOT)',
+                    heroCta: 'Start Free — Houston First',
+                    headerCta: 'Start Free',
+                    stickyCta: 'Start Free — Houston First'
+                }
+            };
+
+            // ZIP-prefix → state map for quick US-zip inference
+            // (covers the obvious bulk; we still fall back to other signals)
+            var TEXAS_ZIP_PREFIXES = ['75','76','77','78','79'];
+            var CALIFORNIA_ZIP_PREFIXES = ['90','91','92','93','94','95','96'];
+
+            var wrapper       = document.getElementById('stateSections');
+            var navStateLink  = document.getElementById('navStateLink');
+            var heroCtaBtn    = document.getElementById('heroCtaBtn');
+            var headerCtaBtn  = document.getElementById('headerCtaBtn');
+            var stickyCtaBtn  = document.getElementById('stickyCtaBtn');
+            var arrowLeft     = document.getElementById('stateArrowLeft');
+            var arrowRight    = document.getElementById('stateArrowRight');
+            var arrowLeftTip  = document.getElementById('stateArrowLeftTip');
+            var arrowRightTip = document.getElementById('stateArrowRightTip');
+            var toggleBtns    = document.querySelectorAll('.state-toggle-btn');
+            var bubbleBtns    = document.querySelectorAll('.state-bubble');
+
+            if (!wrapper) return;
+
+            var currentState = 'california';
+            var userPicked   = false; // becomes true once the user makes any explicit choice
+
+            // ---------- State application ----------
+            function setState(next, opts) {
+                opts = opts || {};
+                if (VALID_STATES.indexOf(next) === -1) return;
+                currentState = next;
+                wrapper.setAttribute('data-state', next);
+
+                // Header toggle pills
+                toggleBtns.forEach(function (btn) {
+                    var isActive = btn.getAttribute('data-state') === next;
+                    btn.classList.toggle('active', isActive);
+                    btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                });
+
+                // Navigation link label
+                if (navStateLink) {
+                    navStateLink.textContent = STATE_COPY[next].navLink;
+                }
+
+                // CTA button text (state-specific)
+                if (heroCtaBtn)   heroCtaBtn.textContent   = STATE_COPY[next].heroCta;
+                if (stickyCtaBtn) stickyCtaBtn.textContent = STATE_COPY[next].stickyCta;
+                // headerCtaBtn intentionally stays compact ("Start Free")
+
+                // Update arrow tips (always show "switch to other state")
+                var other = (next === 'california') ? 'texas' : 'california';
+                if (arrowLeftTip)  arrowLeftTip.textContent  = STATE_COPY[other].label;
+                if (arrowRightTip) arrowRightTip.textContent = STATE_COPY[other].label;
+
+                // Persist explicit user choice
+                if (opts.persist) {
+                    userPicked = true;
+                    try { localStorage.setItem(STORAGE_KEY, next); } catch (_) { /* noop */ }
+                }
+
+                // Analytics
+                if (typeof gtag === 'function' && opts.source) {
+                    gtag('event', 'state_switch', {
+                        event_category: 'engagement',
+                        event_label: next,
+                        source: opts.source
+                    });
+                }
+            }
+
+            // ---------- Click handlers ----------
+            toggleBtns.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    setState(btn.getAttribute('data-state'), {
+                        persist: true,
+                        source: 'header_toggle'
+                    });
+                });
+            });
+
+            bubbleBtns.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    setState(btn.getAttribute('data-switch-to'), {
+                        persist: true,
+                        source: 'bubble'
+                    });
+                });
+            });
+
+            function switchToOther(source) {
+                var next = (currentState === 'california') ? 'texas' : 'california';
+                setState(next, { persist: true, source: source });
+            }
+            if (arrowLeft)  arrowLeft.addEventListener('click',  function () { switchToOther('arrow_left');  });
+            if (arrowRight) arrowRight.addEventListener('click', function () { switchToOther('arrow_right'); });
+
+            // Keyboard shortcut: left/right arrows when wrapper is visible
+            document.addEventListener('keydown', function (e) {
+                if (e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+                if (!arrowLeft || !arrowLeft.classList.contains('visible')) return;
+                if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                    switchToOther('keyboard');
+                }
+            });
+
+            // ---------- Arrow visibility: only while state-aware sections are in view ----------
+            if ('IntersectionObserver' in window) {
+                var io = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        var show = entry.isIntersecting;
+                        if (arrowLeft)  arrowLeft.classList.toggle('visible', show);
+                        if (arrowRight) arrowRight.classList.toggle('visible', show);
+                    });
+                }, { rootMargin: '-10% 0px -10% 0px', threshold: 0 });
+                io.observe(wrapper);
+            } else {
+                if (arrowLeft)  arrowLeft.classList.add('visible');
+                if (arrowRight) arrowRight.classList.add('visible');
+            }
+
+            // ---------- State detection ----------
+            function detectFromTimezone() {
+                try {
+                    var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+                    // Texas spans mostly America/Chicago (and El Paso = America/Denver).
+                    // California is America/Los_Angeles.
+                    if (/Chicago|Houston|Dallas|Austin|San_Antonio|Matamoros/i.test(tz)) {
+                        return 'texas';
+                    }
+                    if (/Los_Angeles|Tijuana/i.test(tz)) {
+                        return 'california';
+                    }
+                } catch (_) { /* noop */ }
+                return null;
+            }
+
+            function detectFromZip(zip) {
+                if (!zip) return null;
+                var p = String(zip).slice(0, 2);
+                if (TEXAS_ZIP_PREFIXES.indexOf(p) !== -1) return 'texas';
+                if (CALIFORNIA_ZIP_PREFIXES.indexOf(p) !== -1) return 'california';
+                return null;
+            }
+
+            function detectFromRegion(region) {
+                if (!region) return null;
+                var r = String(region).toLowerCase();
+                if (r === 'tx' || r === 'texas') return 'texas';
+                if (r === 'ca' || r === 'california') return 'california';
+                return null;
+            }
+
+            // Async IP-geo refinement (no permission required, ~1 request)
+            function refineFromIpGeo() {
+                if (userPicked) return; // never override explicit choice
+                if (!window.fetch) return;
+                try {
+                    fetch('https://ipapi.co/json/', { cache: 'no-store' })
+                        .then(function (r) { return r.ok ? r.json() : null; })
+                        .then(function (data) {
+                            if (!data || userPicked) return;
+                            // Only refine inside the US
+                            if (data.country_code && data.country_code !== 'US') return;
+                            var guess =
+                                detectFromRegion(data.region_code || data.region) ||
+                                detectFromZip(data.postal);
+                            if (guess && guess !== currentState) {
+                                setState(guess, { persist: false, source: 'ip_geo' });
+                            }
+                        })
+                        .catch(function () { /* offline / blocked / rate-limited — ignore */ });
+                } catch (_) { /* noop */ }
+            }
+
+            // ---------- Boot ----------
+            var initial = 'california';
+            try {
+                var stored = localStorage.getItem(STORAGE_KEY);
+                if (stored && VALID_STATES.indexOf(stored) !== -1) {
+                    initial = stored;
+                    userPicked = true;
+                } else {
+                    var tzGuess = detectFromTimezone();
+                    if (tzGuess) initial = tzGuess;
+                }
+            } catch (_) { /* noop */ }
+
+            setState(initial, { persist: false });
+            refineFromIpGeo();
         })();
     </script>
 </body>
