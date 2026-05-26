@@ -1698,6 +1698,10 @@
             flex: 0 0 50%;
             width: 50%;
             min-width: 0;
+            /* Clip each panel at its own boundary so adjacent-panel
+               content (e.g. card box-shadows extending past the panel's
+               right edge) cannot bleed into the visible panel. */
+            overflow: hidden;
         }
 
         .state-sections-wrapper[data-state="texas"] .state-track {
@@ -1870,7 +1874,7 @@
             <div class="header-buttons">
                 <div class="state-toggle" role="tablist" aria-label="Select your state">
                     <button type="button" class="state-toggle-btn active" data-state="california" role="tab" aria-selected="true">
-                        <span class="state-toggle-flag">🌴</span>
+                        <span class="state-toggle-flag">☀️</span>
                         <span class="state-toggle-label">California</span>
                     </button>
                     <button type="button" class="state-toggle-btn" data-state="texas" role="tab" aria-selected="false">
@@ -2701,7 +2705,7 @@
             // Copy that changes per state across the page
             var STATE_COPY = {
                 california: {
-                    flag: '🌴',
+                    flag: '☀️',
                     label: 'California',
                     cta: 'Start Free - California'
                 },
@@ -2778,10 +2782,11 @@
                 // Resize each slider to match the active panel
                 syncSliderHeights(next);
 
-                // Persist explicit user choice
+                // Persist explicit user choice (localStorage + URL)
                 if (opts.persist) {
                     userPicked = true;
                     try { localStorage.setItem(STORAGE_KEY, next); } catch (_) { /* noop */ }
+                    syncStateToUrl(next);
                 }
 
                 // Analytics
@@ -2858,6 +2863,30 @@
                 });
             }
 
+            // ---------- URL query parameter helpers ----------
+            // Supports `?state=california|ca|cal|texas|tx|tex` (case-insensitive)
+            function parseStateFromUrl() {
+                try {
+                    var params = new URLSearchParams(window.location.search);
+                    var raw = (params.get('state') || '').trim().toLowerCase();
+                    if (!raw) return null;
+                    if (raw === 'california' || raw === 'cal' || raw === 'ca') return 'california';
+                    if (raw === 'texas'      || raw === 'tex' || raw === 'tx') return 'texas';
+                } catch (_) { /* noop */ }
+                return null;
+            }
+
+            // Sync the current state into the URL (no history entry, no scroll)
+            function syncStateToUrl(state) {
+                try {
+                    if (!window.history || !history.replaceState) return;
+                    var url = new URL(window.location.href);
+                    if (url.searchParams.get('state') === state) return;
+                    url.searchParams.set('state', state);
+                    history.replaceState(null, '', url.toString());
+                } catch (_) { /* noop */ }
+            }
+
             // ---------- State detection ----------
             function detectFromTimezone() {
                 try {
@@ -2913,19 +2942,31 @@
             }
 
             // ---------- Boot ----------
+            // Priority: URL param  >  localStorage  >  timezone  >  default(CA)
             var initial = 'california';
+            var bootFromUrl = false;
             try {
-                var stored = localStorage.getItem(STORAGE_KEY);
-                if (stored && VALID_STATES.indexOf(stored) !== -1) {
-                    initial = stored;
-                    userPicked = true;
+                var urlState = parseStateFromUrl();
+                if (urlState) {
+                    initial = urlState;
+                    bootFromUrl = true;
                 } else {
-                    var tzGuess = detectFromTimezone();
-                    if (tzGuess) initial = tzGuess;
+                    var stored = localStorage.getItem(STORAGE_KEY);
+                    if (stored && VALID_STATES.indexOf(stored) !== -1) {
+                        initial = stored;
+                        userPicked = true;
+                    } else {
+                        var tzGuess = detectFromTimezone();
+                        if (tzGuess) initial = tzGuess;
+                    }
                 }
             } catch (_) { /* noop */ }
 
-            setState(initial, { persist: false });
+            // URL-driven boot is an explicit choice → persist & canonicalize URL
+            setState(initial, bootFromUrl
+                ? { persist: true,  source: 'url_param' }
+                : { persist: false });
+
             refineFromIpGeo();
         })();
     </script>
