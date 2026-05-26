@@ -1661,13 +1661,27 @@
             line-height: 1;
         }
 
+        /* Short label (CA / TX) is hidden by default — only used on narrow viewports. */
+        .state-toggle-label-short {
+            display: none;
+            letter-spacing: 0.02em;
+        }
+
         @media (max-width: 640px) {
             .state-toggle-btn {
-                padding: 0.35rem 0.6rem;
-                font-size: 0.72rem;
+                padding: 0.35rem 0.55rem;
+                font-size: 0.75rem;
+                gap: 0.3rem;
             }
+            /* On phones, swap the full label for the abbreviated one
+               (e.g. "California" → "CA") so users can still tell which
+               state is selected without bloating the header. */
             .state-toggle-btn .state-toggle-label {
                 display: none;
+            }
+            .state-toggle-btn .state-toggle-label-short {
+                display: inline;
+                font-weight: 700;
             }
         }
 
@@ -1876,10 +1890,12 @@
                     <button type="button" class="state-toggle-btn active" data-state="california" role="tab" aria-selected="true">
                         <span class="state-toggle-flag">☀️</span>
                         <span class="state-toggle-label">California</span>
+                        <span class="state-toggle-label-short">CA</span>
                     </button>
                     <button type="button" class="state-toggle-btn" data-state="texas" role="tab" aria-selected="false">
                         <span class="state-toggle-flag">🤠</span>
                         <span class="state-toggle-label">Texas</span>
+                        <span class="state-toggle-label-short">TX</span>
                     </button>
                 </div>
                 <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
