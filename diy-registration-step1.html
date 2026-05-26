@@ -879,6 +879,10 @@
             cursor: progress;
         }
     </style>
+
+    <!-- Shared state-context module: hydrates window.MicroVppState,
+         the in-header state badge, and cleans up legacy nav links. -->
+    <script src="assets/js/state-context.js"></script>
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
@@ -902,6 +906,12 @@
                 <li><a href="about.html">About</a></li>
             </ul>
             <div class="header-buttons">
+                <!-- State context badge: shows California/Texas selection
+                     from the home page. Hydrated by state-context.js. -->
+                <a href="index.html" class="state-badge" id="microvppStateBadge" data-state="california">
+                    <span class="state-badge-flag">☀️</span>
+                    <span class="state-badge-label">California</span>
+                </a>
                 <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
                 <a href="#" onclick="checkInvitationCode(event)" class="cta-button-outline">Download App</a>
             </div>

@@ -825,6 +825,10 @@
             }
         }
     </style>
+
+    <!-- Shared state-context module: hydrates window.MicroVppState,
+         the in-header state badge, and cleans up legacy nav links. -->
+    <script src="assets/js/state-context.js"></script>
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
@@ -848,6 +852,12 @@
                 <li><a href="about.html">About</a></li>
             </ul>
             <div class="header-buttons">
+                <!-- State context badge: shows California/Texas selection
+                     from the home page. Hydrated by state-context.js. -->
+                <a href="index.html" class="state-badge" id="microvppStateBadge" data-state="california">
+                    <span class="state-badge-flag">☀️</span>
+                    <span class="state-badge-label">California</span>
+                </a>
                 <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
                 <a href="diy-registration-step1.html" class="cta-button hide-mobile">Start Free</a>
                 <a href="#" onclick="checkInvitationCode(event)" class="cta-button-outline">Download App</a>
@@ -909,23 +919,27 @@
                             <label for="state">State</label>
                             <select id="state" name="state">
                                 <option value="">Select State</option>
+                                <!-- California is the default selected option as
+                                     a safety net for no-JS scenarios. The state
+                                     -context module overrides this with the
+                                     user's actual selection on load. -->
                                 <option value="California" selected>California</option>
+                                <option value="Texas">Texas</option>
                             </select>
                         </div>
                     </div>
 
+                    <!-- Utility / REP dropdown — populated dynamically by
+                         state-context.js based on the selected state:
+                          - California → CA utilities (PG&E, SCE, SDG&E, ...)
+                          - Texas      → Houston REPs (TXU, Reliant, Octopus, ...)
+                         The label and help text below also swap per state. -->
                     <div class="form-group full-width">
-                        <label for="utilityCompany">Utility Company</label>
+                        <label for="utilityCompany" id="utilityCompanyLabel">Utility Company</label>
                         <select id="utilityCompany" name="utilityCompany">
                             <option value="">Select Utility Company (optional)</option>
-                            <option value="PG&E">Pacific Gas & Electric (PG&E)</option>
-                            <option value="SCE">Southern California Edison (SCE)</option>
-                            <option value="SDG&E">San Diego Gas & Electric (SDG&E)</option>
-                            <option value="SMUD">Sacramento Municipal Utility District (SMUD)</option>
-                            <option value="LADWP">Los Angeles Department of Water and Power (LADWP)</option>
-                            <option value="Other">Other Utility</option>
                         </select>
-                        <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Used for tariff and NEM 3.0 calculations.</small>
+                        <small id="utilityCompanyHelp" style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Used for tariff and NEM 3.0 calculations.</small>
                     </div>
 
                     <!-- Provide Your Energy Usage — pick at least one option -->
@@ -1715,8 +1729,10 @@
                     if (step2Data.phone) document.getElementById('phone').value = step2Data.phone;
                     if (step2Data.address) document.getElementById('address').value = step2Data.address;
                     if (step2Data.city) document.getElementById('city').value = step2Data.city;
-                    if (step2Data.state) document.getElementById('state').value = step2Data.state;
-                    if (step2Data.utilityCompany) document.getElementById('utilityCompany').value = step2Data.utilityCompany;
+                    // State + utility company are pre-filled below in the
+                    // state-context wiring block (utility options are
+                    // populated dynamically per state, so we must wait
+                    // until those options exist before selecting one).
                     if (step2Data.termsAccepted) document.getElementById('termsAccepted').checked = step2Data.termsAccepted;
 
                     // Pre-fill any usage values previously entered on this page.
@@ -1731,7 +1747,81 @@
                 }
             }
         });
-        
+
+        // ============================================
+        // STATE-CONTEXT WIRING (California / Texas)
+        // ============================================
+        // Connect the home-page state selection (window.MicroVppState,
+        // backed by localStorage) to the Step 2 form:
+        //  - Pre-populate the State dropdown from MicroVppState or saved data
+        //  - Populate the Utility/REP dropdown dynamically per state
+        //    (CA → IOUs, TX → Houston REPs)
+        //  - Mirror form-state changes back to MicroVppState so the home
+        //    page badge and localStorage stay in sync.
+        //
+        // Multiple DOMContentLoaded handlers run in registration order,
+        // so this one fires *after* the standard pre-fill above.
+        document.addEventListener('DOMContentLoaded', function () {
+            if (!window.MicroVppState) return; // module didn't load — fail safely
+
+            var stateSelect   = document.getElementById('state');
+            var utilitySelect = document.getElementById('utilityCompany');
+
+            // Recover any previously saved Step 2 utility choice.
+            var saved = null;
+            try {
+                var raw = sessionStorage.getItem('registrationStep2');
+                if (raw) saved = JSON.parse(raw);
+            } catch (_) { /* noop */ }
+            var savedState   = saved && MicroVppState.normalize(saved.state);
+            var savedUtility = (saved && saved.utilityCompany) || null;
+
+            // Effective state for the form: saved form value wins (returning
+            // user); otherwise the cross-page state from MicroVppState.
+            var currentState = savedState || MicroVppState.state;
+
+            // If the saved form state differs from the global state, sync
+            // the global state so the header badge + localStorage update.
+            if (savedState && savedState !== MicroVppState.state) {
+                MicroVppState.set(savedState);
+            }
+
+            // Sync the form's State dropdown.
+            if (stateSelect) {
+                stateSelect.value = MicroVppState.displayNameOf(currentState);
+            }
+
+            // Populate the Utility / REP dropdown for the current state.
+            if (utilitySelect) {
+                MicroVppState.populateUtilitySelect(utilitySelect, savedUtility, { state: currentState });
+                MicroVppState.updateUtilityFieldMeta(currentState);
+            }
+
+            // When the user changes the State dropdown in the form,
+            // propagate the change to MicroVppState. The onChange listener
+            // below then re-populates the utility dropdown.
+            if (stateSelect) {
+                stateSelect.addEventListener('change', function () {
+                    var n = MicroVppState.normalize(stateSelect.value);
+                    if (n) MicroVppState.set(n);
+                });
+            }
+
+            // React to any state change (form dropdown, URL refresh, etc.):
+            // mirror it into the form fields and rebuild the utility list.
+            MicroVppState.onChange(function (nextState) {
+                if (stateSelect) {
+                    stateSelect.value = MicroVppState.displayNameOf(nextState);
+                }
+                if (utilitySelect) {
+                    // Reset the selection — the previous utility likely
+                    // doesn't exist in the new state's option list.
+                    MicroVppState.populateUtilitySelect(utilitySelect, null, { state: nextState });
+                    MicroVppState.updateUtilityFieldMeta(nextState);
+                }
+            });
+        });
+
         // Update existing user profile (Step 2 - when returning from later steps)
         async function updateProfileStep1(step2Data, filesData, step1Data) {
             try {
