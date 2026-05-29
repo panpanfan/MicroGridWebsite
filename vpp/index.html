@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-T2CN68FF');</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-05XLDKW0MN"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-05XLDKW0MN');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join the Grid Support Program | MicroVPP</title>
+    <meta name="description" content="Enroll your home solar battery in the MicroVPP Grid Support Program. Help stabilize the grid and earn from every dispatch." />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="theme-color" content="#065f46" />
+    <link rel="canonical" href="https://www.microvpp.com/vpp/" />
+    <link rel="icon" type="image/png" href="../assets/images/microvpp_logo.png" />
+    <link rel="apple-touch-icon" href="../assets/images/microvpp_logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-green: #10B981;
+            --brand-green-dark: #065f46;
+            --brand-green-medium: #059669;
+            --brand-green-darker: #047857;
+            --brand-gold: #F59E0B;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+            background: #f8fafc;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.15);
+        }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; text-decoration: none; }
+        .logo img { height: 50px; width: auto; }
+        .nav-links { display: flex; list-style: none; gap: 2rem; }
+        .nav-links a {
+            text-decoration: none; color: #333; font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover { color: var(--brand-green); }
+        .header-buttons { display: flex; align-items: center; gap: 12px; }
+        .cta-button-outline {
+            background: transparent; color: var(--brand-green);
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--brand-green);
+            border-radius: 12px;
+            font-weight: 600; font-size: 0.875rem;
+            text-decoration: none; transition: all 0.3s ease;
+            cursor: pointer; display: inline-flex; align-items: center;
+        }
+        .cta-button-outline:hover { background: rgba(16, 185, 129, 0.05); }
+
+        /* Hero */
+        .vpp-hero {
+            padding: 140px 0 40px;
+            background: linear-gradient(135deg, #065f46 0%, #047857 50%, #059669 100%);
+            color: white;
+            text-align: center;
+        }
+        .vpp-hero h1 {
+            font-size: 2.5rem; font-weight: 700;
+            margin-bottom: 1rem; line-height: 1.2;
+        }
+        .vpp-hero p {
+            font-size: 1.15rem; max-width: 740px;
+            margin: 0 auto; opacity: 0.95;
+        }
+        .vpp-hero .hero-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: rgba(245, 158, 11, 0.18);
+            color: #fde68a;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-radius: 999px;
+            font-size: 0.85rem; font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* Sign-up section */
+        .signup-section { padding: 40px 0 80px; }
+        .form-container {
+            max-width: 820px; margin: 0 auto;
+            background: white; padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+        .section-header { text-align: center; margin-bottom: 2rem; }
+        .section-header h2 {
+            font-size: 1.75rem; font-weight: 700;
+            color: #1f2937; margin-bottom: 0.5rem;
+        }
+        .section-header p { font-size: 1rem; color: #6b7280; }
+
+        /* Account context card (read-only summary of what we know about you) */
+        .account-card {
+            background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+            border: 2px solid #10B981;
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .account-card .account-title {
+            font-size: 0.85rem; font-weight: 700;
+            color: #047857; text-transform: uppercase;
+            letter-spacing: 0.05em; margin-bottom: 0.6rem;
+        }
+        .account-card dl {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 0.4rem 1rem;
+            font-size: 0.95rem;
+        }
+        .account-card dt { color: #065f46; font-weight: 600; }
+        .account-card dd { color: #1f2937; word-break: break-word; }
+        .account-card code {
+            font-family: 'Inter', monospace;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 1px 5px; border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        /* Agreement card */
+        .agreement-card {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.5rem 1.75rem;
+            margin-bottom: 2rem;
+        }
+        .agreement-card .agreement-title {
+            font-size: 1rem; font-weight: 700;
+            color: #047857; text-transform: uppercase;
+            letter-spacing: 0.05em; margin-bottom: 0.5rem;
+        }
+        .agreement-card h3 {
+            font-size: 1.4rem; color: #1f2937; margin-bottom: 1rem;
+        }
+        .agreement-scroll {
+            max-height: 360px; overflow-y: auto;
+            padding-right: 0.75rem;
+            border-top: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
+            padding-top: 1rem; padding-bottom: 1rem;
+        }
+        .agreement-scroll h4 {
+            font-size: 0.95rem; color: #065f46;
+            margin: 1.1rem 0 0.4rem;
+        }
+        .agreement-scroll h4:first-child { margin-top: 0; }
+        .agreement-scroll p,
+        .agreement-scroll li {
+            font-size: 0.92rem; color: #374151; line-height: 1.7;
+        }
+        .agreement-scroll ul { margin: 0.3rem 0 0.6rem 1.25rem; }
+        .agreement-meta {
+            margin-top: 0.75rem;
+            font-size: 0.8rem; color: #6b7280;
+        }
+
+        /* Tesla-specific helper */
+        .tesla-banner {
+            display: none;
+            margin: 0 0 1.25rem;
+            padding: 1rem 1.25rem;
+            background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+            border: 2px solid #10B981;
+            border-radius: 10px;
+            color: #065f46; font-size: 0.92rem;
+        }
+        .tesla-banner.is-visible { display: block; }
+        .tesla-banner strong { color: #047857; }
+
+        /* Consent checkboxes */
+        .consent-box {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.2s ease, background 0.2s ease;
+        }
+        .consent-box.is-required-tesla { display: none; }
+        .consent-box.is-required-tesla.is-visible { display: block; }
+        .consent-box.is-checked {
+            border-color: #10B981;
+            background: #f0fdf4;
+        }
+        .consent-row { display: flex; align-items: flex-start; gap: 0.75rem; }
+        .consent-row input[type="checkbox"] {
+            width: 20px; height: 20px;
+            margin-top: 2px;
+            accent-color: #059669;
+            flex-shrink: 0; cursor: pointer;
+        }
+        .consent-row label {
+            font-size: 0.92rem; color: #374151;
+            line-height: 1.55; cursor: pointer;
+        }
+        .consent-row label strong { color: #065f46; }
+        .consent-row code {
+            font-family: inherit;
+            background: rgba(16, 185, 129, 0.12);
+            padding: 1px 6px; border-radius: 4px;
+            font-size: 0.85rem; color: #065f46;
+        }
+
+        /* Submit */
+        .submit-btn {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.05rem; font-weight: 600;
+            cursor: pointer; transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+        }
+        .submit-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+        }
+        .submit-btn:disabled {
+            background: #9ca3af; cursor: not-allowed;
+            box-shadow: none; transform: none;
+        }
+        .submit-btn.is-tesla {
+            background: linear-gradient(135deg, #cc0000 0%, #8b0000 100%);
+            box-shadow: 0 4px 15px rgba(204, 0, 0, 0.3);
+        }
+        .submit-btn.is-tesla:hover:not(:disabled) {
+            background: linear-gradient(135deg, #b30000 0%, #6b0000 100%);
+            box-shadow: 0 6px 20px rgba(204, 0, 0, 0.4);
+        }
+        .submit-help {
+            text-align: center; margin-top: 0.85rem;
+            color: #6b7280; font-size: 0.88rem;
+        }
+
+        /* Status banner */
+        .status-banner {
+            display: none;
+            margin-top: 1.25rem;
+            padding: 1rem 1.25rem;
+            border-radius: 10px;
+            font-size: 0.93rem; line-height: 1.5;
+        }
+        .status-banner.is-visible { display: block; }
+        .status-banner.status-error {
+            background: #fef2f2;
+            border: 2px solid #fca5a5;
+            color: #991b1b;
+        }
+        .status-banner.status-success {
+            background: #f0fdf4;
+            border: 2px solid #10B981;
+            color: #065f46;
+        }
+        .status-banner a { color: inherit; text-decoration: underline; }
+
+        /* Benefits strip */
+        .benefits-strip {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .benefit {
+            background: #f0fdf4;
+            border: 1px solid #d1fae5;
+            border-radius: 10px;
+            padding: 0.85rem 1rem;
+            text-align: center;
+        }
+        .benefit .icon { font-size: 1.4rem; }
+        .benefit .label {
+            display: block; font-weight: 700;
+            color: #065f46; font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+        .benefit .desc {
+            display: block; color: #4b5563;
+            font-size: 0.78rem; margin-top: 0.2rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #0b1220;
+            color: #e5e7eb;
+            padding: 2.5rem 0 1.5rem;
+        }
+        .footer-content {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 1rem;
+            text-align: center;
+        }
+        .footer-brand { display: flex; align-items: center; gap: 0.5rem; }
+        .footer-logo-title { font-weight: 700; font-size: 1.2rem; color: white; }
+        .footer-logo-subtitle { font-size: 0.8rem; color: #9ca3af; }
+        .footer-tagline { color: #9ca3af; font-size: 0.95rem; }
+        .footer-nav {
+            display: flex; gap: 1.5rem;
+            flex-wrap: wrap; justify-content: center;
+        }
+        .footer-nav a { color: #d1d5db; text-decoration: none; font-size: 0.9rem; }
+        .footer-nav a:hover { color: var(--brand-green); }
+        .footer-copyright {
+            margin-top: 1.5rem; padding-top: 1.25rem;
+            border-top: 1px solid #1f2937;
+            text-align: center;
+            color: #6b7280; font-size: 0.82rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .vpp-hero h1 { font-size: 1.85rem; }
+            .form-container { padding: 1.75rem 1.25rem; margin: 0 0.75rem; }
+            .benefits-strip { grid-template-columns: 1fr; }
+            .account-card dl {
+                grid-template-columns: 1fr;
+                gap: 0.1rem 0;
+            }
+            .account-card dt { margin-top: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T2CN68FF"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <a href="../index.html" class="logo">
+                <img src="../assets/images/microgrid_logo.png" alt="MicroGrid"
+                     onerror="this.onerror=null;this.src='../assets/images/microvpp_logo.png';">
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../index.html#join-movement">How It Works</a></li>
+                <li><a href="../index.html#faq">FAQ</a></li>
+                <li><a href="../about.html">About</a></li>
+            </ul>
+            <div class="header-buttons">
+                <a href="../index.html" class="cta-button-outline">Back to Home</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="vpp-hero">
+        <div class="container">
+            <span class="hero-badge">⚡ MicroVPP Grid Support Program</span>
+            <h1>Sign in. Sign the agreement. You're enrolled.</h1>
+            <p>
+                Your battery's backup reserve is already protected by our optimizer,
+                so all we need from you here is your signature. Tesla Powerwall owners
+                authorize the Fleet API in one extra step.
+            </p>
+        </div>
+    </section>
+
+    <!-- Sign-up Form -->
+    <section class="signup-section">
+        <div class="container">
+            <div class="form-container">
+
+                <div class="benefits-strip">
+                    <div class="benefit">
+                        <span class="icon">💵</span>
+                        <span class="label">Earn from every event</span>
+                        <span class="desc">Share of grid-services revenue</span>
+                    </div>
+                    <div class="benefit">
+                        <span class="icon">🔋</span>
+                        <span class="label">Backup reserve protected</span>
+                        <span class="desc">Optimizer respects your preset</span>
+                    </div>
+                    <div class="benefit">
+                        <span class="icon">🚪</span>
+                        <span class="label">Opt out anytime</span>
+                        <span class="desc">No lock-in, no penalty</span>
+                    </div>
+                </div>
+
+                <div class="section-header">
+                    <h2>Enroll Your Home Battery</h2>
+                    <p>Review the agreement below and tap the button to opt in.</p>
+                </div>
+
+                <!-- Pre-filled account context (from URL params handed off by the app) -->
+                <div class="account-card" id="accountCard">
+                    <div class="account-title">📋 You're signing in as</div>
+                    <dl>
+                        <dt>Email</dt>
+                        <dd id="ctxEmail">—</dd>
+                        <dt>Inverter / Battery</dt>
+                        <dd id="ctxBrand">—</dd>
+                        <dt>VPP Program</dt>
+                        <dd id="ctxProgram">MicroVPP Grid Support (Program #1)</dd>
+                    </dl>
+                </div>
+
+                <!-- Agreement -->
+                <div class="agreement-card">
+                    <div class="agreement-title">📄 Program Agreement</div>
+                    <h3>MicroVPP Grid Support Program — Participant Agreement</h3>
+                    <div class="agreement-scroll" id="agreementScroll">
+                        <h4>1. Parties &amp; Purpose</h4>
+                        <p>
+                            This Participant Agreement ("Agreement") is between MicroGrid LLC
+                            ("MicroGrid," "we," "us") and you ("Participant," "you"). By signing
+                            below, you agree to enroll the home battery and solar system tied to
+                            your MicroVPP account ("System") in the MicroVPP Grid Support Program
+                            ("Program"). The Program aggregates many residential batteries into a
+                            virtual power plant that helps stabilize the local grid during peak
+                            demand and emergency events.
+                        </p>
+
+                        <h4>2. How the Program Works</h4>
+                        <ul>
+                            <li>MicroGrid issues dispatch signals to your System during grid-support
+                                events (a "Dispatch") that may discharge to your home loads, export
+                                to the grid, or charge from solar/grid as appropriate.</li>
+                            <li>Dispatches only ever use the portion of your battery above the
+                                backup reserve you've already configured in your MicroVPP account.
+                                Our optimizer respects that reserve at all times.</li>
+                            <li>Typical events last 30 minutes to 4 hours. The number of events per
+                                year depends on your utility territory and grid conditions.</li>
+                            <li>You retain full ownership of your System. You may manually override
+                                or cancel any Dispatch from your inverter app at any time.</li>
+                        </ul>
+
+                        <h4>3. Authorization to Dispatch</h4>
+                        <p>
+                            You authorize MicroGrid (and its grid-services partners and utility
+                            counterparties) to send Dispatch commands to your System during the
+                            term of this Agreement, subject to the backup-reserve and override
+                            rights described above.
+                        </p>
+
+                        <h4>4. Compensation</h4>
+                        <p>
+                            MicroGrid will share grid-services revenue earned on your behalf, paid
+                            monthly via your selected payout method, subject to the rate schedule
+                            published in your MicroVPP account. Compensation depends on capacity
+                            offered, event participation, and program rules of the utility
+                            counterparty.
+                        </p>
+
+                        <h4>5. Data Access &amp; Privacy</h4>
+                        <p>
+                            To run the Program, MicroGrid must read live and historical telemetry
+                            from your System (state of charge, power flows, site status, event
+                            performance). We use this data only to operate the Program, optimize
+                            your participation, settle payments, and meet regulatory or utility
+                            reporting requirements. We do not sell your personal information. See
+                            our <a href="../privacy.html" target="_blank" rel="noopener">Privacy Policy</a>
+                            for full details.
+                        </p>
+
+                        <h4>6. Tesla Powerwall &amp; the Tesla Fleet API</h4>
+                        <p>
+                            If your inverter is a <strong>Tesla Powerwall</strong>, MicroGrid uses
+                            the Tesla Fleet API to read your energy-site data and issue Dispatch
+                            commands. By granting Tesla Fleet API access, you authorize MicroGrid
+                            to (a) read energy device data for your Tesla energy site
+                            (<code>energy_device_data</code>), and (b) send energy commands such
+                            as backup-reserve and operation-mode changes (<code>energy_cmds</code>)
+                            during Dispatches. You can revoke this access at any time from your
+                            Tesla account at
+                            <a href="https://accounts.tesla.com" target="_blank" rel="noopener">accounts.tesla.com</a>.
+                        </p>
+
+                        <h4>7. Eligibility &amp; System Health</h4>
+                        <p>
+                            You represent that you (or your household) own the System or have the
+                            legal authority to enroll it, that the System is in good working order,
+                            and that participation does not violate any agreement with your
+                            installer, lender, or utility. You agree to maintain reasonable
+                            connectivity (internet access to the System) so Dispatches can occur.
+                        </p>
+
+                        <h4>8. Term &amp; Termination</h4>
+                        <p>
+                            This Agreement begins when you sign below and continues month-to-month.
+                            You may opt out of the Program at any time from your MicroVPP account
+                            or by emailing
+                            <a href="mailto:support@microvpp.com">support@microvpp.com</a>.
+                            MicroGrid may also terminate participation if a System becomes
+                            non-compliant or unsafe to dispatch.
+                        </p>
+
+                        <h4>9. Disclaimers &amp; Limitation of Liability</h4>
+                        <p>
+                            The Program is provided "as is." MicroGrid is not liable for grid
+                            outages, lost backup capacity in extreme events, equipment wear within
+                            normal operating bounds, or revenue variation due to utility program
+                            changes. Our total liability under this Agreement is limited to
+                            compensation paid to you in the 12 months preceding the claim.
+                        </p>
+
+                        <h4>10. Governing Law</h4>
+                        <p>
+                            This Agreement is governed by the laws of the State of California,
+                            without regard to conflict-of-laws principles. Disputes will be
+                            resolved in the state or federal courts located in San Francisco
+                            County, California.
+                        </p>
+
+                        <h4>11. Entire Agreement</h4>
+                        <p>
+                            This document, together with the
+                            <a href="../terms.html" target="_blank" rel="noopener">MicroVPP Terms of Service</a>
+                            and the
+                            <a href="../privacy.html" target="_blank" rel="noopener">Privacy Policy</a>,
+                            forms the entire agreement between you and MicroGrid LLC regarding the
+                            Program and supersedes any prior understandings.
+                        </p>
+                    </div>
+                    <p class="agreement-meta">
+                        Version <span id="agreementVersionLabel">v1.0</span> · Last updated May 2026 · MicroGrid LLC
+                    </p>
+                </div>
+
+                <form id="vppSignupForm" novalidate>
+                    <!-- Tesla informational banner (auto-shown when inverter is Powerwall) -->
+                    <div class="tesla-banner" id="teslaBanner">
+                        <strong>Tesla Powerwall detected.</strong> Because Tesla controls Powerwall
+                        access through their cloud, after you sign below we'll redirect you to
+                        Tesla's secure login page to authorize MicroGrid via the
+                        <strong>Tesla Fleet API</strong>. You'll come back here automatically when
+                        you're done — typically takes under a minute.
+                    </div>
+
+                    <!-- Program opt-in (always required) -->
+                    <div class="consent-box" id="optInBox">
+                        <div class="consent-row">
+                            <input type="checkbox" id="optInAgree" name="optInAgree" required>
+                            <label for="optInAgree">
+                                <strong>I agree to the MicroVPP Grid Support Program Agreement above</strong>
+                                and opt in to enrollment. I understand MicroGrid may dispatch my
+                                battery during grid-support events, subject to my preset backup
+                                reserve and my right to opt out at any time.
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Tesla Fleet API consent (auto-shown + required when Powerwall) -->
+                    <div class="consent-box is-required-tesla" id="teslaConsentBox">
+                        <div class="consent-row">
+                            <input type="checkbox" id="teslaConsent" name="teslaConsent">
+                            <label for="teslaConsent">
+                                <strong>I authorize MicroGrid LLC to access my Tesla Powerwall via the
+                                Tesla Fleet API</strong> with the scopes
+                                <code>openid</code>, <code>offline_access</code>,
+                                <code>energy_device_data</code>, and <code>energy_cmds</code>, for
+                                the purpose of operating the Grid Support Program. I can revoke
+                                this access anytime at accounts.tesla.com.
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        Sign &amp; Opt In
+                    </button>
+                    <p class="submit-help" id="submitHelp">
+                        💡 Signing this form is your electronic signature on the Participant Agreement.
+                    </p>
+
+                    <div class="status-banner" id="statusBanner" role="status" aria-live="polite"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div>
+                        <div class="footer-logo-title">MicroVPP™</div>
+                        <div class="footer-logo-subtitle">by MicroGrid LLC</div>
+                    </div>
+                </div>
+                <div class="footer-tagline">Smarter homes. Stronger grids.</div>
+                <nav class="footer-nav">
+                    <a href="../index.html">Home</a>
+                    <a href="../about.html">About</a>
+                    <a href="../privacy.html">Privacy</a>
+                    <a href="../terms.html">Terms</a>
+                    <a href="mailto:info@microvpp.com">Contact</a>
+                </nav>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; 2026 MicroGrid LLC. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // =====================================================================
+        // MicroVPP — Grid Support Program opt-in
+        //
+        // This page is meant to be deep-linked from the MicroVPP mobile / web
+        // app with the following URL parameters:
+        //
+        //   email             - the user's Cognito email
+        //   inverter_brand    - 'tesla_powerwall' | 'enphase' | 'solaredge' |
+        //                       'sol_ark' | 'eg4' | 'franklin' | 'liniotech' |
+        //                       'solarman' | 'other'
+        //   cognito_user_id   - the user's Cognito `sub`
+        //   access_token      - short-lived Cognito access token (JWT)
+        //   vpp_program_id    - optional consumer.vpp_program.id (defaults 1)
+        //
+        // Example:
+        //   https://www.microvpp.com/vpp/?email=jane%40example.com
+        //     &inverter_brand=tesla_powerwall
+        //     &cognito_user_id=11111111-2222-3333-4444-555555555555
+        //     &access_token=eyJ...
+        //
+        // On submit, we POST to the backend admin endpoint
+        // ``/admin/vpp/opt-in`` with ``Authorization: Bearer <access_token>``.
+        // The backend updates ``consumer.account.vpp_opt_in_status`` and (for
+        // Tesla Powerwall) mints a Tesla Fleet API OAuth state + authorize URL
+        // that we redirect the user to.
+        //
+        // Security: we strip ``access_token`` from the URL on first paint so
+        // it doesn't sit in the browser address bar or in any subsequent
+        // referer / analytics events.
+        // =====================================================================
+
+        const API_BASE_URL = 'https://api.microvpp.com';
+        const OPT_IN_ENDPOINT = API_BASE_URL + '/admin/vpp/opt-in';
+        const AGREEMENT_VERSION = 'v1.0';
+        const DEFAULT_VPP_PROGRAM_ID = 1;
+
+        // Friendly labels for the inverter_brand machine keys.
+        const BRAND_LABELS = {
+            tesla_powerwall: 'Tesla Powerwall',
+            tesla:           'Tesla Powerwall',
+            powerwall:       'Tesla Powerwall',
+            enphase:         'Enphase',
+            solaredge:       'SolarEdge',
+            sol_ark:         'Sol-Ark',
+            eg4:             'EG4',
+            franklin:        'Franklin (aPower)',
+            liniotech:       'Liniotech',
+            solarman:        'SolarMan-connected',
+            other:           'Other'
+        };
+        const TESLA_BRAND_KEYS = new Set(['tesla_powerwall', 'tesla', 'powerwall']);
+
+        // ---------- DOM ----------
+        const form          = document.getElementById('vppSignupForm');
+        const teslaBanner   = document.getElementById('teslaBanner');
+        const teslaBox      = document.getElementById('teslaConsentBox');
+        const teslaConsent  = document.getElementById('teslaConsent');
+        const optInBox      = document.getElementById('optInBox');
+        const optInAgree    = document.getElementById('optInAgree');
+        const submitBtn     = document.getElementById('submitBtn');
+        const submitHelp    = document.getElementById('submitHelp');
+        const statusBanner  = document.getElementById('statusBanner');
+        const ctxEmail      = document.getElementById('ctxEmail');
+        const ctxBrand      = document.getElementById('ctxBrand');
+        const ctxProgram    = document.getElementById('ctxProgram');
+
+        document.getElementById('agreementVersionLabel').textContent = AGREEMENT_VERSION;
+
+        // ---------- 1. Read URL params + sanitize the address bar ----------
+        function readParams() {
+            const qs = new URLSearchParams(window.location.search);
+            const raw = {
+                email:           (qs.get('email') || '').trim().toLowerCase(),
+                inverter_brand:  (qs.get('inverter_brand') || '').trim().toLowerCase(),
+                cognito_user_id: (qs.get('cognito_user_id') || '').trim(),
+                access_token:    (qs.get('access_token') || '').trim(),
+                vpp_program_id:  parseInt(qs.get('vpp_program_id') || '', 10)
+            };
+            if (!raw.vpp_program_id || isNaN(raw.vpp_program_id)) {
+                raw.vpp_program_id = DEFAULT_VPP_PROGRAM_ID;
+            }
+            return raw;
+        }
+
+        function scrubUrl() {
+            // Replace the URL so ?access_token=... and other PII no longer
+            // show up in the address bar / browser history / referer headers.
+            try {
+                const clean = window.location.pathname + window.location.hash;
+                window.history.replaceState({}, document.title, clean);
+            } catch (_) { /* IE etc. */ }
+        }
+
+        const ctx = readParams();
+        scrubUrl();
+
+        function brandLabel(key) {
+            return BRAND_LABELS[key] || (key ? (key[0].toUpperCase() + key.slice(1)) : '—');
+        }
+        function isTeslaBrand(key) {
+            return TESLA_BRAND_KEYS.has((key || '').toLowerCase());
+        }
+
+        // ---------- 2. Hydrate the read-only context card ----------
+        ctxEmail.textContent  = ctx.email || '— (missing email param)';
+        ctxBrand.textContent  = brandLabel(ctx.inverter_brand);
+        ctxProgram.textContent = 'MicroVPP Grid Support (Program #' + ctx.vpp_program_id + ')';
+
+        // ---------- 3. Conditional Tesla UI ----------
+        function updateForBrand() {
+            const tesla = isTeslaBrand(ctx.inverter_brand);
+            teslaBanner.classList.toggle('is-visible', tesla);
+            teslaBox.classList.toggle('is-visible', tesla);
+            teslaConsent.required = tesla;
+            if (!tesla) teslaConsent.checked = false;
+
+            if (tesla) {
+                submitBtn.textContent = 'Sign & Continue to Tesla';
+                submitBtn.classList.add('is-tesla');
+                submitHelp.innerHTML =
+                    '🔐 You will be redirected to <strong>auth.tesla.com</strong> to authorize ' +
+                    'MicroGrid via the Tesla Fleet API. We never see your Tesla password.';
+            } else {
+                submitBtn.textContent = 'Sign & Opt In';
+                submitBtn.classList.remove('is-tesla');
+                submitHelp.textContent =
+                    '💡 Signing this form is your electronic signature on the Participant Agreement.';
+            }
+        }
+        function reflectChecked(box, input) {
+            box.classList.toggle('is-checked', input.checked);
+        }
+        optInAgree.addEventListener('change', () => reflectChecked(optInBox, optInAgree));
+        teslaConsent.addEventListener('change', () => reflectChecked(teslaBox, teslaConsent));
+        updateForBrand();
+
+        function showStatus(kind, message) {
+            statusBanner.className = 'status-banner is-visible status-' + kind;
+            statusBanner.innerHTML = message;
+            statusBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        function clearStatus() {
+            statusBanner.className = 'status-banner';
+            statusBanner.innerHTML = '';
+        }
+
+        // ---------- 4. Pre-flight: bail early if required params are missing ----------
+        function validateContext() {
+            const missing = [];
+            if (!ctx.email)            missing.push('email');
+            if (!ctx.inverter_brand)   missing.push('inverter_brand');
+            if (!ctx.cognito_user_id)  missing.push('cognito_user_id');
+            if (!ctx.access_token)     missing.push('access_token');
+            return missing;
+        }
+
+        const missingParams = validateContext();
+        if (missingParams.length) {
+            submitBtn.disabled = true;
+            showStatus(
+                'error',
+                '⚠️ <strong>This sign-up link is incomplete.</strong> Missing required ' +
+                'parameters: <code>' + missingParams.join(', ') + '</code>. ' +
+                'Please re-open this page from the MicroVPP app, or contact ' +
+                '<a href="mailto:support@microvpp.com">support@microvpp.com</a>.'
+            );
+        }
+
+        // ---------- 5. Submit handler ----------
+        function buildPayload() {
+            return {
+                cognito_user_id:     ctx.cognito_user_id,
+                email:               ctx.email,
+                inverter_brand:      ctx.inverter_brand,
+                vpp_program_id:      ctx.vpp_program_id,
+                agreement_version:   AGREEMENT_VERSION,
+                opt_in_agreed:       !!optInAgree.checked,
+                tesla_fleet_consent: !!teslaConsent.checked
+            };
+        }
+
+        function validateConsents() {
+            const errors = [];
+            if (!optInAgree.checked) {
+                errors.push('You must agree to the Grid Support Program Agreement to opt in');
+            }
+            if (isTeslaBrand(ctx.inverter_brand) && !teslaConsent.checked) {
+                errors.push('Tesla Powerwall sign-up requires Tesla Fleet API authorization');
+            }
+            return errors;
+        }
+
+        async function postOptIn(payload) {
+            const resp = await fetch(OPT_IN_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + ctx.access_token
+                },
+                body: JSON.stringify(payload)
+            });
+            const text = await resp.text();
+            let body = {};
+            try { body = text ? JSON.parse(text) : {}; } catch (_) { body = { raw: text }; }
+            return { ok: resp.ok, status: resp.status, body };
+        }
+
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            clearStatus();
+
+            if (missingParams.length) return;
+
+            const errors = validateConsents();
+            if (errors.length) {
+                showStatus(
+                    'error',
+                    '<strong>Please fix the following:</strong><ul style="margin: 0.4rem 0 0 1.25rem;">' +
+                    errors.map(e => '<li>' + e + '</li>').join('') +
+                    '</ul>'
+                );
+                return;
+            }
+
+            submitBtn.disabled = true;
+            const originalLabel = submitBtn.textContent;
+            submitBtn.textContent = 'Submitting…';
+
+            if (typeof gtag === 'function') {
+                gtag('event', 'vpp_signup_submit', {
+                    event_category: 'conversion',
+                    event_label:    ctx.inverter_brand,
+                    inverter_brand: ctx.inverter_brand
+                });
+            }
+
+            let result;
+            try {
+                result = await postOptIn(buildPayload());
+            } catch (err) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalLabel;
+                showStatus(
+                    'error',
+                    '⚠️ Network error talking to MicroVPP. Please try again, or contact ' +
+                    '<a href="mailto:support@microvpp.com">support@microvpp.com</a>.'
+                );
+                return;
+            }
+
+            if (!result.ok) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalLabel;
+                const detail = (result.body && result.body.detail) || ('HTTP ' + result.status);
+                showStatus(
+                    'error',
+                    '⚠️ ' + (typeof detail === 'string' ? detail :
+                        'We couldn\'t complete your opt-in.') +
+                    '<br><br>Please try again, or contact ' +
+                    '<a href="mailto:support@microvpp.com">support@microvpp.com</a>.'
+                );
+                return;
+            }
+
+            const body = result.body || {};
+
+            if (body.requires_tesla_fleet_auth && body.tesla_auth_url) {
+                submitBtn.textContent = 'Redirecting to Tesla…';
+                showStatus(
+                    'success',
+                    '✅ Signed. Redirecting you to <strong>auth.tesla.com</strong> to authorize Tesla Fleet API access…'
+                );
+                if (typeof gtag === 'function') {
+                    gtag('event', 'vpp_tesla_oauth_redirect', {
+                        event_category: 'conversion',
+                        event_label:    'tesla_powerwall'
+                    });
+                }
+                setTimeout(() => { window.location.assign(body.tesla_auth_url); }, 800);
+                return;
+            }
+
+            showStatus(
+                'success',
+                '🎉 <strong>You\'re enrolled!</strong> Your account is now opted in to ' +
+                'the MicroVPP Grid Support Program. You can manage or revoke this from ' +
+                'your MicroVPP account at any time.'
+            );
+            submitBtn.textContent = 'Enrolled ✓';
+        });
+    </script>
+
+    <!-- Button Click Tracking (GA4) -->
+    <script>
+        (function () {
+            var PAGE_NAME = 'vpp_signup';
+            var TRACKABLE_CLASSES = [
+                'cta-button', 'cta-button-outline',
+                'submit-btn', 'back-btn',
+                'tesla-open-auth-btn'
+            ];
+            function hasTrackableClass(el) {
+                if (!el || !el.classList) return false;
+                for (var i = 0; i < TRACKABLE_CLASSES.length; i++) {
+                    if (el.classList.contains(TRACKABLE_CLASSES[i])) return true;
+                }
+                return false;
+            }
+            function findTrackable(el) {
+                var max = 5;
+                while (el && el.nodeType === 1 && max-- > 0) {
+                    var tag = (el.tagName || '').toLowerCase();
+                    if (tag === 'button') return el;
+                    if (tag === 'a' && (hasTrackableClass(el) || el.hasAttribute('data-track'))) return el;
+                    if (hasTrackableClass(el)) return el;
+                    el = el.parentElement;
+                }
+                return null;
+            }
+            function clean(s, n) {
+                return (s || '').replace(/\s+/g, ' ').trim().slice(0, n || 100);
+            }
+            document.addEventListener('click', function (evt) {
+                try {
+                    var el = findTrackable(evt.target);
+                    if (!el || typeof gtag !== 'function') return;
+                    var tag = (el.tagName || '').toLowerCase();
+                    gtag('event', 'button_click', {
+                        event_category: 'engagement',
+                        event_label:    clean(el.innerText || el.textContent || '', 80),
+                        page:           PAGE_NAME,
+                        button_id:      el.id || '',
+                        button_tag:     tag,
+                        button_href:    tag === 'a' ? clean(el.getAttribute('href') || '', 200) : ''
+                    });
+                } catch (_) { /* swallow */ }
+            }, true);
+        })();
+    </script>
+</body>
+</html>
