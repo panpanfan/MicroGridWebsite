@@ -259,7 +259,17 @@
         var sel   = document.getElementById('utilityCompany');
         // Texas (REP) is mandatory; California (utility) is optional.
         var isRequired = !!meta.required;
-        if (lbl)  lbl.innerHTML    = meta.label + (isRequired ? ' <span style="color: #ef4444;">*</span>' : '');
+        // Build the label via DOM nodes (no innerHTML) to avoid any XSS risk.
+        if (lbl) {
+            lbl.textContent = meta.label;
+            if (isRequired) {
+                lbl.appendChild(document.createTextNode(' '));
+                var star = document.createElement('span');
+                star.style.color = '#ef4444';
+                star.textContent = '*';
+                lbl.appendChild(star);
+            }
+        }
         if (help) help.textContent = meta.help;
         if (sel) {
             if (isRequired) sel.setAttribute('required', 'required');
