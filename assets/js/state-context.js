@@ -81,6 +81,7 @@
             { value: 'Discount Power',        label: 'Discount Power' },
             { value: 'Constellation',         label: 'Constellation' },
             { value: 'Cirro Energy',          label: 'Cirro Energy' },
+            { value: 'Rhythm Energy',         label: 'Rhythm Energy' },
             { value: 'Other',                 label: 'Other REP' }
         ]
     };
