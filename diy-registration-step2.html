@@ -898,21 +898,49 @@
                         <input type="text" id="fullName" name="fullName" placeholder="Enter your full name or preferred name (optional)">
                     </div>
 
-                    <!-- Address / city / state are no longer collected here —
-                         we derive them from the uploaded utility bill or the
-                         ESIID + meter authorization (Option A). The active state
-                         (CA/TX) still comes from the home-page selection via
-                         window.MicroVppState. -->
+                    <!-- Contact fields shown for California (original flow).
+                         Hidden for Texas, where address/city/state are derived
+                         from the uploaded bill or the ESI ID + meter
+                         authorization, and the active state comes from the
+                         home-page selection (window.MicroVppState). -->
+                    <div id="caOnlyContactFields">
+                        <div class="form-group full-width">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="(800) 555-0100 or 8005550100 (optional)">
+                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">US phone numbers only. Enter 10 digits.</small>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="address">Address</label>
+                            <input type="text" id="address" name="address" placeholder="Street address (optional)">
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" name="city" placeholder="City (optional)">
+                                <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Helps us match local energy rates.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="state">State</label>
+                                <select id="state" name="state">
+                                    <option value="">Select State</option>
+                                    <option value="California" selected>California</option>
+                                    <option value="Texas">Texas</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Utility / REP dropdown — populated dynamically by
                          state-context.js based on the selected state:
-                          - California → CA utilities (PG&E, SCE, SDG&E, ...)
-                          - Texas      → Houston REPs (TXU, Reliant, Octopus, ...)
-                         The label and help text below also swap per state. -->
+                          - California → CA utilities (PG&E, SCE, SDG&E, ...) — optional
+                          - Texas      → Houston REPs (TXU, Reliant, Octopus, ...) — required
+                         The label, help text, asterisk and `required` swap per state. -->
                     <div class="form-group full-width">
-                        <label for="utilityCompany" id="utilityCompanyLabel">Utility Company <span style="color: #ef4444;">*</span></label>
-                        <select id="utilityCompany" name="utilityCompany" required>
-                            <option value="">Select Utility Company</option>
+                        <label for="utilityCompany" id="utilityCompanyLabel">Utility Company</label>
+                        <select id="utilityCompany" name="utilityCompany">
+                            <option value="">Select Utility Company (optional)</option>
                         </select>
                         <small id="utilityCompanyHelp" style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Used for tariff and NEM 3.0 calculations.</small>
                     </div>
@@ -994,13 +1022,13 @@
                                         <span>OR</span>
                                     </div>
 
-                                    <!-- Option B: type the numbers from the bill.
-                                         Hidden for Texas users (their bills only show a monthly
-                                         usage bar chart with no generation, so self-estimated
-                                         daily averages would be inaccurate). -->
+                                    <!-- Option A (California / SCE only): type the daily-average
+                                         numbers from the bill. Hidden for Texas (their bills only
+                                         show a monthly usage bar chart with no generation, so
+                                         self-estimated daily averages would be inaccurate). -->
                                     <div class="usage-option-card" id="usageOptionTypeCard" style="background: #ffffff; border: 2px solid #e5e7eb; border-radius: 10px; padding: 1.25rem 1.5rem 1.5rem; margin-bottom: 0.75rem;">
                                         <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.85rem; color: #047857; font-weight: 700;">
-                                            <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: #10B981; color: #ffffff; font-size: 0.78rem; font-weight: 800;">B</span>
+                                            <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: #10B981; color: #ffffff; font-size: 0.78rem; font-weight: 800;">A</span>
                                             <span>Type the numbers from your latest bill</span>
                                         </div>
                                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
@@ -1068,17 +1096,18 @@
                                         </div>
                                     </div>
 
-                                    <!-- OR divider -->
-                                    <div class="usage-or-divider" aria-hidden="true">
+                                    <!-- OR divider (B → upload). Hidden for Texas, where the
+                                         type-numbers option is removed. -->
+                                    <div class="usage-or-divider" id="usageOrDividerBC" aria-hidden="true">
                                         <span>OR</span>
                                     </div>
 
-                                    <!-- Option C (California) / Option B (Texas): upload latest utility bill.
-                                         The letter badge is set dynamically because Texas hides the
-                                         "type the numbers" option, shifting this option up to B. -->
+                                    <!-- Upload option — always shown, always labeled "B".
+                                         California: Option A (type numbers) + Option B (upload).
+                                         Texas:      Option A (ESI ID auth)  + Option B (upload). -->
                                     <div class="usage-option-card" id="usageOptionUploadCard" style="background: #ffffff; border: 2px solid #e5e7eb; border-radius: 10px; padding: 1.25rem 1.5rem 1.5rem;">
                                         <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: #047857; font-weight: 700;">
-                                            <span id="uploadOptionLetter" style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: #10B981; color: #ffffff; font-size: 0.78rem; font-weight: 800;">C</span>
+                                            <span id="uploadOptionLetter" style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: #10B981; color: #ffffff; font-size: 0.78rem; font-weight: 800;">B</span>
                                             <span>Upload a recent utility bill</span>
                                         </div>
                                         <div class="file-upload-container">
@@ -1474,6 +1503,25 @@
         const SIGNUP_ENDPOINT = '/auth/signup';
         const UPDATE_PROFILE_ENDPOINT = '/auth/update-profile-web';
         
+        // Format phone number to E.164 format (California flow only)
+        function formatPhoneToE164(phone) {
+            if (!phone) return null;
+
+            const digits = phone.replace(/\D/g, '');
+
+            if (digits.length === 10) {
+                return '+1' + digits;
+            } else if (digits.length === 11 && digits.startsWith('1')) {
+                return '+' + digits;
+            } else if (phone.startsWith('+')) {
+                return phone;
+            } else if (digits.length === 11) {
+                return '+' + digits;
+            }
+
+            return '+1' + digits;
+        }
+
         // Generate a unique inverter ID
         function generateInverterId() {
             return 'INV-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
@@ -1572,6 +1620,7 @@
                     contact: {
                         name: step2Data.fullName || null,
                         email: userEmail,
+                        phone: step2Data.phone || null,
                         email_provided: !!userEmail,
                         email_source: userEmail ? 'step1_modal' : 'dummy_generated'
                     },
@@ -1647,7 +1696,7 @@
                 const payload = {
                     username: step2Data.fullName || null,
                     email: email,
-                    phone_number: null,
+                    phone_number: formatPhoneToE164(step2Data.phone),
                     full_address: step2Data.address || null,
                     city: step2Data.city || null,
                     state: step2Data.state || null,
@@ -1775,11 +1824,14 @@
                     console.log('Pre-filling Step 2 form with saved data:', step2Data);
 
                     if (step2Data.fullName) document.getElementById('fullName').value = step2Data.fullName;
+                    if (step2Data.phone) document.getElementById('phone').value = step2Data.phone;
+                    if (step2Data.address) document.getElementById('address').value = step2Data.address;
+                    if (step2Data.city) document.getElementById('city').value = step2Data.city;
                     if (step2Data.esiid) document.getElementById('esiid').value = step2Data.esiid;
                     if (step2Data.meterId) document.getElementById('meterId').value = step2Data.meterId;
-                    // Utility company is pre-filled below in the state-context
-                    // wiring block (utility options are populated dynamically
-                    // per state, so we must wait until those options exist).
+                    // State + utility company are pre-filled below in the
+                    // state-context wiring block (utility options are populated
+                    // dynamically per state, so we wait until they exist).
                     if (step2Data.termsAccepted) document.getElementById('termsAccepted').checked = step2Data.termsAccepted;
 
                     // Pre-fill any usage values previously entered on this page.
@@ -1820,20 +1872,15 @@
                 var raw = sessionStorage.getItem('registrationStep2');
                 if (raw) saved = JSON.parse(raw);
             } catch (_) { /* noop */ }
-            var savedState   = saved && MicroVppState.normalize(saved.state);
             var savedUtility = (saved && saved.utilityCompany) || null;
 
-            // Effective state for the form: saved form value wins (returning
-            // user); otherwise the cross-page state from MicroVppState.
-            var currentState = savedState || MicroVppState.state;
+            // The home-page selection (window.MicroVppState, backed by
+            // localStorage) is authoritative. Step 2 only reflects it — it must
+            // NOT override the global state from stale saved data, otherwise a
+            // previous Texas test could permanently force the badge to TX.
+            var currentState = MicroVppState.state;
 
-            // If the saved form state differs from the global state, sync
-            // the global state so the header badge + localStorage update.
-            if (savedState && savedState !== MicroVppState.state) {
-                MicroVppState.set(savedState);
-            }
-
-            // Sync the form's State dropdown.
+            // Sync the form's State dropdown (if it still exists).
             if (stateSelect) {
                 stateSelect.value = MicroVppState.displayNameOf(currentState);
             }
@@ -1844,20 +1891,27 @@
                 MicroVppState.updateUtilityFieldMeta(currentState);
             }
 
-            // Texas bills lack printed daily-average usage/export, so remove the
-            // "type the numbers" option (and its OR divider) for Texas users.
-            function updateTexasUsageOptions(s) {
-                var isTexas      = (s === 'texas');
-                var optionB      = document.getElementById('usageOptionTypeCard');
-                var dividerAB    = document.getElementById('usageOrDividerAB');
-                var uploadLetter = document.getElementById('uploadOptionLetter');
-                if (optionB)      optionB.style.display   = isTexas ? 'none' : '';
-                if (dividerAB)    dividerAB.style.display = isTexas ? 'none' : '';
-                // Upload option becomes "B" for Texas (the type-numbers option
-                // is hidden), and "C" for California where all three show.
-                if (uploadLetter) uploadLetter.textContent = isTexas ? 'B' : 'C';
+            // Show the usage options that fit the selected state:
+            //   • California (SCE): Option A = type the daily-average numbers,
+            //     Option B = upload bill. (ESI ID authorization is hidden.)
+            //   • Texas: Option A = ESI ID + meter authorization (recommended),
+            //     Option B = upload bill. (Type-the-numbers is hidden because
+            //     TX REP bills don't print daily averages.)
+            // The upload option is always shown and always labeled "B".
+            function updateStateUsageOptions(s) {
+                var isTexas    = (s === 'texas');
+                var authCard   = document.getElementById('usageOptionAuthCard');   // ESI ID — TX only
+                var dividerAB  = document.getElementById('usageOrDividerAB');       // before type-numbers
+                var typeCard   = document.getElementById('usageOptionTypeCard');    // SCE numbers — CA only
+                var dividerBC  = document.getElementById('usageOrDividerBC');       // before upload
+                var caFields   = document.getElementById('caOnlyContactFields');    // phone/address/city/state — CA only
+                if (authCard)  authCard.style.display  = isTexas ? '' : 'none';
+                if (dividerAB) dividerAB.style.display = isTexas ? '' : 'none';
+                if (typeCard)  typeCard.style.display  = isTexas ? 'none' : '';
+                if (dividerBC) dividerBC.style.display = isTexas ? 'none' : '';
+                if (caFields)  caFields.style.display  = isTexas ? 'none' : '';
             }
-            updateTexasUsageOptions(currentState);
+            updateStateUsageOptions(currentState);
 
             // When the user changes the State dropdown in the form,
             // propagate the change to MicroVppState. The onChange listener
@@ -1881,7 +1935,7 @@
                     MicroVppState.populateUtilitySelect(utilitySelect, null, { state: nextState });
                     MicroVppState.updateUtilityFieldMeta(nextState);
                 }
-                updateTexasUsageOptions(nextState);
+                updateStateUsageOptions(nextState);
             });
         });
 
@@ -1914,6 +1968,7 @@
                     contact: {
                         name: step2Data.fullName || null,
                         email: userEmail,
+                        phone: step2Data.phone || null,
                         email_provided: !!userEmail,
                         email_source: userEmail ? 'step1_modal' : 'dummy_generated'
                     },
@@ -1995,7 +2050,7 @@
                     account_id: userId,
                     username: step2Data.fullName || null,
                     email: email,
-                    phone_number: null,
+                    phone_number: formatPhoneToE164(step2Data.phone),
                     full_address: step2Data.address || null,
                     city: step2Data.city || null,
                     state: step2Data.state || null,
@@ -2325,14 +2380,15 @@
             
             const formData = new FormData(this);
 
-            // REQUIRED: the electricity provider (Utility / REP) must be chosen.
+            // The electricity provider is REQUIRED for Texas (REP) but optional
+            // for California (utility), matching the original CA flow.
+            const isTexasState = !!(window.MicroVppState && window.MicroVppState.state === 'texas');
             const utilityVal = (formData.get('utilityCompany') || '').toString().trim();
-            if (!utilityVal) {
+            if (isTexasState && !utilityVal) {
                 const utilitySelect = document.getElementById('utilityCompany');
-                const isTexas = !!(window.MicroVppState && window.MicroVppState.state === 'texas');
                 alert(
-                    '⚠️ ' + (isTexas ? 'Retail Electric Provider (REP)' : 'Utility Company') + ' Required\n\n' +
-                    'Please select your ' + (isTexas ? 'REP' : 'utility company') + ' to continue.'
+                    '⚠️ Retail Electric Provider (REP) Required\n\n' +
+                    'Please select your REP to continue.'
                 );
                 if (utilitySelect) {
                     utilitySelect.focus();
@@ -2377,11 +2433,13 @@
             // Prepare data to save (Step 2 - Contact Info + usage + bill upload)
             const step2Data = {
                 fullName: formData.get('fullName') || null,
-                // Address & city are no longer collected — derived later from
-                // the utility bill or the ESIID/meter authorization. State is
-                // taken from the home-page selection (window.MicroVppState).
-                address: null,
-                city: null,
+                // Phone / address / city are collected for California (original
+                // flow) and blank for Texas, where those fields are hidden and
+                // derived from the bill or ESI ID/meter authorization. State
+                // comes from the home-page selection (window.MicroVppState).
+                phone: formData.get('phone') || null,
+                address: formData.get('address') || null,
+                city: formData.get('city') || null,
                 state: (window.MicroVppState && window.MicroVppState.displayName) || null,
                 utilityCompany: formData.get('utilityCompany') || null,
                 esiid: formData.get('esiid') || null,
