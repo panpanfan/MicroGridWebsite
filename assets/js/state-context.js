@@ -81,6 +81,7 @@
             { value: 'Discount Power',        label: 'Discount Power' },
             { value: 'Constellation',         label: 'Constellation' },
             { value: 'Cirro Energy',          label: 'Cirro Energy' },
+            { value: 'Rhythm Energy',         label: 'Rhythm Energy' },
             { value: 'Other',                 label: 'Other REP' }
         ]
     };
@@ -89,12 +90,14 @@
         california: {
             label: 'Utility Company',
             help:  'Used for tariff and NEM 3.0 calculations.',
-            placeholder: 'Select Utility Company (optional)'
+            placeholder: 'Select Utility Company (optional)',
+            required: false
         },
         texas: {
             label: 'Retail Electric Provider (REP)',
             help:  "Tell us who serves you — we use this to match available plans in CenterPoint territory.",
-            placeholder: 'Select your REP (optional)'
+            placeholder: 'Select your REP',
+            required: true
         }
     };
 
@@ -253,8 +256,25 @@
         var meta  = FIELD_META[which] || FIELD_META.california;
         var lbl   = document.getElementById('utilityCompanyLabel');
         var help  = document.getElementById('utilityCompanyHelp');
-        if (lbl)  lbl.textContent  = meta.label;
+        var sel   = document.getElementById('utilityCompany');
+        // Texas (REP) is mandatory; California (utility) is optional.
+        var isRequired = !!meta.required;
+        // Build the label via DOM nodes (no innerHTML) to avoid any XSS risk.
+        if (lbl) {
+            lbl.textContent = meta.label;
+            if (isRequired) {
+                lbl.appendChild(document.createTextNode(' '));
+                var star = document.createElement('span');
+                star.style.color = '#ef4444';
+                star.textContent = '*';
+                lbl.appendChild(star);
+            }
+        }
         if (help) help.textContent = meta.help;
+        if (sel) {
+            if (isRequired) sel.setAttribute('required', 'required');
+            else            sel.removeAttribute('required');
+        }
     }
 
     // ----- Public API ------------------------------------------------

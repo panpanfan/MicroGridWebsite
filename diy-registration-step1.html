@@ -941,8 +941,8 @@
                 </div>
 
                 <p style="text-align: center; margin: 1rem 0 1.5rem 0; padding: 1rem; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border-radius: 12px; border: 2px solid #10B981;">
-                    <span style="display: block; color: #059669; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">💵 EXTRA EARNINGS WITH MICROVPP AI</span>
-                    <span style="display: block; color: #047857; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem;">Popular home systems typically earn an extra $600–$2,400/year on top of their default solar savings</span>
+                    <span id="savingsBannerEyebrow" style="display: block; color: #059669; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">💵 EXTRA EARNINGS WITH MICROVPP AI</span>
+                    <span id="savingsBannerHeadline" style="display: block; color: #047857; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem;">Popular home systems typically earn an extra $600–$2,400/year on top of their default solar savings</span>
                     <span style="display: block; color: #6b7280; font-size: 0.85rem;">See your quick estimate ↓</span>
                 </p>
 
@@ -1361,7 +1361,49 @@
         
         let step1Data = {}; // System setup data (this is now Step 1)
         let step2Data = {}; // Contact info data (this is now Step 2)
-        
+
+        // Top savings banner: California shows the dollar earnings range; Texas
+        // shows a bill-reduction message. For Texas we only reveal the exact
+        // 30%–90% range once the user has entered their battery + solar sizes;
+        // before that we keep it generic ("a large percentage").
+        function texasSystemSizesProvided() {
+            const b = document.getElementById('batteryCapacity');
+            const p = document.getElementById('pvWattage');
+            const hasBattery = b && b.value !== '' && parseFloat(b.value) > 0;
+            const hasSolar   = p && p.value !== '' && parseFloat(p.value) > 0;
+            return hasBattery && hasSolar;
+        }
+        function updateSavingsBanner(s) {
+            const eyebrow  = document.getElementById('savingsBannerEyebrow');
+            const headline = document.getElementById('savingsBannerHeadline');
+            if (!eyebrow || !headline) return;
+            if (s === 'texas') {
+                eyebrow.textContent  = '⚡ ESTIMATED BILL REDUCTION WITH MICROVPP AI';
+                headline.textContent = texasSystemSizesProvided()
+                    ? 'Texas homes typically see a 30%–90% reduction on their electricity bill'
+                    : 'Texas homes typically see a large percentage reduction on their electricity bill';
+            } else {
+                eyebrow.textContent  = '💵 EXTRA EARNINGS WITH MICROVPP AI';
+                headline.textContent = 'Popular home systems typically earn an extra $600–$2,400/year on top of their default solar savings';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            function currentState() {
+                return (window.MicroVppState && window.MicroVppState.state) || 'california';
+            }
+            updateSavingsBanner(currentState());
+            if (window.MicroVppState && typeof MicroVppState.onChange === 'function') {
+                MicroVppState.onChange(updateSavingsBanner);
+            }
+            // Reveal the exact Texas range only after both system sizes are entered.
+            ['batteryCapacity', 'pvWattage'].forEach(function (id) {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('input', function () {
+                    updateSavingsBanner(currentState());
+                });
+            });
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             // Load step 1 (system setup) data if returning from step 2
             const storedStep1Data = sessionStorage.getItem('registrationStep1');
@@ -2277,10 +2319,16 @@
             const cancelBtn        = document.getElementById('emailEstimateCancel');
             const emailStage       = document.getElementById('emailStage');
 
-            const teaserEl         = document.getElementById('emailStageTeaser');
-            const teaserDescEl     = document.getElementById('emailStageTeaserDesc');
-            const teaserYearlyEl   = document.getElementById('emailStageTeaserYearly');
-            const teaserMonthlyEl  = document.getElementById('emailStageTeaserMonthly');
+            const teaserEl          = document.getElementById('emailStageTeaser');
+            const teaserHeadlineEl  = document.getElementById('emailStageTeaserHeadline');
+            const teaserDescEl      = document.getElementById('emailStageTeaserDesc');
+            const teaserYearlyEl    = document.getElementById('emailStageTeaserYearly');
+            const teaserMonthlyEl   = document.getElementById('emailStageTeaserMonthly');
+            const teaserYearlyLabel = teaserEl ? teaserEl.querySelector('.estimate-teaser-yearly-label') : null;
+
+            // Which state did the user pick on the home page? Texas gets a
+            // rough bill-reduction range instead of the SCE dollar estimate.
+            const selectedState = (window.MicroVppState && window.MicroVppState.state) || 'california';
 
             if (!modal || !form) return;
 
@@ -2298,6 +2346,24 @@
             // see a real number for the typical home before continuing.
             (function populateTeaser() {
                 if (!teaserEl) return;
+
+                // Texas: we don't yet have enough local usage logs to produce
+                // a precise dollar estimate, so show a wide rough bill-reduction
+                // range (30%–90%) instead of running the SCE earnings model.
+                if (selectedState === 'texas') {
+                    teaserEl.classList.remove('is-loading');
+                    teaserEl.classList.remove('is-error');
+                    if (teaserHeadlineEl) teaserHeadlineEl.textContent = 'Estimated electricity bill reduction';
+                    if (teaserYearlyLabel) teaserYearlyLabel.textContent = 'Estimated bill reduction';
+                    if (teaserYearlyEl)  teaserYearlyEl.textContent = '30%–90%';
+                    if (teaserMonthlyEl) teaserMonthlyEl.innerHTML  = 'off your <strong>monthly electricity bill</strong>';
+                    if (teaserDescEl) {
+                        teaserDescEl.innerHTML =
+                            'This is just an estimate of your electricity bill reduction.';
+                    }
+                    return;
+                }
+
                 teaserEl.classList.add('is-loading');
                 teaserEl.classList.remove('is-error');
                 if (teaserYearlyEl)  teaserYearlyEl.textContent = 'Calculating…';

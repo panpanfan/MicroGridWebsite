@@ -898,42 +898,45 @@
                         <input type="text" id="fullName" name="fullName" placeholder="Enter your full name or preferred name (optional)">
                     </div>
 
-                    <div class="form-group full-width">
-                        <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" placeholder="(800) 555-0100 or 8005550100 (optional)">
-                        <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">US phone numbers only. Enter 10 digits.</small>
-                    </div>
-
-                    <div class="form-group full-width">
-                        <label for="address">Address</label>
-                        <input type="text" id="address" name="address" placeholder="Street address (optional)">
-                    </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="city">City</label>
-                            <input type="text" id="city" name="city" placeholder="City (optional)">
-                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Helps us match local energy rates.</small>
+                    <!-- Contact fields shown for California (original flow).
+                         Hidden for Texas, where address/city/state are derived
+                         from the uploaded bill or the ESI ID + meter
+                         authorization, and the active state comes from the
+                         home-page selection (window.MicroVppState). -->
+                    <div id="caOnlyContactFields">
+                        <div class="form-group full-width">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="(800) 555-0100 or 8005550100 (optional)">
+                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">US phone numbers only. Enter 10 digits.</small>
                         </div>
-                        <div class="form-group">
-                            <label for="state">State</label>
-                            <select id="state" name="state">
-                                <option value="">Select State</option>
-                                <!-- California is the default selected option as
-                                     a safety net for no-JS scenarios. The state
-                                     -context module overrides this with the
-                                     user's actual selection on load. -->
-                                <option value="California" selected>California</option>
-                                <option value="Texas">Texas</option>
-                            </select>
+
+                        <div class="form-group full-width">
+                            <label for="address">Address</label>
+                            <input type="text" id="address" name="address" placeholder="Street address (optional)">
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" name="city" placeholder="City (optional)">
+                                <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Helps us match local energy rates.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="state">State</label>
+                                <select id="state" name="state">
+                                    <option value="">Select State</option>
+                                    <option value="California" selected>California</option>
+                                    <option value="Texas">Texas</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Utility / REP dropdown — populated dynamically by
                          state-context.js based on the selected state:
-                          - California → CA utilities (PG&E, SCE, SDG&E, ...)
-                          - Texas      → Houston REPs (TXU, Reliant, Octopus, ...)
-                         The label and help text below also swap per state. -->
+                          - California → CA utilities (PG&E, SCE, SDG&E, ...) — optional
+                          - Texas      → Houston REPs (TXU, Reliant, Octopus, ...) — required
+                         The label, help text, asterisk and `required` swap per state. -->
                     <div class="form-group full-width">
                         <label for="utilityCompany" id="utilityCompanyLabel">Utility Company</label>
                         <select id="utilityCompany" name="utilityCompany">
@@ -949,14 +952,80 @@
                             <div style="flex: 1;">
                                 <h3 style="font-size: 1.1rem; color: #374151; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
                                     <span>Tell us about your energy usage <span style="color: #ef4444; font-weight: 700;">*</span></span>
-                                    <button type="button" id="usageHelpToggle" aria-expanded="false" aria-controls="usageHelpPanel" title="Where to find these numbers on your utility bill" style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; padding: 0; border-radius: 50%; border: 1.5px solid #10B981; background: #ffffff; color: #10B981; font-weight: 700; font-size: 0.85rem; line-height: 1; cursor: pointer; transition: all 0.2s ease;">?</button>
+                                    <button type="button" id="usageHelpToggle" aria-expanded="false" aria-controls="esiidHelpPanel usageHelpPanel" title="Where to find these numbers on your utility bill" style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; padding: 0; border-radius: 50%; border: 1.5px solid #10B981; background: #ffffff; color: #10B981; font-weight: 700; font-size: 0.85rem; line-height: 1; cursor: pointer; transition: all 0.2s ease;">?</button>
                                 </h3>
                                 <p style="color: #4b5563; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
                                     Choose <strong>one</strong> of the options below.
                                 </p>
 
                                 <div id="dailyAverageSection" class="usage-section">
-                                    <!-- Option A: type the numbers from the bill -->
+                                    <!-- Option A: authorize a direct utility-data pull via ESIID + meter
+                                         number. This is the MOST recommended option — we email the user an
+                                         authorization request and, once approved, download their real usage
+                                         history straight from the utility company. -->
+                                    <div class="usage-option-card" id="usageOptionAuthCard" style="background: #f0fdf4; border: 2px solid #10B981; border-radius: 10px; padding: 1.25rem 1.5rem 1.5rem; margin-bottom: 0.75rem;">
+                                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: #047857; font-weight: 700; flex-wrap: wrap;">
+                                            <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: #10B981; color: #ffffff; font-size: 0.78rem; font-weight: 800;">A</span>
+                                            <span>Let us pull your usage directly from your utility</span>
+                                            <span style="margin-left: auto; background: #10B981; color: #ffffff; font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.55rem; border-radius: 999px; letter-spacing: 0.03em;">★ MOST RECOMMENDED</span>
+                                        </div>
+                                        <p style="color: #4b5563; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">
+                                            Enter your <strong>ESIID</strong> and <strong>Meter ID</strong> from your electricity bill. We'll email you an authorization request — once you approve it, we securely download your real usage history directly from your utility company for the most accurate report.
+                                        </p>
+                                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+                                            <div>
+                                                <label for="esiid" style="display: block; font-weight: 600; color: #374151; font-size: 1rem; margin-bottom: 0.5rem;">ESIID</label>
+                                                <input type="text" id="esiid" name="esiid" placeholder="e.g., 10443720001234567 (17 digits)" inputmode="numeric" autocomplete="off" style="width: 100%; padding: 0.75rem; font-size: 1rem; border: 2px solid #e5e7eb; border-radius: 8px;">
+                                                <small style="color: #6b7280; font-size: 0.875rem; display: block; margin-top: 0.5rem;">A unique <strong>17- or 22-digit</strong> number used by ERCOT (Electric Reliability Council of Texas) to identify a specific physical point of electricity delivery. Shown near your meter/service details on the bill.</small>
+                                            </div>
+                                            <div>
+                                                <label for="meterId" style="display: block; font-weight: 600; color: #374151; font-size: 1rem; margin-bottom: 0.5rem;">Meter ID / Meter Number</label>
+                                                <input type="text" id="meterId" name="meterId" placeholder="e.g., 123456789LG" autocomplete="off" style="width: 100%; padding: 0.75rem; font-size: 1rem; border: 2px solid #e5e7eb; border-radius: 8px;">
+                                                <small style="color: #6b7280; font-size: 0.875rem; display: block; margin-top: 0.5rem;">The meter number printed on your electricity bill (for example, <strong>123456789LG</strong>).</small>
+                                            </div>
+                                        </div>
+                                        <div style="margin: 1rem 0 0 0; padding: 0.85rem 1rem; background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px; color: #92400e; font-size: 0.85rem; line-height: 1.55;">
+                                            <div style="font-weight: 700; margin-bottom: 0.35rem;">🔎 Where to find these on your bill</div>
+                                            <p style="margin: 0 0 0.5rem 0;">
+                                                <strong>Do not use your REP Account Number.</strong> Look for the <strong>"Service Address Detail"</strong> or <strong>"Electricity Usage"</strong> section, usually on <strong>page 2 or 3</strong> of your bill, to find the <strong>17–22 digit ESIID</strong> and the physical <strong>Meter ID</strong>.
+                                            </p>
+                                            <ul style="margin: 0; padding-left: 1.1rem;">
+                                                <li><strong>ESIID</strong> — a 17- or 22-digit number (e.g., <strong>10443720001234567</strong>).</li>
+                                                <li><strong>Meter ID</strong> — the physical meter number (e.g., <strong>123456789LG</strong>), not your account number.</li>
+                                            </ul>
+                                        </div>
+
+                                        <!-- Visual help panel (toggled by the "?" button next to the section
+                                             heading): shows a sample bill highlighting the ESI ID and Meter ID. -->
+                                        <div id="esiidHelpPanel" style="display: none; background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 1rem; margin-top: 1rem;">
+                                            <h4 style="color: #1e40af; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem;">🔎 Where to find your ESI ID and Meter ID</h4>
+                                            <p style="color: #1e3a8a; font-size: 0.875rem; line-height: 1.6; margin-bottom: 0.75rem;">
+                                                On your electricity bill, open the <strong>"Service Address Detail"</strong> section (often <strong>page 2 or 3</strong>). The <strong>ESI ID</strong> is listed near your service address, and the <strong>Meter ID</strong> appears in the meter reading table — as highlighted below.
+                                            </p>
+                                            <img src="assets/images/txu_bill_esiid_meter_id_highlighted.png"
+                                                 alt="Sample electricity bill — ESI ID and Meter ID highlighted in the Service Address Detail section"
+                                                 style="width: 100%; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer;"
+                                                 onclick="window.open(this.src, '_blank')">
+                                            <p style="margin: 0.75rem 0 0 0; font-size: 0.78rem; color: #1d4ed8; line-height: 1.5;">
+                                                💡 Tip: tap the image to open it full-size in a new tab.
+                                            </p>
+                                        </div>
+
+                                        <p style="margin: 0.75rem 0 0 0; padding: 0.75rem 1rem; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; color: #047857; font-size: 0.85rem; line-height: 1.5;">
+                                            📧 <strong>Watch for an authorization email.</strong> If your ESIID and Meter ID match your utility's records, you'll receive an email to approve the data download. Approve it and we'll take care of the rest.
+                                        </p>
+                                    </div>
+
+                                    <!-- OR divider (A → B). Hidden for Texas, where Option B
+                                         is removed because TX REP bills don't print daily averages. -->
+                                    <div class="usage-or-divider" id="usageOrDividerAB" aria-hidden="true">
+                                        <span>OR</span>
+                                    </div>
+
+                                    <!-- Option A (California / SCE only): type the daily-average
+                                         numbers from the bill. Hidden for Texas (their bills only
+                                         show a monthly usage bar chart with no generation, so
+                                         self-estimated daily averages would be inaccurate). -->
                                     <div class="usage-option-card" id="usageOptionTypeCard" style="background: #ffffff; border: 2px solid #e5e7eb; border-radius: 10px; padding: 1.25rem 1.5rem 1.5rem; margin-bottom: 0.75rem;">
                                         <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.85rem; color: #047857; font-weight: 700;">
                                             <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: #10B981; color: #ffffff; font-size: 0.78rem; font-weight: 800;">A</span>
@@ -1027,16 +1096,19 @@
                                         </div>
                                     </div>
 
-                                    <!-- OR divider -->
-                                    <div class="usage-or-divider" aria-hidden="true">
+                                    <!-- OR divider (B → upload). Hidden for Texas, where the
+                                         type-numbers option is removed. -->
+                                    <div class="usage-or-divider" id="usageOrDividerBC" aria-hidden="true">
                                         <span>OR</span>
                                     </div>
 
-                                    <!-- Option B: upload latest utility bill -->
+                                    <!-- Upload option — always shown, always labeled "B".
+                                         California: Option A (type numbers) + Option B (upload).
+                                         Texas:      Option A (ESI ID auth)  + Option B (upload). -->
                                     <div class="usage-option-card" id="usageOptionUploadCard" style="background: #ffffff; border: 2px solid #e5e7eb; border-radius: 10px; padding: 1.25rem 1.5rem 1.5rem;">
                                         <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: #047857; font-weight: 700;">
-                                            <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: #10B981; color: #ffffff; font-size: 0.78rem; font-weight: 800;">B</span>
-                                            <span>Upload your a recent utility bill</span>
+                                            <span id="uploadOptionLetter" style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: #10B981; color: #ffffff; font-size: 0.78rem; font-weight: 800;">B</span>
+                                            <span>Upload a recent utility bill</span>
                                         </div>
                                         <div class="file-upload-container">
                                             <div class="file-upload-area" id="utilityBillUploadArea">
@@ -1085,6 +1157,25 @@
             </div>
         </div>
     </section>
+
+    <!-- Congrats modal: shown after the user clicks Continue in Step 2.
+         Celebrates completion, sets the 72-hour report expectation, and
+         invites the user to optionally add inverter info for a more
+         accurate estimate (with a clear no-control reassurance). -->
+    <div class="modal-overlay" id="congratsModal" role="dialog" aria-modal="true" aria-labelledby="congratsTitle">
+        <div class="modal-dialog">
+            <h3 id="congratsTitle">🎉 You're all set!</h3>
+            <p>Thanks for sharing your details. We're building your <strong>personalized savings report</strong> now — look out for it in your inbox within <strong>72 hours</strong>.</p>
+            <div style="padding: 0.85rem 1rem; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 10px; color: #065f46; font-size: 0.9rem; line-height: 1.6; margin-bottom: 0.5rem;">
+                🔌 <strong>Want an even more accurate estimate?</strong> Add your inverter details on the next step. The more we know about your system, the sharper your numbers.
+                <span style="display: block; margin-top: 0.5rem; font-weight: 600;">🔒 We will never monitor, control, or dispatch your system without your explicit agreement.</span>
+            </div>
+            <div class="modal-actions-row">
+                <button type="button" class="modal-btn-secondary" id="congratsSkipBtn">Maybe later</button>
+                <button type="button" class="modal-btn-primary" id="congratsInverterBtn">Add inverter info →</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer>
@@ -1347,18 +1438,22 @@
         // ============================================
         document.addEventListener('DOMContentLoaded', function () {
             const toggle = document.getElementById('usageHelpToggle');
-            const panel = document.getElementById('usageHelpPanel');
-            if (!toggle || !panel) return;
+            // The "?" reveals help for both Option A (ESI ID + Meter ID, with a
+            // sample-bill screenshot) and Option B (SCE daily-average numbers).
+            const panels = [
+                document.getElementById('esiidHelpPanel'),
+                document.getElementById('usageHelpPanel')
+            ].filter(Boolean);
+            if (!toggle || panels.length === 0) return;
             toggle.addEventListener('click', function () {
-                const isHidden = panel.style.display === 'none' || panel.style.display === '';
+                const isHidden = toggle.getAttribute('aria-expanded') !== 'true';
+                panels.forEach(function (p) { p.style.display = isHidden ? 'block' : 'none'; });
                 if (isHidden) {
-                    panel.style.display = 'block';
                     toggle.setAttribute('aria-expanded', 'true');
                     toggle.title = 'Hide help';
                     toggle.style.background = '#10B981';
                     toggle.style.color = '#ffffff';
                 } else {
-                    panel.style.display = 'none';
                     toggle.setAttribute('aria-expanded', 'false');
                     toggle.title = 'Where to find these numbers on your utility bill';
                     toggle.style.background = '#ffffff';
@@ -1408,12 +1503,12 @@
         const SIGNUP_ENDPOINT = '/auth/signup';
         const UPDATE_PROFILE_ENDPOINT = '/auth/update-profile-web';
         
-        // Format phone number to E.164 format
+        // Format phone number to E.164 format (California flow only)
         function formatPhoneToE164(phone) {
             if (!phone) return null;
-            
+
             const digits = phone.replace(/\D/g, '');
-            
+
             if (digits.length === 10) {
                 return '+1' + digits;
             } else if (digits.length === 11 && digits.startsWith('1')) {
@@ -1423,10 +1518,10 @@
             } else if (digits.length === 11) {
                 return '+' + digits;
             }
-            
+
             return '+1' + digits;
         }
-        
+
         // Generate a unique inverter ID
         function generateInverterId() {
             return 'INV-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
@@ -1537,7 +1632,10 @@
                     system: {
                         battery_capacity_kwh: step1Data.batteryCapacity ? parseFloat(step1Data.batteryCapacity) : null,
                         pv_wattage_kw: step1Data.pvWattage ? parseFloat(step1Data.pvWattage) : null,
-                        utility_company: step2Data.utilityCompany || null
+                        utility_company: step2Data.utilityCompany || null,
+                        esiid: step2Data.esiid || null,
+                        meter_id: step2Data.meterId || null,
+                        data_authorization_requested: !!step2Data.dataAuthorizationRequested
                     },
                     registration: {
                         mode: 'simulation', // Will be updated in step 3 if inverter is connected
@@ -1729,10 +1827,11 @@
                     if (step2Data.phone) document.getElementById('phone').value = step2Data.phone;
                     if (step2Data.address) document.getElementById('address').value = step2Data.address;
                     if (step2Data.city) document.getElementById('city').value = step2Data.city;
+                    if (step2Data.esiid) document.getElementById('esiid').value = step2Data.esiid;
+                    if (step2Data.meterId) document.getElementById('meterId').value = step2Data.meterId;
                     // State + utility company are pre-filled below in the
-                    // state-context wiring block (utility options are
-                    // populated dynamically per state, so we must wait
-                    // until those options exist before selecting one).
+                    // state-context wiring block (utility options are populated
+                    // dynamically per state, so we wait until they exist).
                     if (step2Data.termsAccepted) document.getElementById('termsAccepted').checked = step2Data.termsAccepted;
 
                     // Pre-fill any usage values previously entered on this page.
@@ -1773,20 +1872,15 @@
                 var raw = sessionStorage.getItem('registrationStep2');
                 if (raw) saved = JSON.parse(raw);
             } catch (_) { /* noop */ }
-            var savedState   = saved && MicroVppState.normalize(saved.state);
             var savedUtility = (saved && saved.utilityCompany) || null;
 
-            // Effective state for the form: saved form value wins (returning
-            // user); otherwise the cross-page state from MicroVppState.
-            var currentState = savedState || MicroVppState.state;
+            // The home-page selection (window.MicroVppState, backed by
+            // localStorage) is authoritative. Step 2 only reflects it — it must
+            // NOT override the global state from stale saved data, otherwise a
+            // previous Texas test could permanently force the badge to TX.
+            var currentState = MicroVppState.state;
 
-            // If the saved form state differs from the global state, sync
-            // the global state so the header badge + localStorage update.
-            if (savedState && savedState !== MicroVppState.state) {
-                MicroVppState.set(savedState);
-            }
-
-            // Sync the form's State dropdown.
+            // Sync the form's State dropdown (if it still exists).
             if (stateSelect) {
                 stateSelect.value = MicroVppState.displayNameOf(currentState);
             }
@@ -1796,6 +1890,28 @@
                 MicroVppState.populateUtilitySelect(utilitySelect, savedUtility, { state: currentState });
                 MicroVppState.updateUtilityFieldMeta(currentState);
             }
+
+            // Show the usage options that fit the selected state:
+            //   • California (SCE): Option A = type the daily-average numbers,
+            //     Option B = upload bill. (ESI ID authorization is hidden.)
+            //   • Texas: Option A = ESI ID + meter authorization (recommended),
+            //     Option B = upload bill. (Type-the-numbers is hidden because
+            //     TX REP bills don't print daily averages.)
+            // The upload option is always shown and always labeled "B".
+            function updateStateUsageOptions(s) {
+                var isTexas    = (s === 'texas');
+                var authCard   = document.getElementById('usageOptionAuthCard');   // ESI ID — TX only
+                var dividerAB  = document.getElementById('usageOrDividerAB');       // before type-numbers
+                var typeCard   = document.getElementById('usageOptionTypeCard');    // SCE numbers — CA only
+                var dividerBC  = document.getElementById('usageOrDividerBC');       // before upload
+                var caFields   = document.getElementById('caOnlyContactFields');    // phone/address/city/state — CA only
+                if (authCard)  authCard.style.display  = isTexas ? '' : 'none';
+                if (dividerAB) dividerAB.style.display = isTexas ? '' : 'none';
+                if (typeCard)  typeCard.style.display  = isTexas ? 'none' : '';
+                if (dividerBC) dividerBC.style.display = isTexas ? 'none' : '';
+                if (caFields)  caFields.style.display  = isTexas ? 'none' : '';
+            }
+            updateStateUsageOptions(currentState);
 
             // When the user changes the State dropdown in the form,
             // propagate the change to MicroVppState. The onChange listener
@@ -1819,6 +1935,7 @@
                     MicroVppState.populateUtilitySelect(utilitySelect, null, { state: nextState });
                     MicroVppState.updateUtilityFieldMeta(nextState);
                 }
+                updateStateUsageOptions(nextState);
             });
         });
 
@@ -1871,6 +1988,9 @@
                         pv_wattage_kw: step1Data.pvWattage ? parseFloat(step1Data.pvWattage) : null,
                         installation_date: step2Data.installationDate || null,
                         utility_company: step2Data.utilityCompany || null,
+                        esiid: step2Data.esiid || null,
+                        meter_id: step2Data.meterId || null,
+                        data_authorization_requested: !!step2Data.dataAuthorizationRequested,
                         serial_number: step2Data.serialNumber || null
                     },
                     registration: {
@@ -2260,15 +2380,37 @@
             
             const formData = new FormData(this);
 
+            // The electricity provider is REQUIRED for Texas (REP) but optional
+            // for California (utility), matching the original CA flow.
+            const isTexasState = !!(window.MicroVppState && window.MicroVppState.state === 'texas');
+            const utilityVal = (formData.get('utilityCompany') || '').toString().trim();
+            if (isTexasState && !utilityVal) {
+                const utilitySelect = document.getElementById('utilityCompany');
+                alert(
+                    '⚠️ Retail Electric Provider (REP) Required\n\n' +
+                    'Please select your REP to continue.'
+                );
+                if (utilitySelect) {
+                    utilitySelect.focus();
+                    utilitySelect.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                return;
+            }
+
             // Energy-usage values (entered on this page) — at least one of the
-            // two options is required, so we validate before persisting anything.
+            // three options is required, so we validate before persisting anything.
             const dailyKwhRaw = (formData.get('dailyAverageKwh') || '').toString().trim();
             const dailyExportRaw = (formData.get('dailyAverageExportKwh') || '').toString().trim();
+            const esiidRaw = (formData.get('esiid') || '').toString().trim();
+            const meterIdRaw = (formData.get('meterId') || '').toString().trim();
             const hasDailyKwh = dailyKwhRaw !== '' && !isNaN(parseFloat(dailyKwhRaw)) && parseFloat(dailyKwhRaw) > 0;
             const hasDailyExport = dailyExportRaw !== '' && !isNaN(parseFloat(dailyExportRaw));
             const hasUploadedBill = uploadedFiles.length > 0;
+            // Option A (recommended): authorize a utility-data pull. Both the
+            // ESIID and meter ID are needed to match the account.
+            const hasAuthData = esiidRaw !== '' && meterIdRaw !== '';
 
-            if (!hasDailyKwh && !hasUploadedBill) {
+            if (!hasDailyKwh && !hasUploadedBill && !hasAuthData) {
                 const wrap = document.getElementById('usageRequiredCard');
                 const errorEl = document.getElementById('usageInlineError');
                 if (wrap) wrap.classList.add('has-error');
@@ -2291,11 +2433,18 @@
             // Prepare data to save (Step 2 - Contact Info + usage + bill upload)
             const step2Data = {
                 fullName: formData.get('fullName') || null,
+                // Phone / address / city are collected for California (original
+                // flow) and blank for Texas, where those fields are hidden and
+                // derived from the bill or ESI ID/meter authorization. State
+                // comes from the home-page selection (window.MicroVppState).
                 phone: formData.get('phone') || null,
                 address: formData.get('address') || null,
                 city: formData.get('city') || null,
-                state: formData.get('state') || null,
+                state: (window.MicroVppState && window.MicroVppState.displayName) || null,
                 utilityCompany: formData.get('utilityCompany') || null,
+                esiid: formData.get('esiid') || null,
+                meterId: formData.get('meterId') || null,
+                dataAuthorizationRequested: hasAuthData,
                 dailyAverageKwh: hasDailyKwh ? dailyKwhRaw : '',
                 dailyAverageExportKwh: hasDailyExport ? dailyExportRaw : '',
                 hasDailyAverage: hasDailyKwh,
@@ -2396,9 +2545,44 @@
                 console.log('User already exists (ID: ' + existingUserId + '), skipping signup');
             }
 
-            // Navigate to step 3 (inverter connection — optional)
-            window.location.href = 'diy-registration-step3.html';
+            // Celebrate completion and invite the user to add inverter info
+            // (Step 3, optional) for a more accurate estimate.
+            showCongratsModal();
         });
+
+        // ============================================
+        // CONGRATS MODAL (after Step 2 continue)
+        // ============================================
+        function showCongratsModal() {
+            const modal       = document.getElementById('congratsModal');
+            const skipBtn     = document.getElementById('congratsSkipBtn');
+            const inverterBtn = document.getElementById('congratsInverterBtn');
+            if (!modal) {
+                // Fallback: if the modal is missing, proceed as before.
+                window.location.href = 'diy-registration-step3.html';
+                return;
+            }
+
+            function goToInverterStep() {
+                window.location.href = 'diy-registration-step3.html';
+            }
+            function finishLater() {
+                // Skip the optional inverter step — registration is already
+                // complete and the report will arrive by email.
+                window.location.href = 'index.html';
+            }
+            function onKeyDown(e) {
+                if (e.key === 'Escape') finishLater();
+            }
+
+            if (inverterBtn) inverterBtn.addEventListener('click', goToInverterStep);
+            if (skipBtn)     skipBtn.addEventListener('click', finishLater);
+            document.addEventListener('keydown', onKeyDown);
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => { if (inverterBtn) inverterBtn.focus(); }, 50);
+        }
 
         // Check for invitation code before downloading app
         function checkInvitationCode(event) {
