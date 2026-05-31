@@ -1733,90 +1733,6 @@
             transform: translateX(-50%);
         }
 
-        /* Floating side arrows that switch state */
-        .state-arrow {
-            position: fixed;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 2px solid rgba(16, 185, 129, 0.35);
-            color: #065f46;
-            font-size: 1.6rem;
-            font-weight: 700;
-            cursor: pointer;
-            z-index: 900;
-            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, transform 0.3s ease,
-                        background 0.3s ease, color 0.3s ease,
-                        box-shadow 0.3s ease;
-            pointer-events: none;
-            font-family: inherit;
-        }
-
-        .state-arrow.visible {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
-        }
-
-        .state-arrow:hover {
-            background: linear-gradient(135deg, #10B981, #059669);
-            color: white;
-            transform: translateY(-50%) scale(1.08);
-            box-shadow: 0 12px 32px rgba(16, 185, 129, 0.4);
-        }
-
-        .state-arrow-left {
-            left: 24px;
-        }
-
-        .state-arrow-right {
-            right: 24px;
-        }
-
-        .state-arrow-tip {
-            position: absolute;
-            top: calc(100% + 8px);
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: #065f46;
-            background: rgba(255, 255, 255, 0.92);
-            padding: 3px 9px;
-            border-radius: 999px;
-            white-space: nowrap;
-            pointer-events: none;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-        }
-
-        @media (max-width: 768px) {
-            .state-arrow {
-                width: 44px;
-                height: 44px;
-                font-size: 1.25rem;
-            }
-            .state-arrow-left {
-                left: 8px;
-            }
-            .state-arrow-right {
-                right: 8px;
-            }
-            .state-arrow-tip {
-                display: none;
-            }
-        }
-
         /* State indicator bubble at bottom of each section */
         .state-bubble-wrap {
             text-align: center;
@@ -2006,8 +1922,7 @@
          State-Aware Sections (California / Texas)
          The NEM/Market section and the Real Data section both
          slide together. Switch state via:
-           - the header pill,
-           - the floating side arrows, or
+           - the header pill, or
            - the bubble at the bottom of each section.
          ========================================================== -->
     <div class="state-sections-wrapper" id="stateSections" data-state="california">
@@ -2030,7 +1945,7 @@
                         <div class="state-panel" data-state="texas">
                             <div class="section-header">
                                 <h2>Texas lets you choose. We help you choose right.</h2>
-                                <p style="color: #065f46; max-width: 820px; margin: 0 auto;">In Texas's deregulated market, you can pick from dozens of REPs and rate plans — Free Nights, Free Weekends, Time-of-Use, indexed wholesale, flat rate. The right plan can save you thousands. MicroVPP developed a free simulation tool to inform your decision and help you pick the plan that works best for you.</p>
+                                <p style="color: #065f46; max-width: 820px; margin: 0 auto;">In Texas's deregulated market, you can pick from dozens of REPs and rate plans — Free Nights, Free Weekends, Time-of-Use, indexed wholesale, flat rate. The right plan can save you thousands. MicroVPP developed a free simulation tool to inform your decision and help you win.</p>
                             </div>
                         </div>
 
@@ -2224,7 +2139,7 @@
                                         <span style="font-size: 1.5rem;">💡</span>
                                         <div>
                                             <p style="font-weight: 700; color: #065f46; margin-bottom: 0.25rem;">Future Upside:</p>
-                                            <p style="color: #555; font-size: 0.9rem;">ERS (Emergency Response Service) grid service revenue from ERCOT, layered on top.</p>
+                                            <p style="color: #555; font-size: 0.9rem;">Grid service revenue layered on top.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -2248,15 +2163,6 @@
             </div>
         </section>
 
-        <!-- Floating side arrows — single set, controls both sliding sections -->
-        <button type="button" class="state-arrow state-arrow-left" id="stateArrowLeft" aria-label="Switch state">
-            ‹
-            <span class="state-arrow-tip" id="stateArrowLeftTip">California</span>
-        </button>
-        <button type="button" class="state-arrow state-arrow-right" id="stateArrowRight" aria-label="Switch state">
-            ›
-            <span class="state-arrow-tip" id="stateArrowRightTip">Texas</span>
-        </button>
     </div>
 
 
@@ -2743,10 +2649,6 @@
             var heroCtaBtn    = document.getElementById('heroCtaBtn');
             var headerCtaBtn  = document.getElementById('headerCtaBtn');
             var stickyCtaBtn  = document.getElementById('stickyCtaBtn');
-            var arrowLeft     = document.getElementById('stateArrowLeft');
-            var arrowRight    = document.getElementById('stateArrowRight');
-            var arrowLeftTip  = document.getElementById('stateArrowLeftTip');
-            var arrowRightTip = document.getElementById('stateArrowRightTip');
             var toggleBtns    = document.querySelectorAll('.state-toggle-btn');
 
             if (!wrapper) return;
@@ -2792,11 +2694,6 @@
                 if (headerCtaBtn) headerCtaBtn.textContent = ctaText;
                 if (stickyCtaBtn) stickyCtaBtn.textContent = ctaText;
 
-                // Update arrow tips (always show "switch to other state")
-                var other = (next === 'california') ? 'texas' : 'california';
-                if (arrowLeftTip)  arrowLeftTip.textContent  = STATE_COPY[other].label;
-                if (arrowRightTip) arrowRightTip.textContent = STATE_COPY[other].label;
-
                 // Resize each slider to match the active panel
                 syncSliderHeights(next);
 
@@ -2826,37 +2723,6 @@
                     });
                 });
             });
-
-            function switchToOther(source) {
-                var next = (currentState === 'california') ? 'texas' : 'california';
-                setState(next, { persist: true, source: source });
-            }
-            if (arrowLeft)  arrowLeft.addEventListener('click',  function () { switchToOther('arrow_left');  });
-            if (arrowRight) arrowRight.addEventListener('click', function () { switchToOther('arrow_right'); });
-
-            // Keyboard shortcut: left/right arrows when wrapper is visible
-            document.addEventListener('keydown', function (e) {
-                if (e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
-                if (!arrowLeft || !arrowLeft.classList.contains('visible')) return;
-                if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-                    switchToOther('keyboard');
-                }
-            });
-
-            // ---------- Arrow visibility: only while state-aware sections are in view ----------
-            if ('IntersectionObserver' in window) {
-                var io = new IntersectionObserver(function (entries) {
-                    entries.forEach(function (entry) {
-                        var show = entry.isIntersecting;
-                        if (arrowLeft)  arrowLeft.classList.toggle('visible', show);
-                        if (arrowRight) arrowRight.classList.toggle('visible', show);
-                    });
-                }, { rootMargin: '-10% 0px -10% 0px', threshold: 0 });
-                io.observe(wrapper);
-            } else {
-                if (arrowLeft)  arrowLeft.classList.add('visible');
-                if (arrowRight) arrowRight.classList.add('visible');
-            }
 
             // ---------- Keep slider heights honest as content reflows ----------
             // Viewport resizes change panel heights (text wrapping, grid
