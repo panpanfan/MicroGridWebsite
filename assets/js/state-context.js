@@ -89,12 +89,12 @@
         california: {
             label: 'Utility Company',
             help:  'Used for tariff and NEM 3.0 calculations.',
-            placeholder: 'Select Utility Company (optional)'
+            placeholder: 'Select Utility Company'
         },
         texas: {
             label: 'Retail Electric Provider (REP)',
             help:  "Tell us who serves you — we use this to match available plans in CenterPoint territory.",
-            placeholder: 'Select your REP (optional)'
+            placeholder: 'Select your REP'
         }
     };
 
@@ -253,7 +253,8 @@
         var meta  = FIELD_META[which] || FIELD_META.california;
         var lbl   = document.getElementById('utilityCompanyLabel');
         var help  = document.getElementById('utilityCompanyHelp');
-        if (lbl)  lbl.textContent  = meta.label;
+        // Utility / REP selection is mandatory — keep the required marker.
+        if (lbl)  lbl.innerHTML    = meta.label + ' <span style="color: #ef4444;">*</span>';
         if (help) help.textContent = meta.help;
     }
 

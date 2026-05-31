@@ -899,12 +899,6 @@
                     </div>
 
                     <div class="form-group full-width">
-                        <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" placeholder="(800) 555-0100 or 8005550100 (optional)">
-                        <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">US phone numbers only. Enter 10 digits.</small>
-                    </div>
-
-                    <div class="form-group full-width">
                         <label for="address">Address</label>
                         <input type="text" id="address" name="address" placeholder="Street address (optional)">
                     </div>
@@ -935,11 +929,31 @@
                           - Texas      → Houston REPs (TXU, Reliant, Octopus, ...)
                          The label and help text below also swap per state. -->
                     <div class="form-group full-width">
-                        <label for="utilityCompany" id="utilityCompanyLabel">Utility Company</label>
-                        <select id="utilityCompany" name="utilityCompany">
-                            <option value="">Select Utility Company (optional)</option>
+                        <label for="utilityCompany" id="utilityCompanyLabel">Utility Company <span style="color: #ef4444;">*</span></label>
+                        <select id="utilityCompany" name="utilityCompany" required>
+                            <option value="">Select Utility Company</option>
                         </select>
                         <small id="utilityCompanyHelp" style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Used for tariff and NEM 3.0 calculations.</small>
+                    </div>
+
+                    <!-- Service identifiers (ESIID + meter number) — strongly
+                         encouraged. Both can be found on the user's electricity
+                         bill and let us match the account + pull exact usage. -->
+                    <div class="form-group full-width">
+                        <div style="font-weight: 600; color: #374151; margin-bottom: 0.35rem;">Help us pull your exact usage <span style="color: #6b7280; font-weight: 500;">(recommended)</span></div>
+                        <small style="color: #6b7280; font-size: 0.875rem; display: block; margin-bottom: 0.75rem;">Both are printed on your electricity bill. Providing them lets us match your account and usage faster.</small>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="esiid">ESIID</label>
+                                <input type="text" id="esiid" name="esiid" placeholder="e.g., 1044372001234567890" inputmode="numeric" autocomplete="off">
+                                <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Electric Service Identifier shown near your meter/service details on the bill.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="meterId">Meter ID / Meter Number</label>
+                                <input type="text" id="meterId" name="meterId" placeholder="e.g., 12345678" autocomplete="off">
+                                <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">The meter number printed on your electricity bill.</small>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Provide Your Energy Usage — pick at least one option -->
@@ -1408,25 +1422,6 @@
         const SIGNUP_ENDPOINT = '/auth/signup';
         const UPDATE_PROFILE_ENDPOINT = '/auth/update-profile-web';
         
-        // Format phone number to E.164 format
-        function formatPhoneToE164(phone) {
-            if (!phone) return null;
-            
-            const digits = phone.replace(/\D/g, '');
-            
-            if (digits.length === 10) {
-                return '+1' + digits;
-            } else if (digits.length === 11 && digits.startsWith('1')) {
-                return '+' + digits;
-            } else if (phone.startsWith('+')) {
-                return phone;
-            } else if (digits.length === 11) {
-                return '+' + digits;
-            }
-            
-            return '+1' + digits;
-        }
-        
         // Generate a unique inverter ID
         function generateInverterId() {
             return 'INV-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
@@ -1525,7 +1520,6 @@
                     contact: {
                         name: step2Data.fullName || null,
                         email: userEmail,
-                        phone: step2Data.phone || null,
                         email_provided: !!userEmail,
                         email_source: userEmail ? 'step1_modal' : 'dummy_generated'
                     },
@@ -1537,7 +1531,9 @@
                     system: {
                         battery_capacity_kwh: step1Data.batteryCapacity ? parseFloat(step1Data.batteryCapacity) : null,
                         pv_wattage_kw: step1Data.pvWattage ? parseFloat(step1Data.pvWattage) : null,
-                        utility_company: step2Data.utilityCompany || null
+                        utility_company: step2Data.utilityCompany || null,
+                        esiid: step2Data.esiid || null,
+                        meter_id: step2Data.meterId || null
                     },
                     registration: {
                         mode: 'simulation', // Will be updated in step 3 if inverter is connected
@@ -1598,7 +1594,7 @@
                 const payload = {
                     username: step2Data.fullName || null,
                     email: email,
-                    phone_number: formatPhoneToE164(step2Data.phone),
+                    phone_number: null,
                     full_address: step2Data.address || null,
                     city: step2Data.city || null,
                     state: step2Data.state || null,
@@ -1726,9 +1722,10 @@
                     console.log('Pre-filling Step 2 form with saved data:', step2Data);
 
                     if (step2Data.fullName) document.getElementById('fullName').value = step2Data.fullName;
-                    if (step2Data.phone) document.getElementById('phone').value = step2Data.phone;
                     if (step2Data.address) document.getElementById('address').value = step2Data.address;
                     if (step2Data.city) document.getElementById('city').value = step2Data.city;
+                    if (step2Data.esiid) document.getElementById('esiid').value = step2Data.esiid;
+                    if (step2Data.meterId) document.getElementById('meterId').value = step2Data.meterId;
                     // State + utility company are pre-filled below in the
                     // state-context wiring block (utility options are
                     // populated dynamically per state, so we must wait
@@ -1851,7 +1848,6 @@
                     contact: {
                         name: step2Data.fullName || null,
                         email: userEmail,
-                        phone: step2Data.phone || null,
                         email_provided: !!userEmail,
                         email_source: userEmail ? 'step1_modal' : 'dummy_generated'
                     },
@@ -1871,6 +1867,8 @@
                         pv_wattage_kw: step1Data.pvWattage ? parseFloat(step1Data.pvWattage) : null,
                         installation_date: step2Data.installationDate || null,
                         utility_company: step2Data.utilityCompany || null,
+                        esiid: step2Data.esiid || null,
+                        meter_id: step2Data.meterId || null,
                         serial_number: step2Data.serialNumber || null
                     },
                     registration: {
@@ -1930,7 +1928,7 @@
                     account_id: userId,
                     username: step2Data.fullName || null,
                     email: email,
-                    phone_number: formatPhoneToE164(step2Data.phone),
+                    phone_number: null,
                     full_address: step2Data.address || null,
                     city: step2Data.city || null,
                     state: step2Data.state || null,
@@ -2260,6 +2258,22 @@
             
             const formData = new FormData(this);
 
+            // REQUIRED: the electricity provider (Utility / REP) must be chosen.
+            const utilityVal = (formData.get('utilityCompany') || '').toString().trim();
+            if (!utilityVal) {
+                const utilitySelect = document.getElementById('utilityCompany');
+                const isTexas = !!(window.MicroVppState && window.MicroVppState.state === 'texas');
+                alert(
+                    '⚠️ ' + (isTexas ? 'Retail Electric Provider (REP)' : 'Utility Company') + ' Required\n\n' +
+                    'Please select your ' + (isTexas ? 'REP' : 'utility company') + ' to continue.'
+                );
+                if (utilitySelect) {
+                    utilitySelect.focus();
+                    utilitySelect.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                return;
+            }
+
             // Energy-usage values (entered on this page) — at least one of the
             // two options is required, so we validate before persisting anything.
             const dailyKwhRaw = (formData.get('dailyAverageKwh') || '').toString().trim();
@@ -2291,11 +2305,12 @@
             // Prepare data to save (Step 2 - Contact Info + usage + bill upload)
             const step2Data = {
                 fullName: formData.get('fullName') || null,
-                phone: formData.get('phone') || null,
                 address: formData.get('address') || null,
                 city: formData.get('city') || null,
                 state: formData.get('state') || null,
                 utilityCompany: formData.get('utilityCompany') || null,
+                esiid: formData.get('esiid') || null,
+                meterId: formData.get('meterId') || null,
                 dailyAverageKwh: hasDailyKwh ? dailyKwhRaw : '',
                 dailyAverageExportKwh: hasDailyExport ? dailyExportRaw : '',
                 hasDailyAverage: hasDailyKwh,
