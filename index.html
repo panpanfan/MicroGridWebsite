@@ -223,13 +223,14 @@
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 2rem;
+            gap: 1.5rem;
         }
 
         .nav-links a {
             text-decoration: none;
             color: #333;
             font-weight: 500;
+            white-space: nowrap;
             transition: color 0.3s ease;
         }
 
@@ -1005,6 +1006,40 @@
             cursor: pointer;
             padding: 0.5rem;
             color: #333;
+        }
+
+        /* Collapse the nav into the hamburger menu before the links crowd
+           the state toggle + CTA (extra links pushed past the safe width). */
+        @media (max-width: 1024px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                gap: 0;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                padding: 0.75rem 0;
+                border-bottom: 1px solid #f0f0f0;
+            }
+
+            .nav-links li:last-child {
+                border-bottom: none;
+            }
         }
 
         /* Responsive Design */
@@ -1791,6 +1826,25 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+
+        .reviews-section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .reviews-embed {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .reviews-placeholder {
+            text-align: center;
+            padding: 3rem 1.5rem;
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            color: #64748b;
+            background: #f8fafc;
+        }
     </style>
 </head>
 <body>
@@ -1810,6 +1864,7 @@
                 <li><a href="#join-movement">How it works</a></li>
                 <li><a href="#impact">Results</a></li>
                 <li><a href="#compat">Compatibility</a></li>
+                <li><a href="#reviews">Reviews</a></li>
                 <li><a href="#faq">FAQ</a></li>
                 <li><a href="about.html">About</a></li>
             </ul>
@@ -2222,6 +2277,25 @@
                 <div class="logo-item">
                     <img src="assets/images/tesla_logo.png" alt="Tesla Energy">
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section id="reviews" class="reviews-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>What Early Users Are Saying</h2>
+                <p>Real feedback from our Tesla Powerwall Alpha testing cohort and early MicroVPP® members.</p>
+            </div>
+            <div class="reviews-embed">
+                <!--
+                  Jotform Google Reviews widget, synced to the MicroVPP Google Business Profile.
+                  Place ID: ChIJOZawUPh3EwQR5B0TuJ6ztTs
+                  CID reference: 4302542513296842212
+                -->
+                <div id="JFWebsiteWidget-019e9384ae177b68990ae58d75cab8e35e39"></div>
+                <script src="https://www.jotform.com/website-widgets/embed/019e9384ae177b68990ae58d75cab8e35e39"></script>
             </div>
         </div>
     </section>
