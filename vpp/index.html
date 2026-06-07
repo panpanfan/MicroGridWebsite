@@ -427,7 +427,7 @@
 
                 <div class="section-header">
                     <h2>Enroll Your Home Battery</h2>
-                    <p>Review the agreement below and tap the button to opt in.</p>
+                    <p>Review the authorization below and tap the button to opt in.</p>
                 </div>
 
                 <!-- Pre-filled account context (from URL params handed off by the app) -->
@@ -443,125 +443,86 @@
                     </dl>
                 </div>
 
-                <!-- Agreement -->
+                <!-- Authorization -->
                 <div class="agreement-card">
-                    <div class="agreement-title">📄 Program Agreement</div>
-                    <h3>MicroVPP Grid Support Program — Participant Agreement</h3>
+                    <div class="agreement-title">📄 Customer Authorization</div>
+                    <h3>MicroVPP™ Grid Services — Customer Authorization</h3>
                     <div class="agreement-scroll" id="agreementScroll">
-                        <h4>1. Parties &amp; Purpose</h4>
                         <p>
-                            This Participant Agreement ("Agreement") is between MicroGrid LLC
-                            ("MicroGrid," "we," "us") and you ("Participant," "you"). By signing
-                            below, you agree to enroll the home battery and solar system tied to
-                            your MicroVPP account ("System") in the MicroVPP Grid Support Program
-                            ("Program"). The Program aggregates many residential batteries into a
-                            virtual power plant that helps stabilize the local grid during peak
-                            demand and emergency events.
+                            By clicking <strong>"Opt-In and Continue,"</strong> you ("Customer")
+                            authorize the following:
                         </p>
 
-                        <h4>2. How the Program Works</h4>
-                        <ul>
-                            <li>MicroGrid issues dispatch signals to your System during grid-support
-                                events (a "Dispatch") that may discharge to your home loads, export
-                                to the grid, or charge from solar/grid as appropriate.</li>
-                            <li>Dispatches only ever use the portion of your battery above the
-                                backup reserve you've already configured in your MicroVPP account.
-                                Our optimizer respects that reserve at all times.</li>
-                            <li>Typical events last 30 minutes to 4 hours. The number of events per
-                                year depends on your utility territory and grid conditions.</li>
-                            <li>You retain full ownership of your System. You may manually override
-                                or cancel any Dispatch from your inverter app at any time.</li>
-                        </ul>
-
-                        <h4>3. Authorization to Dispatch</h4>
+                        <h4>1. Enrollment &amp; management</h4>
                         <p>
-                            You authorize MicroGrid (and its grid-services partners and utility
-                            counterparties) to send Dispatch commands to your System during the
-                            term of this Agreement, subject to the backup-reserve and override
-                            rights described above.
+                            You grant MicroVPP the exclusive right to automatically enroll and
+                            manage the dispatch of your battery and related energy assets in grid
+                            services and demand response programs. This authorization remains in
+                            effect until you revoke it. You confirm these assets are not, and will
+                            not be, enrolled in any other utility or demand response program
+                            outside of MicroVPP while this authorization is active.
                         </p>
 
-                        <h4>4. Compensation</h4>
+                        <h4>2. Dispatch &amp; control</h4>
                         <p>
-                            MicroGrid will share grid-services revenue earned on your behalf, paid
-                            monthly via your selected payout method, subject to the rate schedule
-                            published in your MicroVPP account. Compensation depends on capacity
-                            offered, event participation, and program rules of the utility
-                            counterparty.
+                            You authorize MicroVPP and its authorized partners to monitor, control,
+                            operate, and dispatch your battery and related energy assets as needed
+                            to participate in applicable grid services and demand response programs.
                         </p>
 
-                        <h4>5. Data Access &amp; Privacy</h4>
+                        <h4>3. Data sharing</h4>
                         <p>
-                            To run the Program, MicroGrid must read live and historical telemetry
-                            from your System (state of charge, power flows, site status, event
-                            performance). We use this data only to operate the Program, optimize
-                            your participation, settle payments, and meet regulatory or utility
-                            reporting requirements. We do not sell your personal information. See
-                            our <a href="../privacy.html" target="_blank" rel="noopener">Privacy Policy</a>
-                            for full details.
+                            You authorize MicroVPP, its authorized grid-services partners, your
+                            electric utility, and the applicable program administrators to access
+                            and use your energy usage, account, and device data — including interval
+                            and usage data from your utility's metering infrastructure, your name,
+                            service address, account and meter identifiers, rate plan, and device
+                            details — solely to enroll, operate, and settle your participation in
+                            these programs. Your data is never sold and is handled in accordance
+                            with our <a href="../privacy.html" target="_blank" rel="noopener">Privacy Policy</a>
+                            and applicable state privacy and utility data-access laws.
                         </p>
 
-                        <h4>6. Tesla Powerwall &amp; the Tesla Fleet API</h4>
+                        <h4>4. No fossil-fuel generation</h4>
                         <p>
-                            If your inverter is a <strong>Tesla Powerwall</strong>, MicroGrid uses
-                            the Tesla Fleet API to read your energy-site data and issue Dispatch
-                            commands. By granting Tesla Fleet API access, you authorize MicroGrid
-                            to (a) read energy device data for your Tesla energy site
-                            (<code>energy_device_data</code>), and (b) send energy commands such
-                            as backup-reserve and operation-mode changes (<code>energy_cmds</code>)
-                            during Dispatches. You can revoke this access at any time from your
-                            Tesla account at
-                            <a href="https://accounts.tesla.com" target="_blank" rel="noopener">accounts.tesla.com</a>.
+                            You attest that you will not use diesel, natural gas, gasoline, propane,
+                            or liquefied petroleum gas (LPG) generation to deliver load reduction
+                            during any program event, where prohibited by applicable program rules.
                         </p>
 
-                        <h4>7. Eligibility &amp; System Health</h4>
+                        <h4>5. Accurate information</h4>
                         <p>
-                            You represent that you (or your household) own the System or have the
-                            legal authority to enroll it, that the System is in good working order,
-                            and that participation does not violate any agreement with your
-                            installer, lender, or utility. You agree to maintain reasonable
-                            connectivity (internet access to the System) so Dispatches can occur.
+                            You confirm that the information you have provided is accurate and
+                            complete, and you agree to notify MicroVPP of any material changes.
                         </p>
 
-                        <h4>8. Term &amp; Termination</h4>
+                        <h4>6. Revoking &amp; opting out</h4>
                         <p>
-                            This Agreement begins when you sign below and continues month-to-month.
-                            You may opt out of the Program at any time from your MicroVPP account
-                            or by emailing
-                            <a href="mailto:support@microvpp.com">support@microvpp.com</a>.
-                            MicroGrid may also terminate participation if a System becomes
-                            non-compliant or unsafe to dispatch.
+                            You may revoke this authorization at any time by emailing
+                            <a href="mailto:info@microvpp.com">info@microvpp.com</a>, which ends
+                            your participation and stops future data sharing. You can also opt out
+                            of an individual dispatch event — just let us know — without revoking
+                            your overall authorization (frequent opt-outs may reduce your earnings
+                            or eligibility).
                         </p>
 
-                        <h4>9. Disclaimers &amp; Limitation of Liability</h4>
+                        <h4>In plain English</h4>
                         <p>
-                            The Program is provided "as is." MicroGrid is not liable for grid
-                            outages, lost backup capacity in extreme events, equipment wear within
-                            normal operating bounds, or revenue variation due to utility program
-                            changes. Our total liability under this Agreement is limited to
-                            compensation paid to you in the 12 months preceding the claim.
+                            Thanks for reading all the fine print — we know it's a lot. You're
+                            letting MicroVPP use your home battery to support the grid and earn you
+                            rewards, your data is used only to run the program, and you can opt out
+                            anytime.
                         </p>
 
-                        <h4>10. Governing Law</h4>
+                        <h4>How consent is captured</h4>
                         <p>
-                            This Agreement is governed by the laws of the State of California,
-                            without regard to conflict-of-laws principles. Disputes will be
-                            resolved in the state or federal courts located in San Francisco
-                            County, California.
-                        </p>
-
-                        <h4>11. Entire Agreement</h4>
-                        <p>
-                            This document, together with the
-                            <a href="../terms.html" target="_blank" rel="noopener">MicroVPP Terms of Service</a>
-                            and the
-                            <a href="../privacy.html" target="_blank" rel="noopener">Privacy Policy</a>,
-                            forms the entire agreement between you and MicroGrid LLC regarding the
-                            Program and supersedes any prior understandings.
+                            Customers complete an email opt-in, then affirmatively accept this
+                            authorization via click-through. MicroVPP records the acceptance for
+                            each customer.
                         </p>
                     </div>
                     <p class="agreement-meta">
-                        Version <span id="agreementVersionLabel">v1.0</span> · Last updated May 2026 · MicroGrid LLC
+                        Version <span id="agreementVersionLabel">v3.1</span> · Last updated June 2026 · MicroGrid LLC
                     </p>
                 </div>
 
@@ -569,45 +530,19 @@
                     <!-- Tesla informational banner (auto-shown when inverter is Powerwall) -->
                     <div class="tesla-banner" id="teslaBanner">
                         <strong>Tesla Powerwall detected.</strong> Because Tesla controls Powerwall
-                        access through their cloud, after you sign below we'll redirect you to
+                        access through their cloud, after you opt in we'll redirect you to
                         Tesla's secure login page to authorize MicroGrid via the
-                        <strong>Tesla Fleet API</strong>. You'll come back here automatically when
-                        you're done — typically takes under a minute.
-                    </div>
-
-                    <!-- Program opt-in (always required) -->
-                    <div class="consent-box" id="optInBox">
-                        <div class="consent-row">
-                            <input type="checkbox" id="optInAgree" name="optInAgree" required>
-                            <label for="optInAgree">
-                                <strong>I agree to the MicroVPP Grid Support Program Agreement above</strong>
-                                and opt in to enrollment. I understand MicroGrid may dispatch my
-                                battery during grid-support events, subject to my preset backup
-                                reserve and my right to opt out at any time.
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Tesla Fleet API consent (auto-shown + required when Powerwall) -->
-                    <div class="consent-box is-required-tesla" id="teslaConsentBox">
-                        <div class="consent-row">
-                            <input type="checkbox" id="teslaConsent" name="teslaConsent">
-                            <label for="teslaConsent">
-                                <strong>I authorize MicroGrid LLC to access my Tesla Powerwall via the
-                                Tesla Fleet API</strong> with the scopes
-                                <code>openid</code>, <code>offline_access</code>,
-                                <code>energy_device_data</code>, and <code>energy_cmds</code>, for
-                                the purpose of operating the Grid Support Program. I can revoke
-                                this access anytime at accounts.tesla.com.
-                            </label>
-                        </div>
+                        <strong>Tesla Fleet API</strong> (scopes <code>openid</code>,
+                        <code>offline_access</code>, <code>energy_device_data</code>, and
+                        <code>energy_cmds</code>). You'll come back here automatically when you're
+                        done — typically takes under a minute.
                     </div>
 
                     <button type="submit" class="submit-btn" id="submitBtn">
-                        Sign &amp; Opt In
+                        Opt-In and Continue
                     </button>
                     <p class="submit-help" id="submitHelp">
-                        💡 Signing this form is your electronic signature on the Participant Agreement.
+                        💡 Clicking "Opt-In and Continue" is your electronic signature accepting the authorization above.
                     </p>
 
                     <div class="status-banner" id="statusBanner" role="status" aria-live="polite"></div>
@@ -675,7 +610,7 @@
 
         const API_BASE_URL = 'https://api.microvpp.com';
         const OPT_IN_ENDPOINT = API_BASE_URL + '/admin/vpp/opt-in';
-        const AGREEMENT_VERSION = 'v1.0';
+        const AGREEMENT_VERSION = 'v3.1';
         const DEFAULT_VPP_PROGRAM_ID = 1;
 
         // Friendly labels for the inverter_brand machine keys.
@@ -697,10 +632,6 @@
         // ---------- DOM ----------
         const form          = document.getElementById('vppSignupForm');
         const teslaBanner   = document.getElementById('teslaBanner');
-        const teslaBox      = document.getElementById('teslaConsentBox');
-        const teslaConsent  = document.getElementById('teslaConsent');
-        const optInBox      = document.getElementById('optInBox');
-        const optInAgree    = document.getElementById('optInAgree');
         const submitBtn     = document.getElementById('submitBtn');
         const submitHelp    = document.getElementById('submitHelp');
         const statusBanner  = document.getElementById('statusBanner');
@@ -754,28 +685,19 @@
         function updateForBrand() {
             const tesla = isTeslaBrand(ctx.inverter_brand);
             teslaBanner.classList.toggle('is-visible', tesla);
-            teslaBox.classList.toggle('is-visible', tesla);
-            teslaConsent.required = tesla;
-            if (!tesla) teslaConsent.checked = false;
 
+            submitBtn.textContent = 'Opt-In and Continue';
             if (tesla) {
-                submitBtn.textContent = 'Sign & Continue to Tesla';
                 submitBtn.classList.add('is-tesla');
                 submitHelp.innerHTML =
-                    '🔐 You will be redirected to <strong>auth.tesla.com</strong> to authorize ' +
-                    'MicroGrid via the Tesla Fleet API. We never see your Tesla password.';
+                    '🔐 After you opt in you will be redirected to <strong>auth.tesla.com</strong> to ' +
+                    'authorize MicroGrid via the Tesla Fleet API. We never see your Tesla password.';
             } else {
-                submitBtn.textContent = 'Sign & Opt In';
                 submitBtn.classList.remove('is-tesla');
-                submitHelp.textContent =
-                    '💡 Signing this form is your electronic signature on the Participant Agreement.';
+                submitHelp.innerHTML =
+                    '💡 Clicking "Opt-In and Continue" is your electronic signature accepting the authorization above.';
             }
         }
-        function reflectChecked(box, input) {
-            box.classList.toggle('is-checked', input.checked);
-        }
-        optInAgree.addEventListener('change', () => reflectChecked(optInBox, optInAgree));
-        teslaConsent.addEventListener('change', () => reflectChecked(teslaBox, teslaConsent));
         updateForBrand();
 
         function showStatus(kind, message) {
@@ -811,6 +733,10 @@
         }
 
         // ---------- 5. Submit handler ----------
+        // Clicking "Opt-In and Continue" is the customer's affirmative,
+        // click-through acceptance of the authorization, so consent flags are
+        // recorded as true on submit. For Tesla Powerwall, the subsequent
+        // redirect to auth.tesla.com captures the actual Fleet API scope grant.
         function buildPayload() {
             return {
                 cognito_user_id:     ctx.cognito_user_id,
@@ -818,20 +744,9 @@
                 inverter_brand:      ctx.inverter_brand,
                 vpp_program_id:      ctx.vpp_program_id,
                 agreement_version:   AGREEMENT_VERSION,
-                opt_in_agreed:       !!optInAgree.checked,
-                tesla_fleet_consent: !!teslaConsent.checked
+                opt_in_agreed:       true,
+                tesla_fleet_consent: isTeslaBrand(ctx.inverter_brand)
             };
-        }
-
-        function validateConsents() {
-            const errors = [];
-            if (!optInAgree.checked) {
-                errors.push('You must agree to the Grid Support Program Agreement to opt in');
-            }
-            if (isTeslaBrand(ctx.inverter_brand) && !teslaConsent.checked) {
-                errors.push('Tesla Powerwall sign-up requires Tesla Fleet API authorization');
-            }
-            return errors;
         }
 
         async function postOptIn(payload) {
@@ -854,17 +769,6 @@
             clearStatus();
 
             if (missingParams.length) return;
-
-            const errors = validateConsents();
-            if (errors.length) {
-                showStatus(
-                    'error',
-                    '<strong>Please fix the following:</strong><ul style="margin: 0.4rem 0 0 1.25rem;">' +
-                    errors.map(e => '<li>' + e + '</li>').join('') +
-                    '</ul>'
-                );
-                return;
-            }
 
             submitBtn.disabled = true;
             const originalLabel = submitBtn.textContent;
@@ -912,7 +816,7 @@
                 submitBtn.textContent = 'Redirecting to Tesla…';
                 showStatus(
                     'success',
-                    '✅ Signed. Redirecting you to <strong>auth.tesla.com</strong> to authorize Tesla Fleet API access…'
+                    '✅ Opted in. Redirecting you to <strong>auth.tesla.com</strong> to authorize Tesla Fleet API access…'
                 );
                 if (typeof gtag === 'function') {
                     gtag('event', 'vpp_tesla_oauth_redirect', {
