@@ -116,7 +116,7 @@
         }
 
         /* Sign-up section */
-        .signup-section { padding: 40px 0 80px; }
+        .signup-section { padding: 120px 0 80px; }
         .form-container {
             max-width: 820px; margin: 0 auto;
             background: white; padding: 3rem;
@@ -389,45 +389,14 @@
         </nav>
     </header>
 
-    <!-- Hero -->
-    <section class="vpp-hero">
-        <div class="container">
-            <span class="hero-badge">⚡ MicroVPP Grid Support Program</span>
-            <h1>Sign in. Sign the agreement. You're enrolled.</h1>
-            <p>
-                Your battery's backup reserve is already protected by our optimizer,
-                so all we need from you here is your signature. Tesla Powerwall owners
-                authorize the Fleet API in one extra step.
-            </p>
-        </div>
-    </section>
-
     <!-- Sign-up Form -->
     <section class="signup-section">
         <div class="container">
             <div class="form-container">
 
-                <div class="benefits-strip">
-                    <div class="benefit">
-                        <span class="icon">💵</span>
-                        <span class="label">Earn from every event</span>
-                        <span class="desc">Share of grid-services revenue</span>
-                    </div>
-                    <div class="benefit">
-                        <span class="icon">🔋</span>
-                        <span class="label">Backup reserve protected</span>
-                        <span class="desc">Optimizer respects your preset</span>
-                    </div>
-                    <div class="benefit">
-                        <span class="icon">🚪</span>
-                        <span class="label">Opt out anytime</span>
-                        <span class="desc">No lock-in, no penalty</span>
-                    </div>
-                </div>
-
                 <div class="section-header">
-                    <h2>Enroll Your Home Battery</h2>
-                    <p>Review the authorization below and tap the button to opt in.</p>
+                    <h2>Enroll Your Home Battery for MicroVPP Grid Support Program</h2>
+                    <p>Earn from every grid support event.</p>
                 </div>
 
                 <!-- Pre-filled account context (from URL params handed off by the app) -->
@@ -449,7 +418,7 @@
                     <h3>MicroVPP™ Grid Services — Customer Authorization</h3>
                     <div class="agreement-scroll" id="agreementScroll">
                         <p>
-                            By clicking <strong>"Opt-In and Continue,"</strong> you ("Customer")
+                            By clicking <strong>"Authorize and Continue,"</strong> you ("Customer")
                             authorize the following:
                         </p>
 
@@ -539,10 +508,10 @@
                     </div>
 
                     <button type="submit" class="submit-btn" id="submitBtn">
-                        Opt-In and Continue
+                        Authorize and Continue
                     </button>
                     <p class="submit-help" id="submitHelp">
-                        💡 Clicking "Opt-In and Continue" is your electronic signature accepting the authorization above.
+                        💡 Clicking "Authorize and Continue" is your electronic signature accepting the authorization above.
                     </p>
 
                     <div class="status-banner" id="statusBanner" role="status" aria-live="polite"></div>
@@ -686,16 +655,16 @@
             const tesla = isTeslaBrand(ctx.inverter_brand);
             teslaBanner.classList.toggle('is-visible', tesla);
 
-            submitBtn.textContent = 'Opt-In and Continue';
+            submitBtn.textContent = 'Authorize and Continue';
             if (tesla) {
                 submitBtn.classList.add('is-tesla');
                 submitHelp.innerHTML =
-                    '🔐 After you opt in you will be redirected to <strong>auth.tesla.com</strong> to ' +
+                    '🔐 After you authorize you will be redirected to <strong>auth.tesla.com</strong> to ' +
                     'authorize MicroGrid via the Tesla Fleet API. We never see your Tesla password.';
             } else {
                 submitBtn.classList.remove('is-tesla');
                 submitHelp.innerHTML =
-                    '💡 Clicking "Opt-In and Continue" is your electronic signature accepting the authorization above.';
+                    '💡 Clicking "Authorize and Continue" is your electronic signature accepting the authorization above.';
             }
         }
         updateForBrand();
@@ -733,7 +702,7 @@
         }
 
         // ---------- 5. Submit handler ----------
-        // Clicking "Opt-In and Continue" is the customer's affirmative,
+        // Clicking "Authorize and Continue" is the customer's affirmative,
         // click-through acceptance of the authorization, so consent flags are
         // recorded as true on submit. For Tesla Powerwall, the subsequent
         // redirect to auth.tesla.com captures the actual Fleet API scope grant.
