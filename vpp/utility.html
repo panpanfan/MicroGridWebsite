@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-T2CN68FF');</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-05XLDKW0MN"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-05XLDKW0MN');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finish Registration — Utility Details | MicroVPP</title>
+    <meta name="description" content="Connect your utility account so MicroVPP can finish enrolling your battery in the Grid Support Program." />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="theme-color" content="#065f46" />
+    <link rel="canonical" href="https://www.microvpp.com/vpp/utility.html" />
+    <link rel="icon" type="image/png" href="../assets/images/microvpp_logo.png" />
+    <link rel="apple-touch-icon" href="../assets/images/microvpp_logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-green: #10B981;
+            --brand-green-dark: #065f46;
+            --brand-green-medium: #059669;
+            --brand-green-darker: #047857;
+            --brand-gold: #F59E0B;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+            background: #f8fafc;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* Header */
+        header {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000; padding: 1rem 0;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.15);
+        }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; text-decoration: none; }
+        .logo img { height: 50px; width: auto; }
+        .nav-links { display: flex; list-style: none; gap: 2rem; }
+        .nav-links a {
+            text-decoration: none; color: #333; font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover { color: var(--brand-green); }
+        .header-buttons { display: flex; align-items: center; gap: 12px; }
+        .cta-button-outline {
+            background: transparent; color: var(--brand-green);
+            padding: 0.5rem 1rem; border: 2px solid var(--brand-green);
+            border-radius: 12px; font-weight: 600; font-size: 0.875rem;
+            text-decoration: none; transition: all 0.3s ease;
+            cursor: pointer; display: inline-flex; align-items: center;
+        }
+        .cta-button-outline:hover { background: rgba(16, 185, 129, 0.05); }
+
+        /* Form section */
+        .utility-section { padding: 120px 0 80px; }
+        .form-container {
+            max-width: 620px; margin: 0 auto;
+            background: white; padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+        @media (max-width: 640px) {
+            .form-container { padding: 2rem 1.5rem; }
+        }
+
+        /* Steps */
+        .steps {
+            display: flex; align-items: center; justify-content: center;
+            gap: 0.5rem; margin-bottom: 2rem;
+            font-size: 0.85rem; color: #6b7280; font-weight: 600;
+        }
+        .steps .step { display: inline-flex; align-items: center; gap: 0.4rem; }
+        .steps .dot {
+            width: 22px; height: 22px; border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center;
+            background: #10B981; color: #fff; font-size: 0.78rem;
+        }
+        .steps .divider { width: 28px; height: 2px; background: #10B981; }
+
+        .section-header { text-align: center; margin-bottom: 1.5rem; }
+        .section-header h2 {
+            font-size: 1.6rem; font-weight: 700;
+            color: #1f2937; margin-bottom: 0.4rem;
+        }
+        .section-header p { font-size: 0.98rem; color: #6b7280; }
+
+        /* Context card */
+        .account-card {
+            background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+            border: 2px solid #10B981; border-radius: 12px;
+            padding: 1.1rem 1.4rem; margin-bottom: 1.75rem;
+        }
+        .account-card .account-title {
+            font-size: 0.8rem; font-weight: 700; color: #047857;
+            text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.6rem;
+        }
+        .account-card dl { display: grid; grid-template-columns: 120px 1fr; gap: 0.45rem 1rem; font-size: 0.95rem; }
+        .account-card dt { color: #065f46; font-weight: 600; }
+        .account-card dd { color: #1f2937; word-break: break-word; }
+
+        /* Recommended banner */
+        .rec-banner {
+            background: #fffbeb; border: 1px solid #fde68a;
+            color: #92400e; border-radius: 10px;
+            padding: 0.85rem 1.1rem; margin-bottom: 1.75rem;
+            font-size: 0.9rem;
+        }
+        .rec-banner strong { color: #b45309; }
+
+        /* Form fields */
+        .form-group { margin-bottom: 1.25rem; }
+        .form-group.is-hidden { display: none; }
+        .field-label {
+            display: block; font-size: 0.9rem; font-weight: 600;
+            color: #374151; margin-bottom: 0.4rem;
+        }
+        .field-help { font-size: 0.82rem; color: #6b7280; margin-top: 0.35rem; }
+        .text-input, select.text-input {
+            width: 100%; padding: 0.8rem 1rem;
+            border: 1.5px solid #e5e7eb; border-radius: 12px;
+            font-size: 1rem; font-family: inherit; color: #1f2937;
+            background: #fff;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .text-input:focus, select.text-input:focus {
+            outline: none; border-color: #10B981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
+        }
+
+        /* Upload dropzone */
+        .dropzone {
+            border: 2px dashed #d1d5db; border-radius: 12px;
+            padding: 1.5rem; text-align: center; cursor: pointer;
+            transition: border-color 0.2s ease, background 0.2s ease;
+            background: #fafafa;
+        }
+        .dropzone:hover, .dropzone.is-dragover { border-color: #10B981; background: #f0fdf4; }
+        .dropzone .dz-icon { font-size: 1.6rem; }
+        .dropzone .dz-main { font-weight: 600; color: #374151; margin-top: 0.3rem; }
+        .dropzone .dz-sub { font-size: 0.82rem; color: #6b7280; margin-top: 0.15rem; }
+        .dz-file {
+            display: none; align-items: center; justify-content: space-between;
+            gap: 0.75rem; margin-top: 0.75rem;
+            background: #f0fdf4; border: 1.5px solid #10B981;
+            border-radius: 10px; padding: 0.7rem 0.95rem;
+        }
+        .dz-file.is-visible { display: flex; }
+        .dz-file .dz-name { font-size: 0.9rem; color: #065f46; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .dz-file .dz-remove { background: none; border: none; color: #059669; font-weight: 600; cursor: pointer; text-decoration: underline; font-size: 0.85rem; flex-shrink: 0; }
+
+        /* Buttons */
+        .submit-btn {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white; padding: 1rem 2rem; border: none;
+            border-radius: 50px; font-size: 1.05rem; font-weight: 600;
+            cursor: pointer; transition: all 0.3s ease; width: 100%;
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+        }
+        .submit-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+            transform: translateY(-1px);
+        }
+        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; box-shadow: none; }
+        .skip-btn {
+            display: block; width: 100%; text-align: center;
+            background: none; border: none; cursor: pointer;
+            color: #6b7280; font-size: 0.92rem; font-weight: 600;
+            margin-top: 1rem; text-decoration: underline; font-family: inherit;
+        }
+        .skip-btn:hover { color: #374151; }
+
+        .submit-help { text-align: center; font-size: 0.85rem; color: #6b7280; margin-top: 0.85rem; }
+        .submit-help a { color: #059669; }
+
+        /* Status banner */
+        .status-banner { display: none; margin-top: 1.25rem; padding: 1rem 1.25rem; border-radius: 10px; font-size: 0.92rem; }
+        .status-banner.is-visible { display: block; }
+        .status-error { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+        .status-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #065f46; }
+        .status-info { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+
+        /* Done state */
+        .done-card { text-align: center; display: none; }
+        .done-card.is-visible { display: block; }
+        .done-card .done-emoji { font-size: 3rem; }
+        .done-card h2 { font-size: 1.6rem; color: #1f2937; margin: 0.5rem 0; }
+        .done-card p { color: #4b5563; font-size: 1rem; margin-bottom: 0.6rem; }
+        .done-card .done-note {
+            background: #f0fdf4; border: 1px solid #bbf7d0; color: #065f46;
+            border-radius: 10px; padding: 0.85rem 1.1rem; font-size: 0.9rem;
+            margin-top: 1rem; text-align: left;
+        }
+
+        /* Footer */
+        footer { background: #1f2937; color: #d1d5db; padding: 2.5rem 0 1.5rem; }
+        .footer-content { display: flex; flex-direction: column; align-items: center; gap: 1rem; text-align: center; }
+        .footer-logo-title { font-size: 1.25rem; font-weight: 700; color: #fff; }
+        .footer-logo-subtitle { font-size: 0.85rem; color: #9ca3af; }
+        .footer-tagline { font-size: 0.95rem; color: #9ca3af; }
+        .footer-nav { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; }
+        .footer-nav a { color: #d1d5db; text-decoration: none; font-size: 0.9rem; }
+        .footer-nav a:hover { color: var(--brand-green); }
+        .footer-copyright { border-top: 1px solid #374151; margin-top: 1.75rem; padding-top: 1.25rem; text-align: center; font-size: 0.82rem; color: #9ca3af; }
+    </style>
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T2CN68FF"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <a href="../index.html" class="logo">
+                <img src="../assets/images/microgrid_logo.png" alt="MicroGrid"
+                     onerror="this.onerror=null;this.src='../assets/images/microvpp_logo.png';">
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../index.html#join-movement">How It Works</a></li>
+                <li><a href="../index.html#faq">FAQ</a></li>
+                <li><a href="../about.html">About</a></li>
+            </ul>
+            <div class="header-buttons">
+                <a href="../index.html" class="cta-button-outline">Back to Home</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Utility details -->
+    <section class="utility-section">
+        <div class="container">
+            <div class="form-container">
+
+                <!-- Working form -->
+                <div id="workView">
+                    <div class="steps">
+                        <span class="step"><span class="dot">✓</span> Authorized</span>
+                        <span class="divider"></span>
+                        <span class="step"><span class="dot">2</span> Utility details</span>
+                    </div>
+
+                    <div class="section-header">
+                        <h2>Connect your utility account</h2>
+                        <p>This lets us finish enrolling your battery with your utility and grid programs.</p>
+                    </div>
+
+                    <div class="account-card">
+                        <div class="account-title">📋 Finishing enrollment for</div>
+                        <dl>
+                            <dt>Email</dt>
+                            <dd id="ctxEmail">—</dd>
+                            <dt>State</dt>
+                            <dd id="ctxState">—</dd>
+                        </dl>
+                    </div>
+
+                    <div class="rec-banner">
+                        <strong>Highly recommended, but optional.</strong> You can fill this in now,
+                        or finish later from the secure email we'll send you — so it's safe to close
+                        this page at any time.
+                    </div>
+
+                    <form id="utilityForm" novalidate>
+                        <!-- Utility / REP (populated per state by state-context.js) -->
+                        <div class="form-group">
+                            <label class="field-label" for="utilityCompany" id="utilityCompanyLabel">Utility Company</label>
+                            <select id="utilityCompany" name="utilityCompany" class="text-input"></select>
+                            <p class="field-help" id="utilityCompanyHelp">Who sends you your electricity bill.</p>
+                        </div>
+
+                        <!-- Meter number (always) -->
+                        <div class="form-group">
+                            <label class="field-label" for="meterNumber">Meter Number</label>
+                            <input type="text" id="meterNumber" name="meterNumber" class="text-input"
+                                   placeholder="e.g. 123456789" autocomplete="off" inputmode="numeric">
+                            <p class="field-help">Found on your utility bill or printed on your electric meter.</p>
+                        </div>
+
+                        <!-- ESIID (Texas only) -->
+                        <div class="form-group is-hidden" id="esiidGroup">
+                            <label class="field-label" for="esiid">ESIID <span style="color:#6b7280;">(Texas)</span></label>
+                            <input type="text" id="esiid" name="esiid" class="text-input"
+                                   placeholder="17–22 digit ESIID" autocomplete="off" inputmode="numeric">
+                            <p class="field-help">Your Electric Service Identifier — a 17–22 digit number on your Texas bill. Required to enroll with your REP.</p>
+                        </div>
+
+                        <!-- Bill upload -->
+                        <div class="form-group">
+                            <label class="field-label">Or upload your most recent utility bill</label>
+                            <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Upload utility bill">
+                                <div class="dz-icon">📄</div>
+                                <div class="dz-main">Tap to upload, or drag &amp; drop</div>
+                                <div class="dz-sub">PDF, JPG, or PNG — we'll read your meter number/ESIID for you.</div>
+                            </div>
+                            <input type="file" id="billInput" accept=".pdf,.png,.jpg,.jpeg,image/png,image/jpeg,application/pdf" style="display:none;">
+                            <div class="dz-file" id="dzFile">
+                                <span class="dz-name" id="dzFileName"></span>
+                                <button type="button" class="dz-remove" id="dzRemove">Remove</button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="submit-btn" id="finishBtn">Finish registration</button>
+                        <button type="button" class="skip-btn" id="skipBtn">Skip for now — email me the authorization</button>
+                        <p class="submit-help">
+                            🔒 We'll also email you a secure utility-data authorization from
+                            <strong>UtilityAPI</strong>. See our
+                            <a href="../privacy.html">Privacy Policy</a>.
+                        </p>
+
+                        <div class="status-banner" id="statusBanner" role="status" aria-live="polite"></div>
+                    </form>
+                </div>
+
+                <!-- Done view -->
+                <div class="done-card" id="doneView">
+                    <div class="done-emoji">🎉</div>
+                    <h2>You're all set!</h2>
+                    <p id="doneMessage">Your battery is enrolled in the MicroVPP Grid Support Program.</p>
+                    <div class="done-note" id="doneNote">
+                        📧 We've emailed a secure <strong>utility-data authorization</strong> to your
+                        inbox from <strong>UtilityAPI</strong>. Open it whenever you're ready — you can
+                        safely close this page now.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo-title">MicroVPP®</div>
+                    <div class="footer-logo-subtitle">by MicroGrid LLC</div>
+                </div>
+                <div class="footer-tagline">Smarter homes. Stronger grids.</div>
+                <nav class="footer-nav">
+                    <a href="../index.html">Home</a>
+                    <a href="../about.html">About</a>
+                    <a href="../privacy.html">Privacy</a>
+                    <a href="../terms.html">Terms</a>
+                    <a href="mailto:info@microvpp.com">Contact</a>
+                </nav>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; 2026 MicroGrid LLC. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- State context (utility / REP option lists, per state) -->
+    <script src="../assets/js/state-context.js"></script>
+
+    <script>
+        // =====================================================================
+        // MicroVPP — Utility details (final registration step)
+        //
+        // Reached after the VPP opt-in (vpp/index.html) with:
+        //   email          - the enrolling customer's email (required)
+        //   state          - 'california' | 'texas' (drives which IDs we ask for)
+        //   sn             - device serial number (passed through)
+        //   inverter_brand - e.g. 'liniotech'
+        //   account_id     - MicroVPP account id when known
+        //
+        // What this step collects (all optional / highly recommended):
+        //   - Utility company (CA) or REP (TX)
+        //   - Meter number
+        //   - ESIID (Texas only) — needed to enroll with the REP
+        //   - The most recent utility bill (we extract the IDs from it)
+        //
+        // On finish (or skip) we also trigger a UtilityAPI authorization email
+        // so the customer can grant utility-data access later. That email is the
+        // safety net: if they close the browser here, enrollment can still
+        // complete from the emailed authorization link.
+        // =====================================================================
+
+        const CONFIG = {
+            apiBaseUrl: 'https://api.microvpp.com',
+            // Best-effort endpoints — calls degrade gracefully if unavailable.
+            utilityDetailsEndpoint: '/admin/vpp/utility-details',
+            uploadBillsEndpoint:    '/admin/upload-utility-bills',
+            utilityApiAuthEndpoint: '/admin/utilityapi/request-authorization'
+        };
+
+        // ---------- DOM ----------
+        const workView      = document.getElementById('workView');
+        const doneView      = document.getElementById('doneView');
+        const doneMessage   = document.getElementById('doneMessage');
+        const ctxEmailEl    = document.getElementById('ctxEmail');
+        const ctxStateEl    = document.getElementById('ctxState');
+        const form          = document.getElementById('utilityForm');
+        const utilitySelect = document.getElementById('utilityCompany');
+        const meterInput    = document.getElementById('meterNumber');
+        const esiidGroup    = document.getElementById('esiidGroup');
+        const esiidInput    = document.getElementById('esiid');
+        const dropzone      = document.getElementById('dropzone');
+        const billInput     = document.getElementById('billInput');
+        const dzFile        = document.getElementById('dzFile');
+        const dzFileName    = document.getElementById('dzFileName');
+        const dzRemove      = document.getElementById('dzRemove');
+        const finishBtn     = document.getElementById('finishBtn');
+        const skipBtn       = document.getElementById('skipBtn');
+        const statusBanner  = document.getElementById('statusBanner');
+
+        let selectedFile = null;
+
+        // ---------- Params ----------
+        function normalizeState(raw) {
+            const s = (raw || '').trim().toLowerCase();
+            if (s === 'california' || s === 'cal' || s === 'ca') return 'california';
+            if (s === 'texas' || s === 'tex' || s === 'tx') return 'texas';
+            return '';
+        }
+        function readParams() {
+            const qs = new URLSearchParams(window.location.search);
+            return {
+                email:          (qs.get('email') || '').trim().toLowerCase(),
+                state:          normalizeState(qs.get('state')),
+                sn:             (qs.get('sn') || '').trim(),
+                inverter_brand: (qs.get('inverter_brand') || '').trim().toLowerCase(),
+                account_id:     (qs.get('account_id') || qs.get('cognito_user_id') || '').trim()
+            };
+        }
+        const ctx = readParams();
+
+        function scrubUrl() {
+            try {
+                window.history.replaceState({}, document.title,
+                    window.location.pathname + window.location.hash);
+            } catch (_) { /* noop */ }
+        }
+        scrubUrl();
+
+        // ---------- Hydrate ----------
+        ctxEmailEl.textContent = ctx.email || '— (missing email)';
+        ctxStateEl.textContent = ctx.state === 'texas' ? 'Texas'
+                               : ctx.state === 'california' ? 'California'
+                               : '— (not provided)';
+
+        // Texas needs the ESIID; California does not.
+        const isTexas = ctx.state === 'texas';
+        esiidGroup.classList.toggle('is-hidden', !isTexas);
+
+        // Populate the utility / REP dropdown from state-context.js.
+        (function initUtilityOptions() {
+            if (!window.MicroVppState) return;
+            try {
+                if (ctx.state) window.MicroVppState.set(ctx.state);
+                window.MicroVppState.populateUtilitySelect(utilitySelect, '', { state: ctx.state || undefined });
+                window.MicroVppState.updateUtilityFieldMeta(ctx.state || undefined);
+            } catch (_) { /* noop */ }
+        })();
+
+        function showStatus(kind, message) {
+            statusBanner.className = 'status-banner is-visible status-' + kind;
+            statusBanner.innerHTML = message;
+        }
+        function clearStatus() {
+            statusBanner.className = 'status-banner';
+            statusBanner.innerHTML = '';
+        }
+
+        // ---------- Bill upload UI ----------
+        function setFile(file) {
+            selectedFile = file || null;
+            if (selectedFile) {
+                dzFileName.textContent = selectedFile.name;
+                dzFile.classList.add('is-visible');
+            } else {
+                dzFile.classList.remove('is-visible');
+                billInput.value = '';
+            }
+        }
+        dropzone.addEventListener('click', function () { billInput.click(); });
+        dropzone.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); billInput.click(); }
+        });
+        billInput.addEventListener('change', function () {
+            setFile(billInput.files && billInput.files[0]);
+        });
+        dzRemove.addEventListener('click', function () { setFile(null); });
+        ['dragenter', 'dragover'].forEach(function (ev) {
+            dropzone.addEventListener(ev, function (e) {
+                e.preventDefault(); dropzone.classList.add('is-dragover');
+            });
+        });
+        ['dragleave', 'drop'].forEach(function (ev) {
+            dropzone.addEventListener(ev, function (e) {
+                e.preventDefault(); dropzone.classList.remove('is-dragover');
+            });
+        });
+        dropzone.addEventListener('drop', function (e) {
+            if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+                setFile(e.dataTransfer.files[0]);
+            }
+        });
+
+        // ---------- Best-effort API calls ----------
+        async function uploadBill(file) {
+            if (!file || !ctx.account_id) return { ok: false, skipped: true };
+            try {
+                const fd = new FormData();
+                fd.append('account_id', ctx.account_id);
+                fd.append('files', file, file.name);
+                const resp = await fetch(CONFIG.apiBaseUrl + CONFIG.uploadBillsEndpoint, {
+                    method: 'POST', body: fd
+                });
+                return { ok: resp.ok };
+            } catch (_) { return { ok: false }; }
+        }
+
+        async function postUtilityDetails(details) {
+            try {
+                const resp = await fetch(CONFIG.apiBaseUrl + CONFIG.utilityDetailsEndpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(details)
+                });
+                return { ok: resp.ok };
+            } catch (_) { return { ok: false }; }
+        }
+
+        async function requestUtilityApiAuthorization() {
+            try {
+                const resp = await fetch(CONFIG.apiBaseUrl + CONFIG.utilityApiAuthEndpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({
+                        email: ctx.email,
+                        account_id: ctx.account_id || null,
+                        state: ctx.state || null,
+                        utility: utilitySelect.value || null
+                    })
+                });
+                return { ok: resp.ok };
+            } catch (_) { return { ok: false }; }
+        }
+
+        function buildDetails() {
+            return {
+                email:          ctx.email,
+                account_id:     ctx.account_id || null,
+                state:          ctx.state || null,
+                inverter_brand: ctx.inverter_brand || null,
+                serial_number:  ctx.sn || null,
+                utility_company: utilitySelect.value || null,
+                meter_number:   (meterInput.value || '').trim() || null,
+                esiid:          isTexas ? ((esiidInput.value || '').trim() || null) : null,
+                bill_uploaded:  !!selectedFile,
+                source:         'vpp-utility-web'
+            };
+        }
+
+        function showDone(submitted) {
+            workView.style.display = 'none';
+            doneView.classList.add('is-visible');
+            doneMessage.textContent = submitted
+                ? 'Thanks! We\'ve received your utility details and your battery is enrolled in the MicroVPP Grid Support Program.'
+                : 'No problem — your battery is enrolled in the MicroVPP Grid Support Program.';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ---------- Submit / Skip ----------
+        async function finalize(submitted, btn) {
+            const originalLabel = btn.textContent;
+            btn.disabled = true;
+            finishBtn.disabled = true;
+            skipBtn.disabled = true;
+            btn.textContent = submitted ? 'Finishing…' : 'Sending email…';
+
+            if (typeof gtag === 'function') {
+                gtag('event', submitted ? 'vpp_utility_submit' : 'vpp_utility_skip', {
+                    event_category: 'registration',
+                    event_label: ctx.state || 'unknown'
+                });
+            }
+
+            // Validate ESIID lightly for Texas if the user typed one.
+            if (submitted && isTexas) {
+                const esiidVal = (esiidInput.value || '').trim();
+                if (esiidVal && !/^\d{17,22}$/.test(esiidVal)) {
+                    btn.disabled = false; finishBtn.disabled = false; skipBtn.disabled = false;
+                    btn.textContent = originalLabel;
+                    showStatus('error', 'That ESIID doesn\'t look right — it should be a 17–22 digit number. You can also leave it blank and use the emailed authorization.');
+                    esiidInput.focus();
+                    return;
+                }
+            }
+
+            if (submitted) {
+                if (selectedFile) await uploadBill(selectedFile);
+                await postUtilityDetails(buildDetails());
+            }
+            // Always send the UtilityAPI authorization email (the safety net).
+            await requestUtilityApiAuthorization();
+
+            showDone(submitted);
+        }
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            clearStatus();
+            finalize(true, finishBtn);
+        });
+        skipBtn.addEventListener('click', function () {
+            clearStatus();
+            finalize(false, skipBtn);
+        });
+    </script>
+
+    <!-- Button Click Tracking (GA4) -->
+    <script>
+        (function () {
+            var PAGE_NAME = 'vpp_utility';
+            function clean(s, n) { return (s || '').replace(/\s+/g, ' ').trim().slice(0, n || 100); }
+            document.addEventListener('click', function (evt) {
+                try {
+                    var el = evt.target;
+                    var max = 5;
+                    while (el && el.nodeType === 1 && max-- > 0) {
+                        var tag = (el.tagName || '').toLowerCase();
+                        if (tag === 'button' || tag === 'a') break;
+                        el = el.parentElement;
+                    }
+                    if (!el || typeof gtag !== 'function') return;
+                    var tag = (el.tagName || '').toLowerCase();
+                    if (tag !== 'button' && tag !== 'a') return;
+                    gtag('event', 'button_click', {
+                        event_category: 'engagement',
+                        event_label: clean(el.innerText || el.textContent || '', 80),
+                        page: PAGE_NAME,
+                        button_id: el.id || '',
+                        button_tag: tag
+                    });
+                } catch (_) { /* swallow */ }
+            }, true);
+        })();
+    </script>
+</body>
+</html>

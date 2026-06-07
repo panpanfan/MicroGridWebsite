@@ -179,6 +179,32 @@
         }
         .device-card .missing { color: #b45309; font-style: italic; }
 
+        /* State toggle */
+        .state-select { margin-bottom: 2rem; }
+        .state-toggle {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+        .state-option {
+            display: inline-flex; align-items: center; justify-content: center;
+            gap: 0.5rem;
+            padding: 0.85rem 1rem;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 12px;
+            background: #fff; color: #1f2937;
+            font-size: 1rem; font-weight: 600; font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .state-option:hover { border-color: #10B981; background: #f0fdf4; }
+        .state-option.is-selected {
+            border-color: #10B981; background: #ecfdf5; color: #065f46;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
+        }
+        .state-flag { font-size: 1.15rem; }
+        .state-help { font-size: 0.85rem; color: #6b7280; margin-top: 0.45rem; }
+
         /* OAuth provider buttons */
         .provider-btn {
             display: flex; align-items: center; justify-content: center;
@@ -396,6 +422,20 @@
                     </dl>
                 </div>
 
+                <!-- State selection (drives which utility IDs we collect later) -->
+                <div class="state-select">
+                    <label class="field-label" for="stateField">Where is your home? <span style="color:#ef4444;">*</span></label>
+                    <div class="state-toggle" id="stateToggle" role="radiogroup" aria-label="State">
+                        <button type="button" class="state-option" data-state="california" role="radio" aria-checked="false">
+                            <span class="state-flag">☀️</span> California
+                        </button>
+                        <button type="button" class="state-option" data-state="texas" role="radio" aria-checked="false">
+                            <span class="state-flag">🤠</span> Texas
+                        </button>
+                    </div>
+                    <p class="state-help">We use this to set up your utility/REP enrollment in the next steps.</p>
+                </div>
+
                 <!-- OAuth + email capture -->
                 <div id="googleBtnContainer"></div>
 
@@ -474,11 +514,12 @@
         //
         // Flow:
         //   1. Read ?sn= and show it on the device card.
-        //   2. Collect the user's email via Google, Apple, or manual entry.
+        //   2. Collect the home state (CA/TX) and the user's email via Google,
+        //      Apple, or manual entry.
         //   3. Best-effort register the device against the MicroVPP API.
         //   4. Hand off to the VPP opt-in page with email + inverter_brand +
-        //      the serial number (and cognito_user_id when the signup returns
-        //      one) appended to the query string.
+        //      state + the serial number (and cognito_user_id when the signup
+        //      returns one) appended to the query string.
         // =====================================================================
 
         // ---------- Configuration (fill these in to enable social sign-in) ----
@@ -518,10 +559,13 @@
         const ecChange      = document.getElementById('ecChange');
         const nextBtn       = document.getElementById('nextBtn');
         const statusBanner  = document.getElementById('statusBanner');
+        const stateToggle   = document.getElementById('stateToggle');
+        const stateOptions  = Array.prototype.slice.call(stateToggle.querySelectorAll('.state-option'));
 
         // ---------- State ----------
         let selectedEmail = '';
         let emailSource   = 'manual'; // 'google' | 'apple' | 'manual'
+        let selectedState = '';       // 'california' | 'texas'
 
         // ---------- Helpers ----------
         function isValidEmail(v) {
@@ -570,6 +614,46 @@
             ctxSerialEl.appendChild(code);
         }
 
+        // ---------- 2a. Next-button gating (needs both a state and an email) ----------
+        function currentEmailValid() {
+            return !!selectedEmail || isValidEmail(emailInput.value);
+        }
+        function syncNext() {
+            nextBtn.disabled = !(selectedState && currentEmailValid());
+        }
+
+        // ---------- 2b. State selection ----------
+        function normalizeState(raw) {
+            const s = (raw || '').trim().toLowerCase();
+            if (s === 'california' || s === 'cal' || s === 'ca') return 'california';
+            if (s === 'texas' || s === 'tex' || s === 'tx') return 'texas';
+            return '';
+        }
+        function setSelectedState(next) {
+            const n = normalizeState(next);
+            if (!n) return;
+            selectedState = n;
+            stateOptions.forEach(function (btn) {
+                const on = btn.getAttribute('data-state') === n;
+                btn.classList.toggle('is-selected', on);
+                btn.setAttribute('aria-checked', on ? 'true' : 'false');
+            });
+            syncNext();
+        }
+        stateOptions.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                setSelectedState(btn.getAttribute('data-state'));
+            });
+        });
+        // Seed from ?state= if provided in the link.
+        (function () {
+            try {
+                const qs = new URLSearchParams(window.location.search);
+                const seeded = normalizeState(qs.get('state'));
+                if (seeded) setSelectedState(seeded);
+            } catch (_) { /* noop */ }
+        })();
+
         // ---------- 2. Email capture / selection UI ----------
         function setSelectedEmail(email, source) {
             selectedEmail = (email || '').trim().toLowerCase();
@@ -587,7 +671,7 @@
             if (dividerOr) dividerOr.style.display = 'none';
             emailWrap.style.display = 'none';
 
-            nextBtn.disabled = false;
+            syncNext();
             clearStatus();
 
             if (typeof gtag === 'function') {
@@ -605,7 +689,7 @@
             appleBtn.style.display = '';
             if (dividerOr) dividerOr.style.display = '';
             emailWrap.style.display = '';
-            nextBtn.disabled = true;
+            syncNext();
             emailInput.focus();
         }
 
@@ -617,7 +701,7 @@
             if (!isValidEmail(v)) {
                 emailInput.classList.add('invalid');
                 emailError.classList.add('is-visible');
-                nextBtn.disabled = true;
+                syncNext();
                 return false;
             }
             emailInput.classList.remove('invalid');
@@ -630,7 +714,7 @@
             emailInput.classList.remove('invalid');
             emailError.classList.remove('is-visible');
             // Allow Next directly from a valid typed email (without the chip step).
-            nextBtn.disabled = !isValidEmail(emailInput.value);
+            syncNext();
         });
         emailInput.addEventListener('keydown', function (e) {
             if (e.key === 'Enter') { e.preventDefault(); commitManualEmail(); }
@@ -726,8 +810,11 @@
 
         // ---------- 5. Best-effort device registration ----------
         async function registerDevice(email) {
+            const stateLabel = selectedState === 'texas' ? 'Texas'
+                             : selectedState === 'california' ? 'California' : null;
             const info = {
                 contact: { email: email },
+                location: { state: stateLabel },
                 system: { serial_number: serialNumber || null },
                 registration: {
                     mode: 'partial',
@@ -739,6 +826,7 @@
             const payload = {
                 entity_type: 'inverter',
                 email: email,
+                state: stateLabel,
                 country: 'US',
                 locale: 'en-US',
                 inverter_inverter_type: 'hybrid_inverter',
@@ -767,11 +855,16 @@
             params.set('email', selectedEmail);
             params.set('inverter_brand', CONFIG.inverterBrand);
             if (serialNumber) params.set('sn', serialNumber);
+            if (selectedState) params.set('state', selectedState);
             if (extra && extra.userId) params.set('cognito_user_id', extra.userId);
             window.location.assign(CONFIG.vppOptInPath + '?' + params.toString());
         }
 
         nextBtn.addEventListener('click', async function () {
+            if (!selectedState) {
+                showStatus('error', 'Please select where your home is located before continuing.');
+                return;
+            }
             // If the user typed an email but never committed it, commit now.
             if (!selectedEmail) {
                 if (!commitManualEmail()) return;
@@ -796,6 +889,7 @@
             try {
                 sessionStorage.setItem('lin_email', selectedEmail);
                 if (serialNumber) sessionStorage.setItem('lin_serial', serialNumber);
+                if (selectedState) sessionStorage.setItem('lin_state', selectedState);
             } catch (_) { /* noop */ }
 
             const result = await registerDevice(selectedEmail);

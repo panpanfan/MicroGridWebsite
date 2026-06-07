@@ -407,6 +407,8 @@
                         <dd id="ctxEmail">—</dd>
                         <dt>Inverter / Battery</dt>
                         <dd id="ctxBrand">—</dd>
+                        <dt>State</dt>
+                        <dd id="ctxState">—</dd>
                         <dt>VPP Program</dt>
                         <dd id="ctxProgram">MicroVPP Grid Support (Program #1)</dd>
                     </dl>
@@ -549,28 +551,30 @@
         // =====================================================================
         // MicroVPP — Grid Support Program opt-in
         //
-        // This page is meant to be deep-linked from the MicroVPP mobile / web
-        // app with the following URL parameters:
+        // This page is reached after the user scans the QR code on their device
+        // and completes the email step on lin.html. It can also be deep-linked
+        // from the MicroVPP app. Supported URL parameters:
         //
-        //   email             - the user's Cognito email
+        //   email             - the user's email (required)
         //   inverter_brand    - 'tesla_powerwall' | 'enphase' | 'solaredge' |
         //                       'sol_ark' | 'eg4' | 'franklin' | 'liniotech' |
-        //                       'solarman' | 'other'
-        //   cognito_user_id   - the user's Cognito `sub`
-        //   access_token      - short-lived Cognito access token (JWT)
+        //                       'solarman' | 'other' (required)
+        //   state             - 'california' | 'texas' (drives the next step)
+        //   sn                - device serial number (passed through)
+        //   cognito_user_id   - the user's account id, when known
+        //   access_token      - optional Cognito access token (app deep-link only)
         //   vpp_program_id    - optional consumer.vpp_program.id (defaults 1)
         //
-        // Example:
+        // Example (QR-scan flow, no access token):
         //   https://www.microvpp.com/vpp/?email=jane%40example.com
-        //     &inverter_brand=tesla_powerwall
-        //     &cognito_user_id=11111111-2222-3333-4444-555555555555
-        //     &access_token=eyJ...
+        //     &inverter_brand=liniotech&state=texas&sn=2517-65170160PH
         //
-        // On submit, we POST to the backend admin endpoint
-        // ``/admin/vpp/opt-in`` with ``Authorization: Bearer <access_token>``.
-        // The backend updates ``consumer.account.vpp_opt_in_status`` and (for
-        // Tesla Powerwall) mints a Tesla Fleet API OAuth state + authorize URL
-        // that we redirect the user to.
+        // On submit, we POST to the backend admin endpoint ``/admin/vpp/opt-in``
+        // (with ``Authorization: Bearer <access_token>`` only when a token is
+        // present). The backend updates ``consumer.account.vpp_opt_in_status``
+        // and (for Tesla Powerwall) mints a Tesla Fleet API OAuth state +
+        // authorize URL that we redirect the user to. Otherwise we continue to
+        // the utility-details step (utility.html).
         //
         // Security: we strip ``access_token`` from the URL on first paint so
         // it doesn't sit in the browser address bar or in any subsequent
@@ -581,6 +585,9 @@
         const OPT_IN_ENDPOINT = API_BASE_URL + '/admin/vpp/opt-in';
         const AGREEMENT_VERSION = 'v3.1';
         const DEFAULT_VPP_PROGRAM_ID = 1;
+        // After opting in, continue to the utility-details step (meter / ESIID,
+        // optional utility-bill upload + UtilityAPI authorization email).
+        const UTILITY_STEP_PATH = 'utility.html';
 
         // Friendly labels for the inverter_brand machine keys.
         const BRAND_LABELS = {
@@ -606,16 +613,33 @@
         const statusBanner  = document.getElementById('statusBanner');
         const ctxEmail      = document.getElementById('ctxEmail');
         const ctxBrand      = document.getElementById('ctxBrand');
+        const ctxState      = document.getElementById('ctxState');
         const ctxProgram    = document.getElementById('ctxProgram');
 
         document.getElementById('agreementVersionLabel').textContent = AGREEMENT_VERSION;
 
+        function normalizeState(raw) {
+            const s = (raw || '').trim().toLowerCase();
+            if (s === 'california' || s === 'cal' || s === 'ca') return 'california';
+            if (s === 'texas' || s === 'tex' || s === 'tx') return 'texas';
+            return '';
+        }
+        function stateLabelOf(s) {
+            return s === 'texas' ? 'Texas' : s === 'california' ? 'California' : '';
+        }
+
         // ---------- 1. Read URL params + sanitize the address bar ----------
+        // This page is reached after the user scans the QR code on their device
+        // and completes the email step on lin.html, so there is no Cognito
+        // access token in the QR flow. We still read access_token if present
+        // (e.g. when deep-linked from the app) and use it as a Bearer token.
         function readParams() {
             const qs = new URLSearchParams(window.location.search);
             const raw = {
                 email:           (qs.get('email') || '').trim().toLowerCase(),
                 inverter_brand:  (qs.get('inverter_brand') || '').trim().toLowerCase(),
+                state:           normalizeState(qs.get('state')),
+                sn:              (qs.get('sn') || qs.get('serial') || qs.get('serial_number') || '').trim(),
                 cognito_user_id: (qs.get('cognito_user_id') || '').trim(),
                 access_token:    (qs.get('access_token') || '').trim(),
                 vpp_program_id:  parseInt(qs.get('vpp_program_id') || '', 10)
@@ -648,6 +672,7 @@
         // ---------- 2. Hydrate the read-only context card ----------
         ctxEmail.textContent  = ctx.email || '— (missing email param)';
         ctxBrand.textContent  = brandLabel(ctx.inverter_brand);
+        ctxState.textContent  = stateLabelOf(ctx.state) || '— (not provided)';
         ctxProgram.textContent = 'MicroVPP Grid Support (Program #' + ctx.vpp_program_id + ')';
 
         // ---------- 3. Conditional Tesla UI ----------
@@ -680,12 +705,12 @@
         }
 
         // ---------- 4. Pre-flight: bail early if required params are missing ----------
+        // QR-scan flow only needs to know who is enrolling (email) and what
+        // they are enrolling (inverter_brand). No access token is required.
         function validateContext() {
             const missing = [];
             if (!ctx.email)            missing.push('email');
             if (!ctx.inverter_brand)   missing.push('inverter_brand');
-            if (!ctx.cognito_user_id)  missing.push('cognito_user_id');
-            if (!ctx.access_token)     missing.push('access_token');
             return missing;
         }
 
@@ -696,7 +721,7 @@
                 'error',
                 '⚠️ <strong>This sign-up link is incomplete.</strong> Missing required ' +
                 'parameters: <code>' + missingParams.join(', ') + '</code>. ' +
-                'Please re-open this page from the MicroVPP app, or contact ' +
+                'Please re-scan the QR code on your device, or contact ' +
                 '<a href="mailto:support@microvpp.com">support@microvpp.com</a>.'
             );
         }
@@ -708,9 +733,11 @@
         // redirect to auth.tesla.com captures the actual Fleet API scope grant.
         function buildPayload() {
             return {
-                cognito_user_id:     ctx.cognito_user_id,
+                cognito_user_id:     ctx.cognito_user_id || null,
                 email:               ctx.email,
                 inverter_brand:      ctx.inverter_brand,
+                inverter_serial_number: ctx.sn || null,
+                state:               stateLabelOf(ctx.state) || null,
                 vpp_program_id:      ctx.vpp_program_id,
                 agreement_version:   AGREEMENT_VERSION,
                 opt_in_agreed:       true,
@@ -719,18 +746,33 @@
         }
 
         async function postOptIn(payload) {
+            const headers = { 'Content-Type': 'application/json' };
+            // QR-scan flow has no access token; only attach Bearer auth when a
+            // token was deep-linked from the app.
+            if (ctx.access_token) headers['Authorization'] = 'Bearer ' + ctx.access_token;
             const resp = await fetch(OPT_IN_ENDPOINT, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + ctx.access_token
-                },
+                headers: headers,
                 body: JSON.stringify(payload)
             });
             const text = await resp.text();
             let body = {};
             try { body = text ? JSON.parse(text) : {}; } catch (_) { body = { raw: text }; }
             return { ok: resp.ok, status: resp.status, body };
+        }
+
+        // Build the handoff URL to the utility-details step, carrying the
+        // context the next page needs (email, state, serial, brand, account id).
+        function utilityStepUrl(body) {
+            const params = new URLSearchParams();
+            params.set('email', ctx.email);
+            if (ctx.inverter_brand) params.set('inverter_brand', ctx.inverter_brand);
+            if (ctx.state) params.set('state', ctx.state);
+            if (ctx.sn) params.set('sn', ctx.sn);
+            const accountId = (body && (body.account_id || body.user_id || body.cognito_user_id))
+                              || ctx.cognito_user_id;
+            if (accountId) params.set('account_id', accountId);
+            return UTILITY_STEP_PATH + '?' + params.toString();
         }
 
         form.addEventListener('submit', async function (e) {
@@ -799,11 +841,13 @@
 
             showStatus(
                 'success',
-                '🎉 <strong>You\'re enrolled!</strong> Your account is now opted in to ' +
-                'the MicroVPP Grid Support Program. You can manage or revoke this from ' +
-                'your MicroVPP account at any time.'
+                '✅ <strong>You\'re opted in!</strong> One quick last step — let\'s connect ' +
+                'your utility account so we can finish enrollment…'
             );
-            submitBtn.textContent = 'Enrolled ✓';
+            submitBtn.textContent = 'Continuing…';
+            setTimeout(function () {
+                window.location.assign(utilityStepUrl(body));
+            }, 700);
         });
     </script>
 
