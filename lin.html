@@ -179,32 +179,6 @@
         }
         .device-card .missing { color: #b45309; font-style: italic; }
 
-        /* State toggle */
-        .state-select { margin-bottom: 2rem; }
-        .state-toggle {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.75rem;
-        }
-        .state-option {
-            display: inline-flex; align-items: center; justify-content: center;
-            gap: 0.5rem;
-            padding: 0.85rem 1rem;
-            border: 1.5px solid #e5e7eb;
-            border-radius: 12px;
-            background: #fff; color: #1f2937;
-            font-size: 1rem; font-weight: 600; font-family: inherit;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .state-option:hover { border-color: #10B981; background: #f0fdf4; }
-        .state-option.is-selected {
-            border-color: #10B981; background: #ecfdf5; color: #065f46;
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
-        }
-        .state-flag { font-size: 1.15rem; }
-        .state-help { font-size: 0.85rem; color: #6b7280; margin-top: 0.45rem; }
-
         /* OAuth provider buttons */
         .provider-btn {
             display: flex; align-items: center; justify-content: center;
@@ -411,7 +385,7 @@
                     <p>We use your email to link this device to your MicroVPP account.</p>
                 </div>
 
-                <!-- Device context card (populated from the ?sn= URL param) -->
+                <!-- Device context card (populated from the ?sn= and ?state= URL params) -->
                 <div class="device-card">
                     <div class="device-title">📦 Device to register</div>
                     <dl>
@@ -419,21 +393,9 @@
                         <dd>Liniotech</dd>
                         <dt>Serial Number</dt>
                         <dd id="ctxSerial"><span class="missing">Not provided</span></dd>
+                        <dt>State</dt>
+                        <dd id="ctxState"><span class="missing">Not provided</span></dd>
                     </dl>
-                </div>
-
-                <!-- State selection (drives which utility IDs we collect later) -->
-                <div class="state-select">
-                    <label class="field-label" for="stateField">Where is your home? <span style="color:#ef4444;">*</span></label>
-                    <div class="state-toggle" id="stateToggle" role="radiogroup" aria-label="State">
-                        <button type="button" class="state-option" data-state="california" role="radio" aria-checked="false">
-                            <span class="state-flag">☀️</span> California
-                        </button>
-                        <button type="button" class="state-option" data-state="texas" role="radio" aria-checked="false">
-                            <span class="state-flag">🤠</span> Texas
-                        </button>
-                    </div>
-                    <p class="state-help">We use this to set up your utility/REP enrollment in the next steps.</p>
                 </div>
 
                 <!-- OAuth + email capture -->
@@ -508,14 +470,14 @@
         // =====================================================================
         // MicroVPP — Liniotech device registration landing page
         //
-        // Deep-linked from the device / packaging with the serial number:
+        // Deep-linked from the QR code on the device, which encodes both the
+        // serial number and the home state as URL parameters:
         //
-        //   https://www.microvpp.com/lin.html?sn=2517-65170160PH
+        //   https://www.microvpp.com/lin.html?sn=2517-65170160PH&state=texas
         //
         // Flow:
-        //   1. Read ?sn= and show it on the device card.
-        //   2. Collect the home state (CA/TX) and the user's email via Google,
-        //      Apple, or manual entry.
+        //   1. Read ?sn= and ?state= and show them on the device card.
+        //   2. Collect the user's email via Google, Apple, or manual entry.
         //   3. Best-effort register the device against the MicroVPP API.
         //   4. Hand off to the VPP opt-in page with email + inverter_brand +
         //      state + the serial number (and cognito_user_id when the signup
@@ -559,13 +521,12 @@
         const ecChange      = document.getElementById('ecChange');
         const nextBtn       = document.getElementById('nextBtn');
         const statusBanner  = document.getElementById('statusBanner');
-        const stateToggle   = document.getElementById('stateToggle');
-        const stateOptions  = Array.prototype.slice.call(stateToggle.querySelectorAll('.state-option'));
+        const ctxStateEl    = document.getElementById('ctxState');
 
         // ---------- State ----------
         let selectedEmail = '';
         let emailSource   = 'manual'; // 'google' | 'apple' | 'manual'
-        let selectedState = '';       // 'california' | 'texas'
+        let selectedState = '';       // 'california' | 'texas' (from the QR ?state= param)
 
         // ---------- Helpers ----------
         function isValidEmail(v) {
@@ -614,44 +575,31 @@
             ctxSerialEl.appendChild(code);
         }
 
-        // ---------- 2a. Next-button gating (needs both a state and an email) ----------
+        // ---------- 2a. Next-button gating (needs a valid email) ----------
         function currentEmailValid() {
             return !!selectedEmail || isValidEmail(emailInput.value);
         }
         function syncNext() {
-            nextBtn.disabled = !(selectedState && currentEmailValid());
+            nextBtn.disabled = !currentEmailValid();
         }
 
-        // ---------- 2b. State selection ----------
+        // ---------- 2b. State (read from the QR ?state= param) ----------
         function normalizeState(raw) {
             const s = (raw || '').trim().toLowerCase();
             if (s === 'california' || s === 'cal' || s === 'ca') return 'california';
             if (s === 'texas' || s === 'tex' || s === 'tx') return 'texas';
             return '';
         }
-        function setSelectedState(next) {
-            const n = normalizeState(next);
-            if (!n) return;
-            selectedState = n;
-            stateOptions.forEach(function (btn) {
-                const on = btn.getAttribute('data-state') === n;
-                btn.classList.toggle('is-selected', on);
-                btn.setAttribute('aria-checked', on ? 'true' : 'false');
-            });
-            syncNext();
+        function stateLabelOf(s) {
+            return s === 'texas' ? 'Texas' : s === 'california' ? 'California' : '';
         }
-        stateOptions.forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                setSelectedState(btn.getAttribute('data-state'));
-            });
-        });
-        // Seed from ?state= if provided in the link.
-        (function () {
+        (function readState() {
             try {
                 const qs = new URLSearchParams(window.location.search);
-                const seeded = normalizeState(qs.get('state'));
-                if (seeded) setSelectedState(seeded);
-            } catch (_) { /* noop */ }
+                selectedState = normalizeState(qs.get('state'));
+            } catch (_) { selectedState = ''; }
+            const label = stateLabelOf(selectedState);
+            if (label) ctxStateEl.textContent = label;
         })();
 
         // ---------- 2. Email capture / selection UI ----------
@@ -810,8 +758,7 @@
 
         // ---------- 5. Best-effort device registration ----------
         async function registerDevice(email) {
-            const stateLabel = selectedState === 'texas' ? 'Texas'
-                             : selectedState === 'california' ? 'California' : null;
+            const stateLabel = stateLabelOf(selectedState) || null;
             const info = {
                 contact: { email: email },
                 location: { state: stateLabel },
@@ -861,10 +808,6 @@
         }
 
         nextBtn.addEventListener('click', async function () {
-            if (!selectedState) {
-                showStatus('error', 'Please select where your home is located before continuing.');
-                return;
-            }
             // If the user typed an email but never committed it, commit now.
             if (!selectedEmail) {
                 if (!commitManualEmail()) return;
