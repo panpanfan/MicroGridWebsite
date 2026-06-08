@@ -325,7 +325,7 @@
                         <button type="button" class="skip-btn" id="skipBtn">Skip for now — email me the authorization</button>
                         <p class="submit-help">
                             🔒 We'll also email you a secure utility-data authorization from
-                            <strong>UtilityAPI</strong>. See our
+                            <strong id="authProviderHelp">UtilityAPI</strong>. See our
                             <a href="../privacy.html">Privacy Policy</a>.
                         </p>
 
@@ -339,7 +339,7 @@
                     <h2>You're almost there!</h2>
                     <div class="done-note" id="doneNote">
                         📧 One last thing: we've emailed a secure <strong>utility-data authorization</strong> to your
-                        inbox from <strong>UtilityAPI</strong>. Once you click confirm, you are in.
+                        inbox from <strong id="authProviderDone">UtilityAPI</strong>. Once you click confirm, you are in.
                     </div>
                 </div>
 
@@ -431,6 +431,7 @@
             const s = (raw || '').trim().toLowerCase();
             if (s === 'california' || s === 'cal' || s === 'ca') return 'california';
             if (s === 'texas' || s === 'tex' || s === 'tx') return 'texas';
+            if (s === 'new york' || s === 'new_york' || s === 'ny') return 'new york';
             return '';
         }
         function readParams() {
@@ -457,11 +458,20 @@
         ctxEmailEl.textContent = ctx.email || '— (missing email)';
         ctxStateEl.textContent = ctx.state === 'texas' ? 'Texas'
                                : ctx.state === 'california' ? 'California'
+                               : ctx.state === 'new york' ? 'New York'
                                : '— (not provided)';
 
         // Texas needs the ESIID; California does not.
         const isTexas = ctx.state === 'texas';
         esiidGroup.classList.toggle('is-hidden', !isTexas);
+
+        // Utility-data authorization provider differs by state: Texas goes
+        // through Smart Meter Texas; California and New York go through UtilityAPI.
+        const authProviderName = isTexas ? 'Smart Meter Texas' : 'UtilityAPI';
+        ['authProviderHelp', 'authProviderDone'].forEach(function (id) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = authProviderName;
+        });
 
         // Populate the utility / REP dropdown from state-context.js.
         (function initUtilityOptions() {
