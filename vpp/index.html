@@ -714,17 +714,9 @@
             return missing;
         }
 
-        const missingParams = validateContext();
-        if (missingParams.length) {
-            submitBtn.disabled = true;
-            showStatus(
-                'error',
-                '⚠️ <strong>This sign-up link is incomplete.</strong> Missing required ' +
-                'parameters: <code>' + missingParams.join(', ') + '</code>. ' +
-                'Please re-scan the QR code on your device, or contact ' +
-                '<a href="mailto:support@microvpp.com">support@microvpp.com</a>.'
-            );
-        }
+        // DEMO MODE: skip the required-parameter gate so "Authorize and Continue"
+        // always works without a valid QR/deep-link context.
+        const missingParams = [];
 
         // ---------- 5. Submit handler ----------
         // Clicking "Authorize and Continue" is the customer's affirmative,
@@ -779,11 +771,8 @@
             e.preventDefault();
             clearStatus();
 
-            if (missingParams.length) return;
-
             submitBtn.disabled = true;
-            const originalLabel = submitBtn.textContent;
-            submitBtn.textContent = 'Submitting…';
+            submitBtn.textContent = 'Continuing…';
 
             if (typeof gtag === 'function') {
                 gtag('event', 'vpp_signup_submit', {
@@ -793,60 +782,16 @@
                 });
             }
 
-            let result;
-            try {
-                result = await postOptIn(buildPayload());
-            } catch (err) {
-                submitBtn.disabled = false;
-                submitBtn.textContent = originalLabel;
-                showStatus(
-                    'error',
-                    '⚠️ Network error talking to MicroVPP®. Please try again, or contact ' +
-                    '<a href="mailto:support@microvpp.com">support@microvpp.com</a>.'
-                );
-                return;
-            }
-
-            if (!result.ok) {
-                submitBtn.disabled = false;
-                submitBtn.textContent = originalLabel;
-                const detail = (result.body && result.body.detail) || ('HTTP ' + result.status);
-                showStatus(
-                    'error',
-                    '⚠️ ' + (typeof detail === 'string' ? detail :
-                        'We couldn\'t complete your opt-in.') +
-                    '<br><br>Please try again, or contact ' +
-                    '<a href="mailto:support@microvpp.com">support@microvpp.com</a>.'
-                );
-                return;
-            }
-
-            const body = result.body || {};
-
-            if (body.requires_tesla_fleet_auth && body.tesla_auth_url) {
-                submitBtn.textContent = 'Redirecting to Tesla…';
-                showStatus(
-                    'success',
-                    '✅ Opted in. Redirecting you to <strong>auth.tesla.com</strong> to authorize Tesla Fleet API access…'
-                );
-                if (typeof gtag === 'function') {
-                    gtag('event', 'vpp_tesla_oauth_redirect', {
-                        event_category: 'conversion',
-                        event_label:    'tesla_powerwall'
-                    });
-                }
-                setTimeout(() => { window.location.assign(body.tesla_auth_url); }, 800);
-                return;
-            }
-
+            // DEMO MODE: the backend /admin/vpp/opt-in endpoint isn't available
+            // yet, so skip the opt-in API call (and the Tesla Fleet redirect) and
+            // go straight to the utility-bill upload step.
             showStatus(
                 'success',
                 '✅ <strong>You\'re opted in!</strong> One quick last step — let\'s connect ' +
                 'your utility account so we can finish enrollment…'
             );
-            submitBtn.textContent = 'Continuing…';
             setTimeout(function () {
-                window.location.assign(utilityStepUrl(body));
+                window.location.assign(utilityStepUrl({}));
             }, 700);
         });
     </script>
