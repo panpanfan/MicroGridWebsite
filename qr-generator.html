@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serial Number QR Generator | MicroVPP</title>
+    <meta name="description" content="Upload a CSV or text file of device serial numbers and generate downloadable registration QR codes for MicroVPP." />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="theme-color" content="#065f46" />
+    <link rel="icon" type="image/png" href="assets/images/microvpp_logo.png" />
+    <link rel="apple-touch-icon" href="assets/images/microvpp_logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- QR generation + ZIP bundling (client-side, no data leaves the browser) -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <style>
+        :root {
+            --brand-green: #10B981;
+            --brand-green-dark: #065f46;
+            --brand-green-medium: #059669;
+            --brand-green-darker: #047857;
+            --brand-gold: #F59E0B;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+            background: #f8fafc;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.15);
+        }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; text-decoration: none; }
+        .logo img { height: 50px; width: auto; }
+        .nav-links { display: flex; list-style: none; gap: 2rem; }
+        .nav-links a {
+            text-decoration: none; color: #333; font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover { color: var(--brand-green); }
+        .header-buttons { display: flex; align-items: center; gap: 12px; }
+        .cta-button-outline {
+            background: transparent; color: var(--brand-green);
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--brand-green);
+            border-radius: 12px;
+            font-weight: 600; font-size: 0.875rem;
+            text-decoration: none; transition: all 0.3s ease;
+            cursor: pointer; display: inline-flex; align-items: center;
+        }
+        .cta-button-outline:hover { background: rgba(16, 185, 129, 0.05); }
+
+        /* Hero */
+        .reg-hero {
+            padding: 140px 0 40px;
+            background: linear-gradient(135deg, #065f46 0%, #047857 50%, #059669 100%);
+            color: white;
+            text-align: center;
+        }
+        .reg-hero h1 {
+            font-size: 2.5rem; font-weight: 700;
+            margin-bottom: 1rem; line-height: 1.2;
+        }
+        .reg-hero p {
+            font-size: 1.15rem; max-width: 720px;
+            margin: 0 auto; opacity: 0.95;
+        }
+        .reg-hero .hero-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: rgba(245, 158, 11, 0.18);
+            color: #fde68a;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-radius: 999px;
+            font-size: 0.85rem; font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* Main section */
+        .gen-section { padding: 40px 0 80px; }
+        .panel {
+            max-width: 760px; margin: 0 auto 1.5rem;
+            background: white; padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+        @media (max-width: 600px) {
+            .panel { padding: 1.75rem 1.25rem; }
+            .reg-hero h1 { font-size: 2rem; }
+        }
+
+        .section-header { margin-bottom: 1.5rem; }
+        .section-header h2 {
+            font-size: 1.5rem; font-weight: 700;
+            color: #1f2937; margin-bottom: 0.35rem;
+        }
+        .section-header p { font-size: 0.96rem; color: #6b7280; }
+
+        /* Dropzone */
+        .dropzone {
+            display: block;
+            border: 2px dashed #10B981;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .dropzone:hover, .dropzone.dragover {
+            background: #d1fae5;
+            border-color: #047857;
+        }
+        .dropzone .dz-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .dropzone .dz-title { font-size: 1.05rem; font-weight: 600; color: #065f46; }
+        .dropzone .dz-sub { font-size: 0.88rem; color: #047857; margin-top: 0.25rem; }
+        .dropzone input[type="file"] { display: none; }
+
+        .divider-or {
+            display: flex; align-items: center;
+            text-align: center; color: #9ca3af;
+            font-size: 0.82rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.05em;
+            margin: 1.5rem 0;
+        }
+        .divider-or::before, .divider-or::after {
+            content: ''; flex: 1; height: 1px; background: #e5e7eb;
+        }
+        .divider-or::before { margin-right: 0.85rem; }
+        .divider-or::after { margin-left: 0.85rem; }
+
+        .field-label {
+            display: block;
+            font-size: 0.9rem; font-weight: 600;
+            color: #374151; margin-bottom: 0.4rem;
+        }
+        .sn-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 0.85rem 1rem;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 0.95rem; font-family: 'Inter', monospace;
+            color: #1f2937; resize: vertical;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .sn-textarea:focus {
+            outline: none; border-color: #10B981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
+        }
+
+        /* Options */
+        .options-row {
+            display: flex; flex-wrap: wrap; gap: 1rem;
+            margin-top: 1.25rem; align-items: flex-end;
+        }
+        .option { flex: 1; min-width: 200px; }
+        .option input[type="text"] {
+            width: 100%;
+            padding: 0.7rem 0.9rem;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 0.95rem; font-family: inherit;
+            color: #1f2937;
+        }
+        .option input[type="text"]:focus {
+            outline: none; border-color: #10B981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
+        }
+        .url-preview {
+            font-size: 0.82rem; color: #6b7280; margin-top: 0.4rem;
+            word-break: break-all;
+        }
+        .url-preview code {
+            background: rgba(16, 185, 129, 0.12);
+            padding: 1px 5px; border-radius: 4px; color: #065f46;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.85rem 1.75rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem; font-weight: 600;
+            cursor: pointer; transition: all 0.25s ease;
+            display: inline-flex; align-items: center; gap: 0.5rem;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+        }
+        .btn-primary:hover:not(:disabled) {
+            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+            transform: translateY(-1px);
+        }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+        .btn-outline {
+            background: #fff; color: var(--brand-green-darker);
+            border: 2px solid var(--brand-green);
+        }
+        .btn-outline:hover:not(:disabled) { background: rgba(16, 185, 129, 0.06); }
+        .btn-outline:disabled { opacity: 0.45; cursor: not-allowed; }
+        .actions-row {
+            display: flex; flex-wrap: wrap; gap: 0.75rem;
+            margin-top: 1.5rem; align-items: center;
+        }
+
+        /* Status banner */
+        .status-banner {
+            display: none;
+            margin-top: 1.25rem;
+            padding: 0.85rem 1.1rem;
+            border-radius: 10px;
+            font-size: 0.92rem;
+        }
+        .status-banner.is-visible { display: block; }
+        .status-error   { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+        .status-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #065f46; }
+        .status-info    { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+
+        /* Results */
+        .results-header {
+            display: flex; flex-wrap: wrap; gap: 0.75rem;
+            justify-content: space-between; align-items: center;
+            margin-bottom: 1.25rem;
+        }
+        .results-header h2 { font-size: 1.4rem; color: #1f2937; }
+        .results-count {
+            font-size: 0.85rem; font-weight: 600; color: #047857;
+            background: #ecfdf5; border: 1px solid #a7f3d0;
+            padding: 0.25rem 0.75rem; border-radius: 999px;
+        }
+        .qr-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.25rem;
+        }
+        .qr-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 1rem;
+            text-align: center;
+            background: #fff;
+            display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+        }
+        .qr-card img { width: 100%; max-width: 190px; height: auto; border-radius: 8px; }
+        .qr-card .qr-sn {
+            font-size: 0.82rem; font-weight: 600; color: #1f2937;
+            font-family: 'Inter', monospace; word-break: break-all;
+        }
+        .qr-card .qr-dl {
+            font-size: 0.82rem; font-weight: 600; color: var(--brand-green-darker);
+            text-decoration: none; border: 1.5px solid var(--brand-green);
+            border-radius: 8px; padding: 0.35rem 0.75rem; transition: background 0.2s ease;
+        }
+        .qr-card .qr-dl:hover { background: rgba(16, 185, 129, 0.07); }
+
+        /* Footer */
+        footer {
+            background: #1f2937; color: #d1d5db;
+            padding: 2.5rem 0 1.5rem;
+        }
+        .footer-content {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 1rem; text-align: center;
+        }
+        .footer-logo-title { font-size: 1.25rem; font-weight: 700; color: #fff; }
+        .footer-logo-subtitle { font-size: 0.85rem; color: #9ca3af; }
+        .footer-tagline { font-size: 0.95rem; color: #9ca3af; }
+        .footer-nav { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; }
+        .footer-nav a { color: #d1d5db; text-decoration: none; font-size: 0.9rem; }
+        .footer-nav a:hover { color: var(--brand-green); }
+        .footer-copyright {
+            border-top: 1px solid #374151;
+            margin-top: 1.75rem; padding-top: 1.25rem;
+            text-align: center; font-size: 0.82rem; color: #9ca3af;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <a href="index.html" class="logo">
+                <img src="assets/images/microgrid_logo.png" alt="MicroGrid"
+                     onerror="this.onerror=null;this.src='assets/images/microvpp_logo.png';">
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#join-movement">How It Works</a></li>
+                <li><a href="index.html#faq">FAQ</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+            <div class="header-buttons">
+                <a href="index.html" class="cta-button-outline">Back to Home</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="reg-hero">
+        <div class="container">
+            <span class="hero-badge">🔳 Bulk QR Code Generator</span>
+            <h1>Serial Number QR Codes</h1>
+            <p>
+                Upload a CSV or text file of device serial numbers and instantly generate
+                downloadable registration QR codes — one per serial number.
+            </p>
+        </div>
+    </section>
+
+    <!-- Generator -->
+    <section class="gen-section">
+        <div class="container">
+
+            <!-- Input panel -->
+            <div class="panel">
+                <div class="section-header">
+                    <h2>1. Add serial numbers</h2>
+                    <p>One unique serial number per line. CSV files use the first column of each line.</p>
+                </div>
+
+                <label class="dropzone" id="dropzone" for="fileInput">
+                    <div class="dz-icon">📄</div>
+                    <div class="dz-title">Drop a CSV / TXT file here, or click to browse</div>
+                    <div class="dz-sub">One serial number per line</div>
+                    <input type="file" id="fileInput" accept=".csv,.txt,text/csv,text/plain" />
+                </label>
+
+                <div class="divider-or">or paste them</div>
+
+                <label class="field-label" for="snTextarea">Paste serial numbers</label>
+                <textarea id="snTextarea" class="sn-textarea"
+                          placeholder="2517-65170160PH&#10;2517-65170161PH&#10;2517-65170162PH"></textarea>
+
+                <div class="options-row">
+                    <div class="option">
+                        <label class="field-label" for="baseUrlInput">Registration URL base</label>
+                        <input type="text" id="baseUrlInput" value="https://go.microvpp.com/?sn=" />
+                        <div class="url-preview" id="urlPreview"></div>
+                    </div>
+                </div>
+
+                <div class="actions-row">
+                    <button type="button" class="btn btn-primary" id="generateBtn">Generate QR codes</button>
+                    <button type="button" class="btn btn-outline" id="clearBtn">Clear</button>
+                </div>
+
+                <div class="status-banner" id="statusBanner" role="status" aria-live="polite"></div>
+            </div>
+
+            <!-- Results panel -->
+            <div class="panel" id="resultsPanel" style="display:none;">
+                <div class="results-header">
+                    <h2>2. Download QR codes</h2>
+                    <span class="results-count" id="resultsCount"></span>
+                </div>
+                <div class="actions-row" style="margin-top:0; margin-bottom:1.25rem;">
+                    <button type="button" class="btn btn-primary" id="downloadAllBtn">⬇ Download all (.zip)</button>
+                </div>
+                <div class="qr-grid" id="qrGrid"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo-title">MicroVPP®</div>
+                    <div class="footer-logo-subtitle">by MicroGrid LLC</div>
+                </div>
+                <div class="footer-tagline">Smarter homes. Stronger grids.</div>
+                <nav class="footer-nav">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="privacy.html">Privacy</a>
+                    <a href="terms.html">Terms</a>
+                    <a href="mailto:info@microvpp.com">Contact</a>
+                </nav>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; 2026 MicroGrid LLC. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // =====================================================================
+        // MicroVPP — Bulk serial-number QR code generator
+        //
+        // Everything runs client-side: serial numbers never leave the browser.
+        // For each serial number we build a labelled PNG containing:
+        //   • Title (two lines): "Liniotech Intelligence" / "powered by MicroVPP"
+        //   • The QR code encoding  https://go.microvpp.com/?sn=<serial>
+        //   • The serial number printed below the QR code
+        // =====================================================================
+
+        const TITLE_LINES = ['Liniotech Intelligence', 'powered by MicroVPP'];
+
+        // ---------- DOM ----------
+        const dropzone      = document.getElementById('dropzone');
+        const fileInput     = document.getElementById('fileInput');
+        const snTextarea    = document.getElementById('snTextarea');
+        const baseUrlInput  = document.getElementById('baseUrlInput');
+        const urlPreview    = document.getElementById('urlPreview');
+        const generateBtn   = document.getElementById('generateBtn');
+        const clearBtn      = document.getElementById('clearBtn');
+        const statusBanner  = document.getElementById('statusBanner');
+        const resultsPanel  = document.getElementById('resultsPanel');
+        const resultsCount  = document.getElementById('resultsCount');
+        const qrGrid        = document.getElementById('qrGrid');
+        const downloadAllBtn= document.getElementById('downloadAllBtn');
+
+        // sn -> { dataUrl, fileName }
+        let generated = [];
+
+        // ---------- Helpers ----------
+        function showStatus(kind, message) {
+            statusBanner.className = 'status-banner is-visible status-' + kind;
+            statusBanner.innerHTML = message;
+        }
+        function clearStatus() {
+            statusBanner.className = 'status-banner';
+            statusBanner.innerHTML = '';
+        }
+
+        function updateUrlPreview() {
+            const base = (baseUrlInput.value || '').trim();
+            urlPreview.innerHTML = 'Example: <code>' +
+                escapeHtml(base + 'SERIAL123') + '</code>';
+        }
+
+        function escapeHtml(s) {
+            return (s || '').replace(/[&<>"']/g, function (c) {
+                return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c];
+            });
+        }
+
+        // Make a serial number safe for use as a file name.
+        function safeFileName(sn) {
+            return sn.replace(/[^a-zA-Z0-9._-]+/g, '_').replace(/^_+|_+$/g, '') || 'serial';
+        }
+
+        // Parse raw text (CSV or plain) into a de-duplicated, ordered list of SNs.
+        function parseSerials(text) {
+            const seen = new Set();
+            const list = [];
+            (text || '').split(/\r\n|\r|\n/).forEach(function (line) {
+                // For CSV lines, take the first column.
+                let sn = line.split(',')[0].trim();
+                // Strip surrounding quotes from quoted CSV cells.
+                sn = sn.replace(/^"(.*)"$/, '$1').trim();
+                if (!sn) return;
+                const key = sn.toLowerCase();
+                if (seen.has(key)) return;
+                seen.add(key);
+                list.push(sn);
+            });
+            return list;
+        }
+
+        // ---------- QR card rendering ----------
+        // Build a labelled PNG (title + QR + serial) and return a data URL.
+        function buildCard(sn, baseUrl) {
+            const url = baseUrl + encodeURIComponent(sn);
+
+            // Encode the QR with the qrcode-generator UMD library. typeNumber 0
+            // lets it auto-pick the smallest version that fits the data.
+            const qr = qrcode(0, 'M');
+            qr.addData(url);
+            qr.make();
+            const moduleCount = qr.getModuleCount();
+
+            // Layout (logical px). Rendered at SCALE for crisp output.
+            const SCALE   = 3;
+            const W       = 520;
+            const padX    = 40;
+            const padTop  = 44;
+            const titleLH = 34;            // title line height
+            const quiet   = 4;             // QR quiet-zone in modules
+            const gapTitleQr = 28;
+            const gapQrSn    = 26;
+            const snLH    = 30;
+            const padBot  = 40;
+
+            // Snap the QR to an integer module size so modules render crisply.
+            const maxQr   = W - padX * 2;
+            const cell    = Math.max(2, Math.floor(maxQr / (moduleCount + quiet * 2)));
+            const qrSize  = cell * (moduleCount + quiet * 2);
+
+            const titleBlock = TITLE_LINES.length * titleLH;
+            const H = padTop + titleBlock + gapTitleQr + qrSize + gapQrSn + snLH + padBot;
+
+            const canvas = document.createElement('canvas');
+            canvas.width  = W * SCALE;
+            canvas.height = H * SCALE;
+            const ctx = canvas.getContext('2d');
+            ctx.scale(SCALE, SCALE);
+
+            // Background
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, W, H);
+
+            // Title (two lines, centered, brand green)
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'alphabetic';
+            let y = padTop + titleLH - 8;
+            TITLE_LINES.forEach(function (line, i) {
+                // First line a touch larger/bolder than the second.
+                if (i === 0) {
+                    ctx.font = '700 25px Inter, Arial, sans-serif';
+                    ctx.fillStyle = '#065f46';
+                } else {
+                    ctx.font = '600 20px Inter, Arial, sans-serif';
+                    ctx.fillStyle = '#047857';
+                }
+                fitAndFill(ctx, line, W / 2, y, W - padX * 2);
+                y += titleLH;
+            });
+
+            // QR code (centered) — draw the dark modules over a white quiet zone.
+            const qrX = (W - qrSize) / 2;
+            const qrY = padTop + titleBlock + gapTitleQr;
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(qrX, qrY, qrSize, qrSize);
+            ctx.fillStyle = '#000000';
+            for (let r = 0; r < moduleCount; r++) {
+                for (let c = 0; c < moduleCount; c++) {
+                    if (qr.isDark(r, c)) {
+                        ctx.fillRect(
+                            qrX + (c + quiet) * cell,
+                            qrY + (r + quiet) * cell,
+                            cell, cell
+                        );
+                    }
+                }
+            }
+
+            // Serial number below QR
+            const snY = qrY + qrSize + gapQrSn + snLH - 10;
+            ctx.fillStyle = '#111827';
+            ctx.font = '600 22px "Courier New", monospace';
+            fitAndFill(ctx, sn, W / 2, snY, W - padX * 2);
+
+            return canvas.toDataURL('image/png');
+        }
+
+        // Draw centered text, shrinking the font until it fits maxWidth.
+        function fitAndFill(ctx, text, cx, y, maxWidth) {
+            const base = ctx.font;
+            const m = base.match(/(\d+)px/);
+            let size = m ? parseInt(m[1], 10) : 20;
+            const prefix = base.slice(0, base.indexOf(m ? m[0] : ''));
+            const suffix = m ? base.slice(base.indexOf(m[0]) + m[0].length) : base;
+            while (size > 9 && ctx.measureText(text).width > maxWidth) {
+                size -= 1;
+                ctx.font = prefix + size + 'px' + suffix;
+            }
+            ctx.fillText(text, cx, y);
+            ctx.font = base;
+        }
+
+        // ---------- Generation flow ----------
+        async function generate() {
+            clearStatus();
+            const baseUrl = (baseUrlInput.value || '').trim();
+            if (!baseUrl) {
+                showStatus('error', 'Please provide a registration URL base.');
+                return;
+            }
+            const serials = parseSerials(snTextarea.value);
+            if (!serials.length) {
+                showStatus('error', 'No serial numbers found. Upload a file or paste at least one.');
+                return;
+            }
+
+            generateBtn.disabled = true;
+            generateBtn.textContent = 'Generating…';
+            qrGrid.innerHTML = '';
+            generated = [];
+
+            try {
+                for (let i = 0; i < serials.length; i++) {
+                    const sn = serials[i];
+                    const dataUrl = buildCard(sn, baseUrl);
+                    const fileName = 'qr_' + safeFileName(sn) + '.png';
+                    generated.push({ sn: sn, dataUrl: dataUrl, fileName: fileName });
+                    appendCard(sn, dataUrl, fileName);
+                    // Yield to the UI every few items so large batches stay responsive.
+                    if (i % 25 === 24) await new Promise(function (r) { setTimeout(r, 0); });
+                }
+                resultsPanel.style.display = 'block';
+                resultsCount.textContent = generated.length +
+                    (generated.length === 1 ? ' QR code' : ' QR codes');
+                showStatus('success', 'Generated <strong>' + generated.length +
+                    '</strong> QR code' + (generated.length === 1 ? '' : 's') +
+                    '. Download them individually or as a ZIP.');
+                resultsPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } catch (e) {
+                showStatus('error', 'Something went wrong while generating: ' +
+                    escapeHtml(String(e && e.message ? e.message : e)));
+            } finally {
+                generateBtn.disabled = false;
+                generateBtn.textContent = 'Generate QR codes';
+            }
+        }
+
+        function appendCard(sn, dataUrl, fileName) {
+            const card = document.createElement('div');
+            card.className = 'qr-card';
+
+            const img = document.createElement('img');
+            img.src = dataUrl;
+            img.alt = 'QR code for ' + sn;
+
+            const snEl = document.createElement('div');
+            snEl.className = 'qr-sn';
+            snEl.textContent = sn;
+
+            const dl = document.createElement('a');
+            dl.className = 'qr-dl';
+            dl.href = dataUrl;
+            dl.download = fileName;
+            dl.textContent = '⬇ Download PNG';
+
+            card.appendChild(img);
+            card.appendChild(snEl);
+            card.appendChild(dl);
+            qrGrid.appendChild(card);
+        }
+
+        async function downloadAll() {
+            if (!generated.length) return;
+            if (typeof JSZip === 'undefined') {
+                showStatus('error', 'ZIP library failed to load. Please download images individually.');
+                return;
+            }
+            downloadAllBtn.disabled = true;
+            const original = downloadAllBtn.textContent;
+            downloadAllBtn.textContent = 'Bundling…';
+            try {
+                const zip = new JSZip();
+                generated.forEach(function (item) {
+                    const base64 = item.dataUrl.split(',')[1];
+                    zip.file(item.fileName, base64, { base64: true });
+                });
+                const blob = await zip.generateAsync({ type: 'blob' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'microvpp_qr_codes.zip';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+            } catch (e) {
+                showStatus('error', 'Could not build ZIP: ' +
+                    escapeHtml(String(e && e.message ? e.message : e)));
+            } finally {
+                downloadAllBtn.disabled = false;
+                downloadAllBtn.textContent = original;
+            }
+        }
+
+        // ---------- File handling ----------
+        function readFile(file) {
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const existing = snTextarea.value.trim();
+                const incoming = String(e.target.result || '').trim();
+                snTextarea.value = existing ? (existing + '\n' + incoming) : incoming;
+                const count = parseSerials(snTextarea.value).length;
+                showStatus('info', 'Loaded <strong>' + escapeHtml(file.name) +
+                    '</strong> — ' + count + ' unique serial number' + (count === 1 ? '' : 's') +
+                    ' ready. Click “Generate QR codes”.');
+            };
+            reader.onerror = function () {
+                showStatus('error', 'Could not read that file. Please try again.');
+            };
+            reader.readAsText(file);
+        }
+
+        // ---------- Events ----------
+        fileInput.addEventListener('change', function () {
+            if (this.files && this.files[0]) readFile(this.files[0]);
+            this.value = '';
+        });
+
+        ['dragenter', 'dragover'].forEach(function (ev) {
+            dropzone.addEventListener(ev, function (e) {
+                e.preventDefault(); e.stopPropagation();
+                dropzone.classList.add('dragover');
+            });
+        });
+        ['dragleave', 'drop'].forEach(function (ev) {
+            dropzone.addEventListener(ev, function (e) {
+                e.preventDefault(); e.stopPropagation();
+                dropzone.classList.remove('dragover');
+            });
+        });
+        dropzone.addEventListener('drop', function (e) {
+            const dt = e.dataTransfer;
+            if (dt && dt.files && dt.files[0]) readFile(dt.files[0]);
+        });
+
+        generateBtn.addEventListener('click', generate);
+        downloadAllBtn.addEventListener('click', downloadAll);
+        baseUrlInput.addEventListener('input', updateUrlPreview);
+        clearBtn.addEventListener('click', function () {
+            snTextarea.value = '';
+            qrGrid.innerHTML = '';
+            generated = [];
+            resultsPanel.style.display = 'none';
+            clearStatus();
+        });
+
+        // ---------- Init ----------
+        updateUrlPreview();
+    </script>
+</body>
+</html>
