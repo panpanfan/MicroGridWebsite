@@ -179,6 +179,31 @@
         }
         .device-card .missing { color: #b45309; font-style: italic; }
 
+        /* State picker (shown when ?state= is missing) */
+        .state-picker {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed rgba(16, 185, 129, 0.4);
+        }
+        .state-select {
+            width: 100%;
+            padding: 0.7rem 0.9rem;
+            border: 1.5px solid #10B981;
+            border-radius: 10px;
+            font-size: 1rem; font-family: inherit;
+            color: #1f2937; background: #fff;
+            cursor: pointer;
+        }
+        .state-select:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+        }
+        .state-select.invalid { border-color: #ef4444; }
+        .state-hint {
+            font-size: 0.82rem; color: #047857;
+            margin-top: 0.4rem;
+        }
+
         /* OAuth provider buttons */
         .provider-btn {
             display: flex; align-items: center; justify-content: center;
@@ -388,6 +413,17 @@
                         <dt>State</dt>
                         <dd id="ctxState"><span class="missing">Not provided</span></dd>
                     </dl>
+                    <!-- Shown only when the QR ?state= param is missing/unsupported -->
+                    <div id="statePickerWrap" class="state-picker" style="display:none;">
+                        <label class="field-label" for="stateSelect">Select your state</label>
+                        <select id="stateSelect" class="state-select">
+                            <option value="" selected disabled>Choose a state…</option>
+                            <option value="texas">Texas</option>
+                            <option value="california">California</option>
+                            <option value="newyork">New York</option>
+                        </select>
+                        <p class="state-hint">MicroVPP is currently available in Texas, California, and New York.</p>
+                    </div>
                 </div>
 
                 <!-- OAuth + email capture -->
@@ -514,11 +550,13 @@
         const nextBtn       = document.getElementById('nextBtn');
         const statusBanner  = document.getElementById('statusBanner');
         const ctxStateEl    = document.getElementById('ctxState');
+        const statePickerWrap = document.getElementById('statePickerWrap');
+        const stateSelect   = document.getElementById('stateSelect');
 
         // ---------- State ----------
         let selectedEmail = '';
         let emailSource   = 'manual'; // 'google' | 'apple' | 'manual'
-        let selectedState = '';       // 'california' | 'texas' (from the QR ?state= param)
+        let selectedState = '';       // 'california' | 'texas' | 'newyork' (from QR ?state= or user pick)
 
         // ---------- Helpers ----------
         function isValidEmail(v) {
@@ -571,19 +609,27 @@
         function currentEmailValid() {
             return !!selectedEmail || isValidEmail(emailInput.value);
         }
+        function currentStateValid() {
+            return !!selectedState;
+        }
         function syncNext() {
-            nextBtn.disabled = !currentEmailValid();
+            nextBtn.disabled = !(currentEmailValid() && currentStateValid());
         }
 
         // ---------- 2b. State (read from the QR ?state= param) ----------
+        // VPP program is supported in these states only.
         function normalizeState(raw) {
-            const s = (raw || '').trim().toLowerCase();
+            const s = (raw || '').trim().toLowerCase().replace(/[\s_-]/g, '');
             if (s === 'california' || s === 'cal' || s === 'ca') return 'california';
             if (s === 'texas' || s === 'tex' || s === 'tx') return 'texas';
+            if (s === 'newyork' || s === 'ny') return 'newyork';
             return '';
         }
         function stateLabelOf(s) {
-            return s === 'texas' ? 'Texas' : s === 'california' ? 'California' : '';
+            return s === 'texas' ? 'Texas'
+                 : s === 'california' ? 'California'
+                 : s === 'newyork' ? 'New York'
+                 : '';
         }
         (function readState() {
             try {
@@ -591,8 +637,27 @@
                 selectedState = normalizeState(qs.get('state'));
             } catch (_) { selectedState = ''; }
             const label = stateLabelOf(selectedState);
-            if (label) ctxStateEl.textContent = label;
+            if (label) {
+                // State came from the QR link — show it and hide the picker.
+                ctxStateEl.textContent = label;
+                statePickerWrap.style.display = 'none';
+            } else {
+                // No (supported) state in the URL — default to Texas, but let
+                // the user change it via the picker.
+                selectedState = 'texas';
+                stateSelect.value = 'texas';
+                ctxStateEl.textContent = stateLabelOf(selectedState);
+                statePickerWrap.style.display = 'block';
+            }
         })();
+
+        stateSelect.addEventListener('change', function () {
+            selectedState = normalizeState(stateSelect.value);
+            stateSelect.classList.remove('invalid');
+            const label = stateLabelOf(selectedState);
+            if (label) ctxStateEl.textContent = label;
+            syncNext();
+        });
 
         // ---------- 2. Email capture / selection UI ----------
         function setSelectedEmail(email, source) {
@@ -806,6 +871,13 @@
             }
             if (!isValidEmail(selectedEmail)) {
                 showStatus('error', 'Please provide a valid email address before continuing.');
+                return;
+            }
+            if (!currentStateValid()) {
+                stateSelect.classList.add('invalid');
+                statePickerWrap.style.display = 'block';
+                showStatus('error', 'Please select your state to continue.');
+                stateSelect.focus();
                 return;
             }
 
