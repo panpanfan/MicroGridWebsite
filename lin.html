@@ -421,8 +421,8 @@
                             <option value="texas">Texas</option>
                             <option value="california">California</option>
                             <option value="newyork">New York</option>
+                            <option value="other">Other (my state isn't listed)</option>
                         </select>
-                        <p class="state-hint">MicroVPP is currently available in Texas, California, and New York.</p>
                     </div>
                 </div>
 
@@ -623,7 +623,12 @@
             if (s === 'california' || s === 'cal' || s === 'ca') return 'california';
             if (s === 'texas' || s === 'tex' || s === 'tx') return 'texas';
             if (s === 'newyork' || s === 'ny') return 'newyork';
+            if (s === 'other') return 'other';
             return '';
+        }
+        // True for states where the VPP program is supported.
+        function isVppState(s) {
+            return s === 'texas' || s === 'california' || s === 'newyork';
         }
         function stateLabelOf(s) {
             return s === 'texas' ? 'Texas'
@@ -654,8 +659,12 @@
         stateSelect.addEventListener('change', function () {
             selectedState = normalizeState(stateSelect.value);
             stateSelect.classList.remove('invalid');
-            const label = stateLabelOf(selectedState);
+            const label = selectedState === 'other'
+                ? 'Other (VPP not available)'
+                : stateLabelOf(selectedState);
             if (label) ctxStateEl.textContent = label;
+            // Reflect the VPP-skip behaviour on the button label.
+            nextBtn.textContent = selectedState === 'other' ? 'Register device →' : 'Continue →';
             syncNext();
         });
 
@@ -900,6 +909,26 @@
             } catch (_) { /* noop */ }
 
             const result = await registerDevice(selectedEmail);
+
+            // "Other" state -> VPP isn't available, so skip the opt-in flow and
+            // finish here once the device is registered.
+            if (selectedState === 'other') {
+                if (typeof gtag === 'function') {
+                    gtag('event', 'lin_vpp_skipped_other_state', {
+                        event_category: 'registration',
+                        event_label: emailSource
+                    });
+                }
+                nextBtn.textContent = 'Registration complete';
+                showStatus(
+                    'success',
+                    'Thanks! Your device is registered. The MicroVPP program isn\'t ' +
+                    'available in your state yet — we\'ll email <strong>' + selectedEmail +
+                    '</strong> as soon as it is.'
+                );
+                return;
+            }
+
             // Whether or not the API call succeeds, continue to the opt-in page.
             goToVppOptIn(result.ok ? result : {});
         });
