@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-T2CN68FF');</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-05XLDKW0MN"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-05XLDKW0MN');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Your Tesla Powerwall | MicroVPP</title>
+    <meta name="description" content="Register your Tesla Powerwall with MicroVPP and opt in to our Grid Support Program. Connect securely through the Tesla Fleet API." />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="theme-color" content="#065f46" />
+    <link rel="canonical" href="https://www.microvpp.com/tesla.html" />
+    <link rel="icon" type="image/png" href="assets/images/microvpp_logo.png" />
+    <link rel="apple-touch-icon" href="assets/images/microvpp_logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-green: #10B981;
+            --brand-green-dark: #065f46;
+            --brand-green-medium: #059669;
+            --brand-green-darker: #047857;
+            --brand-gold: #F59E0B;
+            --tesla-red: #cc0000;
+            --tesla-red-dark: #8b0000;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+            background: #f8fafc;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.15);
+        }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; text-decoration: none; }
+        .logo img { height: 50px; width: auto; }
+        .nav-links { display: flex; list-style: none; gap: 2rem; }
+        .nav-links a {
+            text-decoration: none; color: #333; font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover { color: var(--brand-green); }
+        .header-buttons { display: flex; align-items: center; gap: 12px; }
+        .cta-button-outline {
+            background: transparent; color: var(--brand-green);
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--brand-green);
+            border-radius: 12px;
+            font-weight: 600; font-size: 0.875rem;
+            text-decoration: none; transition: all 0.3s ease;
+            cursor: pointer; display: inline-flex; align-items: center;
+        }
+        .cta-button-outline:hover { background: rgba(16, 185, 129, 0.05); }
+
+        /* Hero */
+        .reg-hero {
+            padding: 140px 0 40px;
+            background: linear-gradient(135deg, #065f46 0%, #047857 50%, #059669 100%);
+            color: white;
+            text-align: center;
+        }
+        .reg-hero h1 {
+            font-size: 2.5rem; font-weight: 700;
+            margin-bottom: 1rem; line-height: 1.2;
+        }
+        .reg-hero p {
+            font-size: 1.15rem; max-width: 720px;
+            margin: 0 auto; opacity: 0.95;
+        }
+        .reg-hero .hero-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: rgba(245, 158, 11, 0.18);
+            color: #fde68a;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-radius: 999px;
+            font-size: 0.85rem; font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* Registration section */
+        .register-section { padding: 40px 0 80px; }
+        .form-container {
+            max-width: 620px; margin: 0 auto;
+            background: white; padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+        @media (max-width: 600px) {
+            .form-container { padding: 2rem 1.5rem; }
+            .reg-hero h1 { font-size: 2rem; }
+        }
+
+        /* Step indicator */
+        .steps {
+            display: flex; align-items: center; justify-content: center;
+            gap: 0.5rem; margin-bottom: 2rem;
+            font-size: 0.85rem; color: #6b7280; font-weight: 600;
+        }
+        .steps .step { display: inline-flex; align-items: center; gap: 0.4rem; }
+        .steps .num {
+            width: 24px; height: 24px; border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center;
+            background: #10B981; color: #fff; font-size: 0.8rem; font-weight: 700;
+        }
+        .steps .num.inactive { background: #d1d5db; }
+        .steps .divider { width: 26px; height: 2px; background: #d1d5db; }
+
+        .section-header { text-align: center; margin-bottom: 1.75rem; }
+        .section-header h2 {
+            font-size: 1.6rem; font-weight: 700;
+            color: #1f2937; margin-bottom: 0.4rem;
+        }
+        .section-header p { font-size: 0.98rem; color: #6b7280; }
+
+        /* Device context card */
+        .device-card {
+            background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+            border: 2px solid #10B981;
+            border-radius: 12px;
+            padding: 1.1rem 1.4rem;
+            margin-bottom: 2rem;
+        }
+        .device-card .device-title {
+            font-size: 0.8rem; font-weight: 700;
+            color: #047857; text-transform: uppercase;
+            letter-spacing: 0.05em; margin-bottom: 0.6rem;
+        }
+        .device-card dl {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 0.45rem 1rem;
+            font-size: 0.95rem;
+        }
+        .device-card dt { color: #065f46; font-weight: 600; }
+        .device-card dd { color: #1f2937; word-break: break-word; }
+        .device-card code {
+            font-family: 'Inter', monospace;
+            background: rgba(16, 185, 129, 0.12);
+            padding: 2px 7px; border-radius: 5px;
+            font-size: 0.9rem; color: #065f46; font-weight: 600;
+        }
+        .device-card .missing { color: #b45309; font-style: italic; }
+
+        /* State picker (shown when ?state= is missing) */
+        .state-picker {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed rgba(16, 185, 129, 0.4);
+        }
+        .state-select {
+            width: 100%;
+            padding: 0.7rem 0.9rem;
+            border: 1.5px solid #10B981;
+            border-radius: 10px;
+            font-size: 1rem; font-family: inherit;
+            color: #1f2937; background: #fff;
+            cursor: pointer;
+        }
+        .state-select:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+        }
+        .state-select.invalid { border-color: #ef4444; }
+
+        /* Section label between blocks */
+        .block-label {
+            font-size: 0.8rem; font-weight: 700;
+            color: #047857; text-transform: uppercase;
+            letter-spacing: 0.05em; margin: 0 0 0.85rem;
+        }
+
+        /* OAuth provider buttons */
+        .provider-btn {
+            display: flex; align-items: center; justify-content: center;
+            gap: 0.65rem;
+            width: 100%;
+            max-width: 400px;
+            padding: 0.85rem 1rem;
+            margin: 0 auto 0.85rem;
+            border-radius: 12px;
+            font-size: 0.98rem; font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1.5px solid #e5e7eb;
+            background: #fff; color: #1f2937;
+        }
+        .provider-btn:hover { background: #f9fafb; border-color: #d1d5db; }
+        .provider-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+        .provider-btn svg, .provider-btn img { width: 20px; height: 20px; flex-shrink: 0; }
+        .provider-btn.apple { background: #000; color: #fff; border-color: #000; }
+        .provider-btn.apple:hover { background: #1a1a1a; }
+
+        #googleBtnContainer { display: flex; justify-content: center; margin-bottom: 0.85rem; }
+
+        .divider-or {
+            display: flex; align-items: center;
+            text-align: center; color: #9ca3af;
+            font-size: 0.82rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.05em;
+            margin: 1.25rem 0;
+        }
+        .divider-or::before, .divider-or::after {
+            content: ''; flex: 1; height: 1px; background: #e5e7eb;
+        }
+        .divider-or::before { margin-right: 0.85rem; }
+        .divider-or::after { margin-left: 0.85rem; }
+
+        /* Email field */
+        .field-label {
+            display: block;
+            font-size: 0.9rem; font-weight: 600;
+            color: #374151; margin-bottom: 0.4rem;
+        }
+        .email-input {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem; font-family: inherit;
+            color: #1f2937;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .email-input:focus {
+            outline: none;
+            border-color: #10B981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
+        }
+        .email-input.invalid { border-color: #ef4444; }
+        .field-error {
+            display: none;
+            color: #ef4444; font-size: 0.85rem; margin-top: 0.35rem;
+        }
+        .field-error.is-visible { display: block; }
+
+        /* Captured-email confirmation chip */
+        .email-captured {
+            display: none;
+            align-items: center; justify-content: space-between;
+            gap: 0.75rem;
+            background: #f0fdf4;
+            border: 1.5px solid #10B981;
+            border-radius: 12px;
+            padding: 0.85rem 1rem;
+            margin-top: 0.25rem;
+        }
+        .email-captured.is-visible { display: flex; }
+        .email-captured .ec-main { display: flex; align-items: center; gap: 0.6rem; min-width: 0; }
+        .email-captured .ec-icon { font-size: 1.15rem; }
+        .email-captured .ec-text { min-width: 0; }
+        .email-captured .ec-label {
+            font-size: 0.72rem; font-weight: 700; color: #047857;
+            text-transform: uppercase; letter-spacing: 0.04em;
+        }
+        .email-captured .ec-email {
+            font-size: 0.95rem; color: #1f2937; font-weight: 600;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+        .email-captured .ec-change {
+            background: none; border: none; color: #059669;
+            font-size: 0.85rem; font-weight: 600; cursor: pointer;
+            text-decoration: underline; flex-shrink: 0;
+        }
+
+        /* Agreement card */
+        .agreement-card {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.5rem 1.6rem;
+            margin: 2rem 0;
+        }
+        .agreement-card .agreement-title {
+            font-size: 0.85rem; font-weight: 700;
+            color: #047857; text-transform: uppercase;
+            letter-spacing: 0.05em; margin-bottom: 0.5rem;
+        }
+        .agreement-scroll {
+            max-height: 280px; overflow-y: auto;
+            padding-right: 0.75rem;
+            border-top: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
+            padding-top: 1rem; padding-bottom: 1rem;
+        }
+        .agreement-scroll h4 {
+            font-size: 0.95rem; color: #065f46;
+            margin: 1.1rem 0 0.4rem;
+        }
+        .agreement-scroll h4:first-child { margin-top: 0; }
+        .agreement-scroll p, .agreement-scroll li {
+            font-size: 0.9rem; color: #374151; line-height: 1.7;
+        }
+        .agreement-scroll ul { margin: 0.3rem 0 0.6rem 1.25rem; }
+        .agreement-meta { margin-top: 0.75rem; font-size: 0.8rem; color: #6b7280; }
+
+        /* Tesla Fleet info banner */
+        .tesla-banner {
+            margin: 1.5rem 0;
+            padding: 1rem 1.25rem;
+            background: linear-gradient(135deg, #fff5f5 0%, #fef2f2 100%);
+            border: 2px solid var(--tesla-red);
+            border-radius: 10px;
+            color: #7f1d1d; font-size: 0.92rem; line-height: 1.55;
+        }
+        .tesla-banner strong { color: var(--tesla-red-dark); }
+        .tesla-banner code {
+            font-family: inherit;
+            background: rgba(204, 0, 0, 0.1);
+            padding: 1px 6px; border-radius: 4px;
+            font-size: 0.85rem; color: var(--tesla-red-dark);
+        }
+
+        /* Consent checkbox */
+        .consent-box {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.2s ease, background 0.2s ease;
+        }
+        .consent-box.is-checked { border-color: #10B981; background: #f0fdf4; }
+        .consent-row { display: flex; align-items: flex-start; gap: 0.75rem; }
+        .consent-row input[type="checkbox"] {
+            width: 20px; height: 20px;
+            margin-top: 2px;
+            accent-color: #059669;
+            flex-shrink: 0; cursor: pointer;
+        }
+        .consent-row label {
+            font-size: 0.92rem; color: #374151;
+            line-height: 1.55; cursor: pointer;
+        }
+        .consent-row label strong { color: #065f46; }
+
+        /* Tesla connect / submit button */
+        .tesla-btn {
+            display: flex; align-items: center; justify-content: center;
+            gap: 0.6rem;
+            background: linear-gradient(135deg, #cc0000 0%, #8b0000 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.05rem; font-weight: 600;
+            cursor: pointer; transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1.5rem;
+            box-shadow: 0 4px 15px rgba(204, 0, 0, 0.3);
+        }
+        .tesla-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #b30000 0%, #6b0000 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(204, 0, 0, 0.4);
+        }
+        .tesla-btn:disabled {
+            background: #9ca3af; cursor: not-allowed;
+            box-shadow: none; transform: none;
+        }
+        .tesla-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+        .submit-help {
+            text-align: center; font-size: 0.85rem;
+            color: #6b7280; margin-top: 0.85rem;
+        }
+        .submit-help a { color: #059669; }
+
+        /* Manual paste fallback */
+        .paste-toggle {
+            display: block; text-align: center;
+            margin-top: 1rem; font-size: 0.82rem;
+            color: #6b7280; background: none; border: none;
+            cursor: pointer; text-decoration: underline; width: 100%;
+        }
+        .paste-wrap { display: none; margin-top: 1rem; }
+        .paste-wrap.is-visible { display: block; }
+        .paste-wrap textarea {
+            width: 100%; min-height: 70px;
+            padding: 0.75rem 0.9rem;
+            border: 1.5px solid #e5e7eb; border-radius: 10px;
+            font-family: inherit; font-size: 0.9rem; resize: vertical;
+        }
+
+        /* Status banner */
+        .status-banner {
+            display: none;
+            margin-top: 1.25rem;
+            padding: 1rem 1.25rem;
+            border-radius: 10px;
+            font-size: 0.92rem; line-height: 1.5;
+        }
+        .status-banner.is-visible { display: block; }
+        .status-error { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+        .status-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #065f46; }
+        .status-info { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+        .status-banner a { color: inherit; text-decoration: underline; }
+
+        /* Footer */
+        footer {
+            background: #1f2937; color: #d1d5db;
+            padding: 2.5rem 0 1.5rem;
+        }
+        .footer-content {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 1rem; text-align: center;
+        }
+        .footer-logo-title { font-size: 1.25rem; font-weight: 700; color: #fff; }
+        .footer-logo-subtitle { font-size: 0.85rem; color: #9ca3af; }
+        .footer-tagline { font-size: 0.95rem; color: #9ca3af; }
+        .footer-nav { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; }
+        .footer-nav a { color: #d1d5db; text-decoration: none; font-size: 0.9rem; }
+        .footer-nav a:hover { color: var(--brand-green); }
+        .footer-copyright {
+            border-top: 1px solid #374151;
+            margin-top: 1.75rem; padding-top: 1.25rem;
+            text-align: center; font-size: 0.82rem; color: #9ca3af;
+        }
+    </style>
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T2CN68FF"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <a href="index.html" class="logo">
+                <img src="assets/images/microgrid_logo.png" alt="MicroGrid"
+                     onerror="this.onerror=null;this.src='assets/images/microvpp_logo.png';">
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#join-movement">How It Works</a></li>
+                <li><a href="index.html#faq">FAQ</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+            <div class="header-buttons">
+                <a href="index.html" class="cta-button-outline">Back to Home</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="reg-hero">
+        <div class="container">
+            <span class="hero-badge">&#9889; Tesla Powerwall Registration</span>
+            <h1>Register your Tesla Powerwall</h1>
+            <p>
+                Enroll your Powerwall in the MicroVPP Grid Support Program and securely
+                connect it to our fleet through the Tesla Fleet API &mdash; earn from every dispatch.
+            </p>
+        </div>
+    </section>
+
+    <!-- Registration Form -->
+    <section class="register-section">
+        <div class="container">
+            <div class="form-container">
+
+                <!-- Step indicator -->
+                <div class="steps">
+                    <span class="step"><span class="num">1</span> Your account</span>
+                    <span class="divider"></span>
+                    <span class="step"><span class="num">2</span> Authorize VPP</span>
+                    <span class="divider"></span>
+                    <span class="step"><span class="num">3</span> Connect Tesla</span>
+                </div>
+
+                <div class="section-header">
+                    <h2>Create your account &amp; opt in</h2>
+                    <p>Three quick steps. We never see your Tesla password.</p>
+                </div>
+
+                <!-- Device context card -->
+                <div class="device-card">
+                    <div class="device-title">&#128230; System to register</div>
+                    <dl>
+                        <dt>Brand</dt>
+                        <dd>Tesla Powerwall</dd>
+                        <dt>Connection</dt>
+                        <dd>Tesla Fleet API (discovered after you connect)</dd>
+                        <dt>State</dt>
+                        <dd id="ctxState"><span class="missing">Not provided</span></dd>
+                    </dl>
+                    <!-- Shown only when the ?state= param is missing/unsupported -->
+                    <div id="statePickerWrap" class="state-picker" style="display:none;">
+                        <label class="field-label" for="stateSelect">Select your state</label>
+                        <select id="stateSelect" class="state-select">
+                            <option value="" selected disabled>Choose a state&hellip;</option>
+                            <option value="texas">Texas</option>
+                            <option value="california">California</option>
+                            <option value="newyork">New York</option>
+                            <option value="other">Other (my state isn't listed)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- STEP 1: email capture -->
+                <p class="block-label">Step 1 &middot; Tell us who you are</p>
+                <div id="googleBtnContainer"></div>
+
+                <button type="button" class="provider-btn apple" id="appleBtn">
+                    <svg viewBox="0 0 384 512" fill="currentColor" aria-hidden="true">
+                        <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
+                    </svg>
+                    Continue with Apple
+                </button>
+
+                <div class="divider-or">or</div>
+
+                <div id="manualEmailWrap">
+                    <label class="field-label" for="emailInput">Email address</label>
+                    <input type="email" id="emailInput" class="email-input"
+                           placeholder="you@example.com" autocomplete="email"
+                           inputmode="email" />
+                    <div class="field-error" id="emailError">Please enter a valid email address.</div>
+                </div>
+
+                <div class="email-captured" id="emailCaptured">
+                    <div class="ec-main">
+                        <span class="ec-icon">&#9989;</span>
+                        <span class="ec-text">
+                            <span class="ec-label" id="ecLabel">Email</span>
+                            <div class="ec-email" id="ecEmail"></div>
+                        </span>
+                    </div>
+                    <button type="button" class="ec-change" id="ecChange">Change</button>
+                </div>
+
+                <!-- STEP 2: authorization agreement + consent -->
+                <p class="block-label" style="margin-top:2rem;">Step 2 &middot; Authorize the Grid Support Program</p>
+                <div class="agreement-card">
+                    <div class="agreement-title">&#128196; Customer Authorization</div>
+                    <div class="agreement-scroll" id="agreementScroll">
+                        <p>
+                            By checking the box below and clicking <strong>"Connect Tesla &amp; Enroll,"</strong>
+                            you ("Customer") authorize the following:
+                        </p>
+
+                        <h4>1. Enrollment &amp; management</h4>
+                        <p>
+                            You grant MicroVPP the exclusive right to automatically enroll and
+                            manage the dispatch of your Tesla Powerwall and related energy assets in
+                            grid services and demand response programs. This authorization remains in
+                            effect until you revoke it. You confirm these assets are not, and will
+                            not be, enrolled in any other utility or demand response program outside
+                            of MicroVPP while this authorization is active.
+                        </p>
+
+                        <h4>2. Dispatch &amp; control via the Tesla Fleet API</h4>
+                        <p>
+                            You authorize MicroVPP and its authorized partners to monitor, control,
+                            operate, and dispatch your Powerwall and related energy assets through the
+                            Tesla Fleet API as needed to participate in applicable grid services and
+                            demand response programs.
+                        </p>
+
+                        <h4>3. Data sharing</h4>
+                        <p>
+                            You authorize MicroVPP, its authorized grid-services partners, your
+                            electric utility, and the applicable program administrators to access and
+                            use your energy usage, account, and device data &mdash; including Tesla
+                            energy site and device data, interval and usage data, your name, service
+                            address, account and meter identifiers, rate plan, and device details
+                            &mdash; solely to enroll, operate, and settle your participation in these
+                            programs. Your data is never sold and is handled in accordance with our
+                            <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>
+                            and applicable state privacy and utility data-access laws.
+                        </p>
+
+                        <h4>4. No fossil-fuel generation</h4>
+                        <p>
+                            You attest that you will not use diesel, natural gas, gasoline, propane,
+                            or liquefied petroleum gas (LPG) generation to deliver load reduction
+                            during any program event, where prohibited by applicable program rules.
+                        </p>
+
+                        <h4>5. Accurate information</h4>
+                        <p>
+                            You confirm that the information you have provided is accurate and
+                            complete, and you agree to notify MicroVPP of any material changes.
+                        </p>
+
+                        <h4>6. Revoking &amp; opting out</h4>
+                        <p>
+                            You may revoke this authorization at any time by emailing
+                            <a href="mailto:info@microvpp.com">info@microvpp.com</a> or by revoking
+                            access in your Tesla Account, which ends your participation and stops
+                            future data sharing. You can also opt out of an individual dispatch event
+                            without revoking your overall authorization (frequent opt-outs may reduce
+                            your earnings or eligibility).
+                        </p>
+
+                        <h4>In plain English</h4>
+                        <p>
+                            You're letting MicroVPP use your Tesla Powerwall to support the grid and
+                            earn you rewards. We connect through Tesla's official Fleet API &mdash; we
+                            never see your Tesla password &mdash; your data is used only to run the
+                            program, and you can opt out anytime.
+                        </p>
+                    </div>
+                    <p class="agreement-meta">
+                        Version <span id="agreementVersionLabel">v3.1</span> &middot; Last updated June 2026 &middot; MicroGrid LLC
+                    </p>
+                </div>
+
+                <div class="consent-box" id="consentBox">
+                    <div class="consent-row">
+                        <input type="checkbox" id="teslaConsent" />
+                        <label for="teslaConsent">
+                            I have read and agree to the <strong>Customer Authorization</strong> above,
+                            and I authorize MicroGrid to connect to my Tesla Powerwall via the
+                            <strong>Tesla Fleet API</strong> to enroll it in the MicroVPP Grid Support Program.
+                        </label>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Tesla Fleet connect -->
+                <p class="block-label" style="margin-top:2rem;">Step 3 &middot; Connect your Tesla account</p>
+                <div class="tesla-banner">
+                    <strong>How the Tesla connection works.</strong> When you continue, we'll send you
+                    to Tesla's secure login at <strong>auth.tesla.com</strong> to authorize MicroGrid
+                    via the <strong>Tesla Fleet API</strong> (scopes <code>openid</code>,
+                    <code>offline_access</code>, <code>energy_device_data</code>, and
+                    <code>energy_cmds</code>). You'll return here automatically when you're done
+                    &mdash; it usually takes under a minute. We never see or store your Tesla password.
+                </div>
+
+                <button type="button" class="tesla-btn" id="teslaBtn" disabled>
+                    <svg viewBox="0 0 342 35" fill="currentColor" aria-hidden="true">
+                        <path d="M0 .1a9.7 9.7 0 0 0 7 7h11l.5.1v27.6h6.8V7.3L26 7h11a9.8 9.8 0 0 0 7-7H0zm238.6 0h-6.8v34.8H263a9.7 9.7 0 0 0 6-6.8h-30.3V0zm-52.3 6.8c3.6-1 6.6-3.8 7.4-6.9l-38.1.1v20.6h31.1v7.2h-24.4a13.6 13.6 0 0 0-8.7 7h39.9v-21h-31.2v-7h24zm116.2 28h6.7v-14h24.6v14h6.7v-21h-38zM85.3 7h26a9.6 9.6 0 0 0 7.1-7H78.3a9.6 9.6 0 0 0 7 7zm0 13.8h26a9.6 9.6 0 0 0 7.1-7H78.3a9.6 9.6 0 0 0 7 7zm0 14.1h26a9.6 9.6 0 0 0 7.1-7H78.3a9.6 9.6 0 0 0 7 7zM308.5 7h26a9.6 9.6 0 0 0 7-7h-40a9.6 9.6 0 0 0 7 7z"/>
+                    </svg>
+                    Connect Tesla &amp; Enroll
+                </button>
+                <p class="submit-help" id="submitHelp">
+                    &#128274; Checking the box is your electronic signature accepting the authorization.
+                    You'll be redirected to <strong>auth.tesla.com</strong>. See our
+                    <a href="privacy.html">Privacy Policy</a>.
+                </p>
+
+                <button type="button" class="paste-toggle" id="pasteToggle">
+                    Tesla sent you to a blank page? Paste the URL here instead &rarr;
+                </button>
+                <div class="paste-wrap" id="pasteWrap">
+                    <label class="field-label" for="pasteInput">Paste the full URL from Tesla's blank page</label>
+                    <textarea id="pasteInput" placeholder="https://auth.tesla.com/void/callback?code=...&amp;state=..."></textarea>
+                    <button type="button" class="tesla-btn" id="pasteSubmit" style="margin-top:0.75rem;">
+                        Finish connecting
+                    </button>
+                </div>
+
+                <div class="status-banner" id="statusBanner" role="status" aria-live="polite"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo-title">MicroVPP&reg;</div>
+                    <div class="footer-logo-subtitle">by MicroGrid LLC</div>
+                </div>
+                <div class="footer-tagline">Smarter homes. Stronger grids.</div>
+                <nav class="footer-nav">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="privacy.html">Privacy</a>
+                    <a href="terms.html">Terms</a>
+                    <a href="mailto:info@microvpp.com">Contact</a>
+                </nav>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; 2026 MicroGrid LLC. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // =====================================================================
+        // MicroVPP - Tesla Powerwall registration + VPP opt-in landing page
+        //
+        // Single-page flow that (1) registers the customer's system with us,
+        // (2) records their Grid Support Program opt-in + authorization, and
+        // (3) connects their Powerwall to our Tesla Fleet API account via the
+        // OAuth 2.0 Authorization Code flow with PKCE (S256).
+        //
+        // Deep-link params (optional; mostly from a QR code or the app):
+        //   ?state=texas|california|newyork   - home state
+        //   ?email=...                        - pre-fill the email
+        //
+        // OAuth round trip:
+        //   1. User picks email (Google/Apple/manual) + state, accepts the
+        //      authorization, and clicks "Connect Tesla & Enroll".
+        //   2. We best-effort register the device + opt-in against the MicroVPP
+        //      API, generate a PKCE verifier/challenge, stash the context in
+        //      sessionStorage, then redirect to auth.tesla.com/oauth2/v3/authorize.
+        //   3. Tesla redirects back to this page (CONFIG.teslaRedirectUri) with
+        //      ?code= & ?state=. On load we detect that, validate state, and
+        //      POST {code, code_verifier, redirect_uri} to the backend
+        //      /tesla/exchange-code endpoint, which swaps the code for Fleet API
+        //      tokens server-side (CORS-safe) and links the device to our fleet.
+        //
+        // A manual "paste the callback URL" fallback is provided for the
+        // auth.tesla.com/void/callback case (used when only the void redirect
+        // URI is registered for the Tesla app).
+        // =====================================================================
+
+        const CONFIG = {
+            // Google OAuth 2.0 Web client ID. Leave as the placeholder to hide.
+            googleClientId: '518897175243-6inrn8urrbvol9l0j4nlm0p1pmtkh83j.apps.googleusercontent.com',
+
+            // Sign in with Apple Services ID + redirect URI.
+            appleClientId: 'com.microvpp.web',
+            appleRedirectURI: 'https://www.microvpp.com/tesla.html',
+
+            // MicroVPP API
+            apiBaseUrl: 'https://api.microvpp.com',
+            signupEndpoint: '/auth/signup',
+            optInEndpoint: '/admin/vpp/opt-in',
+            teslaExchangeEndpoint: '/tesla/exchange-code',
+
+            // ---- Tesla Fleet API OAuth (PKCE) ----
+            teslaClientId: '5fb6ab01-0d71-434f-b7db-6cbab655e9ee',
+            teslaAuthorizeUrl: 'https://auth.tesla.com/oauth2/v3/authorize',
+            teslaScopes: 'openid offline_access energy_device_data energy_cmds',
+            // The redirect URI must be registered in the Tesla developer app.
+            // Defaults to this page so Tesla returns ?code & ?state here; set to
+            // 'https://auth.tesla.com/void/callback' to use the paste fallback.
+            teslaRedirectUri: (window.location.origin + window.location.pathname),
+
+            inverterBrand: 'tesla_powerwall',
+            vppProgramId: 1
+        };
+
+        const AGREEMENT_VERSION = 'v3.1';
+        const PLACEHOLDER_GOOGLE = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
+        const SS = {
+            verifier: 'tesla_pkce_verifier',
+            state:    'tesla_oauth_state',
+            redirect: 'tesla_redirect_uri',
+            ctx:      'tesla_signup_ctx'
+        };
+
+        document.getElementById('agreementVersionLabel').textContent = AGREEMENT_VERSION;
+
+        // ---------- DOM ----------
+        const googleWrap    = document.getElementById('googleBtnContainer');
+        const appleBtn      = document.getElementById('appleBtn');
+        const emailWrap     = document.getElementById('manualEmailWrap');
+        const emailInput    = document.getElementById('emailInput');
+        const emailError    = document.getElementById('emailError');
+        const dividerOr     = document.querySelector('.divider-or');
+        const emailCaptured = document.getElementById('emailCaptured');
+        const ecEmail       = document.getElementById('ecEmail');
+        const ecLabel       = document.getElementById('ecLabel');
+        const ecChange      = document.getElementById('ecChange');
+        const teslaBtn      = document.getElementById('teslaBtn');
+        const teslaConsent  = document.getElementById('teslaConsent');
+        const consentBox    = document.getElementById('consentBox');
+        const statusBanner  = document.getElementById('statusBanner');
+        const ctxStateEl    = document.getElementById('ctxState');
+        const statePickerWrap = document.getElementById('statePickerWrap');
+        const stateSelect   = document.getElementById('stateSelect');
+        const pasteToggle   = document.getElementById('pasteToggle');
+        const pasteWrap     = document.getElementById('pasteWrap');
+        const pasteInput    = document.getElementById('pasteInput');
+        const pasteSubmit   = document.getElementById('pasteSubmit');
+
+        // ---------- State ----------
+        let selectedEmail = '';
+        let emailSource   = 'manual';
+        let selectedState = '';
+
+        // ---------- Helpers ----------
+        function isValidEmail(v) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((v || '').trim());
+        }
+        function showStatus(kind, message) {
+            statusBanner.className = 'status-banner is-visible status-' + kind;
+            statusBanner.innerHTML = message;
+            statusBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        function clearStatus() {
+            statusBanner.className = 'status-banner';
+            statusBanner.innerHTML = '';
+        }
+        function decodeJwtPayload(token) {
+            try {
+                const part = token.split('.')[1];
+                const json = atob(part.replace(/-/g, '+').replace(/_/g, '/'));
+                const decoded = decodeURIComponent(
+                    json.split('').map(function (c) {
+                        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                    }).join('')
+                );
+                return JSON.parse(decoded);
+            } catch (_) { return null; }
+        }
+
+        // ---------- PKCE helpers (Web Crypto) ----------
+        function base64UrlEncode(bytes) {
+            let str = '';
+            const arr = new Uint8Array(bytes);
+            for (let i = 0; i < arr.length; i++) str += String.fromCharCode(arr[i]);
+            return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        }
+        function randomVerifier() {
+            const bytes = new Uint8Array(48);
+            (window.crypto || window.msCrypto).getRandomValues(bytes);
+            return base64UrlEncode(bytes);
+        }
+        async function sha256Challenge(verifier) {
+            const data = new TextEncoder().encode(verifier);
+            const digest = await crypto.subtle.digest('SHA-256', data);
+            return base64UrlEncode(digest);
+        }
+
+        // ---------- State (from ?state= param) ----------
+        function normalizeState(raw) {
+            const s = (raw || '').trim().toLowerCase().replace(/[\s_-]/g, '');
+            if (s === 'california' || s === 'cal' || s === 'ca') return 'california';
+            if (s === 'texas' || s === 'tex' || s === 'tx') return 'texas';
+            if (s === 'newyork' || s === 'ny') return 'newyork';
+            if (s === 'other') return 'other';
+            return '';
+        }
+        function stateLabelOf(s) {
+            return s === 'texas' ? 'Texas'
+                 : s === 'california' ? 'California'
+                 : s === 'newyork' ? 'New York'
+                 : '';
+        }
+        (function readState() {
+            try {
+                const qs = new URLSearchParams(window.location.search);
+                selectedState = normalizeState(qs.get('state'));
+            } catch (_) { selectedState = ''; }
+            const label = stateLabelOf(selectedState);
+            if (label) {
+                ctxStateEl.textContent = label;
+                statePickerWrap.style.display = 'none';
+            } else {
+                selectedState = 'texas';
+                stateSelect.value = 'texas';
+                ctxStateEl.textContent = stateLabelOf(selectedState);
+                statePickerWrap.style.display = 'block';
+            }
+        })();
+        stateSelect.addEventListener('change', function () {
+            selectedState = normalizeState(stateSelect.value);
+            stateSelect.classList.remove('invalid');
+            const label = selectedState === 'other'
+                ? 'Other (VPP not available)'
+                : stateLabelOf(selectedState);
+            if (label) ctxStateEl.textContent = label;
+            syncTeslaBtn();
+        });
+
+        // ---------- Gating ----------
+        function currentEmailValid() {
+            return !!selectedEmail || isValidEmail(emailInput.value);
+        }
+        function syncTeslaBtn() {
+            const ready = currentEmailValid() && !!selectedState
+                          && selectedState !== 'other' && teslaConsent.checked;
+            teslaBtn.disabled = !ready;
+        }
+
+        teslaConsent.addEventListener('change', function () {
+            consentBox.classList.toggle('is-checked', teslaConsent.checked);
+            syncTeslaBtn();
+        });
+
+        // ---------- Email capture ----------
+        function setSelectedEmail(email, source) {
+            selectedEmail = (email || '').trim().toLowerCase();
+            emailSource = source || 'manual';
+            ecEmail.textContent = selectedEmail;
+            ecLabel.textContent = source === 'google' ? 'Google account'
+                                : source === 'apple'  ? 'Apple account'
+                                : 'Email';
+            emailCaptured.classList.add('is-visible');
+            googleWrap.style.display = 'none';
+            appleBtn.style.display = 'none';
+            if (dividerOr) dividerOr.style.display = 'none';
+            emailWrap.style.display = 'none';
+            syncTeslaBtn();
+            clearStatus();
+            if (typeof gtag === 'function') {
+                gtag('event', 'tesla_email_captured', {
+                    event_category: 'registration', event_label: source
+                });
+            }
+        }
+        function resetEmailSelection() {
+            selectedEmail = '';
+            emailCaptured.classList.remove('is-visible');
+            googleWrap.style.display = '';
+            appleBtn.style.display = '';
+            if (dividerOr) dividerOr.style.display = '';
+            emailWrap.style.display = '';
+            syncTeslaBtn();
+            emailInput.focus();
+        }
+        ecChange.addEventListener('click', resetEmailSelection);
+
+        function commitManualEmail() {
+            const v = emailInput.value.trim();
+            if (!isValidEmail(v)) {
+                emailInput.classList.add('invalid');
+                emailError.classList.add('is-visible');
+                syncTeslaBtn();
+                return false;
+            }
+            emailInput.classList.remove('invalid');
+            emailError.classList.remove('is-visible');
+            setSelectedEmail(v, 'manual');
+            return true;
+        }
+        emailInput.addEventListener('input', function () {
+            emailInput.classList.remove('invalid');
+            emailError.classList.remove('is-visible');
+            syncTeslaBtn();
+        });
+        emailInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { e.preventDefault(); commitManualEmail(); }
+        });
+
+        // Pre-fill email from ?email= if provided.
+        (function readEmailParam() {
+            try {
+                const qs = new URLSearchParams(window.location.search);
+                const e = (qs.get('email') || '').trim();
+                if (e && isValidEmail(e)) setSelectedEmail(e, 'manual');
+            } catch (_) { /* noop */ }
+        })();
+
+        // ---------- Google Identity Services ----------
+        function initGoogle() {
+            if (!CONFIG.googleClientId || CONFIG.googleClientId === PLACEHOLDER_GOOGLE) {
+                googleWrap.style.display = 'none';
+                return;
+            }
+            const s = document.createElement('script');
+            s.src = 'https://accounts.google.com/gsi/client';
+            s.async = true; s.defer = true;
+            s.onload = function () {
+                if (!window.google || !google.accounts || !google.accounts.id) {
+                    googleWrap.style.display = 'none';
+                    return;
+                }
+                google.accounts.id.initialize({
+                    client_id: CONFIG.googleClientId,
+                    callback: function (response) {
+                        const payload = decodeJwtPayload(response.credential);
+                        if (payload && payload.email) {
+                            setSelectedEmail(payload.email, 'google');
+                        } else {
+                            showStatus('error', 'We could not read your Google email. Please enter it manually below.');
+                        }
+                    }
+                });
+                google.accounts.id.renderButton(googleWrap, {
+                    theme: 'outline', size: 'large', width: 400,
+                    text: 'continue_with', logo_alignment: 'center'
+                });
+            };
+            s.onerror = function () { googleWrap.style.display = 'none'; };
+            document.head.appendChild(s);
+        }
+
+        // ---------- Sign in with Apple ----------
+        function initApple() {
+            const s = document.createElement('script');
+            s.src = 'https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js';
+            s.async = true;
+            s.onload = function () {
+                if (!window.AppleID || !CONFIG.appleClientId) return;
+                try {
+                    AppleID.auth.init({
+                        clientId: CONFIG.appleClientId,
+                        scope: 'name email',
+                        redirectURI: CONFIG.appleRedirectURI,
+                        usePopup: true
+                    });
+                } catch (_) { /* noop */ }
+            };
+            document.head.appendChild(s);
+
+            appleBtn.addEventListener('click', async function () {
+                clearStatus();
+                if (!window.AppleID) {
+                    showStatus('info', 'Apple sign-in is unavailable right now - please enter your email below.');
+                    emailInput.focus();
+                    return;
+                }
+                try {
+                    const data = await AppleID.auth.signIn();
+                    let email = '';
+                    if (data && data.user && data.user.email) {
+                        email = data.user.email;
+                    } else if (data && data.authorization && data.authorization.id_token) {
+                        const payload = decodeJwtPayload(data.authorization.id_token);
+                        if (payload && payload.email) email = payload.email;
+                    }
+                    if (email) {
+                        setSelectedEmail(email, 'apple');
+                    } else {
+                        showStatus('info', 'Apple did not share an email this time. Please enter your email below.');
+                        emailInput.focus();
+                    }
+                } catch (err) {
+                    showStatus('info', 'Apple sign-in was cancelled. You can enter your email below instead.');
+                    emailInput.focus();
+                }
+            });
+        }
+
+        // ---------- Best-effort device registration ----------
+        async function registerDevice(email) {
+            const stateLabel = stateLabelOf(selectedState) || null;
+            const info = {
+                contact: { email: email },
+                location: { state: stateLabel },
+                system: { brand: 'tesla_powerwall' },
+                registration: {
+                    mode: 'partial',
+                    status: 'tesla_landing_email_captured',
+                    registration_date: new Date().toISOString(),
+                    registration_source: 'tesla-web-landing'
+                }
+            };
+            const payload = {
+                entity_type: 'inverter',
+                email: email,
+                state: stateLabel,
+                country: 'US',
+                locale: 'en-US',
+                inverter_inverter_type: 'hybrid_inverter',
+                inverter_manufacturer: 'tesla',
+                site_type: 'residential',
+                info: JSON.stringify(info)
+            };
+            try {
+                const resp = await fetch(CONFIG.apiBaseUrl + CONFIG.signupEndpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!resp.ok) return { ok: false };
+                const body = await resp.json().catch(function () { return {}; });
+                return { ok: true, userId: body.user_id || body.account_id || null };
+            } catch (_) {
+                return { ok: false };
+            }
+        }
+
+        // ---------- Best-effort VPP opt-in ----------
+        async function optInVpp(userId) {
+            const payload = {
+                cognito_user_id: userId || null,
+                email: selectedEmail,
+                inverter_brand: CONFIG.inverterBrand,
+                state: stateLabelOf(selectedState) || null,
+                vpp_program_id: CONFIG.vppProgramId,
+                agreement_version: AGREEMENT_VERSION,
+                opt_in_agreed: true,
+                tesla_fleet_consent: true
+            };
+            try {
+                const resp = await fetch(CONFIG.apiBaseUrl + CONFIG.optInEndpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!resp.ok) return { ok: false };
+                const body = await resp.json().catch(function () { return {}; });
+                // If the backend mints its own authorize URL, prefer it.
+                return { ok: true, teslaAuthUrl: body.tesla_auth_url || null };
+            } catch (_) {
+                return { ok: false };
+            }
+        }
+
+        // ---------- Tesla Fleet API OAuth (PKCE) ----------
+        async function startTeslaAuth() {
+            const verifier = randomVerifier();
+            const challenge = await sha256Challenge(verifier);
+            const oauthState = randomVerifier();
+
+            try {
+                sessionStorage.setItem(SS.verifier, verifier);
+                sessionStorage.setItem(SS.state, oauthState);
+                sessionStorage.setItem(SS.redirect, CONFIG.teslaRedirectUri);
+                sessionStorage.setItem(SS.ctx, JSON.stringify({
+                    email: selectedEmail,
+                    state: selectedState,
+                    source: emailSource
+                }));
+            } catch (_) { /* sessionStorage may be unavailable */ }
+
+            const params = new URLSearchParams({
+                response_type: 'code',
+                client_id: CONFIG.teslaClientId,
+                redirect_uri: CONFIG.teslaRedirectUri,
+                scope: CONFIG.teslaScopes,
+                state: oauthState,
+                code_challenge: challenge,
+                code_challenge_method: 'S256',
+                prompt: 'login'
+            });
+            window.location.assign(CONFIG.teslaAuthorizeUrl + '?' + params.toString());
+        }
+
+        async function exchangeTeslaCode(code, redirectUri) {
+            let verifier = '';
+            try { verifier = sessionStorage.getItem(SS.verifier) || ''; } catch (_) {}
+            const resp = await fetch(CONFIG.apiBaseUrl + CONFIG.teslaExchangeEndpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({
+                    code: code,
+                    code_verifier: verifier,
+                    redirect_uri: redirectUri || CONFIG.teslaRedirectUri
+                })
+            });
+            const text = await resp.text();
+            let body = {};
+            try { body = text ? JSON.parse(text) : {}; } catch (_) { body = {}; }
+            return { ok: resp.ok, status: resp.status, body };
+        }
+
+        function clearTeslaSession() {
+            try {
+                sessionStorage.removeItem(SS.verifier);
+                sessionStorage.removeItem(SS.state);
+                sessionStorage.removeItem(SS.redirect);
+                sessionStorage.removeItem(SS.ctx);
+            } catch (_) {}
+        }
+
+        function showConnectedSuccess() {
+            showStatus(
+                'success',
+                '&#9989; <strong>Your Tesla Powerwall is connected and enrolled!</strong> ' +
+                'MicroVPP can now discover your energy site through the Tesla Fleet API and ' +
+                'begin managing dispatches. We\'ll email you the details shortly.'
+            );
+            teslaBtn.disabled = true;
+            teslaBtn.textContent = 'Connected';
+            if (typeof gtag === 'function') {
+                gtag('event', 'tesla_fleet_connected', { event_category: 'conversion' });
+            }
+        }
+
+        async function finishWithCode(code, oauthState, redirectUri) {
+            // Validate state against what we stored (CSRF protection).
+            let expectedState = '';
+            try { expectedState = sessionStorage.getItem(SS.state) || ''; } catch (_) {}
+            if (expectedState && oauthState && expectedState !== oauthState) {
+                showStatus('error', 'Security check failed (state mismatch). Please start the Tesla connection again.');
+                return;
+            }
+            showStatus('info', 'Finishing your Tesla connection&hellip;');
+            const result = await exchangeTeslaCode(code, redirectUri);
+            if (result.ok) {
+                clearTeslaSession();
+                showConnectedSuccess();
+            } else {
+                showStatus(
+                    'error',
+                    'We received your Tesla authorization but could not finish linking the ' +
+                    'device automatically. Our team has your authorization and will complete ' +
+                    'enrollment - no further action needed. (ref: ' + (result.status || 'n/a') + ')'
+                );
+            }
+        }
+
+        // ---------- Detect OAuth return on page load ----------
+        function handleOAuthReturn() {
+            let qs;
+            try { qs = new URLSearchParams(window.location.search); } catch (_) { return false; }
+            const code = qs.get('code');
+            const oauthState = qs.get('state');
+            const err = qs.get('error');
+
+            if (err) {
+                showStatus('error', 'Tesla sign-in was cancelled or denied (' +
+                    (qs.get('error_description') || err) + '). You can try connecting again.');
+                scrubUrl();
+                return true;
+            }
+            // Only treat as an OAuth return if we have a stored PKCE verifier and
+            // the returned state isn't one we'd treat as a 'home state' string.
+            let hasVerifier = false;
+            try { hasVerifier = !!sessionStorage.getItem(SS.verifier); } catch (_) {}
+            if (code && hasVerifier) {
+                let redirectUri = CONFIG.teslaRedirectUri;
+                try { redirectUri = sessionStorage.getItem(SS.redirect) || redirectUri; } catch (_) {}
+                scrubUrl();
+                finishWithCode(code, oauthState, redirectUri);
+                return true;
+            }
+            return false;
+        }
+
+        function scrubUrl() {
+            try {
+                const clean = window.location.pathname;
+                window.history.replaceState({}, document.title, clean);
+            } catch (_) { /* noop */ }
+        }
+
+        // ---------- Manual paste fallback (void/callback case) ----------
+        pasteToggle.addEventListener('click', function () {
+            pasteWrap.classList.toggle('is-visible');
+        });
+        pasteSubmit.addEventListener('click', function () {
+            const raw = (pasteInput.value || '').trim();
+            if (!raw) { pasteInput.focus(); return; }
+            let code = '', st = '';
+            try {
+                const u = new URL(raw);
+                code = u.searchParams.get('code') || '';
+                st = u.searchParams.get('state') || '';
+            } catch (_) {
+                const m = raw.match(/[?&]code=([^&]+)/);
+                if (m) code = decodeURIComponent(m[1]);
+                const ms = raw.match(/[?&]state=([^&]+)/);
+                if (ms) st = decodeURIComponent(ms[1]);
+            }
+            if (!code) {
+                showStatus('error', 'We could not find a "code" in that URL. Please paste the full address Tesla redirected you to.');
+                return;
+            }
+            let redirectUri = CONFIG.teslaRedirectUri;
+            try { redirectUri = sessionStorage.getItem(SS.redirect) || redirectUri; } catch (_) {}
+            finishWithCode(code, st, redirectUri);
+        });
+
+        // ---------- Connect button ----------
+        teslaBtn.addEventListener('click', async function () {
+            if (!selectedEmail) {
+                if (!commitManualEmail()) return;
+            }
+            if (!isValidEmail(selectedEmail)) {
+                showStatus('error', 'Please provide a valid email address before continuing.');
+                return;
+            }
+            if (!selectedState || selectedState === 'other') {
+                stateSelect.classList.add('invalid');
+                statePickerWrap.style.display = 'block';
+                showStatus('error', 'The MicroVPP program isn\'t available in your state yet. Please choose a supported state.');
+                stateSelect.focus();
+                return;
+            }
+            if (!teslaConsent.checked) {
+                showStatus('error', 'Please accept the Customer Authorization to continue.');
+                return;
+            }
+
+            teslaBtn.disabled = true;
+            const original = teslaBtn.textContent;
+            teslaBtn.textContent = 'Registering your system\u2026';
+
+            if (typeof gtag === 'function') {
+                gtag('event', 'tesla_connect_click', {
+                    event_category: 'registration', event_label: emailSource
+                });
+            }
+
+            try {
+                sessionStorage.setItem('tesla_email', selectedEmail);
+                if (selectedState) sessionStorage.setItem('tesla_state', selectedState);
+            } catch (_) { /* noop */ }
+
+            // 1. Best-effort register the device, 2. best-effort opt-in.
+            const reg = await registerDevice(selectedEmail);
+            const opt = await optInVpp(reg && reg.userId);
+
+            // If the backend handed us a fully-formed authorize URL, use it
+            // (it carries a server-minted state validated by /tesla/callback).
+            if (opt && opt.teslaAuthUrl) {
+                window.location.assign(opt.teslaAuthUrl);
+                return;
+            }
+
+            // Otherwise run the browser PKCE authorize flow ourselves.
+            teslaBtn.textContent = 'Redirecting to Tesla\u2026';
+            try {
+                await startTeslaAuth();
+            } catch (e) {
+                teslaBtn.disabled = false;
+                teslaBtn.textContent = original;
+                showStatus('error', 'We could not start the Tesla sign-in. Please try again.');
+            }
+        });
+
+        // ---------- Boot ----------
+        initGoogle();
+        initApple();
+        syncTeslaBtn();
+        handleOAuthReturn();
+    </script>
+
+    <!-- Button Click Tracking (GA4) -->
+    <script>
+        (function () {
+            var PAGE_NAME = 'tesla_registration';
+            function clean(s, n) {
+                return (s || '').replace(/\s+/g, ' ').trim().slice(0, n || 100);
+            }
+            document.addEventListener('click', function (evt) {
+                try {
+                    var el = evt.target;
+                    var max = 5;
+                    while (el && el.nodeType === 1 && max-- > 0) {
+                        var tag = (el.tagName || '').toLowerCase();
+                        if (tag === 'button' || tag === 'a') break;
+                        el = el.parentElement;
+                    }
+                    if (!el || typeof gtag !== 'function') return;
+                    var tag = (el.tagName || '').toLowerCase();
+                    if (tag !== 'button' && tag !== 'a') return;
+                    gtag('event', 'button_click', {
+                        event_category: 'engagement',
+                        event_label:    clean(el.innerText || el.textContent || '', 80),
+                        page:           PAGE_NAME,
+                        button_id:      el.id || '',
+                        button_tag:     tag
+                    });
+                } catch (_) { /* swallow */ }
+            }, true);
+        })();
+    </script>
+</body>
+</html>
