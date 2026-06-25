@@ -612,10 +612,13 @@
             teslaClientId: '5fb6ab01-0d71-434f-b7db-6cbab655e9ee',
             teslaAuthorizeUrl: 'https://auth.tesla.com/oauth2/v3/authorize',
             teslaScopes: 'openid offline_access energy_device_data energy_cmds',
-            // The redirect URI must be registered in the Tesla developer app.
-            // Defaults to this page so Tesla returns ?code & ?state here; set to
-            // 'https://auth.tesla.com/void/callback' to use the paste fallback.
-            teslaRedirectUri: (window.location.origin + window.location.pathname),
+            // The redirect URI must be registered EXACTLY (byte-for-byte) in the
+            // Tesla developer app's "Allowed Redirect URI(s)". It is hardcoded
+            // here (rather than derived from window.location) so it can't drift
+            // based on host/path/trailing slash and break the OAuth match.
+            // To use the paste fallback instead, set to
+            // 'https://auth.tesla.com/void/callback'.
+            teslaRedirectUri: 'https://www.microvpp.com/tesla.html',
 
             // Where we send the user after the Tesla connect (shared VPP flow).
             vppOptInPath: 'vpp/index.html',
