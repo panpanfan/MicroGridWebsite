@@ -1044,7 +1044,8 @@
             window.location.assign(CONFIG.teslaAuthorizeUrl + '?' + params.toString());
         }
 
-        async function exchangeTeslaCode(code, redirectUri) {
+        async function exchangeTeslaCode(code, redirectUri, ctx) {
+            ctx = ctx || {};
             let verifier = '';
             try { verifier = sessionStorage.getItem(SS.verifier) || ''; } catch (_) {}
             const resp = await fetch(CONFIG.apiBaseUrl + CONFIG.teslaExchangeEndpoint, {
@@ -1053,7 +1054,11 @@
                 body: JSON.stringify({
                     code: code,
                     code_verifier: verifier,
-                    redirect_uri: redirectUri || CONFIG.teslaRedirectUri
+                    redirect_uri: redirectUri || CONFIG.teslaRedirectUri,
+                    // Identify the user so the backend can persist the refresh
+                    // token against their account (keyed by email).
+                    email: ctx.email || selectedEmail || null,
+                    cognito_user_id: ctx.userId || null
                 })
             });
             const text = await resp.text();
@@ -1089,8 +1094,8 @@
                 return;
             }
             showStatus('info', 'Finishing your Tesla connection&hellip;');
-            const result = await exchangeTeslaCode(code, redirectUri);
             const ctx = readStoredCtx();
+            const result = await exchangeTeslaCode(code, redirectUri, ctx);
             ctx.teslaConnected = true;
             clearTeslaSession();
 

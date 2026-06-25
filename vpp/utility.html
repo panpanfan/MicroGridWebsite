@@ -428,10 +428,12 @@
 
         // ---------- Params ----------
         function normalizeState(raw) {
-            const s = (raw || '').trim().toLowerCase();
+            // Collapse spaces/underscores/hyphens so 'new york', 'new_york' and
+            // 'newyork' (the form sent by tesla.html / vpp/index.html) all match.
+            const s = (raw || '').trim().toLowerCase().replace(/[\s_-]/g, '');
             if (s === 'california' || s === 'cal' || s === 'ca') return 'california';
             if (s === 'texas' || s === 'tex' || s === 'tx') return 'texas';
-            if (s === 'new york' || s === 'new_york' || s === 'ny') return 'new york';
+            if (s === 'newyork' || s === 'ny') return 'new york';
             return '';
         }
         function readParams() {
