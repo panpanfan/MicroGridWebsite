@@ -21,7 +21,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register Your Tesla Powerwall | MicroVPP</title>
-    <meta name="description" content="Register your Tesla Powerwall with MicroVPP and opt in to our Grid Support Program. Connect securely through the Tesla Fleet API." />
+    <meta name="description" content="Register your Tesla Powerwall with MicroVPP. Sign in with Google or Apple, or enter your email to get started, then opt in to the Grid Support Program." />
     <meta name="robots" content="noindex, nofollow" />
     <meta name="referrer" content="no-referrer" />
     <meta name="theme-color" content="#065f46" />
@@ -38,8 +38,6 @@
             --brand-green-medium: #059669;
             --brand-green-darker: #047857;
             --brand-gold: #F59E0B;
-            --tesla-red: #cc0000;
-            --tesla-red-dark: #8b0000;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -120,7 +118,7 @@
         /* Registration section */
         .register-section { padding: 40px 0 80px; }
         .form-container {
-            max-width: 620px; margin: 0 auto;
+            max-width: 560px; margin: 0 auto;
             background: white; padding: 3rem;
             border-radius: 20px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
@@ -129,21 +127,6 @@
             .form-container { padding: 2rem 1.5rem; }
             .reg-hero h1 { font-size: 2rem; }
         }
-
-        /* Step indicator */
-        .steps {
-            display: flex; align-items: center; justify-content: center;
-            gap: 0.5rem; margin-bottom: 2rem;
-            font-size: 0.85rem; color: #6b7280; font-weight: 600;
-        }
-        .steps .step { display: inline-flex; align-items: center; gap: 0.4rem; }
-        .steps .num {
-            width: 24px; height: 24px; border-radius: 50%;
-            display: inline-flex; align-items: center; justify-content: center;
-            background: #10B981; color: #fff; font-size: 0.8rem; font-weight: 700;
-        }
-        .steps .num.inactive { background: #d1d5db; }
-        .steps .divider { width: 26px; height: 2px; background: #d1d5db; }
 
         .section-header { text-align: center; margin-bottom: 1.75rem; }
         .section-header h2 {
@@ -167,7 +150,7 @@
         }
         .device-card dl {
             display: grid;
-            grid-template-columns: 150px 1fr;
+            grid-template-columns: 130px 1fr;
             gap: 0.45rem 1rem;
             font-size: 0.95rem;
         }
@@ -180,6 +163,7 @@
             font-size: 0.9rem; color: #065f46; font-weight: 600;
         }
         .device-card .missing { color: #b45309; font-style: italic; }
+        .device-card .note { color: #047857; }
 
         /* State picker (shown when ?state= is missing) */
         .state-picker {
@@ -201,13 +185,6 @@
             box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
         }
         .state-select.invalid { border-color: #ef4444; }
-
-        /* Section label between blocks */
-        .block-label {
-            font-size: 0.8rem; font-weight: 700;
-            color: #047857; text-transform: uppercase;
-            letter-spacing: 0.05em; margin: 0 0 0.85rem;
-        }
 
         /* OAuth provider buttons */
         .provider-btn {
@@ -266,11 +243,23 @@
             box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
         }
         .email-input.invalid { border-color: #ef4444; }
+        .email-input[readonly], .email-input.locked {
+            background: #f3f4f6; color: #4b5563;
+            cursor: default; border-color: #e5e7eb;
+        }
+        .email-input[readonly]:focus, .email-input.locked:focus {
+            box-shadow: none; border-color: #e5e7eb;
+        }
         .field-error {
             display: none;
             color: #ef4444; font-size: 0.85rem; margin-top: 0.35rem;
         }
         .field-error.is-visible { display: block; }
+        .field-hint {
+            display: none;
+            color: #047857; font-size: 0.82rem; margin-top: 0.4rem;
+        }
+        .field-hint.is-visible { display: block; }
 
         /* Captured-email confirmation chip */
         .email-captured {
@@ -301,82 +290,9 @@
             text-decoration: underline; flex-shrink: 0;
         }
 
-        /* Agreement card */
-        .agreement-card {
-            background: #f9fafb;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 1.5rem 1.6rem;
-            margin: 2rem 0;
-        }
-        .agreement-card .agreement-title {
-            font-size: 0.85rem; font-weight: 700;
-            color: #047857; text-transform: uppercase;
-            letter-spacing: 0.05em; margin-bottom: 0.5rem;
-        }
-        .agreement-scroll {
-            max-height: 280px; overflow-y: auto;
-            padding-right: 0.75rem;
-            border-top: 1px solid #e5e7eb;
-            border-bottom: 1px solid #e5e7eb;
-            padding-top: 1rem; padding-bottom: 1rem;
-        }
-        .agreement-scroll h4 {
-            font-size: 0.95rem; color: #065f46;
-            margin: 1.1rem 0 0.4rem;
-        }
-        .agreement-scroll h4:first-child { margin-top: 0; }
-        .agreement-scroll p, .agreement-scroll li {
-            font-size: 0.9rem; color: #374151; line-height: 1.7;
-        }
-        .agreement-scroll ul { margin: 0.3rem 0 0.6rem 1.25rem; }
-        .agreement-meta { margin-top: 0.75rem; font-size: 0.8rem; color: #6b7280; }
-
-        /* Tesla Fleet info banner */
-        .tesla-banner {
-            margin: 1.5rem 0;
-            padding: 1rem 1.25rem;
-            background: linear-gradient(135deg, #fff5f5 0%, #fef2f2 100%);
-            border: 2px solid var(--tesla-red);
-            border-radius: 10px;
-            color: #7f1d1d; font-size: 0.92rem; line-height: 1.55;
-        }
-        .tesla-banner strong { color: var(--tesla-red-dark); }
-        .tesla-banner code {
-            font-family: inherit;
-            background: rgba(204, 0, 0, 0.1);
-            padding: 1px 6px; border-radius: 4px;
-            font-size: 0.85rem; color: var(--tesla-red-dark);
-        }
-
-        /* Consent checkbox */
-        .consent-box {
-            background: #f9fafb;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            padding: 1rem 1.25rem;
-            margin-bottom: 1rem;
-            transition: border-color 0.2s ease, background 0.2s ease;
-        }
-        .consent-box.is-checked { border-color: #10B981; background: #f0fdf4; }
-        .consent-row { display: flex; align-items: flex-start; gap: 0.75rem; }
-        .consent-row input[type="checkbox"] {
-            width: 20px; height: 20px;
-            margin-top: 2px;
-            accent-color: #059669;
-            flex-shrink: 0; cursor: pointer;
-        }
-        .consent-row label {
-            font-size: 0.92rem; color: #374151;
-            line-height: 1.55; cursor: pointer;
-        }
-        .consent-row label strong { color: #065f46; }
-
-        /* Tesla connect / submit button */
-        .tesla-btn {
-            display: flex; align-items: center; justify-content: center;
-            gap: 0.6rem;
-            background: linear-gradient(135deg, #cc0000 0%, #8b0000 100%);
+        /* Next button */
+        .next-btn {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
             color: white;
             padding: 1rem 2rem;
             border: none;
@@ -385,25 +301,51 @@
             cursor: pointer; transition: all 0.3s ease;
             width: 100%;
             margin-top: 1.5rem;
-            box-shadow: 0 4px 15px rgba(204, 0, 0, 0.3);
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
         }
-        .tesla-btn:hover:not(:disabled) {
-            background: linear-gradient(135deg, #b30000 0%, #6b0000 100%);
+        .next-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
             transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(204, 0, 0, 0.4);
         }
-        .tesla-btn:disabled {
-            background: #9ca3af; cursor: not-allowed;
-            box-shadow: none; transform: none;
+        .next-btn:disabled {
+            opacity: 0.5; cursor: not-allowed; box-shadow: none;
         }
-        .tesla-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
         .submit-help {
             text-align: center; font-size: 0.85rem;
             color: #6b7280; margin-top: 0.85rem;
         }
         .submit-help a { color: #059669; }
 
-        /* Manual paste fallback */
+        /* Tesla Fleet connect button variant */
+        .next-btn.is-tesla {
+            background: linear-gradient(135deg, #cc0000 0%, #8b0000 100%);
+            box-shadow: 0 4px 15px rgba(204, 0, 0, 0.3);
+            display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+        }
+        .next-btn.is-tesla:hover:not(:disabled) {
+            background: linear-gradient(135deg, #b30000 0%, #6b0000 100%);
+            box-shadow: 0 6px 20px rgba(204, 0, 0, 0.4);
+        }
+        .next-btn.is-tesla svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+        /* Tesla Fleet info banner */
+        .tesla-banner {
+            margin: 1.75rem 0 0;
+            padding: 1rem 1.25rem;
+            background: linear-gradient(135deg, #fff5f5 0%, #fef2f2 100%);
+            border: 2px solid #cc0000;
+            border-radius: 10px;
+            color: #7f1d1d; font-size: 0.9rem; line-height: 1.55;
+        }
+        .tesla-banner strong { color: #8b0000; }
+        .tesla-banner code {
+            font-family: inherit;
+            background: rgba(204, 0, 0, 0.1);
+            padding: 1px 6px; border-radius: 4px;
+            font-size: 0.85rem; color: #8b0000;
+        }
+
+        /* Manual paste fallback (auth.tesla.com/void/callback case) */
         .paste-toggle {
             display: block; text-align: center;
             margin-top: 1rem; font-size: 0.82rem;
@@ -425,13 +367,12 @@
             margin-top: 1.25rem;
             padding: 1rem 1.25rem;
             border-radius: 10px;
-            font-size: 0.92rem; line-height: 1.5;
+            font-size: 0.92rem;
         }
         .status-banner.is-visible { display: block; }
         .status-error { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
         .status-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #065f46; }
         .status-info { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
-        .status-banner a { color: inherit; text-decoration: underline; }
 
         /* Footer */
         footer {
@@ -486,8 +427,8 @@
             <span class="hero-badge">&#9889; Tesla Powerwall Registration</span>
             <h1>Register your Tesla Powerwall</h1>
             <p>
-                Enroll your Powerwall in the MicroVPP Grid Support Program and securely
-                connect it to our fleet through the Tesla Fleet API &mdash; earn from every dispatch.
+                Let's register your Powerwall and securely connect it to MicroVPP through the
+                Tesla Fleet API. Then you'll authorize the Grid Support Program.
             </p>
         </div>
     </section>
@@ -497,32 +438,22 @@
         <div class="container">
             <div class="form-container">
 
-                <!-- Step indicator -->
-                <div class="steps">
-                    <span class="step"><span class="num">1</span> Your account</span>
-                    <span class="divider"></span>
-                    <span class="step"><span class="num">2</span> Authorize VPP</span>
-                    <span class="divider"></span>
-                    <span class="step"><span class="num">3</span> Connect Tesla</span>
-                </div>
-
                 <div class="section-header">
-                    <h2>Create your account &amp; opt in</h2>
-                    <p>Three quick steps. We never see your Tesla password.</p>
+                    <h2>Create your account</h2>
                 </div>
 
-                <!-- Device context card -->
+                <!-- Device context card (populated from the ?state= URL param) -->
                 <div class="device-card">
                     <div class="device-title">&#128230; System to register</div>
                     <dl>
                         <dt>Brand</dt>
                         <dd>Tesla Powerwall</dd>
                         <dt>Connection</dt>
-                        <dd>Tesla Fleet API (discovered after you connect)</dd>
+                        <dd class="note">Tesla Fleet API &mdash; you'll connect securely below</dd>
                         <dt>State</dt>
                         <dd id="ctxState"><span class="missing">Not provided</span></dd>
                     </dl>
-                    <!-- Shown only when the ?state= param is missing/unsupported -->
+                    <!-- Shown only when the QR ?state= param is missing/unsupported -->
                     <div id="statePickerWrap" class="state-picker" style="display:none;">
                         <label class="field-label" for="stateSelect">Select your state</label>
                         <select id="stateSelect" class="state-select">
@@ -535,8 +466,7 @@
                     </div>
                 </div>
 
-                <!-- STEP 1: email capture -->
-                <p class="block-label">Step 1 &middot; Tell us who you are</p>
+                <!-- OAuth + email capture -->
                 <div id="googleBtnContainer"></div>
 
                 <button type="button" class="provider-btn apple" id="appleBtn">
@@ -554,8 +484,10 @@
                            placeholder="you@example.com" autocomplete="email"
                            inputmode="email" />
                     <div class="field-error" id="emailError">Please enter a valid email address.</div>
+                    <div class="field-hint" id="emailHint">&#128274; This email was provided by your registration link.</div>
                 </div>
 
+                <!-- Captured email confirmation (shown after a provider/manual email is set) -->
                 <div class="email-captured" id="emailCaptured">
                     <div class="ec-main">
                         <span class="ec-icon">&#9989;</span>
@@ -567,115 +499,26 @@
                     <button type="button" class="ec-change" id="ecChange">Change</button>
                 </div>
 
-                <!-- STEP 2: authorization agreement + consent -->
-                <p class="block-label" style="margin-top:2rem;">Step 2 &middot; Authorize the Grid Support Program</p>
-                <div class="agreement-card">
-                    <div class="agreement-title">&#128196; Customer Authorization</div>
-                    <div class="agreement-scroll" id="agreementScroll">
-                        <p>
-                            By checking the box below and clicking <strong>"Connect Tesla &amp; Enroll,"</strong>
-                            you ("Customer") authorize the following:
-                        </p>
-
-                        <h4>1. Enrollment &amp; management</h4>
-                        <p>
-                            You grant MicroVPP the exclusive right to automatically enroll and
-                            manage the dispatch of your Tesla Powerwall and related energy assets in
-                            grid services and demand response programs. This authorization remains in
-                            effect until you revoke it. You confirm these assets are not, and will
-                            not be, enrolled in any other utility or demand response program outside
-                            of MicroVPP while this authorization is active.
-                        </p>
-
-                        <h4>2. Dispatch &amp; control via the Tesla Fleet API</h4>
-                        <p>
-                            You authorize MicroVPP and its authorized partners to monitor, control,
-                            operate, and dispatch your Powerwall and related energy assets through the
-                            Tesla Fleet API as needed to participate in applicable grid services and
-                            demand response programs.
-                        </p>
-
-                        <h4>3. Data sharing</h4>
-                        <p>
-                            You authorize MicroVPP, its authorized grid-services partners, your
-                            electric utility, and the applicable program administrators to access and
-                            use your energy usage, account, and device data &mdash; including Tesla
-                            energy site and device data, interval and usage data, your name, service
-                            address, account and meter identifiers, rate plan, and device details
-                            &mdash; solely to enroll, operate, and settle your participation in these
-                            programs. Your data is never sold and is handled in accordance with our
-                            <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>
-                            and applicable state privacy and utility data-access laws.
-                        </p>
-
-                        <h4>4. No fossil-fuel generation</h4>
-                        <p>
-                            You attest that you will not use diesel, natural gas, gasoline, propane,
-                            or liquefied petroleum gas (LPG) generation to deliver load reduction
-                            during any program event, where prohibited by applicable program rules.
-                        </p>
-
-                        <h4>5. Accurate information</h4>
-                        <p>
-                            You confirm that the information you have provided is accurate and
-                            complete, and you agree to notify MicroVPP of any material changes.
-                        </p>
-
-                        <h4>6. Revoking &amp; opting out</h4>
-                        <p>
-                            You may revoke this authorization at any time by emailing
-                            <a href="mailto:info@microvpp.com">info@microvpp.com</a> or by revoking
-                            access in your Tesla Account, which ends your participation and stops
-                            future data sharing. You can also opt out of an individual dispatch event
-                            without revoking your overall authorization (frequent opt-outs may reduce
-                            your earnings or eligibility).
-                        </p>
-
-                        <h4>In plain English</h4>
-                        <p>
-                            You're letting MicroVPP use your Tesla Powerwall to support the grid and
-                            earn you rewards. We connect through Tesla's official Fleet API &mdash; we
-                            never see your Tesla password &mdash; your data is used only to run the
-                            program, and you can opt out anytime.
-                        </p>
-                    </div>
-                    <p class="agreement-meta">
-                        Version <span id="agreementVersionLabel">v3.1</span> &middot; Last updated June 2026 &middot; MicroGrid LLC
-                    </p>
-                </div>
-
-                <div class="consent-box" id="consentBox">
-                    <div class="consent-row">
-                        <input type="checkbox" id="teslaConsent" />
-                        <label for="teslaConsent">
-                            I have read and agree to the <strong>Customer Authorization</strong> above,
-                            and I authorize MicroGrid to connect to my Tesla Powerwall via the
-                            <strong>Tesla Fleet API</strong> to enroll it in the MicroVPP Grid Support Program.
-                        </label>
-                    </div>
-                </div>
-
-                <!-- STEP 3: Tesla Fleet connect -->
-                <p class="block-label" style="margin-top:2rem;">Step 3 &middot; Connect your Tesla account</p>
-                <div class="tesla-banner">
-                    <strong>How the Tesla connection works.</strong> When you continue, we'll send you
-                    to Tesla's secure login at <strong>auth.tesla.com</strong> to authorize MicroGrid
-                    via the <strong>Tesla Fleet API</strong> (scopes <code>openid</code>,
+                <!-- Tesla Fleet API connect info -->
+                <div class="tesla-banner" id="teslaBanner">
+                    <strong>Connect your Tesla account.</strong> When you continue, we'll send you to
+                    Tesla's secure login at <strong>auth.tesla.com</strong> to authorize MicroGrid via
+                    the <strong>Tesla Fleet API</strong> (scopes <code>openid</code>,
                     <code>offline_access</code>, <code>energy_device_data</code>, and
-                    <code>energy_cmds</code>). You'll return here automatically when you're done
-                    &mdash; it usually takes under a minute. We never see or store your Tesla password.
+                    <code>energy_cmds</code>). You'll return here automatically &mdash; we never see
+                    your Tesla password.
                 </div>
 
-                <button type="button" class="tesla-btn" id="teslaBtn" disabled>
+                <button type="button" class="next-btn is-tesla" id="nextBtn" disabled>
                     <svg viewBox="0 0 342 35" fill="currentColor" aria-hidden="true">
                         <path d="M0 .1a9.7 9.7 0 0 0 7 7h11l.5.1v27.6h6.8V7.3L26 7h11a9.8 9.8 0 0 0 7-7H0zm238.6 0h-6.8v34.8H263a9.7 9.7 0 0 0 6-6.8h-30.3V0zm-52.3 6.8c3.6-1 6.6-3.8 7.4-6.9l-38.1.1v20.6h31.1v7.2h-24.4a13.6 13.6 0 0 0-8.7 7h39.9v-21h-31.2v-7h24zm116.2 28h6.7v-14h24.6v14h6.7v-21h-38zM85.3 7h26a9.6 9.6 0 0 0 7.1-7H78.3a9.6 9.6 0 0 0 7 7zm0 13.8h26a9.6 9.6 0 0 0 7.1-7H78.3a9.6 9.6 0 0 0 7 7zm0 14.1h26a9.6 9.6 0 0 0 7.1-7H78.3a9.6 9.6 0 0 0 7 7zM308.5 7h26a9.6 9.6 0 0 0 7-7h-40a9.6 9.6 0 0 0 7 7z"/>
                     </svg>
-                    Connect Tesla &amp; Enroll
+                    Connect Tesla &amp; Continue
                 </button>
                 <p class="submit-help" id="submitHelp">
-                    &#128274; Checking the box is your electronic signature accepting the authorization.
-                    You'll be redirected to <strong>auth.tesla.com</strong>. See our
-                    <a href="privacy.html">Privacy Policy</a>.
+                    &#128274; You'll be redirected to <strong>auth.tesla.com</strong> to link your
+                    Powerwall, then continue to authorize the Grid Support Program.
+                    See our <a href="privacy.html">Privacy Policy</a>.
                 </p>
 
                 <button type="button" class="paste-toggle" id="pasteToggle">
@@ -684,7 +527,7 @@
                 <div class="paste-wrap" id="pasteWrap">
                     <label class="field-label" for="pasteInput">Paste the full URL from Tesla's blank page</label>
                     <textarea id="pasteInput" placeholder="https://auth.tesla.com/void/callback?code=...&amp;state=..."></textarea>
-                    <button type="button" class="tesla-btn" id="pasteSubmit" style="margin-top:0.75rem;">
+                    <button type="button" class="next-btn is-tesla" id="pasteSubmit" style="margin-top:0.75rem;">
                         Finish connecting
                     </button>
                 </div>
@@ -719,46 +562,50 @@
 
     <script>
         // =====================================================================
-        // MicroVPP - Tesla Powerwall registration + VPP opt-in landing page
+        // MicroVPP - Tesla Powerwall device registration + Fleet API connect
         //
-        // Single-page flow that (1) registers the customer's system with us,
-        // (2) records their Grid Support Program opt-in + authorization, and
-        // (3) connects their Powerwall to our Tesla Fleet API account via the
-        // OAuth 2.0 Authorization Code flow with PKCE (S256).
+        // Tesla entry point into the MicroVPP funnel. It (1) collects who is
+        // enrolling (email) and where (state), (2) best-effort registers the
+        // device, (3) connects the Powerwall to our Tesla Fleet API account via
+        // the OAuth 2.0 Authorization Code flow with PKCE (S256), and then
+        // (4) hands off to the SHARED Grid Support Program flow:
         //
-        // Deep-link params (optional; mostly from a QR code or the app):
-        //   ?state=texas|california|newyork   - home state
-        //   ?email=...                        - pre-fill the email
+        //   tesla.html  ->  vpp/index.html  ->  vpp/utility.html
+        //
+        // All brands share the same authorization step (vpp/index.html) and
+        // utility registration step (vpp/utility.html). The Tesla Fleet API
+        // device link is Tesla-specific, so it lives here.
         //
         // OAuth round trip:
-        //   1. User picks email (Google/Apple/manual) + state, accepts the
-        //      authorization, and clicks "Connect Tesla & Enroll".
-        //   2. We best-effort register the device + opt-in against the MicroVPP
-        //      API, generate a PKCE verifier/challenge, stash the context in
-        //      sessionStorage, then redirect to auth.tesla.com/oauth2/v3/authorize.
+        //   1. User picks email (Google/Apple/manual) + state and clicks
+        //      "Connect Tesla & Continue".
+        //   2. We best-effort register the device, generate a PKCE
+        //      verifier/challenge, stash the context in sessionStorage, then
+        //      redirect to auth.tesla.com/oauth2/v3/authorize.
         //   3. Tesla redirects back to this page (CONFIG.teslaRedirectUri) with
         //      ?code= & ?state=. On load we detect that, validate state, and
         //      POST {code, code_verifier, redirect_uri} to the backend
         //      /tesla/exchange-code endpoint, which swaps the code for Fleet API
         //      tokens server-side (CORS-safe) and links the device to our fleet.
+        //   4. On success we continue to the shared vpp/index.html step.
         //
-        // A manual "paste the callback URL" fallback is provided for the
+        // A manual "paste the callback URL" fallback covers the
         // auth.tesla.com/void/callback case (used when only the void redirect
         // URI is registered for the Tesla app).
         // =====================================================================
 
+        // ---------- Configuration ----------
         const CONFIG = {
             // Google OAuth 2.0 Web client ID. Leave as the placeholder to hide.
             googleClientId: '518897175243-6inrn8urrbvol9l0j4nlm0p1pmtkh83j.apps.googleusercontent.com',
 
-            // Sign in with Apple Services ID + redirect URI.
+            // Apple "Sign in with Apple" Services ID + redirect URI.
             appleClientId: 'com.microvpp.web',
             appleRedirectURI: 'https://www.microvpp.com/tesla.html',
 
             // MicroVPP API
             apiBaseUrl: 'https://api.microvpp.com',
             signupEndpoint: '/auth/signup',
-            optInEndpoint: '/admin/vpp/opt-in',
             teslaExchangeEndpoint: '/tesla/exchange-code',
 
             // ---- Tesla Fleet API OAuth (PKCE) ----
@@ -770,11 +617,11 @@
             // 'https://auth.tesla.com/void/callback' to use the paste fallback.
             teslaRedirectUri: (window.location.origin + window.location.pathname),
 
-            inverterBrand: 'tesla_powerwall',
-            vppProgramId: 1
+            // Where we send the user after the Tesla connect (shared VPP flow).
+            vppOptInPath: 'vpp/index.html',
+            inverterBrand: 'tesla_powerwall'
         };
 
-        const AGREEMENT_VERSION = 'v3.1';
         const PLACEHOLDER_GOOGLE = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
         const SS = {
             verifier: 'tesla_pkce_verifier',
@@ -783,22 +630,19 @@
             ctx:      'tesla_signup_ctx'
         };
 
-        document.getElementById('agreementVersionLabel').textContent = AGREEMENT_VERSION;
-
         // ---------- DOM ----------
         const googleWrap    = document.getElementById('googleBtnContainer');
         const appleBtn      = document.getElementById('appleBtn');
         const emailWrap     = document.getElementById('manualEmailWrap');
         const emailInput    = document.getElementById('emailInput');
         const emailError    = document.getElementById('emailError');
+        const emailHint     = document.getElementById('emailHint');
         const dividerOr     = document.querySelector('.divider-or');
         const emailCaptured = document.getElementById('emailCaptured');
         const ecEmail       = document.getElementById('ecEmail');
         const ecLabel       = document.getElementById('ecLabel');
         const ecChange      = document.getElementById('ecChange');
-        const teslaBtn      = document.getElementById('teslaBtn');
-        const teslaConsent  = document.getElementById('teslaConsent');
-        const consentBox    = document.getElementById('consentBox');
+        const nextBtn       = document.getElementById('nextBtn');
         const statusBanner  = document.getElementById('statusBanner');
         const ctxStateEl    = document.getElementById('ctxState');
         const statePickerWrap = document.getElementById('statePickerWrap');
@@ -810,8 +654,9 @@
 
         // ---------- State ----------
         let selectedEmail = '';
-        let emailSource   = 'manual';
-        let selectedState = '';
+        let emailSource   = 'manual'; // 'google' | 'apple' | 'manual' | 'param'
+        let selectedState = '';       // 'california' | 'texas' | 'newyork' | 'other'
+        let emailLocked   = false;    // true when email came from the ?email= param
 
         // ---------- Helpers ----------
         function isValidEmail(v) {
@@ -820,12 +665,12 @@
         function showStatus(kind, message) {
             statusBanner.className = 'status-banner is-visible status-' + kind;
             statusBanner.innerHTML = message;
-            statusBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
         function clearStatus() {
             statusBanner.className = 'status-banner';
             statusBanner.innerHTML = '';
         }
+        // Decode a JWT payload (Google credential / Apple id_token) safely.
         function decodeJwtPayload(token) {
             try {
                 const part = token.split('.')[1];
@@ -846,7 +691,7 @@
             for (let i = 0; i < arr.length; i++) str += String.fromCharCode(arr[i]);
             return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
         }
-        function randomVerifier() {
+        function randomToken() {
             const bytes = new Uint8Array(48);
             (window.crypto || window.msCrypto).getRandomValues(bytes);
             return base64UrlEncode(bytes);
@@ -857,7 +702,28 @@
             return base64UrlEncode(digest);
         }
 
-        // ---------- State (from ?state= param) ----------
+        // ---------- Optional serial passthrough (Tesla has no QR serial, but
+        // pass ?sn= through if a deep-link happens to include one). ----------
+        function readSerial() {
+            try {
+                const qs = new URLSearchParams(window.location.search);
+                return (qs.get('sn') || qs.get('serial') || qs.get('serial_number') || '').trim();
+            } catch (_) { return ''; }
+        }
+        const serialNumber = readSerial();
+
+        // ---------- Next-button gating ----------
+        function currentEmailValid() {
+            return !!selectedEmail || isValidEmail(emailInput.value);
+        }
+        function currentStateValid() {
+            return !!selectedState;
+        }
+        function syncNext() {
+            nextBtn.disabled = !(currentEmailValid() && currentStateValid());
+        }
+
+        // ---------- State (read from the QR ?state= param) ----------
         function normalizeState(raw) {
             const s = (raw || '').trim().toLowerCase().replace(/[\s_-]/g, '');
             if (s === 'california' || s === 'cal' || s === 'ca') return 'california';
@@ -865,6 +731,9 @@
             if (s === 'newyork' || s === 'ny') return 'newyork';
             if (s === 'other') return 'other';
             return '';
+        }
+        function isVppState(s) {
+            return s === 'texas' || s === 'california' || s === 'newyork';
         }
         function stateLabelOf(s) {
             return s === 'texas' ? 'Texas'
@@ -888,6 +757,23 @@
                 statePickerWrap.style.display = 'block';
             }
         })();
+
+        // Tesla wordmark used inside the connect button.
+        const TESLA_SVG = '<svg viewBox="0 0 342 35" fill="currentColor" aria-hidden="true">' +
+            '<path d="M0 .1a9.7 9.7 0 0 0 7 7h11l.5.1v27.6h6.8V7.3L26 7h11a9.8 9.8 0 0 0 7-7H0zm238.6 0h-6.8v34.8H263a9.7 9.7 0 0 0 6-6.8h-30.3V0zm-52.3 6.8c3.6-1 6.6-3.8 7.4-6.9l-38.1.1v20.6h31.1v7.2h-24.4a13.6 13.6 0 0 0-8.7 7h39.9v-21h-31.2v-7h24zm116.2 28h6.7v-14h24.6v14h6.7v-21h-38zM85.3 7h26a9.6 9.6 0 0 0 7.1-7H78.3a9.6 9.6 0 0 0 7 7zm0 13.8h26a9.6 9.6 0 0 0 7.1-7H78.3a9.6 9.6 0 0 0 7 7zm0 14.1h26a9.6 9.6 0 0 0 7.1-7H78.3a9.6 9.6 0 0 0 7 7zM308.5 7h26a9.6 9.6 0 0 0 7-7h-40a9.6 9.6 0 0 0 7 7z"/></svg>';
+
+        // Set the primary button to either the Tesla-connect look (supported
+        // states) or a plain "register only" look (state === 'other').
+        function setButtonForState() {
+            if (selectedState === 'other') {
+                nextBtn.classList.remove('is-tesla');
+                nextBtn.textContent = 'Register device \u2192';
+            } else {
+                nextBtn.classList.add('is-tesla');
+                nextBtn.innerHTML = TESLA_SVG + ' Connect Tesla &amp; Continue';
+            }
+        }
+
         stateSelect.addEventListener('change', function () {
             selectedState = normalizeState(stateSelect.value);
             stateSelect.classList.remove('invalid');
@@ -895,25 +781,11 @@
                 ? 'Other (VPP not available)'
                 : stateLabelOf(selectedState);
             if (label) ctxStateEl.textContent = label;
-            syncTeslaBtn();
+            setButtonForState();
+            syncNext();
         });
 
-        // ---------- Gating ----------
-        function currentEmailValid() {
-            return !!selectedEmail || isValidEmail(emailInput.value);
-        }
-        function syncTeslaBtn() {
-            const ready = currentEmailValid() && !!selectedState
-                          && selectedState !== 'other' && teslaConsent.checked;
-            teslaBtn.disabled = !ready;
-        }
-
-        teslaConsent.addEventListener('change', function () {
-            consentBox.classList.toggle('is-checked', teslaConsent.checked);
-            syncTeslaBtn();
-        });
-
-        // ---------- Email capture ----------
+        // ---------- Email capture / selection UI ----------
         function setSelectedEmail(email, source) {
             selectedEmail = (email || '').trim().toLowerCase();
             emailSource = source || 'manual';
@@ -926,7 +798,7 @@
             appleBtn.style.display = 'none';
             if (dividerOr) dividerOr.style.display = 'none';
             emailWrap.style.display = 'none';
-            syncTeslaBtn();
+            syncNext();
             clearStatus();
             if (typeof gtag === 'function') {
                 gtag('event', 'tesla_email_captured', {
@@ -935,23 +807,25 @@
             }
         }
         function resetEmailSelection() {
+            if (emailLocked) return;
             selectedEmail = '';
             emailCaptured.classList.remove('is-visible');
             googleWrap.style.display = '';
             appleBtn.style.display = '';
             if (dividerOr) dividerOr.style.display = '';
             emailWrap.style.display = '';
-            syncTeslaBtn();
+            syncNext();
             emailInput.focus();
         }
         ecChange.addEventListener('click', resetEmailSelection);
 
         function commitManualEmail() {
+            if (emailLocked) return true;
             const v = emailInput.value.trim();
             if (!isValidEmail(v)) {
                 emailInput.classList.add('invalid');
                 emailError.classList.add('is-visible');
-                syncTeslaBtn();
+                syncNext();
                 return false;
             }
             emailInput.classList.remove('invalid');
@@ -962,18 +836,44 @@
         emailInput.addEventListener('input', function () {
             emailInput.classList.remove('invalid');
             emailError.classList.remove('is-visible');
-            syncTeslaBtn();
+            syncNext();
         });
         emailInput.addEventListener('keydown', function (e) {
             if (e.key === 'Enter') { e.preventDefault(); commitManualEmail(); }
         });
 
-        // Pre-fill email from ?email= if provided.
+        // Lock the email field to a value supplied via the URL parameter, so
+        // the user can't change who is being registered.
+        function lockEmailFromParam(email) {
+            emailLocked = true;
+            selectedEmail = (email || '').trim().toLowerCase();
+            emailSource = 'param';
+
+            // Email is fixed - hide the social sign-in alternatives.
+            googleWrap.style.display = 'none';
+            appleBtn.style.display = 'none';
+            if (dividerOr) dividerOr.style.display = 'none';
+            emailCaptured.classList.remove('is-visible');
+
+            // Show the email field, pre-filled and read-only.
+            emailWrap.style.display = '';
+            emailInput.value = selectedEmail;
+            emailInput.readOnly = true;
+            emailInput.classList.add('locked');
+            emailInput.classList.remove('invalid');
+            emailError.classList.remove('is-visible');
+            emailHint.classList.add('is-visible');
+
+            syncNext();
+        }
+
+        // Pre-fill email from ?email= (alias: ?user_email=) if provided. When
+        // present, the email field is locked read-only to that address.
         (function readEmailParam() {
             try {
                 const qs = new URLSearchParams(window.location.search);
-                const e = (qs.get('email') || '').trim();
-                if (e && isValidEmail(e)) setSelectedEmail(e, 'manual');
+                const e = (qs.get('email') || qs.get('user_email') || '').trim();
+                if (e && isValidEmail(e)) lockEmailFromParam(e);
             } catch (_) { /* noop */ }
         })();
 
@@ -1064,7 +964,7 @@
             const info = {
                 contact: { email: email },
                 location: { state: stateLabel },
-                system: { brand: 'tesla_powerwall' },
+                system: { brand: 'tesla_powerwall', serial_number: serialNumber || null },
                 registration: {
                     mode: 'partial',
                     status: 'tesla_landing_email_captured',
@@ -1080,6 +980,7 @@
                 locale: 'en-US',
                 inverter_inverter_type: 'hybrid_inverter',
                 inverter_manufacturer: 'tesla',
+                inverter_serial_number: serialNumber || null,
                 site_type: 'residential',
                 info: JSON.stringify(info)
             };
@@ -1097,48 +998,34 @@
             }
         }
 
-        // ---------- Best-effort VPP opt-in ----------
-        async function optInVpp(userId) {
-            const payload = {
-                cognito_user_id: userId || null,
-                email: selectedEmail,
-                inverter_brand: CONFIG.inverterBrand,
-                state: stateLabelOf(selectedState) || null,
-                vpp_program_id: CONFIG.vppProgramId,
-                agreement_version: AGREEMENT_VERSION,
-                opt_in_agreed: true,
-                tesla_fleet_consent: true
-            };
-            try {
-                const resp = await fetch(CONFIG.apiBaseUrl + CONFIG.optInEndpoint, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                if (!resp.ok) return { ok: false };
-                const body = await resp.json().catch(function () { return {}; });
-                // If the backend mints its own authorize URL, prefer it.
-                return { ok: true, teslaAuthUrl: body.tesla_auth_url || null };
-            } catch (_) {
-                return { ok: false };
-            }
+        // ---------- Hand off to the shared VPP opt-in page ----------
+        // Reads from an explicit ctx so it works both inline (pre-redirect)
+        // and after the Tesla OAuth round trip (ctx restored from storage).
+        function goToVppOptIn(ctx) {
+            ctx = ctx || {};
+            const params = new URLSearchParams();
+            params.set('email', ctx.email || selectedEmail);
+            params.set('inverter_brand', CONFIG.inverterBrand);
+            const sn = ctx.sn || serialNumber;
+            if (sn) params.set('sn', sn);
+            const st = ctx.state || selectedState;
+            if (st) params.set('state', st);
+            if (ctx.userId) params.set('cognito_user_id', ctx.userId);
+            if (ctx.teslaConnected) params.set('tesla_connected', '1');
+            window.location.assign(CONFIG.vppOptInPath + '?' + params.toString());
         }
 
         // ---------- Tesla Fleet API OAuth (PKCE) ----------
-        async function startTeslaAuth() {
-            const verifier = randomVerifier();
+        async function startTeslaAuth(ctx) {
+            const verifier = randomToken();
             const challenge = await sha256Challenge(verifier);
-            const oauthState = randomVerifier();
+            const oauthState = randomToken();
 
             try {
                 sessionStorage.setItem(SS.verifier, verifier);
                 sessionStorage.setItem(SS.state, oauthState);
                 sessionStorage.setItem(SS.redirect, CONFIG.teslaRedirectUri);
-                sessionStorage.setItem(SS.ctx, JSON.stringify({
-                    email: selectedEmail,
-                    state: selectedState,
-                    source: emailSource
-                }));
+                sessionStorage.setItem(SS.ctx, JSON.stringify(ctx || {}));
             } catch (_) { /* sessionStorage may be unavailable */ }
 
             const params = new URLSearchParams({
@@ -1172,6 +1059,10 @@
             return { ok: resp.ok, status: resp.status, body };
         }
 
+        function readStoredCtx() {
+            try { return JSON.parse(sessionStorage.getItem(SS.ctx) || '{}'); }
+            catch (_) { return {}; }
+        }
         function clearTeslaSession() {
             try {
                 sessionStorage.removeItem(SS.verifier);
@@ -1180,19 +1071,10 @@
                 sessionStorage.removeItem(SS.ctx);
             } catch (_) {}
         }
-
-        function showConnectedSuccess() {
-            showStatus(
-                'success',
-                '&#9989; <strong>Your Tesla Powerwall is connected and enrolled!</strong> ' +
-                'MicroVPP can now discover your energy site through the Tesla Fleet API and ' +
-                'begin managing dispatches. We\'ll email you the details shortly.'
-            );
-            teslaBtn.disabled = true;
-            teslaBtn.textContent = 'Connected';
-            if (typeof gtag === 'function') {
-                gtag('event', 'tesla_fleet_connected', { event_category: 'conversion' });
-            }
+        function scrubUrl() {
+            try {
+                window.history.replaceState({}, document.title, window.location.pathname);
+            } catch (_) { /* noop */ }
         }
 
         async function finishWithCode(code, oauthState, redirectUri) {
@@ -1205,17 +1087,28 @@
             }
             showStatus('info', 'Finishing your Tesla connection&hellip;');
             const result = await exchangeTeslaCode(code, redirectUri);
-            if (result.ok) {
-                clearTeslaSession();
-                showConnectedSuccess();
-            } else {
-                showStatus(
-                    'error',
-                    'We received your Tesla authorization but could not finish linking the ' +
-                    'device automatically. Our team has your authorization and will complete ' +
-                    'enrollment - no further action needed. (ref: ' + (result.status || 'n/a') + ')'
-                );
+            const ctx = readStoredCtx();
+            ctx.teslaConnected = true;
+            clearTeslaSession();
+
+            if (typeof gtag === 'function') {
+                gtag('event', result.ok ? 'tesla_fleet_connected' : 'tesla_fleet_connect_failed', {
+                    event_category: 'conversion'
+                });
             }
+
+            if (result.ok) {
+                showStatus(
+                    'success',
+                    '&#9989; <strong>Your Tesla Powerwall is connected!</strong> ' +
+                    'Continuing to authorize the Grid Support Program&hellip;'
+                );
+            } else {
+                // Even if the server-side exchange hiccups, the user did grant
+                // access; continue the funnel so they can finish enrolling.
+                showStatus('info', 'Tesla authorization received. Continuing&hellip;');
+            }
+            setTimeout(function () { goToVppOptIn(ctx); }, 900);
         }
 
         // ---------- Detect OAuth return on page load ----------
@@ -1226,16 +1119,16 @@
             const oauthState = qs.get('state');
             const err = qs.get('error');
 
-            if (err) {
+            let hasVerifier = false;
+            try { hasVerifier = !!sessionStorage.getItem(SS.verifier); } catch (_) {}
+
+            if (err && hasVerifier) {
                 showStatus('error', 'Tesla sign-in was cancelled or denied (' +
                     (qs.get('error_description') || err) + '). You can try connecting again.');
+                clearTeslaSession();
                 scrubUrl();
                 return true;
             }
-            // Only treat as an OAuth return if we have a stored PKCE verifier and
-            // the returned state isn't one we'd treat as a 'home state' string.
-            let hasVerifier = false;
-            try { hasVerifier = !!sessionStorage.getItem(SS.verifier); } catch (_) {}
             if (code && hasVerifier) {
                 let redirectUri = CONFIG.teslaRedirectUri;
                 try { redirectUri = sessionStorage.getItem(SS.redirect) || redirectUri; } catch (_) {}
@@ -1244,13 +1137,6 @@
                 return true;
             }
             return false;
-        }
-
-        function scrubUrl() {
-            try {
-                const clean = window.location.pathname;
-                window.history.replaceState({}, document.title, clean);
-            } catch (_) { /* noop */ }
         }
 
         // ---------- Manual paste fallback (void/callback case) ----------
@@ -1281,7 +1167,7 @@
         });
 
         // ---------- Connect button ----------
-        teslaBtn.addEventListener('click', async function () {
+        nextBtn.addEventListener('click', async function () {
             if (!selectedEmail) {
                 if (!commitManualEmail()) return;
             }
@@ -1289,51 +1175,59 @@
                 showStatus('error', 'Please provide a valid email address before continuing.');
                 return;
             }
-            if (!selectedState || selectedState === 'other') {
+            if (!currentStateValid()) {
                 stateSelect.classList.add('invalid');
                 statePickerWrap.style.display = 'block';
-                showStatus('error', 'The MicroVPP program isn\'t available in your state yet. Please choose a supported state.');
+                showStatus('error', 'Please select your state to continue.');
                 stateSelect.focus();
                 return;
             }
-            if (!teslaConsent.checked) {
-                showStatus('error', 'Please accept the Customer Authorization to continue.');
-                return;
-            }
 
-            teslaBtn.disabled = true;
-            const original = teslaBtn.textContent;
-            teslaBtn.textContent = 'Registering your system\u2026';
+            nextBtn.disabled = true;
+            const original = nextBtn.innerHTML;
+            nextBtn.textContent = 'Registering your device\u2026';
 
             if (typeof gtag === 'function') {
-                gtag('event', 'tesla_connect_click', {
+                gtag('event', 'tesla_register_next', {
                     event_category: 'registration', event_label: emailSource
                 });
             }
 
-            try {
-                sessionStorage.setItem('tesla_email', selectedEmail);
-                if (selectedState) sessionStorage.setItem('tesla_state', selectedState);
-            } catch (_) { /* noop */ }
+            const result = await registerDevice(selectedEmail);
+            const ctx = {
+                email: selectedEmail,
+                state: selectedState,
+                sn: serialNumber || null,
+                userId: (result && result.userId) || null
+            };
 
-            // 1. Best-effort register the device, 2. best-effort opt-in.
-            const reg = await registerDevice(selectedEmail);
-            const opt = await optInVpp(reg && reg.userId);
-
-            // If the backend handed us a fully-formed authorize URL, use it
-            // (it carries a server-minted state validated by /tesla/callback).
-            if (opt && opt.teslaAuthUrl) {
-                window.location.assign(opt.teslaAuthUrl);
+            // "Other" state -> VPP isn't available, so finish here once the
+            // device is registered (skip the Tesla connect + shared opt-in flow).
+            if (selectedState === 'other') {
+                if (typeof gtag === 'function') {
+                    gtag('event', 'tesla_vpp_skipped_other_state', {
+                        event_category: 'registration', event_label: emailSource
+                    });
+                }
+                nextBtn.classList.remove('is-tesla');
+                nextBtn.textContent = 'Registration complete';
+                showStatus(
+                    'success',
+                    'Thanks! Your Powerwall is registered. The MicroVPP program isn\'t ' +
+                    'available in your state yet - we\'ll email <strong>' + selectedEmail +
+                    '</strong> as soon as it is.'
+                );
                 return;
             }
 
-            // Otherwise run the browser PKCE authorize flow ourselves.
-            teslaBtn.textContent = 'Redirecting to Tesla\u2026';
+            // Connect the Powerwall to our Tesla Fleet API account, then the
+            // OAuth return handler continues to the shared VPP authorization.
+            nextBtn.textContent = 'Redirecting to Tesla\u2026';
             try {
-                await startTeslaAuth();
+                await startTeslaAuth(ctx);
             } catch (e) {
-                teslaBtn.disabled = false;
-                teslaBtn.textContent = original;
+                nextBtn.disabled = false;
+                nextBtn.innerHTML = original;
                 showStatus('error', 'We could not start the Tesla sign-in. Please try again.');
             }
         });
@@ -1341,39 +1235,8 @@
         // ---------- Boot ----------
         initGoogle();
         initApple();
-        syncTeslaBtn();
+        syncNext();
         handleOAuthReturn();
-    </script>
-
-    <!-- Button Click Tracking (GA4) -->
-    <script>
-        (function () {
-            var PAGE_NAME = 'tesla_registration';
-            function clean(s, n) {
-                return (s || '').replace(/\s+/g, ' ').trim().slice(0, n || 100);
-            }
-            document.addEventListener('click', function (evt) {
-                try {
-                    var el = evt.target;
-                    var max = 5;
-                    while (el && el.nodeType === 1 && max-- > 0) {
-                        var tag = (el.tagName || '').toLowerCase();
-                        if (tag === 'button' || tag === 'a') break;
-                        el = el.parentElement;
-                    }
-                    if (!el || typeof gtag !== 'function') return;
-                    var tag = (el.tagName || '').toLowerCase();
-                    if (tag !== 'button' && tag !== 'a') return;
-                    gtag('event', 'button_click', {
-                        event_category: 'engagement',
-                        event_label:    clean(el.innerText || el.textContent || '', 80),
-                        page:           PAGE_NAME,
-                        button_id:      el.id || '',
-                        button_tag:     tag
-                    });
-                } catch (_) { /* swallow */ }
-            }, true);
-        })();
     </script>
 </body>
 </html>
