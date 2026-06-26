@@ -771,6 +771,19 @@
             // DEMO MODE: the backend /admin/vpp/opt-in endpoint isn't available
             // yet, so skip the opt-in API call (and the Tesla Fleet redirect) and
             // go straight to the utility-bill upload step.
+            //
+            // California customers skip the utility-details step entirely — there's
+            // no extra utility info to collect, so we finish enrollment right here.
+            if (ctx.state === 'california') {
+                showStatus(
+                    'success',
+                    '🎉 <strong>You\'re enrolled!</strong> Your battery is now part of the ' +
+                    'MicroVPP Grid Support Program. Thanks for supporting your local grid!'
+                );
+                submitBtn.textContent = 'Enrolled';
+                return;
+            }
+
             showStatus(
                 'success',
                 '✅ <strong>You\'re opted in!</strong> One quick last step — let\'s connect ' +
