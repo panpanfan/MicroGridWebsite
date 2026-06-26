@@ -627,6 +627,9 @@
                 sn:              (qs.get('sn') || qs.get('serial') || qs.get('serial_number') || '').trim(),
                 cognito_user_id: (qs.get('cognito_user_id') || '').trim(),
                 access_token:    (qs.get('access_token') || '').trim(),
+                // Set to '1' by tesla.html once the Fleet OAuth round-trip has
+                // already linked Tesla, so we don't redirect back to Tesla here.
+                tesla_connected: (qs.get('tesla_connected') || '').trim() === '1',
                 vpp_program_id:  parseInt(qs.get('vpp_program_id') || '', 10)
             };
             if (!raw.vpp_program_id || isNaN(raw.vpp_program_id)) {
@@ -751,9 +754,47 @@
             return UTILITY_STEP_PATH + '?' + params.toString();
         }
 
+        function resetSubmit() {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Authorize and Continue';
+        }
+
+        function finishEnrollment(body) {
+            // California customers skip the utility-details step entirely —
+            // there's no extra utility info to collect, so we finish here.
+            if (ctx.state === 'california') {
+                showStatus(
+                    'success',
+                    '🎉 <strong>You\'re enrolled!</strong> Your battery is now part of the ' +
+                    'MicroVPP Grid Support Program. Thanks for supporting your local grid!'
+                );
+                submitBtn.textContent = 'Enrolled';
+                return;
+            }
+            showStatus(
+                'success',
+                '✅ <strong>You\'re opted in!</strong> One quick last step — let\'s connect ' +
+                'your utility account so we can finish enrollment…'
+            );
+            setTimeout(function () {
+                window.location.assign(utilityStepUrl(body));
+            }, 700);
+        }
+
         form.addEventListener('submit', async function (e) {
             e.preventDefault();
             clearStatus();
+
+            // Need at least email + inverter brand to enroll.
+            const missing = validateContext();
+            if (missing.length) {
+                showStatus(
+                    'error',
+                    '⚠️ Missing required info (' + missing.join(', ') + '). Please restart ' +
+                    'from your device QR code or the link in your email.'
+                );
+                return;
+            }
 
             submitBtn.disabled = true;
             submitBtn.textContent = 'Continuing…';
@@ -766,30 +807,43 @@
                 });
             }
 
-            // DEMO MODE: the backend /admin/vpp/opt-in endpoint isn't available
-            // yet, so skip the opt-in API call (and the Tesla Fleet redirect) and
-            // go straight to the utility-bill upload step.
-            //
-            // California customers skip the utility-details step entirely — there's
-            // no extra utility info to collect, so we finish enrollment right here.
-            if (ctx.state === 'california') {
+            // Persist the opt-in on the backend (writes vpp_opt_in_status,
+            // vpp_program_id and the audit blob to consumer.account).
+            let result;
+            try {
+                result = await postOptIn(buildPayload());
+            } catch (err) {
                 showStatus(
-                    'success',
-                    '🎉 <strong>You\'re enrolled!</strong> Your battery is now part of the ' +
-                    'MicroVPP Grid Support Program. Thanks for supporting your local grid!'
+                    'error',
+                    '⚠️ We couldn\'t reach the enrollment service. Please check your ' +
+                    'connection and try again.'
                 );
-                submitBtn.textContent = 'Enrolled';
+                resetSubmit();
                 return;
             }
 
-            showStatus(
-                'success',
-                '✅ <strong>You\'re opted in!</strong> One quick last step — let\'s connect ' +
-                'your utility account so we can finish enrollment…'
-            );
-            setTimeout(function () {
-                window.location.assign(utilityStepUrl({}));
-            }, 700);
+            if (!result.ok) {
+                const d = result.body && (result.body.detail || result.body.message);
+                const msg = typeof d === 'string' ? d
+                          : (d ? JSON.stringify(d) : ('HTTP ' + result.status));
+                showStatus('error', '⚠️ Enrollment couldn\'t be completed: ' + msg);
+                resetSubmit();
+                return;
+            }
+
+            const body = result.body || {};
+
+            // Tesla Powerwall: if the backend says Fleet authorization is still
+            // required (Tesla not linked yet) and Tesla wasn't already connected
+            // upstream by tesla.html, hand off to Tesla's authorize page.
+            if (body.requires_tesla_fleet_auth && body.tesla_auth_url && !ctx.tesla_connected) {
+                showStatus('info', '🔐 Redirecting you to Tesla to authorize Fleet API access…');
+                submitBtn.textContent = 'Redirecting to Tesla…';
+                setTimeout(function () { window.location.assign(body.tesla_auth_url); }, 400);
+                return;
+            }
+
+            finishEnrollment(body);
         });
     </script>
 
