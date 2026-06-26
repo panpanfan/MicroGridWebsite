@@ -589,7 +589,6 @@
 
         // ---------- DOM ----------
         const form          = document.getElementById('vppSignupForm');
-        const teslaBanner   = document.getElementById('teslaBanner');
         const submitBtn     = document.getElementById('submitBtn');
         const submitHelp    = document.getElementById('submitHelp');
         const statusBanner  = document.getElementById('statusBanner');
@@ -664,7 +663,6 @@
         // ---------- 3. Conditional Tesla UI ----------
         function updateForBrand() {
             const tesla = isTeslaBrand(ctx.inverter_brand);
-            teslaBanner.classList.toggle('is-visible', tesla);
 
             submitBtn.textContent = 'Authorize and Continue';
             if (tesla) {
