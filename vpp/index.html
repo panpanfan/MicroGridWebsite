@@ -492,15 +492,7 @@
 
                 <form id="vppSignupForm" novalidate>
                     <!-- Tesla informational banner (auto-shown when inverter is Powerwall) -->
-                    <div class="tesla-banner" id="teslaBanner">
-                        <strong>Tesla Powerwall detected.</strong> Because Tesla controls Powerwall
-                        access through their cloud, after you opt in we'll redirect you to
-                        Tesla's secure login page to authorize MicroGrid via the
-                        <strong>Tesla Fleet API</strong> (scopes <code>openid</code>,
-                        <code>offline_access</code>, <code>energy_device_data</code>, and
-                        <code>energy_cmds</code>). You'll come back here automatically when you're
-                        done — typically takes under a minute.
-                    </div>
+                    <div class="tesla-banner" id="teslaBanner"></div>
 
                     <button type="submit" class="submit-btn" id="submitBtn">
                         Authorize and Continue
