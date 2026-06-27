@@ -262,11 +262,23 @@
             box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
         }
         .email-input.invalid { border-color: #ef4444; }
+        .email-input[readonly], .email-input.locked {
+            background: #f3f4f6; color: #4b5563;
+            cursor: default; border-color: #e5e7eb;
+        }
+        .email-input[readonly]:focus, .email-input.locked:focus {
+            box-shadow: none; border-color: #e5e7eb;
+        }
         .field-error {
             display: none;
             color: #ef4444; font-size: 0.85rem; margin-top: 0.35rem;
         }
         .field-error.is-visible { display: block; }
+        .field-hint {
+            display: none;
+            color: #047857; font-size: 0.82rem; margin-top: 0.4rem;
+        }
+        .field-hint.is-visible { display: block; }
 
         /* Captured-email confirmation chip */
         .email-captured {
@@ -445,6 +457,7 @@
                            placeholder="you@example.com" autocomplete="email"
                            inputmode="email" />
                     <div class="field-error" id="emailError">Please enter a valid email address.</div>
+                    <div class="field-hint" id="emailHint">🔒 This email was provided by your registration link.</div>
                 </div>
 
                 <!-- Captured email confirmation (shown after a provider/manual email is set) -->
@@ -543,6 +556,7 @@
         const emailWrap     = document.getElementById('manualEmailWrap');
         const emailInput    = document.getElementById('emailInput');
         const emailError    = document.getElementById('emailError');
+        const emailHint     = document.getElementById('emailHint');
         const dividerOr     = document.querySelector('.divider-or');
         const emailCaptured = document.getElementById('emailCaptured');
         const ecEmail       = document.getElementById('ecEmail');
@@ -556,8 +570,9 @@
 
         // ---------- State ----------
         let selectedEmail = '';
-        let emailSource   = 'manual'; // 'google' | 'apple' | 'manual'
+        let emailSource   = 'manual'; // 'google' | 'apple' | 'manual' | 'param'
         let selectedState = '';       // 'california' | 'texas' | 'newyork' (from QR ?state= or user pick)
+        let emailLocked   = false;    // true when email came from the ?email= param
 
         // ---------- Helpers ----------
         function isValidEmail(v) {
@@ -698,6 +713,7 @@
         }
 
         function resetEmailSelection() {
+            if (emailLocked) return;
             selectedEmail = '';
             emailCaptured.classList.remove('is-visible');
             googleWrap.style.display = '';
@@ -712,6 +728,7 @@
 
         // Manual email entry: confirm on Enter or blur.
         function commitManualEmail() {
+            if (emailLocked) return true;
             const v = emailInput.value.trim();
             if (!isValidEmail(v)) {
                 emailInput.classList.add('invalid');
@@ -734,6 +751,41 @@
         emailInput.addEventListener('keydown', function (e) {
             if (e.key === 'Enter') { e.preventDefault(); commitManualEmail(); }
         });
+
+        // Lock the email field to a value supplied via the URL parameter, so
+        // the user can't change who is being registered.
+        function lockEmailFromParam(email) {
+            emailLocked = true;
+            selectedEmail = (email || '').trim().toLowerCase();
+            emailSource = 'param';
+
+            // Email is fixed - hide the social sign-in alternatives.
+            googleWrap.style.display = 'none';
+            appleBtn.style.display = 'none';
+            if (dividerOr) dividerOr.style.display = 'none';
+            emailCaptured.classList.remove('is-visible');
+
+            // Show the email field, pre-filled and read-only.
+            emailWrap.style.display = '';
+            emailInput.value = selectedEmail;
+            emailInput.readOnly = true;
+            emailInput.classList.add('locked');
+            emailInput.classList.remove('invalid');
+            emailError.classList.remove('is-visible');
+            emailHint.classList.add('is-visible');
+
+            syncNext();
+        }
+
+        // Pre-fill email from ?email= (alias: ?user_email=) if provided. When
+        // present, the email field is locked read-only to that address.
+        (function readEmailParam() {
+            try {
+                const qs = new URLSearchParams(window.location.search);
+                const e = (qs.get('email') || qs.get('user_email') || '').trim();
+                if (e && isValidEmail(e)) lockEmailFromParam(e);
+            } catch (_) { /* noop */ }
+        })();
 
         // ---------- 3. Google Identity Services ----------
         function initGoogle() {
