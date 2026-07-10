@@ -470,11 +470,11 @@
 
     <script>
         (function () {
-            var STRIPE_PUBLISHABLE_KEY = 'pk_test_REPLACE_ME';
+            var STRIPE_PUBLISHABLE_KEY = 'pk_live_51RdXgIG0KsAUHgwhUzlqIUZyCQnIpyXdlEAryn9cHQ4W3P1g2NLkZ7G8tptdK8hnnYZfhp2AvlS4mucHzZKvDcV500LGAtYEQp';
 
             var SUBSCRIBE_API_BASE = (typeof window.SUBSCRIBE_API_BASE === 'string' && window.SUBSCRIBE_API_BASE.length)
                 ? window.SUBSCRIBE_API_BASE.replace(/\/$/, '')
-                : '';
+                : 'https://api.microvpp.com';
 
             function subscribeApiUrl(path) {
                 var base = SUBSCRIBE_API_BASE;
@@ -498,20 +498,13 @@
                 if (typeof window.SUBSCRIBE_SESSION_RESOLVE_URL === 'string' && window.SUBSCRIBE_SESSION_RESOLVE_URL.length) {
                     return window.SUBSCRIBE_SESSION_RESOLVE_URL;
                 }
-                if (!window.location.protocol || window.location.protocol === 'file:') {
-                    return '';
-                }
-                var o = window.location.origin;
-                if (!o || o === 'null') {
-                    return '';
-                }
-                return o + '/session/resolve';
+                return subscribeApiUrl('/admin/subscribe/session/resolve');
             })();
 
             var TRUSTED_APP_MESSAGE_ORIGINS = [];
             var PRICE_IDS = {
-                monthly: 'price_REPLACE_MONTHLY',
-                annual: 'price_REPLACE_ANNUAL'
+                monthly: 'price_1TrM5sG0KsAUHgwhXAyvNKt4',
+                annual: 'price_1TrM5tG0KsAUHgwh86d2nFhN'
             };
 
             var subscribeContext = {
