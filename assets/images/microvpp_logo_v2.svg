@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="122 26 627 190" width="100%" height="100%">
+  <defs>
+    <linearGradient id="microGreen" gradientUnits="userSpaceOnUse" x1="107" y1="36" x2="483" y2="206">
+      <stop offset="0" stop-color="#10B981" />
+      <stop offset="1" stop-color="#059669" />
+    </linearGradient>
+  </defs>
+  <!-- Unified Wordmark (tags concatenated with zero whitespace) -->
+  <text x="430" y="172" text-anchor="middle" font-family="'Inter', 'Montserrat', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif" font-weight="700" font-size="140" letter-spacing="-0.02em"><tspan fill="url(#microGreen)">Micro</tspan><tspan fill="#FBB51B" dx="-8">VPP</tspan></text>
+</svg>
