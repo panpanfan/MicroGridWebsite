@@ -21,7 +21,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EP Cube × MicroVPP Winter Grid Program</title>
-    <meta name="description" content="Get 24x7 battery optimization, join California grid support program all year round." />
+    <meta name="description" content="Get 24×7 battery optimization and join California's grid-support program year-round." />
     <meta name="robots" content="noindex, nofollow" />
     <meta name="referrer" content="no-referrer" />
     <meta name="theme-color" content="#065f46" />
@@ -135,7 +135,63 @@
         }
         .block { margin-bottom: 2rem; }
 
+        /* Value lines + what happens next */
+        .value-lines {
+            list-style: none;
+            margin-bottom: 1.25rem;
+        }
+        .value-lines li {
+            position: relative;
+            padding-left: 1.75rem;
+            font-size: 1rem; font-weight: 600; color: #1f2937;
+            margin-bottom: 0.4rem;
+        }
+        .value-lines li::before {
+            content: "✓";
+            position: absolute; left: 0; top: 0;
+            color: #059669; font-weight: 700;
+        }
+        .next-steps { margin-bottom: 2rem; }
+        .next-steps .next-title {
+            font-size: 0.8rem; font-weight: 700;
+            color: #047857; text-transform: uppercase;
+            letter-spacing: 0.05em; margin-bottom: 0.6rem;
+        }
+        .next-steps ol {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+        }
+        .next-steps li {
+            position: relative;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 0.75rem 0.8rem 0.8rem;
+            font-size: 0.86rem; color: #374151; line-height: 1.45;
+        }
+        .next-steps li:not(:last-child)::after {
+            content: "→";
+            position: absolute; right: -0.7rem; top: 50%;
+            transform: translateY(-50%);
+            color: #10B981; font-weight: 700;
+        }
+        .next-steps .step-num {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 1.5rem; height: 1.5rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: #fff; font-size: 0.8rem; font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+        .next-steps .step-text { display: block; }
+
         /* Device context card */
+        .device-greeting {
+            font-size: 1.05rem; font-weight: 600;
+            color: #065f46; margin-bottom: 0.75rem;
+        }
         .device-card {
             background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
             border: 2px solid #10B981;
@@ -268,6 +324,28 @@
             margin-bottom: 1.5rem;
         }
         .info-note strong { color: #1e3a8a; }
+        .info-note ol { margin: 0.4rem 0 0 1.25rem; }
+        .info-note li { margin-bottom: 0.2rem; }
+
+        /* Already enrolled in another program */
+        .switch-check {
+            display: flex; align-items: flex-start; gap: 0.7rem;
+            background: #f9fafb;
+            border: 1.5px dashed #d1d5db;
+            border-radius: 10px;
+            padding: 0.9rem 1.1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.92rem; color: #374151;
+            cursor: pointer;
+        }
+        .switch-check input {
+            width: 1.1rem; height: 1.1rem;
+            margin-top: 0.2rem; flex-shrink: 0;
+            accent-color: #059669;
+        }
+        .switch-check:has(input:checked) {
+            border-style: solid; border-color: #10B981; background: #f0fdf4;
+        }
 
         /* Consent notice right above the button */
         .consent-notice {
@@ -346,6 +424,10 @@
             .field-grid { grid-template-columns: 1fr; }
             .device-card dl { grid-template-columns: 1fr; gap: 0.1rem 0; }
             .device-card dt { margin-top: 0.5rem; }
+            .next-steps ol { grid-template-columns: 1fr; gap: 0.5rem; }
+            .next-steps li { display: flex; align-items: center; gap: 0.6rem; }
+            .next-steps .step-num { margin-bottom: 0; flex-shrink: 0; }
+            .next-steps li:not(:last-child)::after { display: none; }
         }
     </style>
 </head>
@@ -381,7 +463,7 @@
             <h1>EP Cube × MicroVPP Winter Grid Program</h1>
             <h2 class="hero-powered">Powered by MicroVPP Intelligence</h2>
             <p>
-                Get 24x7 battery optimization, join California grid support program all year round.
+                Get 24×7 battery optimization and join California's grid-support program year-round.
             </p>
         </div>
     </section>
@@ -394,8 +476,24 @@
                 <!-- Shown when the EP Cube link is missing email / S/N / device id / utility -->
                 <div class="status-banner status-error" id="linkError" role="alert"></div>
 
+                <ul class="value-lines">
+                    <li>Free 24×7 battery optimization — the savings stay with you.</li>
+                    <li>A cash reward at season end, based on your battery's measured performance.</li>
+                </ul>
+
+                <div class="next-steps">
+                    <div class="next-title">What happens next</div>
+                    <ol>
+                        <li><span class="step-num">1</span><span class="step-text">Authorize (about 3 minutes)</span></li>
+                        <li><span class="step-num">2</span><span class="step-text">We connect your battery within days</span></li>
+                        <li><span class="step-num">3</span><span class="step-text">Optimization and grid support run automatically this winter</span></li>
+                        <li><span class="step-num">4</span><span class="step-text">Season report and reward</span></li>
+                    </ol>
+                </div>
+
                 <!-- Account context (all from the EP Cube link, read-only) -->
                 <div class="device-card">
+                    <p class="device-greeting" id="greeting">Hi there — your EP Cube is ready to join.</p>
                     <div class="device-title">📦 Your EP Cube account</div>
                     <dl>
                         <dt>Email</dt>
@@ -444,11 +542,12 @@
                     <!-- Winter VPP program -->
                     <div class="program-card">
                         <div class="program-title">❄️ Winter program you're joining</div>
-                        <h3>CA RA Program (CAISO)</h3>
+                        <h3>Winter grid-support program</h3>
                         <p>
                             When California's grid is under stress this winter, MicroVPP may
                             discharge your EP Cube battery for a few hours to help keep the lights on
-                            for your neighbors, and you earn rewards for every event you support.
+                            for your neighbors, and you receive a cash reward at season end based on
+                            your battery's measured performance.
                         </p>
                         <ul>
                             <li>Your backup reserve setting is always respected.</li>
@@ -499,6 +598,13 @@
                             Terms of Use last updated November 7, 2025 · MicroVPP Inc.
                         </p>
                     </div>
+
+                    <!-- Lets users already in DSGS etc. sign despite the exclusivity
+                         attestation in §1; the account is flagged for a program switch. -->
+                    <label class="switch-check" for="otherProgramInput">
+                        <input type="checkbox" id="otherProgramInput" />
+                        <span>I'm already in another program (e.g., DSGS). Tick here and we'll help you switch — nothing else changes.</span>
+                    </label>
 
                     <!-- Agreement 2: VPP customer authorization (mirrors vpp/index.html) -->
                     <div class="agreement-card">
@@ -575,14 +681,13 @@
                         </p>
                     </div>
 
-                    <!-- Utility data authorization notice -->
+                    <!-- The two follow-up authorizations -->
                     <div class="info-note">
-                        🔌 <strong>Meter data access.</strong> To count your battery's contribution,
-                        please authorize us to access your meter data. After you click the button
-                        below, you'll go to our partner Leap's secure page to grant that access
-                        through <strong id="utilityNameNote">your utility</strong>. We'll also email you a
-                        meter-data authorization request from <strong>UtilityAPI</strong>. Please
-                        confirm it when it arrives.
+                        🔌 <strong>Two quick authorizations, about a minute each:</strong>
+                        <ol>
+                            <li><strong>Utility authorization</strong> — lets your battery enroll in the grid program through <span class="utility-name">your utility</span>;</li>
+                            <li><strong>Meter data authorization</strong> — an email from UtilityAPI will follow so we can measure your savings.</li>
+                        </ol>
                     </div>
 
                     <!-- What clicking the button means -->
@@ -590,8 +695,8 @@
                         <strong>By clicking "Agree &amp; Connect My Utility," you:</strong>
                         <ol>
                             <li>accept the <strong>MicroVPP User Agreement</strong>,</li>
-                            <li>sign the <strong>VPP Customer Authorization</strong> and opt in to the <strong>CA RA Program</strong>, and</li>
-                            <li>will be taken to your utility's page to authorize us to access your meter data.</li>
+                            <li>sign the <strong>VPP Customer Authorization</strong> and opt in to the <strong>Winter grid-support program</strong>, and</li>
+                            <li>continue to <strong>Utility authorization</strong> with <span class="utility-name">your utility</span>.</li>
                         </ol>
                     </div>
 
@@ -685,6 +790,7 @@
             sce:  'Southern California Edison (SCE)',
             sdge: 'SDG&E'
         };
+        const UTILITY_SHORT = { pge: 'PG&E', sce: 'SCE', sdge: 'SDG&E' };
         const CTX_STORAGE_KEY = 'ep_cube_signup_ctx';
 
         // ---------- DOM ----------
@@ -694,7 +800,8 @@
         const ctxUtilityEl  = document.getElementById('ctxUtility');
         const deviceIdInput = document.getElementById('deviceId');
         const form          = document.getElementById('signupForm');
-        const utilityNote   = document.getElementById('utilityNameNote');
+        const greetingEl    = document.getElementById('greeting');
+        const otherProgramInput = document.getElementById('otherProgramInput');
         const nameInput     = document.getElementById('nameInput');
         const phoneInput    = document.getElementById('phoneInput');
         const phoneError    = document.getElementById('phoneError');
@@ -796,7 +903,18 @@
         deviceIdInput.value = ctx.device_id;
         nameInput.value = ctx.name;
         phoneInput.value = ctx.phone;
-        utilityNote.textContent = UTILITY_LABELS[ctx.utility] || 'your utility';
+        document.querySelectorAll('.utility-name').forEach(function (el) {
+            el.textContent = UTILITY_SHORT[ctx.utility] || 'your utility';
+        });
+
+        function renderGreeting() {
+            const name = nameInput.value.trim();
+            const utility = UTILITY_SHORT[ctx.utility];
+            greetingEl.textContent = 'Hi ' + (name || 'there') + ' — your EP Cube' +
+                (utility ? ' on ' + utility : '') + ' is ready to join.';
+        }
+        renderGreeting();
+        nameInput.addEventListener('input', renderGreeting);
 
         // These can only come from EP Cube's link: the user cannot edit them,
         // so without all four the enrollment cannot be completed.
@@ -873,7 +991,8 @@
                 name:    name,
                 city:    ctx.city,
                 phone:   normalizeUsPhone(phoneInput.value),
-                pvSizeKw: parsePvSizeKw(pvSizeInput.value).value
+                pvSizeKw: parsePvSizeKw(pvSizeInput.value).value,
+                inOtherProgram: otherProgramInput.checked
             };
         }
 
@@ -896,6 +1015,10 @@
                     user_agreement_version: CONFIG.userAgreementVersion,
                     vpp_agreement_version: CONFIG.vppAgreementVersion,
                     agreed_at: agreedAt
+                },
+                program_switch: {
+                    already_in_other_program: f.inOtherProgram,
+                    needs_switch_help: f.inOtherProgram
                 },
                 registration: {
                     status: 'ep_cube_pilot_signup',
@@ -932,7 +1055,8 @@
                 vpp_program_id: CONFIG.vppProgramId,
                 agreement_version: CONFIG.vppAgreementVersion,
                 opt_in_agreed: true,
-                tesla_fleet_consent: false
+                tesla_fleet_consent: false,
+                already_in_other_program: f.inOtherProgram
             });
         }
 
@@ -977,6 +1101,7 @@
             submitBtn.disabled = true;
             submitBtn.textContent = 'Creating your account…';
             track('ep_cube_submit', f.utility);
+            if (f.inOtherProgram) track('ep_cube_other_program', f.utility);
 
             let accountId = null;
             try {
@@ -1008,7 +1133,7 @@
                 // this account, so the redirect would produce an orphan meter.
                 showStatus(
                     'error',
-                    '⚠️ You\'re opted in, but we couldn\'t start the utility authorization. ' +
+                    '⚠️ You\'re opted in, but we couldn\'t start the Utility authorization. ' +
                     'We\'ll email <strong>' + escapeHtml(f.email) + '</strong> a link to finish, or contact ' +
                     '<a href="mailto:info@microvpp.com">info@microvpp.com</a>.'
                 );
@@ -1022,7 +1147,7 @@
 
             try { sessionStorage.removeItem(CTX_STORAGE_KEY); } catch (_) { /* noop */ }
             track('ep_cube_redirect_leap', f.utility);
-            showStatus('success', '✅ You\'re opted in! Taking you to authorize ' + UTILITY_LABELS[f.utility] + '…');
+            showStatus('success', '✅ You\'re opted in! Taking you to Utility authorization with ' + UTILITY_SHORT[f.utility] + '…');
             submitBtn.textContent = 'Redirecting…';
             setTimeout(function () {
                 window.location.assign(leapConnectUrl(f.utility, refId));
