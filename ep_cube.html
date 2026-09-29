@@ -391,17 +391,21 @@
         <div class="container">
             <div class="form-container">
 
-                <!-- Shown when the EP Cube link is missing email / S/N / device id -->
+                <!-- Shown when the EP Cube link is missing email / S/N / device id / utility -->
                 <div class="status-banner status-error" id="linkError" role="alert"></div>
 
-                <!-- Device context (from the EP Cube link) -->
+                <!-- Account context (all from the EP Cube link, read-only) -->
                 <div class="device-card">
-                    <div class="device-title">📦 Your EP Cube system</div>
+                    <div class="device-title">📦 Your EP Cube account</div>
                     <dl>
+                        <dt>Email</dt>
+                        <dd id="ctxEmail"><span class="missing">Not provided</span></dd>
                         <dt>Brand</dt>
                         <dd>EP Cube</dd>
                         <dt>Serial Number</dt>
                         <dd id="ctxSerial"><span class="missing">Not provided</span></dd>
+                        <dt>Utility</dt>
+                        <dd id="ctxUtility"><span class="missing">Not provided</span></dd>
                         <dt>State</dt>
                         <dd>California</dd>
                     </dl>
@@ -411,43 +415,12 @@
                 <form id="signupForm" novalidate>
                     <!-- Account details -->
                     <div class="block">
-                        <h2 class="block-title">Your details</h2>
+                        <h2 class="block-title">A few optional details</h2>
                         <div class="field-grid">
-                            <div class="full">
-                                <label class="field-label" for="emailInput">Email address <span class="req">*</span></label>
-                                <input type="email" id="emailInput" class="text-input"
-                                       placeholder="you@example.com" autocomplete="email" inputmode="email" />
-                                <p class="field-help">Pre-filled from your EP Cube account. You can change it if you'd like us to reach you elsewhere.</p>
-                                <div class="field-error" id="emailError">Please enter a valid email address.</div>
-                            </div>
-
-                            <div class="full">
-                                <label class="field-label" for="utilitySelect">Electric utility <span class="req">*</span></label>
-                                <select id="utilitySelect" class="text-input">
-                                    <option value="" selected disabled>Choose your utility…</option>
-                                    <option value="pge">Pacific Gas &amp; Electric (PG&amp;E)</option>
-                                    <option value="sce">Southern California Edison (SCE)</option>
-                                    <option value="sdge">San Diego Gas &amp; Electric (SDG&amp;E)</option>
-                                </select>
-                                <p class="field-help">The company that sends your electricity bill.</p>
-                                <div class="field-error" id="utilityError">Please choose your utility.</div>
-                            </div>
-
                             <div class="full">
                                 <label class="field-label" for="nameInput">Full name or nickname <span class="opt">(optional)</span></label>
                                 <input type="text" id="nameInput" class="text-input"
                                        placeholder="e.g. Jane Doe" autocomplete="name" />
-                            </div>
-
-                            <div>
-                                <label class="field-label" for="cityInput">Home city <span class="opt">(optional)</span></label>
-                                <input type="text" id="cityInput" class="text-input"
-                                       placeholder="e.g. San Jose" autocomplete="address-level2" />
-                            </div>
-
-                            <div>
-                                <label class="field-label" for="stateInput">State</label>
-                                <input type="text" id="stateInput" class="text-input" value="California" readonly />
                             </div>
 
                             <div class="full">
@@ -523,7 +496,7 @@
                             </p>
                         </div>
                         <p class="agreement-meta">
-                            Terms of Use last updated November 7, 2025 · MicroGrid LLC
+                            Terms of Use last updated November 7, 2025 · MicroVPP Inc.
                         </p>
                     </div>
 
@@ -598,7 +571,7 @@
                             </p>
                         </div>
                         <p class="agreement-meta">
-                            Version <span id="vppAgreementVersionLabel">v3.1</span> · Last updated June 2026 · MicroGrid LLC
+                            Version <span id="vppAgreementVersionLabel">v3.1</span> · Last updated June 2026 · MicroVPP Inc.
                         </p>
                     </div>
 
@@ -641,7 +614,7 @@
             <div class="footer-content">
                 <div>
                     <div class="footer-logo-title">MicroVPP®</div>
-                    <div class="footer-logo-subtitle">by MicroGrid LLC</div>
+                    <div class="footer-logo-subtitle">by MicroVPP Inc.</div>
                 </div>
                 <div class="footer-tagline">Smarter homes. Stronger grids.</div>
                 <nav class="footer-nav">
@@ -653,7 +626,7 @@
                 </nav>
             </div>
             <div class="footer-copyright">
-                <p>&copy; 2026 MicroGrid LLC. All rights reserved.</p>
+                <p>&copy; 2026 MicroVPP Inc. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -667,11 +640,12 @@
         //   https://www.microvpp.com/ep_cube.html?email=jane%40example.com
         //     &sn=EPC123456789&device_id=2937&utility=sce
         //
-        //   email      - required, pre-filled, editable by the user
+        //   email      - required, shown read-only
         //   sn         - required, shown read-only
         //   device_id  - required, hidden (EP Cube internal id)
-        //   utility    - pge | sce | sdge; pre-selects the dropdown
-        //   name, city, phone - optional pre-fills
+        //   utility    - required, pge | sce | sdge, shown read-only
+        //   city       - optional, not shown; stored with the signup
+        //   name, phone - optional pre-fills for the editable fields
         //
         // Flow on the single button:
         //   1. POST /auth/signup     create the account + EP Cube inverter
@@ -715,16 +689,13 @@
 
         // ---------- DOM ----------
         const linkError     = document.getElementById('linkError');
+        const ctxEmailEl    = document.getElementById('ctxEmail');
         const ctxSerialEl   = document.getElementById('ctxSerial');
+        const ctxUtilityEl  = document.getElementById('ctxUtility');
         const deviceIdInput = document.getElementById('deviceId');
         const form          = document.getElementById('signupForm');
-        const emailInput    = document.getElementById('emailInput');
-        const emailError    = document.getElementById('emailError');
-        const utilitySelect = document.getElementById('utilitySelect');
-        const utilityError  = document.getElementById('utilityError');
         const utilityNote   = document.getElementById('utilityNameNote');
         const nameInput     = document.getElementById('nameInput');
-        const cityInput     = document.getElementById('cityInput');
         const phoneInput    = document.getElementById('phoneInput');
         const phoneError    = document.getElementById('phoneError');
         const pvSizeInput   = document.getElementById('pvSizeInput');
@@ -814,30 +785,26 @@
         } catch (_) { /* noop */ }
 
         // ---------- 2. Hydrate the page ----------
+        if (isValidEmail(ctx.email)) ctxEmailEl.textContent = ctx.email;
         if (ctx.sn) {
             ctxSerialEl.innerHTML = '';
             const code = document.createElement('code');
             code.textContent = ctx.sn;
             ctxSerialEl.appendChild(code);
         }
+        if (UTILITY_LABELS[ctx.utility]) ctxUtilityEl.textContent = UTILITY_LABELS[ctx.utility];
         deviceIdInput.value = ctx.device_id;
-        emailInput.value = ctx.email;
-        if (ctx.utility) utilitySelect.value = ctx.utility;
         nameInput.value = ctx.name;
-        cityInput.value = ctx.city;
         phoneInput.value = ctx.phone;
+        utilityNote.textContent = UTILITY_LABELS[ctx.utility] || 'your utility';
 
-        function syncUtilityNote() {
-            utilityNote.textContent = UTILITY_LABELS[utilitySelect.value] || 'your utility';
-        }
-        syncUtilityNote();
-
-        // Email, S/N and device id can only come from EP Cube's link; without
-        // them the enrollment cannot be tied to a device.
+        // These can only come from EP Cube's link: the user cannot edit them,
+        // so without all four the enrollment cannot be completed.
         const missing = [];
         if (!isValidEmail(ctx.email)) missing.push('email');
         if (!ctx.sn) missing.push('serial number');
         if (!ctx.device_id) missing.push('device id');
+        if (!UTILITY_LABELS[ctx.utility]) missing.push('utility');
         if (missing.length) {
             linkError.classList.add('is-visible');
             linkError.style.marginTop = '0';
@@ -851,15 +818,6 @@
         }
 
         // ---------- 3. Field validation ----------
-        emailInput.addEventListener('input', function () {
-            emailInput.classList.remove('invalid');
-            emailError.classList.remove('is-visible');
-        });
-        utilitySelect.addEventListener('change', function () {
-            utilitySelect.classList.remove('invalid');
-            utilityError.classList.remove('is-visible');
-            syncUtilityNote();
-        });
         phoneInput.addEventListener('input', function () {
             phoneInput.classList.remove('invalid');
             phoneError.classList.remove('is-visible');
@@ -880,16 +838,6 @@
 
         function validateForm() {
             let firstBad = null;
-            if (!isValidEmail(emailInput.value)) {
-                emailInput.classList.add('invalid');
-                emailError.classList.add('is-visible');
-                firstBad = firstBad || emailInput;
-            }
-            if (!UTILITY_LABELS[utilitySelect.value]) {
-                utilitySelect.classList.add('invalid');
-                utilityError.classList.add('is-visible');
-                firstBad = firstBad || utilitySelect;
-            }
             if (phoneInput.value.trim() && !normalizeUsPhone(phoneInput.value)) {
                 phoneInput.classList.add('invalid');
                 phoneError.classList.add('is-visible');
@@ -920,10 +868,10 @@
         function collectForm() {
             const name = nameInput.value.trim();
             return {
-                email:   emailInput.value.trim().toLowerCase(),
-                utility: utilitySelect.value,
+                email:   ctx.email,
+                utility: ctx.utility,
                 name:    name,
-                city:    cityInput.value.trim(),
+                city:    ctx.city,
                 phone:   normalizeUsPhone(phoneInput.value),
                 pvSizeKw: parsePvSizeKw(pvSizeInput.value).value
             };
@@ -944,10 +892,6 @@
                     pv_size_kw: f.pvSizeKw
                 },
                 utility: { leap_utility_id: f.utility, name: UTILITY_LABELS[f.utility] },
-                ep_cube: {
-                    link_email: ctx.email,
-                    email_changed: f.email !== ctx.email
-                },
                 agreements: {
                     user_agreement_version: CONFIG.userAgreementVersion,
                     vpp_agreement_version: CONFIG.vppAgreementVersion,
