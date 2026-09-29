@@ -33,11 +33,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --brand-green: #10B981;
-            --brand-green-dark: #065f46;
-            --brand-green-medium: #059669;
-            --brand-green-darker: #047857;
-            --brand-gold: #F59E0B;
+            --green: #10B981;
+            --green-600: #059669;
+            --green-700: #047857;
+            --green-800: #065f46;
+            --green-tint: #f0fdf4;
+            --green-line: #a7f3d0;
+            --ink: #1f2937;
+            --ink-2: #374151;
+            --muted: #6b7280;
+            --line: #e5e7eb;
+            --space: 24px;
+            --content: 640px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -45,15 +52,26 @@
         body {
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
-            color: #333;
+            color: var(--ink);
             overflow-x: hidden;
             background: #f8fafc;
         }
+        input, button, select, textarea { font: inherit; }
+        a { color: var(--green-700); }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+        }
+
+        /* Uniform section label */
+        .eyebrow {
+            display: block;
+            font-size: 12px; font-weight: 700;
+            color: var(--green-700); text-transform: uppercase;
+            letter-spacing: 0.08em; line-height: 1.4;
+            margin-bottom: 12px;
         }
 
         /* Header */
@@ -73,15 +91,15 @@
         .logo img { height: 50px; width: auto; }
         .nav-links { display: flex; list-style: none; gap: 2rem; }
         .nav-links a {
-            text-decoration: none; color: #333; font-weight: 500;
+            text-decoration: none; color: var(--ink-2); font-weight: 500;
             transition: color 0.3s ease;
         }
-        .nav-links a:hover { color: var(--brand-green); }
+        .nav-links a:hover { color: var(--green); }
         .header-buttons { display: flex; align-items: center; gap: 12px; }
         .cta-button-outline {
-            background: transparent; color: var(--brand-green);
+            background: transparent; color: var(--green);
             padding: 0.5rem 1rem;
-            border: 2px solid var(--brand-green);
+            border: 2px solid var(--green);
             border-radius: 12px;
             font-weight: 600; font-size: 0.875rem;
             text-decoration: none; transition: all 0.3s ease;
@@ -91,278 +109,199 @@
 
         /* Hero */
         .reg-hero {
-            padding: 140px 0 40px;
+            padding: 122px 0 var(--space);
             background: linear-gradient(135deg, #065f46 0%, #047857 50%, #059669 100%);
-            color: white;
+            color: #fff;
             text-align: center;
         }
         .reg-hero h1 {
-            font-size: 2.5rem; font-weight: 700;
-            margin-bottom: 0.5rem; line-height: 1.2;
+            font-size: 2rem; font-weight: 700;
+            line-height: 1.25;
+            max-width: 720px; margin: 0 auto 6px;
         }
         .reg-hero .hero-powered {
-            font-size: 1.35rem; font-weight: 600;
-            color: #fde68a;
-            margin-bottom: 1rem;
+            font-size: 12px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            color: rgba(255, 255, 255, 0.75);
+            margin-bottom: 12px;
         }
         .reg-hero p {
-            font-size: 1.15rem; max-width: 720px;
+            font-size: 1.05rem; max-width: 720px;
             margin: 0 auto; opacity: 0.95;
-        }
-        .reg-hero .hero-badge {
-            display: inline-block;
-            padding: 0.4rem 1rem;
-            background: rgba(245, 158, 11, 0.18);
-            color: #fde68a;
-            border: 1px solid rgba(245, 158, 11, 0.4);
-            border-radius: 999px;
-            font-size: 0.85rem; font-weight: 600;
-            margin-bottom: 1rem;
         }
 
         /* Sign-up section */
-        .register-section { padding: 40px 0 80px; }
+        .register-section { padding: var(--space) 0 64px; }
         .form-container {
-            max-width: 760px; margin: 0 auto;
-            background: white; padding: 3rem;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            max-width: calc(var(--content) + 2 * 32px);
+            margin: 0 auto;
+            background: #fff; padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
+        }
+        .form-container > *,
+        #signupForm > * { margin-bottom: var(--space); }
+        .form-container > :last-child,
+        #signupForm > :last-child { margin-bottom: 0; }
+
+        .card {
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 20px var(--space);
+            background: #fff;
         }
 
-        .block-title {
-            font-size: 1.05rem; font-weight: 700;
-            color: #1f2937; margin: 0 0 1rem;
-        }
-        .block { margin-bottom: 2rem; }
-
-        /* Value lines + what happens next */
-        .value-lines {
-            list-style: none;
-            margin-bottom: 1.25rem;
-        }
+        /* Value lines */
+        .value-lines { list-style: none; }
         .value-lines li {
             position: relative;
-            padding-left: 1.75rem;
-            font-size: 1rem; font-weight: 600; color: #1f2937;
-            margin-bottom: 0.4rem;
+            padding-left: 26px;
+            font-size: 1rem; font-weight: 600; color: var(--ink);
         }
+        .value-lines li + li { margin-top: 6px; }
         .value-lines li::before {
             content: "✓";
-            position: absolute; left: 0; top: 0;
-            color: #059669; font-weight: 700;
+            position: absolute; left: 2px; top: 0;
+            color: var(--green-600); font-weight: 700;
         }
-        .next-steps { margin-bottom: 2rem; }
-        .next-steps .next-title {
-            font-size: 0.8rem; font-weight: 700;
-            color: #047857; text-transform: uppercase;
-            letter-spacing: 0.05em; margin-bottom: 0.6rem;
-        }
+
+        /* What happens next */
         .next-steps ol {
             list-style: none;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 0.75rem;
+            gap: 12px;
         }
         .next-steps li {
-            position: relative;
-            background: #f9fafb;
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--line);
             border-radius: 10px;
-            padding: 0.75rem 0.8rem 0.8rem;
-            font-size: 0.86rem; color: #374151; line-height: 1.45;
+            padding: 14px;
+            background: #fff;
         }
-        .next-steps li:not(:last-child)::after {
-            content: "→";
-            position: absolute; right: -0.7rem; top: 50%;
-            transform: translateY(-50%);
-            color: #10B981; font-weight: 700;
-        }
-        .next-steps .step-num {
+        .step-num {
             display: inline-flex; align-items: center; justify-content: center;
-            width: 1.5rem; height: 1.5rem;
+            width: 24px; height: 24px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #10B981, #059669);
-            color: #fff; font-size: 0.8rem; font-weight: 700;
-            margin-bottom: 0.35rem;
+            background: var(--green-600);
+            color: #fff; font-size: 12px; font-weight: 700;
+            margin-bottom: 8px;
         }
-        .next-steps .step-text { display: block; }
+        .step-title { display: block; font-size: 15px; font-weight: 700; color: var(--ink); }
+        .step-desc { display: block; font-size: 13px; color: var(--muted); white-space: nowrap; }
 
-        /* Device context card */
+        /* Account (from the EP Cube link) */
+        .device-card { background: var(--green-tint); border-color: var(--green-line); }
         .device-greeting {
             font-size: 1.05rem; font-weight: 600;
-            color: #065f46; margin-bottom: 0.75rem;
-        }
-        .device-card {
-            background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
-            border: 2px solid #10B981;
-            border-radius: 12px;
-            padding: 1.1rem 1.4rem;
-            margin-bottom: 2rem;
-        }
-        .device-card .device-title {
-            font-size: 0.8rem; font-weight: 700;
-            color: #047857; text-transform: uppercase;
-            letter-spacing: 0.05em; margin-bottom: 0.6rem;
+            color: var(--green-800); margin-bottom: 16px;
         }
         .device-card dl {
             display: grid;
             grid-template-columns: 130px 1fr;
-            gap: 0.45rem 1rem;
+            gap: 6px 16px;
             font-size: 0.95rem;
         }
-        .device-card dt { color: #065f46; font-weight: 600; }
-        .device-card dd { color: #1f2937; word-break: break-word; }
+        .device-card dt { color: var(--green-800); font-weight: 600; }
+        .device-card dd { color: var(--ink); word-break: break-word; }
         .device-card code {
-            font-family: 'Inter', monospace;
+            font-family: inherit;
             background: rgba(16, 185, 129, 0.12);
             padding: 2px 7px; border-radius: 5px;
-            font-size: 0.9rem; color: #065f46; font-weight: 600;
+            font-size: 0.9rem; color: var(--green-800); font-weight: 600;
         }
-        .device-card .missing { color: #b45309; font-style: italic; }
+        .device-card .missing { color: var(--muted); font-style: italic; }
 
         /* Form fields */
-        .field-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem 1.25rem;
-        }
-        .field-grid .full { grid-column: 1 / -1; }
+        .field-stack { display: grid; gap: 16px; }
         .field-label {
             display: block;
             font-size: 0.9rem; font-weight: 600;
-            color: #374151; margin-bottom: 0.4rem;
+            color: var(--ink-2); margin-bottom: 6px;
         }
-        .field-label .req { color: #dc2626; }
         .field-label .opt { color: #9ca3af; font-weight: 500; }
-        .text-input, select.text-input {
+        .text-input {
             width: 100%;
-            padding: 0.8rem 1rem;
-            border: 1.5px solid #e5e7eb;
-            border-radius: 12px;
-            font-size: 1rem; font-family: inherit;
-            color: #1f2937; background: #fff;
+            padding: 12px 16px;
+            border: 1.5px solid var(--line);
+            border-radius: 10px;
+            font-size: 1rem;
+            color: var(--ink); background: #fff;
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
-        .text-input:focus, select.text-input:focus {
+        .text-input:focus {
             outline: none;
-            border-color: #10B981;
+            border-color: var(--green);
             box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
         }
         .text-input.invalid { border-color: #ef4444; }
-        .text-input[readonly] {
-            background: #f3f4f6; color: #4b5563;
-            cursor: default; border-color: #e5e7eb;
-        }
-        .text-input[readonly]:focus { box-shadow: none; border-color: #e5e7eb; }
-        .field-help { font-size: 0.82rem; color: #6b7280; margin-top: 0.35rem; }
+        .field-help { font-size: 0.82rem; color: var(--muted); margin-top: 6px; }
         .field-error {
             display: none;
-            color: #ef4444; font-size: 0.85rem; margin-top: 0.35rem;
+            color: #ef4444; font-size: 0.85rem; margin-top: 6px;
         }
         .field-error.is-visible { display: block; }
 
-        /* Program card */
-        .program-card {
-            background: #fffbeb;
-            border: 2px solid #fde68a;
-            border-radius: 12px;
-            padding: 1.25rem 1.5rem;
-            margin-bottom: 2rem;
-        }
-        .program-card .program-title {
-            font-size: 0.8rem; font-weight: 700;
-            color: #b45309; text-transform: uppercase;
-            letter-spacing: 0.05em; margin-bottom: 0.4rem;
-        }
-        .program-card h3 { font-size: 1.2rem; color: #1f2937; margin-bottom: 0.5rem; }
-        .program-card p, .program-card li { font-size: 0.92rem; color: #374151; }
-        .program-card ul { margin: 0.4rem 0 0 1.25rem; }
+        /* Program */
+        .program-card { border-left: 4px solid var(--green); }
+        .program-card h3 { font-size: 1.15rem; color: var(--ink); margin-bottom: 8px; }
+        .program-card p, .program-card li { font-size: 0.92rem; color: var(--ink-2); }
+        .program-card ul { margin: 8px 0 0 20px; }
 
-        /* Agreement cards */
-        .agreement-card {
-            background: #f9fafb;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 1.5rem 1.75rem;
-            margin-bottom: 1.5rem;
+        /* Agreements: plain-English summary, full text on demand */
+        .agreement-plain { font-size: 0.92rem; color: var(--ink-2); }
+        .agreement-plain strong { color: var(--ink); }
+        .agreement-card details { margin-top: 12px; }
+        .agreement-card summary {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 0.9rem; font-weight: 600; color: var(--green-700);
+            cursor: pointer; list-style: none;
         }
-        .agreement-card .agreement-title {
-            font-size: 1rem; font-weight: 700;
-            color: #047857; text-transform: uppercase;
-            letter-spacing: 0.05em; margin-bottom: 0.75rem;
+        .agreement-card summary::-webkit-details-marker { display: none; }
+        .agreement-card summary::after {
+            content: "▾";
+            transition: transform 0.2s ease;
         }
-        .agreement-scroll {
-            max-height: 300px; overflow-y: auto;
-            padding-right: 0.75rem;
-            border-top: 1px solid #e5e7eb;
-            border-bottom: 1px solid #e5e7eb;
-            padding-top: 1rem; padding-bottom: 1rem;
+        .agreement-card details[open] summary::after { transform: rotate(180deg); }
+        .agreement-body {
+            margin-top: 12px; padding-top: 12px;
+            border-top: 1px solid var(--line);
         }
-        .agreement-scroll h4 {
-            font-size: 0.95rem; color: #065f46;
-            margin: 1.1rem 0 0.4rem;
+        .agreement-body h4 {
+            font-size: 0.92rem; color: var(--green-800);
+            margin: 16px 0 4px;
         }
-        .agreement-scroll h4:first-child { margin-top: 0; }
-        .agreement-scroll p,
-        .agreement-scroll li {
-            font-size: 0.92rem; color: #374151; line-height: 1.7;
-        }
-        .agreement-scroll ul { margin: 0.3rem 0 0.6rem 1.25rem; }
-        .agreement-meta {
-            margin-top: 0.75rem;
-            font-size: 0.8rem; color: #6b7280;
-        }
-
-        /* Utility data notice */
-        .info-note {
-            background: #eff6ff;
-            border: 1px solid #bfdbfe;
-            color: #1e40af;
-            border-radius: 10px;
-            padding: 1rem 1.25rem;
-            font-size: 0.92rem;
-            margin-bottom: 1.5rem;
-        }
-        .info-note strong { color: #1e3a8a; }
-        .info-note ol { margin: 0.4rem 0 0 1.25rem; }
-        .info-note li { margin-bottom: 0.2rem; }
+        .agreement-body h4:first-child { margin-top: 0; }
+        .agreement-body p { font-size: 0.9rem; color: var(--ink-2); line-height: 1.7; }
+        .agreement-meta { margin-top: 12px; font-size: 0.8rem; color: var(--muted); }
 
         /* Already enrolled in another program */
         .switch-check {
-            display: flex; align-items: flex-start; gap: 0.7rem;
-            background: #f9fafb;
-            border: 1.5px dashed #d1d5db;
-            border-radius: 10px;
-            padding: 0.9rem 1.1rem;
-            margin-bottom: 1.5rem;
-            font-size: 0.92rem; color: #374151;
+            display: flex; align-items: flex-start; gap: 12px;
+            font-size: 0.92rem; color: var(--ink-2);
             cursor: pointer;
         }
         .switch-check input {
-            width: 1.1rem; height: 1.1rem;
-            margin-top: 0.2rem; flex-shrink: 0;
-            accent-color: #059669;
+            width: 18px; height: 18px;
+            margin-top: 3px; flex-shrink: 0;
+            accent-color: var(--green-600);
         }
-        .switch-check:has(input:checked) {
-            border-style: solid; border-color: #10B981; background: #f0fdf4;
-        }
+        .switch-check:has(input:checked) { border-color: var(--green); background: var(--green-tint); }
 
-        /* Consent notice right above the button */
+        /* The two follow-up authorizations */
+        .auth-steps ol { margin-left: 20px; font-size: 0.92rem; color: var(--ink-2); }
+        .auth-steps li + li { margin-top: 4px; }
+
+        /* Consent + submit */
         .consent-notice {
-            background: #f0fdf4;
-            border: 2px solid #10B981;
-            border-radius: 10px;
-            padding: 1rem 1.25rem;
-            font-size: 0.92rem; color: #065f46;
-            margin-bottom: 1rem;
+            background: var(--green-tint);
+            border-color: var(--green-line);
+            font-size: 0.92rem; color: var(--green-800);
         }
-        .consent-notice ol { margin: 0.4rem 0 0 1.25rem; }
-
-        /* Submit */
+        .consent-notice ol { margin: 6px 0 0 20px; }
         .submit-btn {
             background: linear-gradient(135deg, #059669 0%, #047857 100%);
-            color: white;
-            padding: 1rem 2rem;
+            color: #fff;
+            padding: 16px 32px;
             border: none;
             border-radius: 50px;
             font-size: 1.05rem; font-weight: 600;
@@ -374,27 +313,31 @@
             background: linear-gradient(135deg, #047857 0%, #065f46 100%);
             transform: translateY(-1px);
         }
-        .submit-btn:disabled {
-            opacity: 0.5; cursor: not-allowed; box-shadow: none;
+        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+        .trust-line {
+            text-align: center; margin-top: 12px;
+            font-size: 0.88rem; font-weight: 600; color: var(--green-700);
         }
         .submit-help {
-            text-align: center; font-size: 0.85rem;
-            color: #6b7280; margin-top: 0.85rem;
+            text-align: center; font-size: 0.8rem;
+            color: var(--muted); margin-top: 4px;
         }
-        .submit-help a { color: #059669; }
 
         /* Status banner */
         .status-banner {
             display: none;
-            margin-top: 1.25rem;
-            padding: 1rem 1.25rem;
+            padding: 16px 20px;
             border-radius: 10px;
             font-size: 0.92rem;
         }
+        .form-container > .status-banner:not(.is-visible),
+        #signupForm > .status-banner:not(.is-visible) { margin: 0; }
         .status-banner.is-visible { display: block; }
         .status-error { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
-        .status-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #065f46; }
-        .status-info { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+        .status-success { background: var(--green-tint); border: 1px solid var(--green-line); color: var(--green-800); }
+
+        /* Mobile sticky CTA */
+        .sticky-cta { display: none; }
 
         /* Footer */
         footer {
@@ -410,7 +353,7 @@
         .footer-tagline { font-size: 0.95rem; color: #9ca3af; }
         .footer-nav { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; }
         .footer-nav a { color: #d1d5db; text-decoration: none; font-size: 0.9rem; }
-        .footer-nav a:hover { color: var(--brand-green); }
+        .footer-nav a:hover { color: var(--green); }
         .footer-copyright {
             border-top: 1px solid #374151;
             margin-top: 1.75rem; padding-top: 1.25rem;
@@ -419,15 +362,44 @@
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
-            .reg-hero h1 { font-size: 2rem; }
-            .form-container { padding: 2rem 1.5rem; }
-            .field-grid { grid-template-columns: 1fr; }
-            .device-card dl { grid-template-columns: 1fr; gap: 0.1rem 0; }
-            .device-card dt { margin-top: 0.5rem; }
-            .next-steps ol { grid-template-columns: 1fr; gap: 0.5rem; }
-            .next-steps li { display: flex; align-items: center; gap: 0.6rem; }
-            .next-steps .step-num { margin-bottom: 0; flex-shrink: 0; }
-            .next-steps li:not(:last-child)::after { display: none; }
+            .reg-hero { padding-top: 112px; }
+            .reg-hero h1 { font-size: 1.6rem; }
+            .reg-hero p { font-size: 0.98rem; }
+            .register-section { padding: 16px 0 40px; }
+            .container { padding: 0 12px; }
+            .form-container { padding: var(--space) 20px; border-radius: 12px; }
+            .card { padding: 16px 18px; }
+            .device-card dl { grid-template-columns: 1fr; gap: 0; }
+            .device-card dt { margin-top: 8px; }
+            .device-card dt:first-child { margin-top: 0; }
+
+            .next-steps ol { grid-template-columns: 1fr; gap: 8px; }
+            .next-steps li {
+                display: grid;
+                grid-template-columns: 24px 1fr;
+                column-gap: 12px; align-items: center;
+                padding: 12px 14px;
+            }
+            .step-num { grid-row: span 2; margin-bottom: 0; }
+            .step-desc { white-space: normal; }
+
+            body { padding-bottom: 96px; }
+            .sticky-cta {
+                display: block;
+                position: fixed; left: 0; right: 0; bottom: 0;
+                z-index: 1000;
+                background: rgba(255, 255, 255, 0.97);
+                border-top: 1px solid var(--line);
+                box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.06);
+                padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+                transition: transform 0.25s ease;
+            }
+            .sticky-cta.is-hidden { transform: translateY(110%); }
+            .sticky-cta .submit-btn { padding: 13px 20px; font-size: 1rem; }
+            .sticky-cta p {
+                text-align: center; font-size: 11.5px;
+                color: var(--muted); margin-top: 6px;
+            }
         }
     </style>
 </head>
@@ -459,12 +431,9 @@
     <!-- Hero -->
     <section class="reg-hero">
         <div class="container">
-            <span class="hero-badge">🔋 EP Cube Pilot · California</span>
             <h1>EP Cube × MicroVPP Winter Grid Program</h1>
             <h2 class="hero-powered">Powered by MicroVPP Intelligence</h2>
-            <p>
-                Get 24×7 battery optimization and join California's grid-support program year-round.
-            </p>
+            <p>Get 24×7 battery optimization and join California's grid-support program year-round.</p>
         </div>
     </section>
 
@@ -482,19 +451,19 @@
                 </ul>
 
                 <div class="next-steps">
-                    <div class="next-title">What happens next</div>
+                    <span class="eyebrow">What happens next</span>
                     <ol>
-                        <li><span class="step-num">1</span><span class="step-text">Authorize (about 3 minutes)</span></li>
-                        <li><span class="step-num">2</span><span class="step-text">We connect your battery within days</span></li>
-                        <li><span class="step-num">3</span><span class="step-text">Optimization and grid support run automatically this winter</span></li>
-                        <li><span class="step-num">4</span><span class="step-text">Season report and reward</span></li>
+                        <li><span class="step-num">1</span><span class="step-title">Authorize</span><span class="step-desc">About 3 minutes</span></li>
+                        <li><span class="step-num">2</span><span class="step-title">Connect</span><span class="step-desc">Within days</span></li>
+                        <li><span class="step-num">3</span><span class="step-title">Optimize</span><span class="step-desc">Runs all winter</span></li>
+                        <li><span class="step-num">4</span><span class="step-title">Get rewarded</span><span class="step-desc">Season report</span></li>
                     </ol>
                 </div>
 
                 <!-- Account context (all from the EP Cube link, read-only) -->
-                <div class="device-card">
+                <div class="card device-card">
                     <p class="device-greeting" id="greeting">Hi there — your EP Cube is ready to join.</p>
-                    <div class="device-title">📦 Your EP Cube account</div>
+                    <span class="eyebrow">Your EP Cube account</span>
                     <dl>
                         <dt>Email</dt>
                         <dd id="ctxEmail"><span class="missing">Not provided</span></dd>
@@ -511,17 +480,16 @@
                 <input type="hidden" id="deviceId" name="deviceId" />
 
                 <form id="signupForm" novalidate>
-                    <!-- Account details -->
-                    <div class="block">
-                        <h2 class="block-title">A few optional details</h2>
-                        <div class="field-grid">
-                            <div class="full">
+                    <div>
+                        <span class="eyebrow">A few optional details</span>
+                        <div class="field-stack">
+                            <div>
                                 <label class="field-label" for="nameInput">Full name or nickname <span class="opt">(optional)</span></label>
                                 <input type="text" id="nameInput" class="text-input"
                                        placeholder="e.g. Jane Doe" autocomplete="name" />
                             </div>
 
-                            <div class="full">
+                            <div>
                                 <label class="field-label" for="phoneInput">Phone number <span class="opt">(optional)</span></label>
                                 <input type="tel" id="phoneInput" class="text-input"
                                        placeholder="(555) 123-4567" autocomplete="tel" inputmode="tel" />
@@ -529,7 +497,7 @@
                                 <div class="field-error" id="phoneError">Please enter a 10-digit US phone number, or leave it blank.</div>
                             </div>
 
-                            <div class="full">
+                            <div>
                                 <label class="field-label" for="pvSizeInput">Solar (PV) system size in kW <span class="opt">(optional)</span></label>
                                 <input type="number" id="pvSizeInput" class="text-input"
                                        placeholder="e.g. 7.2" min="0" max="100" step="0.1" inputmode="decimal" />
@@ -540,8 +508,8 @@
                     </div>
 
                     <!-- Winter VPP program -->
-                    <div class="program-card">
-                        <div class="program-title">❄️ Winter program you're joining</div>
+                    <div class="card program-card">
+                        <span class="eyebrow">Winter program you're joining</span>
                         <h3>Winter grid-support program</h3>
                         <p>
                             When California's grid is under stress this winter, MicroVPP may
@@ -557,43 +525,51 @@
                     </div>
 
                     <!-- Agreement 1: MicroVPP user agreement -->
-                    <div class="agreement-card">
-                        <div class="agreement-title">📄 MicroVPP User Agreement</div>
-                        <div class="agreement-scroll">
-                            <p>
-                                Your use of MicroVPP is governed by the MicroVPP
-                                <a href="terms.html" target="_blank" rel="noopener">Terms of Use</a> and
-                                <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>,
-                                which you accept by creating your account. Highlights:
-                            </p>
+                    <div class="card agreement-card">
+                        <span class="eyebrow">MicroVPP User Agreement</span>
+                        <p class="agreement-plain">
+                            <strong>In plain English:</strong> this is your EP Cube to enroll, MicroVPP
+                            optimizes it without going below your backup reserve, you can take back
+                            control anytime, and your data is never sold.
+                        </p>
+                        <details>
+                            <summary>Read the full agreement</summary>
+                            <div class="agreement-body">
+                                <p>
+                                    Your use of MicroVPP is governed by the MicroVPP
+                                    <a href="terms.html" target="_blank" rel="noopener">Terms of Use</a> and
+                                    <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>,
+                                    which you accept by creating your account. Highlights:
+                                </p>
 
-                            <h4>Eligibility &amp; accurate information</h4>
-                            <p>
-                                You are at least 18, the owner or authorized user of this EP Cube
-                                system, and the information you provide is accurate and complete.
-                            </p>
+                                <h4>Eligibility &amp; accurate information</h4>
+                                <p>
+                                    You are at least 18, the owner or authorized user of this EP Cube
+                                    system, and the information you provide is accurate and complete.
+                                </p>
 
-                            <h4>Battery control</h4>
-                            <p>
-                                You authorize MicroVPP to access your battery's monitoring data and send
-                                control commands to optimize charging and discharging. We respect your
-                                minimum backup reserve, never discharge below your configured threshold,
-                                and pause optimization during grid outages.
-                            </p>
+                                <h4>Battery control</h4>
+                                <p>
+                                    You authorize MicroVPP to access your battery's monitoring data and send
+                                    control commands to optimize charging and discharging. We respect your
+                                    minimum backup reserve, never discharge below your configured threshold,
+                                    and pause optimization during grid outages.
+                                </p>
 
-                            <h4>You stay in control</h4>
-                            <p>
-                                You can disable automated control, adjust your backup reserve, control
-                                your battery manually, and opt out of VPP events at any time.
-                            </p>
+                                <h4>You stay in control</h4>
+                                <p>
+                                    You can disable automated control, adjust your backup reserve, control
+                                    your battery manually, and opt out of VPP events at any time.
+                                </p>
 
-                            <h4>Your data</h4>
-                            <p>
-                                We use your email, device, and energy data only to provide the service.
-                                Your data is never sold. See our
-                                <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.
-                            </p>
-                        </div>
+                                <h4>Your data</h4>
+                                <p>
+                                    We use your email, device, and energy data only to provide the service.
+                                    Your data is never sold. See our
+                                    <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.
+                                </p>
+                            </div>
+                        </details>
                         <p class="agreement-meta">
                             Terms of Use last updated November 7, 2025 · MicroVPP Inc.
                         </p>
@@ -601,89 +577,89 @@
 
                     <!-- Lets users already in DSGS etc. sign despite the exclusivity
                          attestation in §1; the account is flagged for a program switch. -->
-                    <label class="switch-check" for="otherProgramInput">
+                    <label class="card switch-check" for="otherProgramInput">
                         <input type="checkbox" id="otherProgramInput" />
                         <span>I'm already in another program (e.g., DSGS). Tick here and we'll help you switch.</span>
                     </label>
 
                     <!-- Agreement 2: VPP customer authorization (mirrors vpp/index.html) -->
-                    <div class="agreement-card">
-                        <div class="agreement-title">📄 VPP Customer Authorization</div>
-                        <div class="agreement-scroll">
-                            <p>
-                                By clicking <strong>"Agree &amp; Connect My Utility,"</strong> you
-                                ("Customer") authorize the following:
-                            </p>
+                    <div class="card agreement-card">
+                        <span class="eyebrow">VPP Customer Authorization</span>
+                        <p class="agreement-plain">
+                            <strong>In plain English:</strong> you're letting MicroVPP use your home
+                            battery to support the grid and earn you rewards, your data is used only
+                            to run the program, and you can opt out anytime.
+                        </p>
+                        <details>
+                            <summary>Read the full authorization</summary>
+                            <div class="agreement-body">
+                                <p>
+                                    By clicking <strong>"Agree &amp; Connect My Utility,"</strong> you
+                                    ("Customer") authorize the following:
+                                </p>
 
-                            <h4>1. Enrollment &amp; management</h4>
-                            <p>
-                                You grant MicroVPP the exclusive right to automatically enroll and
-                                manage the dispatch of your battery and related energy assets in grid
-                                services and demand response programs. This authorization remains in
-                                effect until you revoke it. You confirm these assets are not, and will
-                                not be, enrolled in any other utility or demand response program
-                                outside of MicroVPP while this authorization is active.
-                            </p>
+                                <h4>1. Enrollment &amp; management</h4>
+                                <p>
+                                    You grant MicroVPP the exclusive right to automatically enroll and
+                                    manage the dispatch of your battery and related energy assets in grid
+                                    services and demand response programs. This authorization remains in
+                                    effect until you revoke it. You confirm these assets are not, and will
+                                    not be, enrolled in any other utility or demand response program
+                                    outside of MicroVPP while this authorization is active.
+                                </p>
 
-                            <h4>2. Dispatch &amp; control</h4>
-                            <p>
-                                You authorize MicroVPP and its authorized partners to monitor, control,
-                                operate, and dispatch your battery and related energy assets as needed
-                                to participate in applicable grid services and demand response programs.
-                            </p>
+                                <h4>2. Dispatch &amp; control</h4>
+                                <p>
+                                    You authorize MicroVPP and its authorized partners to monitor, control,
+                                    operate, and dispatch your battery and related energy assets as needed
+                                    to participate in applicable grid services and demand response programs.
+                                </p>
 
-                            <h4>3. Data sharing</h4>
-                            <p>
-                                You authorize MicroVPP, its authorized grid-services partners, your
-                                electric utility, and the applicable program administrators to access
-                                and use your energy usage, account, and device data — including interval
-                                and usage data from your utility's metering infrastructure, your name,
-                                service address, account and meter identifiers, rate plan, and device
-                                details — solely to enroll, operate, and settle your participation in
-                                these programs. Your data is never sold and is handled in accordance
-                                with our <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>
-                                and applicable state privacy and utility data-access laws.
-                            </p>
+                                <h4>3. Data sharing</h4>
+                                <p>
+                                    You authorize MicroVPP, its authorized grid-services partners, your
+                                    electric utility, and the applicable program administrators to access
+                                    and use your energy usage, account, and device data — including interval
+                                    and usage data from your utility's metering infrastructure, your name,
+                                    service address, account and meter identifiers, rate plan, and device
+                                    details — solely to enroll, operate, and settle your participation in
+                                    these programs. Your data is never sold and is handled in accordance
+                                    with our <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>
+                                    and applicable state privacy and utility data-access laws.
+                                </p>
 
-                            <h4>4. No fossil-fuel generation</h4>
-                            <p>
-                                You attest that you will not use diesel, natural gas, gasoline, propane,
-                                or liquefied petroleum gas (LPG) generation to deliver load reduction
-                                during any program event, where prohibited by applicable program rules.
-                            </p>
+                                <h4>4. No fossil-fuel generation</h4>
+                                <p>
+                                    You attest that you will not use diesel, natural gas, gasoline, propane,
+                                    or liquefied petroleum gas (LPG) generation to deliver load reduction
+                                    during any program event, where prohibited by applicable program rules.
+                                </p>
 
-                            <h4>5. Accurate information</h4>
-                            <p>
-                                You confirm that the information you have provided is accurate and
-                                complete, and you agree to notify MicroVPP of any material changes.
-                            </p>
+                                <h4>5. Accurate information</h4>
+                                <p>
+                                    You confirm that the information you have provided is accurate and
+                                    complete, and you agree to notify MicroVPP of any material changes.
+                                </p>
 
-                            <h4>6. Revoking &amp; opting out</h4>
-                            <p>
-                                You may revoke this authorization at any time by emailing
-                                <a href="mailto:info@microvpp.com">info@microvpp.com</a>, which ends
-                                your participation and stops future data sharing. You can also opt out
-                                of an individual dispatch event — just let us know — without revoking
-                                your overall authorization (frequent opt-outs may reduce your earnings
-                                or eligibility).
-                            </p>
-
-                            <h4>In plain English</h4>
-                            <p>
-                                Thanks for reading all the fine print — we know it's a lot. You're
-                                letting MicroVPP use your home battery to support the grid and earn you
-                                rewards, your data is used only to run the program, and you can opt out
-                                anytime.
-                            </p>
-                        </div>
+                                <h4>6. Revoking &amp; opting out</h4>
+                                <p>
+                                    You may revoke this authorization at any time by emailing
+                                    <a href="mailto:info@microvpp.com">info@microvpp.com</a>, which ends
+                                    your participation and stops future data sharing. You can also opt out
+                                    of an individual dispatch event — just let us know — without revoking
+                                    your overall authorization (frequent opt-outs may reduce your earnings
+                                    or eligibility).
+                                </p>
+                            </div>
+                        </details>
                         <p class="agreement-meta">
                             Version <span id="vppAgreementVersionLabel">v3.1</span> · Last updated June 2026 · MicroVPP Inc.
                         </p>
                     </div>
 
                     <!-- The two follow-up authorizations -->
-                    <div class="info-note">
-                        🔌 <strong>Two quick authorizations, about a minute each:</strong>
+                    <div class="card auth-steps">
+                        <span class="eyebrow">Two quick authorizations, about a minute each</span>
                         <ol>
                             <li><strong>Utility authorization</strong> — lets your battery enroll in the grid program through <span class="utility-name">your utility</span>;</li>
                             <li><strong>Meter data authorization</strong> — an email from UtilityAPI will follow so we can measure your savings.</li>
@@ -691,7 +667,7 @@
                     </div>
 
                     <!-- What clicking the button means -->
-                    <div class="consent-notice" id="consentNotice">
+                    <div class="card consent-notice" id="consentNotice">
                         <strong>By clicking "Agree &amp; Connect My Utility," you:</strong>
                         <ol>
                             <li>accept the <strong>MicroVPP User Agreement</strong>,</li>
@@ -700,18 +676,27 @@
                         </ol>
                     </div>
 
-                    <button type="submit" class="submit-btn" id="submitBtn">
-                        Agree &amp; Connect My Utility →
-                    </button>
-                    <p class="submit-help">
-                        💡 Clicking the button is your electronic signature on both agreements above.
-                    </p>
+                    <div id="submitArea">
+                        <button type="submit" class="submit-btn" id="submitBtn">
+                            Agree &amp; Connect My Utility →
+                        </button>
+                        <p class="trust-line">Free · Opt out anytime · Data never sold</p>
+                        <p class="submit-help">
+                            Clicking the button is your electronic signature on both agreements above.
+                        </p>
+                    </div>
 
                     <div class="status-banner" id="statusBanner" role="status" aria-live="polite"></div>
                 </form>
             </div>
         </div>
     </section>
+
+    <!-- Mobile: keeps the one button in reach; hidden while the real one is on screen -->
+    <div class="sticky-cta" id="stickyCta">
+        <button type="button" class="submit-btn" id="stickyBtn">Agree &amp; Connect My Utility →</button>
+        <p>Tapping accepts both agreements above · Free · Opt out anytime</p>
+    </div>
 
     <!-- Footer -->
     <footer>
@@ -808,6 +793,8 @@
         const pvSizeInput   = document.getElementById('pvSizeInput');
         const pvSizeError   = document.getElementById('pvSizeError');
         const submitBtn     = document.getElementById('submitBtn');
+        const stickyCta     = document.getElementById('stickyCta');
+        const stickyBtn     = document.getElementById('stickyBtn');
         const statusBanner  = document.getElementById('statusBanner');
 
         document.getElementById('vppAgreementVersionLabel').textContent = CONFIG.vppAgreementVersion;
@@ -928,11 +915,34 @@
             linkError.style.marginTop = '0';
             linkError.style.marginBottom = '1.5rem';
             linkError.innerHTML =
-                '⚠️ This sign-up link is incomplete (missing ' + missing.join(', ') + '). ' +
+                'This sign-up link is incomplete (missing ' + missing.join(', ') + '). ' +
                 'Please open the link from your EP Cube email again, or contact ' +
                 '<a href="mailto:info@microvpp.com">info@microvpp.com</a>.';
             submitBtn.disabled = true;
+            stickyCta.hidden = true;
             track('ep_cube_link_incomplete', missing.join(','));
+        }
+
+        // ---------- Mobile sticky CTA ----------
+        // It mirrors the real button's label and state, and hides while the
+        // real button is on screen so there is never a duplicate in view.
+        function syncStickyCta() {
+            stickyBtn.textContent = submitBtn.textContent.trim();
+            stickyBtn.disabled = submitBtn.disabled;
+        }
+        syncStickyCta();
+        new MutationObserver(syncStickyCta).observe(submitBtn, {
+            attributes: true, attributeFilter: ['disabled'],
+            childList: true, characterData: true, subtree: true
+        });
+        stickyBtn.addEventListener('click', function () {
+            if (typeof form.requestSubmit === 'function') form.requestSubmit();
+            else submitBtn.click();
+        });
+        if ('IntersectionObserver' in window) {
+            new IntersectionObserver(function (entries) {
+                stickyCta.classList.toggle('is-hidden', entries[0].isIntersecting);
+            }).observe(document.getElementById('submitArea'));
         }
 
         // ---------- 3. Field validation ----------
@@ -1114,14 +1124,14 @@
             try {
                 result = await optIn(f, accountId);
             } catch (_) {
-                showStatus('error', '⚠️ We couldn\'t reach the enrollment service. Please check your connection and try again.');
+                showStatus('error', 'We couldn\'t reach the enrollment service. Please check your connection and try again.');
                 resetSubmit();
                 return;
             }
             if (!result.ok) {
                 const d = result.body && (result.body.detail || result.body.message);
                 const msg = typeof d === 'string' ? d : (d ? JSON.stringify(d) : ('HTTP ' + result.status));
-                showStatus('error', '⚠️ Enrollment couldn\'t be completed: ' + msg);
+                showStatus('error', 'Enrollment couldn\'t be completed: ' + msg);
                 resetSubmit();
                 return;
             }
@@ -1133,7 +1143,7 @@
                 // this account, so the redirect would produce an orphan meter.
                 showStatus(
                     'error',
-                    '⚠️ You\'re opted in, but we couldn\'t start the Utility authorization. ' +
+                    'You\'re opted in, but we couldn\'t start the Utility authorization. ' +
                     'We\'ll email <strong>' + escapeHtml(f.email) + '</strong> a link to finish, or contact ' +
                     '<a href="mailto:info@microvpp.com">info@microvpp.com</a>.'
                 );
@@ -1147,7 +1157,7 @@
 
             try { sessionStorage.removeItem(CTX_STORAGE_KEY); } catch (_) { /* noop */ }
             track('ep_cube_redirect_leap', f.utility);
-            showStatus('success', '✅ You\'re opted in! Taking you to Utility authorization with ' + UTILITY_SHORT[f.utility] + '…');
+            showStatus('success', 'You\'re opted in! Taking you to Utility authorization with ' + UTILITY_SHORT[f.utility] + '…');
             submitBtn.textContent = 'Redirecting…';
             setTimeout(function () {
                 window.location.assign(leapConnectUrl(f.utility, refId));
