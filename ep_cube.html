@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-T2CN68FF');</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-05XLDKW0MN"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-05XLDKW0MN');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EP Cube Intelligence by MicroVPP</title>
+    <meta name="description" content="Get 24x7 battery optimization, join California grid support program all year round." />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="theme-color" content="#065f46" />
+    <link rel="canonical" href="https://www.microvpp.com/ep_cube.html" />
+    <link rel="icon" type="image/png" href="assets/images/microvpp_logo.png" />
+    <link rel="apple-touch-icon" href="assets/images/microvpp_logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-green: #10B981;
+            --brand-green-dark: #065f46;
+            --brand-green-medium: #059669;
+            --brand-green-darker: #047857;
+            --brand-gold: #F59E0B;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+            background: #f8fafc;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.15);
+        }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; text-decoration: none; }
+        .logo img { height: 50px; width: auto; }
+        .nav-links { display: flex; list-style: none; gap: 2rem; }
+        .nav-links a {
+            text-decoration: none; color: #333; font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover { color: var(--brand-green); }
+        .header-buttons { display: flex; align-items: center; gap: 12px; }
+        .cta-button-outline {
+            background: transparent; color: var(--brand-green);
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--brand-green);
+            border-radius: 12px;
+            font-weight: 600; font-size: 0.875rem;
+            text-decoration: none; transition: all 0.3s ease;
+            cursor: pointer; display: inline-flex; align-items: center;
+        }
+        .cta-button-outline:hover { background: rgba(16, 185, 129, 0.05); }
+
+        /* Hero */
+        .reg-hero {
+            padding: 140px 0 40px;
+            background: linear-gradient(135deg, #065f46 0%, #047857 50%, #059669 100%);
+            color: white;
+            text-align: center;
+        }
+        .reg-hero h1 {
+            font-size: 2.5rem; font-weight: 700;
+            margin-bottom: 1rem; line-height: 1.2;
+        }
+        .reg-hero p {
+            font-size: 1.15rem; max-width: 720px;
+            margin: 0 auto; opacity: 0.95;
+        }
+        .reg-hero .hero-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: rgba(245, 158, 11, 0.18);
+            color: #fde68a;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-radius: 999px;
+            font-size: 0.85rem; font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* Sign-up section */
+        .register-section { padding: 40px 0 80px; }
+        .form-container {
+            max-width: 760px; margin: 0 auto;
+            background: white; padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .block-title {
+            font-size: 1.05rem; font-weight: 700;
+            color: #1f2937; margin: 0 0 1rem;
+        }
+        .block { margin-bottom: 2rem; }
+
+        /* Device context card */
+        .device-card {
+            background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+            border: 2px solid #10B981;
+            border-radius: 12px;
+            padding: 1.1rem 1.4rem;
+            margin-bottom: 2rem;
+        }
+        .device-card .device-title {
+            font-size: 0.8rem; font-weight: 700;
+            color: #047857; text-transform: uppercase;
+            letter-spacing: 0.05em; margin-bottom: 0.6rem;
+        }
+        .device-card dl {
+            display: grid;
+            grid-template-columns: 130px 1fr;
+            gap: 0.45rem 1rem;
+            font-size: 0.95rem;
+        }
+        .device-card dt { color: #065f46; font-weight: 600; }
+        .device-card dd { color: #1f2937; word-break: break-word; }
+        .device-card code {
+            font-family: 'Inter', monospace;
+            background: rgba(16, 185, 129, 0.12);
+            padding: 2px 7px; border-radius: 5px;
+            font-size: 0.9rem; color: #065f46; font-weight: 600;
+        }
+        .device-card .missing { color: #b45309; font-style: italic; }
+
+        /* Form fields */
+        .field-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem 1.25rem;
+        }
+        .field-grid .full { grid-column: 1 / -1; }
+        .field-label {
+            display: block;
+            font-size: 0.9rem; font-weight: 600;
+            color: #374151; margin-bottom: 0.4rem;
+        }
+        .field-label .req { color: #dc2626; }
+        .field-label .opt { color: #9ca3af; font-weight: 500; }
+        .text-input, select.text-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem; font-family: inherit;
+            color: #1f2937; background: #fff;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .text-input:focus, select.text-input:focus {
+            outline: none;
+            border-color: #10B981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
+        }
+        .text-input.invalid { border-color: #ef4444; }
+        .text-input[readonly] {
+            background: #f3f4f6; color: #4b5563;
+            cursor: default; border-color: #e5e7eb;
+        }
+        .text-input[readonly]:focus { box-shadow: none; border-color: #e5e7eb; }
+        .field-help { font-size: 0.82rem; color: #6b7280; margin-top: 0.35rem; }
+        .field-error {
+            display: none;
+            color: #ef4444; font-size: 0.85rem; margin-top: 0.35rem;
+        }
+        .field-error.is-visible { display: block; }
+
+        /* Program card */
+        .program-card {
+            background: #fffbeb;
+            border: 2px solid #fde68a;
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .program-card .program-title {
+            font-size: 0.8rem; font-weight: 700;
+            color: #b45309; text-transform: uppercase;
+            letter-spacing: 0.05em; margin-bottom: 0.4rem;
+        }
+        .program-card h3 { font-size: 1.2rem; color: #1f2937; margin-bottom: 0.5rem; }
+        .program-card p, .program-card li { font-size: 0.92rem; color: #374151; }
+        .program-card ul { margin: 0.4rem 0 0 1.25rem; }
+
+        /* Agreement cards */
+        .agreement-card {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.5rem 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+        .agreement-card .agreement-title {
+            font-size: 1rem; font-weight: 700;
+            color: #047857; text-transform: uppercase;
+            letter-spacing: 0.05em; margin-bottom: 0.75rem;
+        }
+        .agreement-scroll {
+            max-height: 300px; overflow-y: auto;
+            padding-right: 0.75rem;
+            border-top: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
+            padding-top: 1rem; padding-bottom: 1rem;
+        }
+        .agreement-scroll h4 {
+            font-size: 0.95rem; color: #065f46;
+            margin: 1.1rem 0 0.4rem;
+        }
+        .agreement-scroll h4:first-child { margin-top: 0; }
+        .agreement-scroll p,
+        .agreement-scroll li {
+            font-size: 0.92rem; color: #374151; line-height: 1.7;
+        }
+        .agreement-scroll ul { margin: 0.3rem 0 0.6rem 1.25rem; }
+        .agreement-meta {
+            margin-top: 0.75rem;
+            font-size: 0.8rem; color: #6b7280;
+        }
+
+        /* Utility data notice */
+        .info-note {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1e40af;
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+            font-size: 0.92rem;
+            margin-bottom: 1.5rem;
+        }
+        .info-note strong { color: #1e3a8a; }
+
+        /* Consent notice right above the button */
+        .consent-notice {
+            background: #f0fdf4;
+            border: 2px solid #10B981;
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+            font-size: 0.92rem; color: #065f46;
+            margin-bottom: 1rem;
+        }
+        .consent-notice ol { margin: 0.4rem 0 0 1.25rem; }
+
+        /* Submit */
+        .submit-btn {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.05rem; font-weight: 600;
+            cursor: pointer; transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+        }
+        .submit-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+            transform: translateY(-1px);
+        }
+        .submit-btn:disabled {
+            opacity: 0.5; cursor: not-allowed; box-shadow: none;
+        }
+        .submit-help {
+            text-align: center; font-size: 0.85rem;
+            color: #6b7280; margin-top: 0.85rem;
+        }
+        .submit-help a { color: #059669; }
+
+        /* Status banner */
+        .status-banner {
+            display: none;
+            margin-top: 1.25rem;
+            padding: 1rem 1.25rem;
+            border-radius: 10px;
+            font-size: 0.92rem;
+        }
+        .status-banner.is-visible { display: block; }
+        .status-error { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+        .status-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #065f46; }
+        .status-info { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+
+        /* Footer */
+        footer {
+            background: #1f2937; color: #d1d5db;
+            padding: 2.5rem 0 1.5rem;
+        }
+        .footer-content {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 1rem; text-align: center;
+        }
+        .footer-logo-title { font-size: 1.25rem; font-weight: 700; color: #fff; }
+        .footer-logo-subtitle { font-size: 0.85rem; color: #9ca3af; }
+        .footer-tagline { font-size: 0.95rem; color: #9ca3af; }
+        .footer-nav { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; }
+        .footer-nav a { color: #d1d5db; text-decoration: none; font-size: 0.9rem; }
+        .footer-nav a:hover { color: var(--brand-green); }
+        .footer-copyright {
+            border-top: 1px solid #374151;
+            margin-top: 1.75rem; padding-top: 1.25rem;
+            text-align: center; font-size: 0.82rem; color: #9ca3af;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .reg-hero h1 { font-size: 2rem; }
+            .form-container { padding: 2rem 1.5rem; }
+            .field-grid { grid-template-columns: 1fr; }
+            .device-card dl { grid-template-columns: 1fr; gap: 0.1rem 0; }
+            .device-card dt { margin-top: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T2CN68FF"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <a href="index.html" class="logo">
+                <img src="assets/images/microgrid_logo.png" alt="MicroGrid"
+                     onerror="this.onerror=null;this.src='assets/images/microvpp_logo.png';">
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#join-movement">How It Works</a></li>
+                <li><a href="index.html#faq">FAQ</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+            <div class="header-buttons">
+                <a href="index.html" class="cta-button-outline">Back to Home</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="reg-hero">
+        <div class="container">
+            <span class="hero-badge">🔋 EP Cube Pilot · California</span>
+            <h1>EP Cube Intelligence by MicroVPP</h1>
+            <p>
+                Get 24x7 battery optimization, join California grid support program all year round.
+            </p>
+        </div>
+    </section>
+
+    <!-- Sign-up -->
+    <section class="register-section">
+        <div class="container">
+            <div class="form-container">
+
+                <!-- Shown when the EP Cube link is missing email / S/N / device id -->
+                <div class="status-banner status-error" id="linkError" role="alert"></div>
+
+                <!-- Device context (from the EP Cube link) -->
+                <div class="device-card">
+                    <div class="device-title">📦 Your EP Cube system</div>
+                    <dl>
+                        <dt>Brand</dt>
+                        <dd>EP Cube</dd>
+                        <dt>Serial Number</dt>
+                        <dd id="ctxSerial"><span class="missing">Not provided</span></dd>
+                        <dt>State</dt>
+                        <dd>California</dd>
+                    </dl>
+                </div>
+                <input type="hidden" id="deviceId" name="deviceId" />
+
+                <form id="signupForm" novalidate>
+                    <!-- Account details -->
+                    <div class="block">
+                        <h2 class="block-title">Your details</h2>
+                        <div class="field-grid">
+                            <div class="full">
+                                <label class="field-label" for="emailInput">Email address <span class="req">*</span></label>
+                                <input type="email" id="emailInput" class="text-input"
+                                       placeholder="you@example.com" autocomplete="email" inputmode="email" />
+                                <p class="field-help">Pre-filled from your EP Cube account. You can change it if you'd like us to reach you elsewhere.</p>
+                                <div class="field-error" id="emailError">Please enter a valid email address.</div>
+                            </div>
+
+                            <div class="full">
+                                <label class="field-label" for="utilitySelect">Electric utility <span class="req">*</span></label>
+                                <select id="utilitySelect" class="text-input">
+                                    <option value="" selected disabled>Choose your utility…</option>
+                                    <option value="pge">Pacific Gas &amp; Electric (PG&amp;E)</option>
+                                    <option value="sce">Southern California Edison (SCE)</option>
+                                    <option value="sdge">San Diego Gas &amp; Electric (SDG&amp;E)</option>
+                                </select>
+                                <p class="field-help">The company that sends your electricity bill.</p>
+                                <div class="field-error" id="utilityError">Please choose your utility.</div>
+                            </div>
+
+                            <div class="full">
+                                <label class="field-label" for="nameInput">Full name or nickname <span class="opt">(optional)</span></label>
+                                <input type="text" id="nameInput" class="text-input"
+                                       placeholder="e.g. Jane Doe" autocomplete="name" />
+                            </div>
+
+                            <div>
+                                <label class="field-label" for="cityInput">Home city <span class="opt">(optional)</span></label>
+                                <input type="text" id="cityInput" class="text-input"
+                                       placeholder="e.g. San Jose" autocomplete="address-level2" />
+                            </div>
+
+                            <div>
+                                <label class="field-label" for="stateInput">State</label>
+                                <input type="text" id="stateInput" class="text-input" value="California" readonly />
+                            </div>
+
+                            <div class="full">
+                                <label class="field-label" for="phoneInput">Phone number <span class="opt">(optional)</span></label>
+                                <input type="tel" id="phoneInput" class="text-input"
+                                       placeholder="(555) 123-4567" autocomplete="tel" inputmode="tel" />
+                                <p class="field-help">Only used for grid event reminders and account support.</p>
+                                <div class="field-error" id="phoneError">Please enter a 10-digit US phone number, or leave it blank.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Winter VPP program -->
+                    <div class="program-card">
+                        <div class="program-title">❄️ Winter program you're joining</div>
+                        <h3>ELRP B (CAISO)</h3>
+                        <p>
+                            When California's grid is under stress this winter, MicroVPP may
+                            discharge your EP Cube battery for a few hours to help keep the lights on
+                            for your neighbors, and you earn rewards for every event you support.
+                        </p>
+                        <ul>
+                            <li>Your backup reserve setting is always respected.</li>
+                            <li>You can opt out of any individual event.</li>
+                            <li>You can leave the pilot at any time.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Agreement 1: MicroVPP user agreement -->
+                    <div class="agreement-card">
+                        <div class="agreement-title">📄 MicroVPP User Agreement</div>
+                        <div class="agreement-scroll">
+                            <p>
+                                Your use of MicroVPP is governed by the MicroVPP
+                                <a href="terms.html" target="_blank" rel="noopener">Terms of Use</a> and
+                                <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>,
+                                which you accept by creating your account. Highlights:
+                            </p>
+
+                            <h4>Eligibility &amp; accurate information</h4>
+                            <p>
+                                You are at least 18, the owner or authorized user of this EP Cube
+                                system, and the information you provide is accurate and complete.
+                            </p>
+
+                            <h4>Battery control</h4>
+                            <p>
+                                You authorize MicroVPP to access your battery's monitoring data and send
+                                control commands to optimize charging and discharging. We respect your
+                                minimum backup reserve, never discharge below your configured threshold,
+                                and pause optimization during grid outages.
+                            </p>
+
+                            <h4>You stay in control</h4>
+                            <p>
+                                You can disable automated control, adjust your backup reserve, control
+                                your battery manually, and opt out of VPP events at any time.
+                            </p>
+
+                            <h4>Your data</h4>
+                            <p>
+                                We use your email, device, and energy data only to provide the service.
+                                Your data is never sold. See our
+                                <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.
+                            </p>
+                        </div>
+                        <p class="agreement-meta">
+                            Terms of Use last updated November 7, 2025 · MicroGrid LLC
+                        </p>
+                    </div>
+
+                    <!-- Agreement 2: VPP customer authorization (mirrors vpp/index.html) -->
+                    <div class="agreement-card">
+                        <div class="agreement-title">📄 VPP Customer Authorization</div>
+                        <div class="agreement-scroll">
+                            <p>
+                                By clicking <strong>"Agree &amp; Connect My Utility,"</strong> you
+                                ("Customer") authorize the following:
+                            </p>
+
+                            <h4>1. Enrollment &amp; management</h4>
+                            <p>
+                                You grant MicroVPP the exclusive right to automatically enroll and
+                                manage the dispatch of your battery and related energy assets in grid
+                                services and demand response programs. This authorization remains in
+                                effect until you revoke it. You confirm these assets are not, and will
+                                not be, enrolled in any other utility or demand response program
+                                outside of MicroVPP while this authorization is active.
+                            </p>
+
+                            <h4>2. Dispatch &amp; control</h4>
+                            <p>
+                                You authorize MicroVPP and its authorized partners to monitor, control,
+                                operate, and dispatch your battery and related energy assets as needed
+                                to participate in applicable grid services and demand response programs.
+                            </p>
+
+                            <h4>3. Data sharing</h4>
+                            <p>
+                                You authorize MicroVPP, its authorized grid-services partners, your
+                                electric utility, and the applicable program administrators to access
+                                and use your energy usage, account, and device data — including interval
+                                and usage data from your utility's metering infrastructure, your name,
+                                service address, account and meter identifiers, rate plan, and device
+                                details — solely to enroll, operate, and settle your participation in
+                                these programs. Your data is never sold and is handled in accordance
+                                with our <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>
+                                and applicable state privacy and utility data-access laws.
+                            </p>
+
+                            <h4>4. No fossil-fuel generation</h4>
+                            <p>
+                                You attest that you will not use diesel, natural gas, gasoline, propane,
+                                or liquefied petroleum gas (LPG) generation to deliver load reduction
+                                during any program event, where prohibited by applicable program rules.
+                            </p>
+
+                            <h4>5. Accurate information</h4>
+                            <p>
+                                You confirm that the information you have provided is accurate and
+                                complete, and you agree to notify MicroVPP of any material changes.
+                            </p>
+
+                            <h4>6. Revoking &amp; opting out</h4>
+                            <p>
+                                You may revoke this authorization at any time by emailing
+                                <a href="mailto:info@microvpp.com">info@microvpp.com</a>, which ends
+                                your participation and stops future data sharing. You can also opt out
+                                of an individual dispatch event — just let us know — without revoking
+                                your overall authorization (frequent opt-outs may reduce your earnings
+                                or eligibility).
+                            </p>
+
+                            <h4>In plain English</h4>
+                            <p>
+                                Thanks for reading all the fine print — we know it's a lot. You're
+                                letting MicroVPP use your home battery to support the grid and earn you
+                                rewards, your data is used only to run the program, and you can opt out
+                                anytime.
+                            </p>
+                        </div>
+                        <p class="agreement-meta">
+                            Version <span id="vppAgreementVersionLabel">v3.1</span> · Last updated June 2026 · MicroGrid LLC
+                        </p>
+                    </div>
+
+                    <!-- Utility data authorization notice -->
+                    <div class="info-note">
+                        🔌 <strong>Utility meter data.</strong> To count your battery's contribution,
+                        we need your utility to share your meter data. After you click the button
+                        below, you'll go to our partner Leap's secure page to authorize
+                        <strong id="utilityNameNote">your utility</strong>. We'll also email you a
+                        meter-data authorization request from <strong>UtilityAPI</strong>. Please
+                        confirm it when it arrives.
+                    </div>
+
+                    <!-- What clicking the button means -->
+                    <div class="consent-notice" id="consentNotice">
+                        <strong>By clicking "Agree &amp; Connect My Utility," you:</strong>
+                        <ol>
+                            <li>accept the <strong>MicroVPP User Agreement</strong>,</li>
+                            <li>sign the <strong>VPP Customer Authorization</strong> and opt in to <strong>ELRP B</strong>, and</li>
+                            <li>will be taken to your utility's authorization page to share your meter data.</li>
+                        </ol>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        Agree &amp; Connect My Utility →
+                    </button>
+                    <p class="submit-help">
+                        💡 Clicking the button is your electronic signature on both agreements above.
+                    </p>
+
+                    <div class="status-banner" id="statusBanner" role="status" aria-live="polite"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo-title">MicroVPP®</div>
+                    <div class="footer-logo-subtitle">by MicroGrid LLC</div>
+                </div>
+                <div class="footer-tagline">Smarter homes. Stronger grids.</div>
+                <nav class="footer-nav">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="privacy.html">Privacy</a>
+                    <a href="terms.html">Terms</a>
+                    <a href="mailto:info@microvpp.com">Contact</a>
+                </nav>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; 2026 MicroGrid LLC. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // =====================================================================
+        // MicroVPP — EP Cube Intelligence sign-up, ELRP B enrollment (CAISO)
+        //
+        // EP Cube emails each customer a link carrying their identity:
+        //
+        //   https://www.microvpp.com/ep_cube.html?email=jane%40example.com
+        //     &sn=EPC123456789&device_id=2937&utility=sce
+        //
+        //   email      - required, pre-filled, editable by the user
+        //   sn         - required, shown read-only
+        //   device_id  - required, hidden (EP Cube internal id)
+        //   utility    - pge | sce | sdge; pre-selects the dropdown
+        //   name, city, phone - optional pre-fills
+        //
+        // Flow on the single button:
+        //   1. POST /auth/signup     create the account + EP Cube inverter
+        //   2. POST /admin/vpp/opt-in  record both agreements; returns the
+        //      Leap refId (MICROVPP_<AES-SIV(account uuid)>), which can only be
+        //      minted server-side
+        //   3. POST /admin/utilityapi/request-authorization  (best-effort email)
+        //   4. Redirect to Leap Connect with utility + refId
+        // =====================================================================
+
+        const CONFIG = {
+            apiBaseUrl: 'https://api.microvpp.com',
+            signupEndpoint: '/auth/signup',
+            optInEndpoint: '/admin/vpp/opt-in',
+            utilityApiAuthEndpoint: '/admin/utilityapi/request-authorization',
+
+            inverterType: 'ep_cube',
+            inverterManufacturer: 'EP Cube',
+            timezone: 'America/Los_Angeles',
+            stateCode: 'CA',
+
+            vppProgramId: 1,
+            vppAgreementVersion: 'v3.1',
+            userAgreementVersion: 'terms-2025-11-07',
+
+            leapConnectUrl: 'https://connect.leap.energy',
+            leapTransmissionRegion: 'CAISO',
+            leapVariant: 'RESIDENTIAL',
+            leapAccount: 'MicroVPP',
+            // Leap restores custom params on the Final Redirect URL, so the
+            // thank-you page can tell this funnel apart from others.
+            leapSourceParam: 'ep_cube'
+        };
+
+        const UTILITY_LABELS = {
+            pge:  'PG&E',
+            sce:  'Southern California Edison (SCE)',
+            sdge: 'SDG&E'
+        };
+        const CTX_STORAGE_KEY = 'ep_cube_signup_ctx';
+
+        // ---------- DOM ----------
+        const linkError     = document.getElementById('linkError');
+        const ctxSerialEl   = document.getElementById('ctxSerial');
+        const deviceIdInput = document.getElementById('deviceId');
+        const form          = document.getElementById('signupForm');
+        const emailInput    = document.getElementById('emailInput');
+        const emailError    = document.getElementById('emailError');
+        const utilitySelect = document.getElementById('utilitySelect');
+        const utilityError  = document.getElementById('utilityError');
+        const utilityNote   = document.getElementById('utilityNameNote');
+        const nameInput     = document.getElementById('nameInput');
+        const cityInput     = document.getElementById('cityInput');
+        const phoneInput    = document.getElementById('phoneInput');
+        const phoneError    = document.getElementById('phoneError');
+        const submitBtn     = document.getElementById('submitBtn');
+        const statusBanner  = document.getElementById('statusBanner');
+
+        document.getElementById('vppAgreementVersionLabel').textContent = CONFIG.vppAgreementVersion;
+
+        // ---------- Helpers ----------
+        function isValidEmail(v) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((v || '').trim());
+        }
+        function escapeHtml(s) {
+            return String(s).replace(/[&<>"']/g, function (c) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+            });
+        }
+
+        // Leap utility ids are lowercase (pge, sce, sdge); accept the common
+        // spellings EP Cube might send (PG&E, SDG&E, SCE, ...).
+        function normalizeUtility(raw) {
+            const u = (raw || '').toLowerCase().replace(/[^a-z]/g, '');
+            if (u === 'pge' || u === 'pacificgasandelectric' || u === 'pacificgaselectric') return 'pge';
+            if (u === 'sce' || u === 'southerncaliforniaedison') return 'sce';
+            if (u === 'sdge' || u === 'sandiegogasandelectric' || u === 'sandiegogaselectric') return 'sdge';
+            return '';
+        }
+
+        // Cognito rejects phone numbers that are not E.164, which would fail
+        // the whole signup, so only well-formed US numbers are sent.
+        function normalizeUsPhone(raw) {
+            const digits = (raw || '').replace(/\D/g, '');
+            if (digits.length === 10) return '+1' + digits;
+            if (digits.length === 11 && digits[0] === '1') return '+' + digits;
+            return '';
+        }
+
+        function splitName(full) {
+            const parts = (full || '').trim().split(/\s+/).filter(Boolean);
+            if (!parts.length) return { first: null, last: null };
+            return { first: parts[0], last: parts.slice(1).join(' ') || null };
+        }
+
+        function showStatus(kind, message) {
+            statusBanner.className = 'status-banner is-visible status-' + kind;
+            statusBanner.innerHTML = message;
+            statusBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        function clearStatus() {
+            statusBanner.className = 'status-banner';
+            statusBanner.innerHTML = '';
+        }
+        function track(event, label) {
+            if (typeof gtag === 'function') {
+                gtag('event', event, { event_category: 'ep_cube_signup', event_label: label || '' });
+            }
+        }
+
+        // ---------- 1. Read the EP Cube link, then scrub PII from the URL ----------
+        // The params are kept in sessionStorage so a page refresh still works
+        // after the address bar has been cleaned.
+        function readContext() {
+            const qs = new URLSearchParams(window.location.search);
+            const fromUrl = {
+                email:     (qs.get('email') || '').trim().toLowerCase(),
+                sn:        (qs.get('sn') || qs.get('serial') || qs.get('serial_number') || '').trim(),
+                device_id: (qs.get('device_id') || qs.get('deviceId') || '').trim(),
+                utility:   normalizeUtility(qs.get('utility')),
+                name:      (qs.get('name') || '').trim(),
+                city:      (qs.get('city') || '').trim(),
+                phone:     (qs.get('phone') || '').trim()
+            };
+            if (fromUrl.email || fromUrl.sn || fromUrl.device_id) {
+                try { sessionStorage.setItem(CTX_STORAGE_KEY, JSON.stringify(fromUrl)); } catch (_) { /* noop */ }
+                return fromUrl;
+            }
+            try {
+                const saved = JSON.parse(sessionStorage.getItem(CTX_STORAGE_KEY) || 'null');
+                if (saved) return saved;
+            } catch (_) { /* noop */ }
+            return fromUrl;
+        }
+        const ctx = readContext();
+        try {
+            window.history.replaceState({}, document.title, window.location.pathname + window.location.hash);
+        } catch (_) { /* noop */ }
+
+        // ---------- 2. Hydrate the page ----------
+        if (ctx.sn) {
+            ctxSerialEl.innerHTML = '';
+            const code = document.createElement('code');
+            code.textContent = ctx.sn;
+            ctxSerialEl.appendChild(code);
+        }
+        deviceIdInput.value = ctx.device_id;
+        emailInput.value = ctx.email;
+        if (ctx.utility) utilitySelect.value = ctx.utility;
+        nameInput.value = ctx.name;
+        cityInput.value = ctx.city;
+        phoneInput.value = ctx.phone;
+
+        function syncUtilityNote() {
+            utilityNote.textContent = UTILITY_LABELS[utilitySelect.value] || 'your utility';
+        }
+        syncUtilityNote();
+
+        // Email, S/N and device id can only come from EP Cube's link; without
+        // them the enrollment cannot be tied to a device.
+        const missing = [];
+        if (!isValidEmail(ctx.email)) missing.push('email');
+        if (!ctx.sn) missing.push('serial number');
+        if (!ctx.device_id) missing.push('device id');
+        if (missing.length) {
+            linkError.classList.add('is-visible');
+            linkError.style.marginTop = '0';
+            linkError.style.marginBottom = '1.5rem';
+            linkError.innerHTML =
+                '⚠️ This sign-up link is incomplete (missing ' + missing.join(', ') + '). ' +
+                'Please open the link from your EP Cube email again, or contact ' +
+                '<a href="mailto:info@microvpp.com">info@microvpp.com</a>.';
+            submitBtn.disabled = true;
+            track('ep_cube_link_incomplete', missing.join(','));
+        }
+
+        // ---------- 3. Field validation ----------
+        emailInput.addEventListener('input', function () {
+            emailInput.classList.remove('invalid');
+            emailError.classList.remove('is-visible');
+        });
+        utilitySelect.addEventListener('change', function () {
+            utilitySelect.classList.remove('invalid');
+            utilityError.classList.remove('is-visible');
+            syncUtilityNote();
+        });
+        phoneInput.addEventListener('input', function () {
+            phoneInput.classList.remove('invalid');
+            phoneError.classList.remove('is-visible');
+        });
+
+        function validateForm() {
+            let firstBad = null;
+            if (!isValidEmail(emailInput.value)) {
+                emailInput.classList.add('invalid');
+                emailError.classList.add('is-visible');
+                firstBad = firstBad || emailInput;
+            }
+            if (!UTILITY_LABELS[utilitySelect.value]) {
+                utilitySelect.classList.add('invalid');
+                utilityError.classList.add('is-visible');
+                firstBad = firstBad || utilitySelect;
+            }
+            if (phoneInput.value.trim() && !normalizeUsPhone(phoneInput.value)) {
+                phoneInput.classList.add('invalid');
+                phoneError.classList.add('is-visible');
+                firstBad = firstBad || phoneInput;
+            }
+            if (firstBad) firstBad.focus();
+            return !firstBad;
+        }
+
+        // ---------- 4. API calls ----------
+        async function postJson(path, body) {
+            const resp = await fetch(CONFIG.apiBaseUrl + path, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            const text = await resp.text();
+            let json = {};
+            try { json = text ? JSON.parse(text) : {}; } catch (_) { json = { raw: text }; }
+            return { ok: resp.ok, status: resp.status, body: json };
+        }
+
+        function collectForm() {
+            const name = nameInput.value.trim();
+            return {
+                email:   emailInput.value.trim().toLowerCase(),
+                utility: utilitySelect.value,
+                name:    name,
+                city:    cityInput.value.trim(),
+                phone:   normalizeUsPhone(phoneInput.value)
+            };
+        }
+
+        // An existing account (e.g. the user reopened the link) is fine; the
+        // opt-in step resolves the account by email either way.
+        async function signup(f) {
+            const nameParts = splitName(f.name);
+            const agreedAt = new Date().toISOString();
+            const info = {
+                contact: { email: f.email, name: f.name || null, phone: f.phone || null },
+                location: { city: f.city || null, state: CONFIG.stateCode },
+                system: {
+                    brand: CONFIG.inverterManufacturer,
+                    serial_number: ctx.sn,
+                    device_id: ctx.device_id
+                },
+                utility: { leap_utility_id: f.utility, name: UTILITY_LABELS[f.utility] },
+                ep_cube: {
+                    link_email: ctx.email,
+                    email_changed: f.email !== ctx.email
+                },
+                agreements: {
+                    user_agreement_version: CONFIG.userAgreementVersion,
+                    vpp_agreement_version: CONFIG.vppAgreementVersion,
+                    agreed_at: agreedAt
+                },
+                registration: {
+                    status: 'ep_cube_pilot_signup',
+                    registration_date: agreedAt,
+                    registration_source: 'ep-cube-web-landing'
+                }
+            };
+            return postJson(CONFIG.signupEndpoint, {
+                email: f.email,
+                first_name: nameParts.first,
+                last_name: nameParts.last,
+                phone_number: f.phone || null,
+                city: f.city || null,
+                state: CONFIG.stateCode,
+                country: 'US',
+                locale: 'en-US',
+                timezone: CONFIG.timezone,
+                inverter_inverter_id: ctx.device_id,
+                inverter_monitoring_id: ctx.device_id,
+                inverter_inverter_type: CONFIG.inverterType,
+                inverter_manufacturer: CONFIG.inverterManufacturer,
+                inverter_serial_number: ctx.sn,
+                site_id: ctx.device_id,
+                site_type: CONFIG.inverterType,
+                info: JSON.stringify(info)
+            });
+        }
+
+        async function optIn(f, accountId) {
+            return postJson(CONFIG.optInEndpoint, {
+                cognito_user_id: accountId || null,
+                email: f.email,
+                inverter_brand: CONFIG.inverterType,
+                vpp_program_id: CONFIG.vppProgramId,
+                agreement_version: CONFIG.vppAgreementVersion,
+                opt_in_agreed: true,
+                tesla_fleet_consent: false
+            });
+        }
+
+        async function requestUtilityApiEmail(f, accountId) {
+            try {
+                await postJson(CONFIG.utilityApiAuthEndpoint, {
+                    email: f.email,
+                    account_id: accountId || null,
+                    state: 'california',
+                    utility: f.utility
+                });
+            } catch (_) { /* best-effort */ }
+        }
+
+        function leapConnectUrl(utility, refId) {
+            const params = new URLSearchParams();
+            params.set('transmissionRegion', CONFIG.leapTransmissionRegion);
+            params.set('variant', CONFIG.leapVariant);
+            params.set('account', CONFIG.leapAccount);
+            params.set('utility', utility);
+            params.set('refId', refId);
+            params.set('src', CONFIG.leapSourceParam);
+            return CONFIG.leapConnectUrl + '?' + params.toString();
+        }
+
+        function resetSubmit() {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Agree & Connect My Utility →';
+        }
+
+        // ---------- 5. The one button ----------
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            clearStatus();
+            if (missing.length) return;
+            if (!validateForm()) {
+                showStatus('error', 'Please fix the highlighted fields to continue.');
+                return;
+            }
+
+            const f = collectForm();
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Creating your account…';
+            track('ep_cube_submit', f.utility);
+
+            let accountId = null;
+            try {
+                const s = await signup(f);
+                if (s.ok) accountId = s.body.account_id || s.body.user_id || null;
+            } catch (_) { /* the opt-in step reports a missing account */ }
+
+            submitBtn.textContent = 'Recording your agreements…';
+            let result;
+            try {
+                result = await optIn(f, accountId);
+            } catch (_) {
+                showStatus('error', '⚠️ We couldn\'t reach the enrollment service. Please check your connection and try again.');
+                resetSubmit();
+                return;
+            }
+            if (!result.ok) {
+                const d = result.body && (result.body.detail || result.body.message);
+                const msg = typeof d === 'string' ? d : (d ? JSON.stringify(d) : ('HTTP ' + result.status));
+                showStatus('error', '⚠️ Enrollment couldn\'t be completed: ' + msg);
+                resetSubmit();
+                return;
+            }
+
+            accountId = result.body.account_id || accountId;
+            const refId = result.body.leap_ref_id;
+            if (!refId) {
+                // Without a refId Leap cannot tie the authorized meter back to
+                // this account, so the redirect would produce an orphan meter.
+                showStatus(
+                    'error',
+                    '⚠️ You\'re opted in, but we couldn\'t start the utility authorization. ' +
+                    'We\'ll email <strong>' + escapeHtml(f.email) + '</strong> a link to finish, or contact ' +
+                    '<a href="mailto:info@microvpp.com">info@microvpp.com</a>.'
+                );
+                await requestUtilityApiEmail(f, accountId);
+                track('ep_cube_missing_ref_id', f.utility);
+                submitBtn.textContent = 'Opted in';
+                return;
+            }
+
+            await requestUtilityApiEmail(f, accountId);
+
+            try { sessionStorage.removeItem(CTX_STORAGE_KEY); } catch (_) { /* noop */ }
+            track('ep_cube_redirect_leap', f.utility);
+            showStatus('success', '✅ You\'re opted in! Taking you to authorize ' + UTILITY_LABELS[f.utility] + '…');
+            submitBtn.textContent = 'Redirecting…';
+            setTimeout(function () {
+                window.location.assign(leapConnectUrl(f.utility, refId));
+            }, 600);
+        });
+    </script>
+</body>
+</html>
