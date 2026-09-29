@@ -20,7 +20,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EP Cube Intelligence by MicroVPP</title>
+    <title>EP Cube × MicroVPP Winter Grid Program</title>
     <meta name="description" content="Get 24x7 battery optimization, join California grid support program all year round." />
     <meta name="robots" content="noindex, nofollow" />
     <meta name="referrer" content="no-referrer" />
@@ -98,7 +98,12 @@
         }
         .reg-hero h1 {
             font-size: 2.5rem; font-weight: 700;
-            margin-bottom: 1rem; line-height: 1.2;
+            margin-bottom: 0.5rem; line-height: 1.2;
+        }
+        .reg-hero .hero-powered {
+            font-size: 1.35rem; font-weight: 600;
+            color: #fde68a;
+            margin-bottom: 1rem;
         }
         .reg-hero p {
             font-size: 1.15rem; max-width: 720px;
@@ -373,7 +378,8 @@
     <section class="reg-hero">
         <div class="container">
             <span class="hero-badge">🔋 EP Cube Pilot · California</span>
-            <h1>EP Cube Intelligence by MicroVPP</h1>
+            <h1>EP Cube × MicroVPP Winter Grid Program</h1>
+            <h2 class="hero-powered">Powered by MicroVPP Intelligence</h2>
             <p>
                 Get 24x7 battery optimization, join California grid support program all year round.
             </p>
@@ -451,13 +457,21 @@
                                 <p class="field-help">Only used for grid event reminders and account support.</p>
                                 <div class="field-error" id="phoneError">Please enter a 10-digit US phone number, or leave it blank.</div>
                             </div>
+
+                            <div class="full">
+                                <label class="field-label" for="pvSizeInput">Solar (PV) system size in kW <span class="opt">(optional)</span></label>
+                                <input type="number" id="pvSizeInput" class="text-input"
+                                       placeholder="e.g. 7.2" min="0" max="100" step="0.1" inputmode="decimal" />
+                                <p class="field-help">The DC size of your solar panels, usually on your installer contract. Leave blank if you don't have solar or aren't sure.</p>
+                                <div class="field-error" id="pvSizeError">Please enter a size between 0 and 100 kW, or leave it blank.</div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Winter VPP program -->
                     <div class="program-card">
                         <div class="program-title">❄️ Winter program you're joining</div>
-                        <h3>ELRP B (CAISO)</h3>
+                        <h3>CA RA Program (CAISO)</h3>
                         <p>
                             When California's grid is under stress this winter, MicroVPP may
                             discharge your EP Cube battery for a few hours to help keep the lights on
@@ -590,10 +604,10 @@
 
                     <!-- Utility data authorization notice -->
                     <div class="info-note">
-                        🔌 <strong>Utility meter data.</strong> To count your battery's contribution,
-                        we need your utility to share your meter data. After you click the button
-                        below, you'll go to our partner Leap's secure page to authorize
-                        <strong id="utilityNameNote">your utility</strong>. We'll also email you a
+                        🔌 <strong>Meter data access.</strong> To count your battery's contribution,
+                        please authorize us to access your meter data. After you click the button
+                        below, you'll go to our partner Leap's secure page to grant that access
+                        through <strong id="utilityNameNote">your utility</strong>. We'll also email you a
                         meter-data authorization request from <strong>UtilityAPI</strong>. Please
                         confirm it when it arrives.
                     </div>
@@ -603,8 +617,8 @@
                         <strong>By clicking "Agree &amp; Connect My Utility," you:</strong>
                         <ol>
                             <li>accept the <strong>MicroVPP User Agreement</strong>,</li>
-                            <li>sign the <strong>VPP Customer Authorization</strong> and opt in to <strong>ELRP B</strong>, and</li>
-                            <li>will be taken to your utility's authorization page to share your meter data.</li>
+                            <li>sign the <strong>VPP Customer Authorization</strong> and opt in to the <strong>CA RA Program</strong>, and</li>
+                            <li>will be taken to your utility's page to authorize us to access your meter data.</li>
                         </ol>
                     </div>
 
@@ -646,7 +660,7 @@
 
     <script>
         // =====================================================================
-        // MicroVPP — EP Cube Intelligence sign-up, ELRP B enrollment (CAISO)
+        // MicroVPP — EP Cube Winter Grid Program sign-up, CA RA enrollment (CAISO)
         //
         // EP Cube emails each customer a link carrying their identity:
         //
@@ -713,6 +727,8 @@
         const cityInput     = document.getElementById('cityInput');
         const phoneInput    = document.getElementById('phoneInput');
         const phoneError    = document.getElementById('phoneError');
+        const pvSizeInput   = document.getElementById('pvSizeInput');
+        const pvSizeError   = document.getElementById('pvSizeError');
         const submitBtn     = document.getElementById('submitBtn');
         const statusBanner  = document.getElementById('statusBanner');
 
@@ -848,6 +864,19 @@
             phoneInput.classList.remove('invalid');
             phoneError.classList.remove('is-visible');
         });
+        pvSizeInput.addEventListener('input', function () {
+            pvSizeInput.classList.remove('invalid');
+            pvSizeError.classList.remove('is-visible');
+        });
+
+        // Blank is allowed; a typed value must be a plausible residential size.
+        function parsePvSizeKw(raw) {
+            const s = (raw || '').trim();
+            if (!s) return { ok: true, value: null };
+            const n = Number(s);
+            if (!isFinite(n) || n <= 0 || n > 100) return { ok: false, value: null };
+            return { ok: true, value: Math.round(n * 100) / 100 };
+        }
 
         function validateForm() {
             let firstBad = null;
@@ -865,6 +894,11 @@
                 phoneInput.classList.add('invalid');
                 phoneError.classList.add('is-visible');
                 firstBad = firstBad || phoneInput;
+            }
+            if (!parsePvSizeKw(pvSizeInput.value).ok) {
+                pvSizeInput.classList.add('invalid');
+                pvSizeError.classList.add('is-visible');
+                firstBad = firstBad || pvSizeInput;
             }
             if (firstBad) firstBad.focus();
             return !firstBad;
@@ -890,7 +924,8 @@
                 utility: utilitySelect.value,
                 name:    name,
                 city:    cityInput.value.trim(),
-                phone:   normalizeUsPhone(phoneInput.value)
+                phone:   normalizeUsPhone(phoneInput.value),
+                pvSizeKw: parsePvSizeKw(pvSizeInput.value).value
             };
         }
 
@@ -905,7 +940,8 @@
                 system: {
                     brand: CONFIG.inverterManufacturer,
                     serial_number: ctx.sn,
-                    device_id: ctx.device_id
+                    device_id: ctx.device_id,
+                    pv_size_kw: f.pvSizeKw
                 },
                 utility: { leap_utility_id: f.utility, name: UTILITY_LABELS[f.utility] },
                 ep_cube: {
