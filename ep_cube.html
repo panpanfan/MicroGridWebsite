@@ -117,6 +117,9 @@
             align-items: flex-end;
             min-width: 0;
         }
+        .cobrand a { display: flex; }
+        .cobrand-ep-link { flex-shrink: 0; }
+        .cobrand-partner-link { min-width: 0; flex-shrink: 1; }
         .cobrand .cobrand-ep { height: var(--x); width: auto; flex-shrink: 0; }
         .cobrand-divider {
             flex-shrink: 0;
@@ -149,6 +152,13 @@
             cursor: pointer; display: inline-flex; align-items: center;
         }
         .cta-button-outline:hover { background: rgba(16, 185, 129, 0.05); }
+        .cta-button-outline.cta-epcube { color: #000; border-color: #000; white-space: nowrap; }
+        .cta-button-outline.cta-epcube:hover { background: rgba(0, 0, 0, 0.05); }
+
+        .visually-hidden {
+            position: absolute; width: 1px; height: 1px;
+            overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+        }
 
         /* Hero */
         .reg-hero {
@@ -172,6 +182,7 @@
             font-size: 1.05rem; max-width: 720px;
             margin: 0 auto; opacity: 0.95;
         }
+        .hero-epcube-link { display: none; }
 
         /* Sign-up section */
         .register-section { padding: var(--space) 0 64px; }
@@ -446,8 +457,27 @@
             }
         }
 
-        @media (max-width: 560px) {
+        /* The co-brand lockup has a fixed minimum size, so the MicroVPP-only header
+           items drop out first as the viewport narrows (the MicroVPP logo still links
+           home); the EP Cube link moves into the hero once the header runs out of room. */
+        @media (max-width: 1140px) {
+            .nav-links { display: none; }
+        }
+        @media (max-width: 780px) {
+            .cta-home { display: none; }
+        }
+        @media (max-width: 600px) {
             .header-buttons { display: none; }
+            .hero-epcube-link {
+                display: inline-block;
+                margin-top: 12px;
+                padding: 8px 14px;
+                border: 1px solid rgba(255, 255, 255, 0.55);
+                border-radius: 999px;
+                color: #fff; font-size: 0.85rem; font-weight: 600;
+                line-height: 1.35; text-decoration: none;
+            }
+            .hero-epcube-link:active { background: rgba(255, 255, 255, 0.12); }
         }
     </style>
 </head>
@@ -460,9 +490,13 @@
     <!-- Header -->
     <header>
         <nav class="container">
-            <a href="index.html" class="logo cobrand" aria-label="Canadian Solar EP Cube and MicroVPP">
-                <img class="cobrand-ep" src="assets/images/ep_cube_logo_black.svg" alt="Canadian Solar EP Cube">
+            <div class="logo cobrand">
+                <a class="cobrand-ep-link" href="https://epcube.com/en-US/" target="_blank" rel="noopener noreferrer"
+                   aria-label="Canadian Solar EP Cube website (opens in a new tab)">
+                    <img class="cobrand-ep" src="assets/images/ep_cube_logo_black.svg" alt="Canadian Solar EP Cube">
+                </a>
                 <span class="cobrand-divider" aria-hidden="true"></span>
+                <a class="cobrand-partner-link" href="index.html" aria-label="MicroVPP home">
                 <svg class="cobrand-partner" viewBox="115 64 636 110" preserveAspectRatio="xMinYMax meet"
                      role="img" aria-label="MicroVPP">
                     <defs>
@@ -473,7 +507,8 @@
                     </defs>
                     <text x="430" y="172" text-anchor="middle" font-family="'Inter', 'Montserrat', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif" font-weight="700" font-size="140" letter-spacing="-0.02em"><tspan fill="url(#cobrandMicroGreen)">Micro</tspan><tspan fill="#FBB51B" dx="-8">VPP</tspan></text>
                 </svg>
-            </a>
+                </a>
+            </div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="index.html#join-movement">How It Works</a></li>
@@ -481,7 +516,9 @@
                 <li><a href="about.html">About</a></li>
             </ul>
             <div class="header-buttons">
-                <a href="index.html" class="cta-button-outline">Back to Home</a>
+                <a href="https://epcube.com/en-US/" class="cta-button-outline cta-epcube" target="_blank" rel="noopener noreferrer"
+                   title="Check EP Cube product updates and new homeowner programs">Check EP Cube product&nbsp;↗<span class="visually-hidden"> (opens in a new tab)</span></a>
+                <a href="index.html" class="cta-button-outline cta-home">Back to Home</a>
             </div>
         </nav>
     </header>
@@ -492,6 +529,9 @@
             <h1>EP Cube × MicroVPP Winter Grid Program</h1>
             <h2 class="hero-powered">Powered by MicroVPP Intelligence</h2>
             <p>Get 24×7 battery optimization and join California's grid-support program year-round.</p>
+            <a class="hero-epcube-link" href="https://epcube.com/en-US/" target="_blank" rel="noopener noreferrer">
+                Check EP Cube product&nbsp;↗<span class="visually-hidden"> (opens in a new tab)</span>
+            </a>
         </div>
     </section>
 
