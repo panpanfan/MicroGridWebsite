@@ -1,6 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Must stay above the GTM / gtag tags so the customer's details in the
+         EP Cube link never reach Google Analytics. -->
+    <script>
+        (function () {
+            var PII_KEYS = ['email', 'sn', 'serial', 'serial_number', 'device_id', 'deviceId', 'name', 'phone', 'city'];
+            var qs = new URLSearchParams(window.location.search);
+            if (!PII_KEYS.some(function (k) { return qs.has(k); })) return;
+            try {
+                sessionStorage.setItem('ep_cube_signup_qs', window.location.search);
+            } catch (_) {
+                return;
+            }
+            PII_KEYS.forEach(function (k) { qs.delete(k); });
+            var rest = qs.toString();
+            history.replaceState(null, '', window.location.pathname + (rest ? '?' + rest : '') + window.location.hash);
+        })();
+    </script>
+
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -778,6 +796,7 @@
         };
         const UTILITY_SHORT = { pge: 'PG&E', sce: 'SCE', sdge: 'SDG&E' };
         const CTX_STORAGE_KEY = 'ep_cube_signup_ctx';
+        const QS_STASH_KEY = 'ep_cube_signup_qs';
 
         // ---------- DOM ----------
         const linkError     = document.getElementById('linkError');
@@ -854,7 +873,12 @@
         // The params are kept in sessionStorage so a page refresh still works
         // after the address bar has been cleaned.
         function readContext() {
-            const qs = new URLSearchParams(window.location.search);
+            let stashed = null;
+            try {
+                stashed = sessionStorage.getItem(QS_STASH_KEY);
+                sessionStorage.removeItem(QS_STASH_KEY);
+            } catch (_) { /* noop */ }
+            const qs = new URLSearchParams(stashed || window.location.search);
             const fromUrl = {
                 email:     (qs.get('email') || '').trim().toLowerCase(),
                 sn:        (qs.get('sn') || qs.get('serial') || qs.get('serial_number') || '').trim(),
