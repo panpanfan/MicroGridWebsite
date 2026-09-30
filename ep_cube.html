@@ -108,6 +108,30 @@
         nav { display: flex; justify-content: space-between; align-items: center; }
         .logo { display: flex; align-items: center; text-decoration: none; }
         .logo img { height: 50px; width: auto; }
+
+        /* EP Cube co-brand lockup (EP Cube Brand Guidelines 1.06): X = EP Cube logo
+           height, 0.5X either side of the divider, partner logo at most 0.63X tall
+           and 4X wide, bottom-aligned. EP Cube logo minimum on screen is 44px tall. */
+        .cobrand {
+            --x: 48px;
+            align-items: flex-end;
+            min-width: 0;
+        }
+        .cobrand .cobrand-ep { height: var(--x); width: auto; flex-shrink: 0; }
+        .cobrand-divider {
+            flex-shrink: 0;
+            width: 1px; height: var(--x);
+            margin: 0 calc(var(--x) * 0.5);
+            background: #9fa0a0;
+        }
+        .cobrand-partner {
+            display: block;
+            height: calc(var(--x) * 0.63);
+            width: calc(var(--x) * 0.63 * 636 / 110);
+            max-width: calc(var(--x) * 4);
+            min-width: 0;
+            flex-shrink: 1;
+        }
         .nav-links { display: flex; list-style: none; gap: 2rem; }
         .nav-links a {
             text-decoration: none; color: var(--ink-2); font-weight: 500;
@@ -381,6 +405,7 @@
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
+            .cobrand { --x: 44px; }
             .reg-hero { padding-top: 112px; }
             .reg-hero h1 { font-size: 1.6rem; }
             .reg-hero p { font-size: 0.98rem; }
@@ -420,6 +445,10 @@
                 color: var(--muted); margin-top: 6px;
             }
         }
+
+        @media (max-width: 560px) {
+            .header-buttons { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -431,9 +460,19 @@
     <!-- Header -->
     <header>
         <nav class="container">
-            <a href="index.html" class="logo">
-                <img src="assets/images/microvpp_logo_v2.svg" alt="MicroVPP"
-                     onerror="this.onerror=null;this.src='assets/images/microvpp_logo.png';">
+            <a href="index.html" class="logo cobrand" aria-label="Canadian Solar EP Cube and MicroVPP">
+                <img class="cobrand-ep" src="assets/images/ep_cube_logo_black.svg" alt="Canadian Solar EP Cube">
+                <span class="cobrand-divider" aria-hidden="true"></span>
+                <svg class="cobrand-partner" viewBox="115 64 636 110" preserveAspectRatio="xMinYMax meet"
+                     role="img" aria-label="MicroVPP">
+                    <defs>
+                        <linearGradient id="cobrandMicroGreen" gradientUnits="userSpaceOnUse" x1="107" y1="36" x2="483" y2="206">
+                            <stop offset="0" stop-color="#10B981" />
+                            <stop offset="1" stop-color="#059669" />
+                        </linearGradient>
+                    </defs>
+                    <text x="430" y="172" text-anchor="middle" font-family="'Inter', 'Montserrat', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif" font-weight="700" font-size="140" letter-spacing="-0.02em"><tspan fill="url(#cobrandMicroGreen)">Micro</tspan><tspan fill="#FBB51B" dx="-8">VPP</tspan></text>
+                </svg>
             </a>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
