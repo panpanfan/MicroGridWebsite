@@ -182,7 +182,6 @@
             font-size: 1.05rem; max-width: 720px;
             margin: 0 auto; opacity: 0.95;
         }
-        .hero-epcube-link { display: none; }
 
         /* Sign-up section */
         .register-section { padding: var(--space) 0 64px; }
@@ -457,9 +456,8 @@
             }
         }
 
-        /* The co-brand lockup has a fixed minimum size, so the MicroVPP-only header
-           items drop out first as the viewport narrows (the MicroVPP logo still links
-           home); the EP Cube link moves into the hero once the header runs out of room. */
+        /* The co-brand lockup has a fixed minimum size, so header items drop out as the
+           viewport narrows; both logos stay and link to their sites. */
         @media (max-width: 1140px) {
             .nav-links { display: none; }
         }
@@ -468,16 +466,6 @@
         }
         @media (max-width: 600px) {
             .header-buttons { display: none; }
-            .hero-epcube-link {
-                display: inline-block;
-                margin-top: 12px;
-                padding: 8px 14px;
-                border: 1px solid rgba(255, 255, 255, 0.55);
-                border-radius: 999px;
-                color: #fff; font-size: 0.85rem; font-weight: 600;
-                line-height: 1.35; text-decoration: none;
-            }
-            .hero-epcube-link:active { background: rgba(255, 255, 255, 0.12); }
         }
     </style>
 </head>
@@ -529,9 +517,6 @@
             <h1>EP Cube × MicroVPP Winter Grid Program</h1>
             <h2 class="hero-powered">Powered by MicroVPP Intelligence</h2>
             <p>Get 24×7 battery optimization and join California's grid-support program year-round.</p>
-            <a class="hero-epcube-link" href="https://epcube.com/en-US/" target="_blank" rel="noopener noreferrer">
-                Check EP Cube product&nbsp;↗<span class="visually-hidden"> (opens in a new tab)</span>
-            </a>
         </div>
     </section>
 
