@@ -6,6 +6,7 @@
     <script>
         (function () {
             var PII_KEYS = ['email', 'sn', 'serial', 'serial_number', 'device_id', 'deviceId', 'name', 'phone', 'city'];
+            window.EP_CUBE_PII_KEYS = PII_KEYS;
             var qs = new URLSearchParams(window.location.search);
             if (!PII_KEYS.some(function (k) { return qs.has(k); })) return;
             try {
@@ -899,8 +900,14 @@
             return fromUrl;
         }
         const ctx = readContext();
+        // Fallback for when the head script could not stash the query; other
+        // params (utm_*, utility) are kept for analytics.
         try {
-            window.history.replaceState({}, document.title, window.location.pathname + window.location.hash);
+            const leftover = new URLSearchParams(window.location.search);
+            window.EP_CUBE_PII_KEYS.forEach(function (k) { leftover.delete(k); });
+            const rest = leftover.toString();
+            window.history.replaceState({}, document.title,
+                window.location.pathname + (rest ? '?' + rest : '') + window.location.hash);
         } catch (_) { /* noop */ }
 
         // ---------- 2. Hydrate the page ----------

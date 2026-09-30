@@ -6,9 +6,22 @@
     <meta name="referrer" content="no-referrer" />
     <title>EP Cube × MicroVPP Winter Grid Program</title>
     <link rel="canonical" href="https://www.microvpp.com/ep_cube.html" />
-    <!-- EP Cube links carry the account details in the query string, so it must be kept. -->
+    <!-- The customer's details are handed to ep_cube.html through sessionStorage
+         (same key its head script uses) so they are not requested in a URL again. -->
     <script>
-        window.location.replace('../ep_cube.html' + window.location.search + window.location.hash);
+        (function () {
+            var PII_KEYS = ['email', 'sn', 'serial', 'serial_number', 'device_id', 'deviceId', 'name', 'phone', 'city'];
+            var search = window.location.search;
+            var qs = new URLSearchParams(search);
+            if (PII_KEYS.some(function (k) { return qs.has(k); })) {
+                try {
+                    sessionStorage.setItem('ep_cube_signup_qs', search);
+                    PII_KEYS.forEach(function (k) { qs.delete(k); });
+                    search = qs.toString() ? '?' + qs.toString() : '';
+                } catch (_) { /* no storage: pass the query through unchanged */ }
+            }
+            window.location.replace('../ep_cube.html' + search + window.location.hash);
+        })();
     </script>
     <noscript><meta http-equiv="refresh" content="0; url=../ep_cube.html" /></noscript>
 </head>
